@@ -54,9 +54,7 @@ dependencies {
 	// Spring Secutiry 설정
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-	
-	// Log4j2 로깅 라이브러리 설정
-	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
 }
 
 tasks.named('test') {
