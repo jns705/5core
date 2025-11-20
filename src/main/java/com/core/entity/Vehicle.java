@@ -1,6 +1,15 @@
 package com.core.entity;
 
-import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -16,9 +25,14 @@ import lombok.Setter;
 @Setter
 public class Vehicle {
 	
+	// auto-increment로 생성되는 고유id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    // 모델 코드 - 차를 구분하기 위한 코드 (예: avante, avante-N 등)
+    @Column(columnDefinition = "varchar(20)")
+    private String modelCode;
 
     // 차량 이름 (예: 아반떼, EV6 등) 
     @NotBlank(message = "차량명은 필수 입력 사항입니다.")
@@ -52,6 +66,22 @@ public class Vehicle {
     
 	@Column(columnDefinition = "varchar(30) default 'no_image.jpg'")
 	private String fileName;  // 차량이미지의 파일명
+	
+    // 차량 옵션
+    // - 차량 상담 시 그 차량에 대해서 선택한 옵션들이 리스트로 한번에 저장되게끔
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    private List<VehicleOption> options = new ArrayList<>();
+    
+    
+    
+    /*
+    - 3가지 트림으로 가격 차별화
+    - 모든 옵션에 가격을 매기는 것이 어렵고, 많은 차의 데이터에 가격을 각각 부여해야 하는 부담이 있음
+    - 트림에 따라 차의 기본 가격에서 +가 되는 방식을 사용 (계산은 service에서 처리)
+    -- ex) 스탠다드: + 0원, 익스클루시브: + 200만원, 프레스티지: + 400만원
+    */
+    @Column(columnDefinition = "varchar(20)")
+    private String trim; // Standard, Exclusive, Prestige
 
     
 }

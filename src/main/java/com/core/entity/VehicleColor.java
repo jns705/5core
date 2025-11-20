@@ -20,8 +20,8 @@ public class VehicleColor {
     @Column(columnDefinition = "varchar(30)")
     private String color;
 
-    // 색상 이미지 URL 
-    @Column(columnDefinition = "varchar(30) default 'no_image.jpg'")
+    // 색상 이미지 URL
+    @Column(columnDefinition = "varchar(255) default 'no_image.jpg'")
     private String imageColorUrl;
 
     // 차량 참조 
