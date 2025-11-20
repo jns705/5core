@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login폼</title>
+    <style>
+        /* 전체 */
+        body {
+            background-color: #eee;
+            font-family: "Mukta", "Sunflower", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+        a {text-decoration: none; color : #000; cursor: pointer;}
+        button {cursor: pointer;}
+        #container {
+            width : 1600px;
+            margin : 0 auto;
+        }
+
+
+        /* 중단 */
+        .login_menu { width: 100%; height: 600px; margin: 50px auto; text-align: center;}
+        .login_box {position: absolute; width: 700px; height: 580px; left: 600px; background-color: #fff; z-index: 1;}
+        h1 {font-size: 3em;}
+        .login_box1, .login_box2 { margin: 50px auto;}
+        .login_box1 { clear: both; width: 600px; height: 150px;}
+        .login_input_box { float: left;}
+        .login_input_box > input { display: block; width: 430px; height: 50px; margin-bottom: 20px;}
+        #loginBtn, #orderSearch { margin-left: 30px; background-color: #000; color: #fff;}
+        #loginBtn { width: 132px; height: 132px;}
+
+        .login_box2 { width: 600px; display: none;}
+        #orderSearch {width: 130px; height: 205px;}
+
+        .login_tap, .login_box3 { display: flex; justify-content:center; align-items:center; width: 100%; margin: -10px 0 50px 0;}
+        .tap { float: left; width: 300px; height: 50px; margin: 0 0.1px; text-align: center; line-height: 53px; cursor: pointer;}
+        .tap1 { border-bottom: 4px solid #111; }
+
+        
+        .join_box {width: 600px; height: 70px; background-color: #7f8c8d;}
+        .join_box a { margin: 50px; line-height: 72px;}
+
+
+        /* 하단 */
+
+
+    </style>
+</head>
+<body>
+<div id="container">
+    <!-- 상단 -->
+
+
+    <!-- 중단 -->
+    <div class="login_menu">
+        <div class="login_box">
+        <form th:action="@{/login}" method="post" class="form1">
+            <h1>로그인</h1>
+            <div class="login_box1">
+                <div class="login_input_box">
+                    <input type="text" name="memberId" id="memberId" placeholder="아이디">
+                    <input type="password" name="password" id="password" placeholder="비밀번호">
+                </div>
+                <input type="submit" value="로그인" id="loginBtn">
+            </div>
+
+            <div class="login_box3">
+                <div class="join_box">
+                    <a href="#">아이디 찾기</a>
+                    <a href="#">비밀번호 찾기</a>
+                    <a href="#">회원가입</a>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <!-- 하단 -->
+
+</div>
+</body>
+</html>
