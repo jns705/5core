@@ -1,5 +1,42 @@
 package com.core.service;
 
-public class MemberService {
+import java.util.Optional;
 
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.core.entity.Member;
+import com.core.repository.MemberRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class MemberService implements UserDetailsService {
+	
+	private final MemberRepository memberRepository;
+	
+	@Override
+	public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
+		Optional<Member> _member = memberRepository.findByMemberId(memberId);
+		
+		if(_member.isEmpty()) {
+			throw new UsernameNotFoundException("회원 ID를 찾을 수 없습니다.");
+		}
+		
+		Member member = _member.get();
+		
+		// 로그인을 할 때 전달받은 회원 ID를 사용하여 비밀번호가 일치하는지를 검사하는 User 객체를 러턴함.
+		return User.builder().username(member.getMemberId()).password(member.getPassword())
+				.roles(member.getRole().toString()).build();
+	}
+	
+	// 회원가입
+	public void saveMember(Member member) {
+		memberRepository.save(member);
+	}
+	
 }
