@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login폼</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         /* 전체 */
         body {
@@ -24,29 +25,57 @@
         .login_menu { width: 100%; height: 600px; margin: 50px auto; text-align: center;}
         .login_box {position: absolute; width: 700px; height: 580px; left: 600px; background-color: #fff; z-index: 1;}
         h1 {font-size: 3em;}
-        .login_box1, .login_box2 { margin: 50px auto;}
+        .login_box1 { margin: 50px auto;}
         .login_box1 { clear: both; width: 600px; height: 150px;}
         .login_input_box { float: left;}
         .login_input_box > input { display: block; width: 430px; height: 50px; margin-bottom: 20px;}
         #loginBtn, #orderSearch { margin-left: 30px; background-color: #000; color: #fff;}
         #loginBtn { width: 132px; height: 132px;}
 
-        .login_box2 { width: 600px; display: none;}
-        #orderSearch {width: 130px; height: 205px;}
-
-        .login_tap, .login_box3 { display: flex; justify-content:center; align-items:center; width: 100%; margin: -10px 0 50px 0;}
-        .tap { float: left; width: 300px; height: 50px; margin: 0 0.1px; text-align: center; line-height: 53px; cursor: pointer;}
-        .tap1 { border-bottom: 4px solid #111; }
-
-        
+        .login_tap, .login_box2 { display: flex; justify-content:center; align-items:center; width: 100%; margin: -10px 0 50px 0;}
+ 		
         .join_box {width: 600px; height: 70px; background-color: #7f8c8d;}
         .join_box a { margin: 50px; line-height: 72px;}
-
+	
+		.login_box3 { width: 600px; display: none; justify-content:center; align-items:center; }
+		.join_box2 { margin: 10px; width: 150px; height: 50px; background-color: #7f8c8d;}
+        .join_box2 a { margin: 50px; line-height: 50px;}
 
         /* 하단 */
 
 
     </style>
+	<script>
+		let flag = false;
+	    document.addEventListener("DOMContentLoaded", () => {
+	        let tap1 = document.querySelector(".tap1");
+	        let login_box3 = document.querySelector(".login_box3");
+			
+			tap1.addEventListener("click", () => login_box_changer(flag));
+			
+	        let login_box_changer = (flag) => {
+				console.log(flag)
+	            if(!flag){
+					flag = true;
+	                login_box3.style.display = "flex";
+	            } else {
+					flag = false;
+	                login_box3.style.display = "none";
+	            }
+	        };
+
+	        
+	    });
+		
+		function addCustomer() { 
+			location.href = "/5core/member/add/" + "01";
+		}
+		function addDealer() { 
+			location.href = "/5core/member/add/" + "02";
+		}
+		
+	</script>
+	
 </head>
 <body>
 <div id="container">
@@ -66,13 +95,22 @@
                 <input type="submit" value="로그인" id="loginBtn">
             </div>
 
-            <div class="login_box3">
+            <div class="login_box2">
                 <div class="join_box">
                     <a href="#">아이디 찾기</a>
                     <a href="#">비밀번호 찾기</a>
-                    <a th:href="@{/member/add}">회원가입</a>
+                    <a class="tap1">회원가입</a>
                 </div>
             </div>
+			
+			<div class="login_box3">
+				<div class="join_box2">
+					<a th:href="|javascript:addCustomer()|">고객</a>
+				</div>
+				<div class="join_box2">
+					<a th:href="|javascript:addDealer()|">딜러</a>
+				</div>
+			</div>
         </form>
         </div>
     </div>
