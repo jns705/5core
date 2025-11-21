@@ -23,7 +23,6 @@ public class Member {
 
     // 고객/딜러 역할 
     @Enumerated(EnumType.STRING)
-    @NotBlank
     private Role role;
 
     // 로그인 ID
@@ -74,12 +73,16 @@ public class Member {
 	@JoinColumn(name = "address_id")
 	@Valid
 	private Address address;
+	
+	// 테이블에서 생성 제외
+	@Transient
+	private boolean roleCheck;
     
 	// 회원 생성 메서드
 	// - 비밀번호 암호화, 사용자역할 설정(True는 일반 사용자)	
-	public static Member createMember(Member member, PasswordEncoder passwordEncoder, Boolean role) {
+	public static Member createMember(Member member, PasswordEncoder passwordEncoder, Boolean roleCheck) {
 		member.password = passwordEncoder.encode(member.password);
-		if(role) member.role = Role.CUSTOMER;
+		if(roleCheck) member.role = Role.CUSTOMER;
 		else member.role = Role.DEALER;
 		return member;
 	}

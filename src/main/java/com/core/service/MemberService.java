@@ -37,6 +37,12 @@ public class MemberService implements UserDetailsService {
 	// 회원가입
 	public void saveMember(Member member) {
 		memberRepository.save(member);
+		
+	}
+	
+	// 회원ID로 회원조회
+	public Member findByMemberId(String memberId) {
+		return memberRepository.findByMemberId(memberId).get();
 	}
 	
 }

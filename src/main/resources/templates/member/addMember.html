@@ -129,7 +129,7 @@
 
     <!-- 중단 -->
     <div class="join">
-        <form action="" method="post">
+		<form th:object="${member}" th:action="@{/member/add}" method="post">
             <div class="join_form">
                 <div>
                     <h1>회원가입</h1>
@@ -138,7 +138,7 @@
                 <div class="join_detail_form">
                     <div>
                         <div class="join_label"><label for="memberId">아이디</label></div>
-                        <div class="join_input"><input type="text" name="memberId" id="memberId"></div>
+                        <div class="join_input"><input type="text" name="memberId" th:field="*{memberId}" autofocus></div>
 						<div class="col-sm-7">
 							<p class="text-danger" th:errors="*{memberId}"></p>		
 						</div>
