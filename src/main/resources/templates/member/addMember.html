@@ -129,7 +129,8 @@
 
     <!-- 중단 -->
     <div class="join">
-		<form th:object="${member}" th:action="@{/member/add}" method="post">
+        <form th:object="${member}" th:action="@{/member/add}" method="post">
+
             <div class="join_form">
                 <div>
                     <h1>회원가입</h1>
@@ -191,7 +192,17 @@
 					<div class="col-sm-4">
 						<p class="text-danger" th:errors="*{gender}"></p>
 					</div>
-
+					
+					<!-- 고객 회원가입 -->
+					<div th:if="${member.roleCheck == true}">
+						
+					</div>
+					
+					<!-- 딜러 회원가입 -->
+					<div th:if="${member.roleCheck == false}">
+											
+					</div>
+					
                 </div>
 
             <input type="submit" value="가입하기">
