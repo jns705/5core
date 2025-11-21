@@ -32,4 +32,5 @@ public class VehicleOption {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
     
+    
 }
