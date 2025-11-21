@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.core.entity.Member;
+import com.core.service.CustomerService;
+import com.core.service.DealerService;
 import com.core.service.MemberService;
 
 import jakarta.validation.Valid;
@@ -24,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	
 	private final MemberService memberService;
+	private final CustomerService customerService;
+	private final DealerService dealerService;
 	
 	private final PasswordEncoder passwordEncoder;
 	
@@ -52,12 +56,16 @@ public class MemberController {
 		// 중복 ID 체크
 		// DataIntegrityViolationException -> unique 속성을 위배했을 때 발생하는 예외
 		try {
+			
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// 딜러, 고객 구분해서 true false 넣어야 함
 			////////////////////////////////////////////////////////////////////////////////////////////
-			Member m = Member.createMember(member, passwordEncoder, true);
+			Member m = Member.createMember(member, passwordEncoder, member.isRoleCheck());
 			m.setJoinDate(LocalDateTime.now());
 			memberService.saveMember(m);
+			
+			
+			
 		} catch(DataIntegrityViolationException e) {
 			// rejectValue(필드명, 오류코드, 메시지)
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", "이미 존재하는 회원 ID입니다.");

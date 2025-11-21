@@ -37,6 +37,7 @@ public class MemberService implements UserDetailsService {
 	// 회원가입
 	public void saveMember(Member member) {
 		memberRepository.save(member);
+		
 	}
 	
 }
