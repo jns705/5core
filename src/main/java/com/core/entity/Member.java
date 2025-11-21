@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,8 +15,7 @@ import lombok.Setter;
  * 고객/딜러 모두 공통적으로 사용
  */
 @Entity
-@Getter
-@Setter
+@Data
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

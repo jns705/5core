@@ -1,6 +1,7 @@
 package com.core.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +10,7 @@ import lombok.Setter;
  * - 구매횟수, 세그먼트(VIP/일반)
  */
 @Entity
-@Getter
-@Setter
+@Data
 public class Customer {
 	
     @Id

@@ -1,6 +1,7 @@
 package com.core.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +10,7 @@ import lombok.Setter;
  * - 상담 완료 → 판매생성
  */
 @Entity
-@Getter
-@Setter
+@Data
 public class Sale {
 	
     @Id
