@@ -1,5 +1,9 @@
 package com.core.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.core.entity.Vehicle;
@@ -15,6 +19,7 @@ public class VehicleService {
 	
 	Vehicle vehicle = new Vehicle();
 	
+	//############################################################
 	// 트림에 따른 가격 계산
 	public int getPriceByTrim(Long id) {
 		// 차량의 트림 정보를 조회
@@ -38,5 +43,26 @@ public class VehicleService {
 		int trimPrice = getPriceByTrim(id); // 트림 가격
 		
 		return basePrice + trimPrice; 		// 총액
+	}
+	//############################################################
+	
+	// 전체 상품 목록 조회 -> 페이징 처리 x
+	public List<Vehicle> getVehicleList() {
+		return vehicleRepository.findAll();
+	}
+	
+	public Page<Vehicle> getVehiclePage(String keyword, Pageable pageable) {
+		// 검색어가 없을 경우 전체 목록 조회
+		if(keyword == null || keyword.isBlank()) {
+			return vehicleRepository.findAll(pageable);
+		}
+		
+		// 검색어가 있는 경우에는 검색
+		return vehicleRepository.findByNameContainingOrVehicleTypeContaining(keyword, keyword, pageable);
+	}
+	
+	// 차량 상세 정보 조회
+	public Vehicle getVehicleByModelCode(String modelCode) {
+		return vehicleRepository.findByModelCode(modelCode).get();
 	}
 }
