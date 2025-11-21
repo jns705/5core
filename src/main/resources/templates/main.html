@@ -1,1 +1,187 @@
-main테스트
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<title>main폼</title>
+	<!-- 제이쿼리 -->	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<!-- bxSlider -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.css">	
+	<!-- kakao daum 주소 검색 -->
+	<script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>	
+	<!-- 슬립 사용 -->
+	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>	
+	<script th:src="@{/js/main.js}"></script>
+		
+	<style>
+		.container {
+			height: 800px;
+			border: solid 1px black;
+		}
+		.top-img {
+			height: 740px;
+			background-size: contain;
+			position: relative;
+		}
+		.top-txt {
+			color: #fff;
+			position: absolute;
+			bottom: 50px;
+			left: 80px;
+			text-align: left;
+		}		
+		.top-txt > p {
+			font-size: 1.1em;
+			font-weight: bold;
+		}
+		.top-txt > h5 {
+			font-size: 3.5em;
+			font-weight: bold;
+			margin-bottom: 30px;
+		}	
+		
+		.top-btn1, .top-btn2 {
+			width: 130px;
+			height: 50px;
+			line-height: 30px;
+			margin-right: 20px;
+		}
+		
+		.top-btn1 {
+			background-color: white;
+			border: 3px solid white;
+			color: black;
+		}
+		
+		.top-btn1:hover {
+			background-color: black;
+			border: 3px solid black;
+			color: white;
+		}
+		.top-btn2 {
+			background-color: black;
+			border: 3px solid black;
+			color: white;
+			height: 55px;
+		}
+		
+		.top-btn2:hover {
+			background-color: white;
+			border: 3px solid white;
+			color: black;
+			height: 55px;
+		}		
+		
+	</style>	
+</head>
+
+<body>
+<div class="container py-4">
+		<!-- 본문 내용 -->
+		<!-- 상단 : bxSlider -->
+		<div class="row align-items-md-stretch text-center">
+			<div class="slider1">			
+				<div class="top-img">
+					<div class="top-txt">
+						<p>나만의 스케일대로</p>
+						<h5>The 2026 Canival Hi Limousine</h5>
+						<div>
+							<a href="#" class="btn top-btn1">자세히 보기</a>
+							<a href="#" class="btn top-btn2">견적 내기</a>
+						</div>
+					</div>
+				</div>
+				<div class="top-img">
+					<div class="top-txt">
+						<p>우리만의 스케일대로</p>
+						<h5>The 2026 Canival</h5>
+						<div>
+							<a href="#" class="btn top-btn1">자세히 보기</a>
+							<a href="#" class="btn top-btn2">견적 내기</a>
+						</div>
+					</div>
+				</div>
+				<div class="top-img">
+					<div class="top-txt">
+						<p>다채로운 라이프를 선사하는 모빌리티</p>
+						<h5>The 2026 Ray</h5>
+						<div>
+							<a href="#" class="btn top-btn1">자세히 보기</a>
+							<a href="#" class="btn top-btn2">견적 내기</a>
+						</div>
+					</div>
+				</div>
+				<div class="top-img">
+					<div class="top-txt">
+						<p>시대의 Mainstream</p>
+						<h5>The 2026 Sorento</h5>
+						<div>
+							<a href="#" class="btn top-btn1">자세히 보기</a>
+							<a href="#" class="btn top-btn2">견적 내기</a>
+						</div>
+					</div>
+				</div>											
+
+
+					
+				<div class="top-img">
+					<div class="top-txt">
+						<p>Open Road SUV</p>
+						<h5>The 2026 Sportage</h5>
+						<div>
+							<a href="#" class="btn top-btn1">자세히 보기</a>
+							<a href="#" class="btn top-btn2">견적 내기</a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="top-img">
+					<div class="top-txt">
+						<p>The Family SUV EV</p>
+						<h5>The Kia EV5</h5>
+						<div>
+							<a href="#" class="btn top-btn1">자세히 보기</a>
+							<a href="#" class="btn top-btn2">견적 내기</a>
+						</div>
+					</div>
+				</div>				
+
+				<div class="top-img">
+					<div class="top-txt">
+						<p>타던 내 기아차 팔고, 신차 할인 받을 수 있는</p>
+						<h5>기아 인증중고차</h5>
+						<div>
+							<a href="https://cpo.kia.com/?utm_source=kia&utm_medium=link&utm_content=main&utm_campaign=main" class="btn top-btn2">바로 가기</a>
+						</div>
+					</div>
+				</div>	
+				<div class="top-img">
+					<div class="top-txt">
+						<p>스마트한 카 라이프의 시작! 기아렌터카</p>
+						<h5>기아렌터카 온라인 페이지</h5>
+						<div>
+							<a href="https://rental.kia.com/pc/home" class="btn top-btn1">바로 가기</a>
+						</div>
+					</div>
+				</div>	
+				<div class="top-img">
+					<div class="top-txt">
+						<p>모빌리티의 현재와 미래를 경험하는 기아의 새로운 복합체험 공간</p>
+						<h5>플래그십스토어</h5>
+						<div>
+							<a href="https://flagshipstore.kia.com/" class="btn top-btn1">자세히 보기</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</body>
+
+</html>
+
+
+
+
