@@ -35,6 +35,7 @@ public class MemberController {
 	// 회원가입 폼
 	@GetMapping("/add")
 	public String addMemberForm(Model model) {
+		
 		model.addAttribute("member", new Member());
 		return "member/addMember";
 	}
@@ -64,8 +65,6 @@ public class MemberController {
 			m.setJoinDate(LocalDateTime.now());
 			memberService.saveMember(m);
 			
-			
-			
 		} catch(DataIntegrityViolationException e) {
 			// rejectValue(필드명, 오류코드, 메시지)
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", "이미 존재하는 회원 ID입니다.");
@@ -74,7 +73,7 @@ public class MemberController {
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", e.getMessage());
 			return "member/addMember";
 		}
-				
-		return "redirect:/cars";
+
+		return "redirect:/main";
 	}
 }

@@ -1,5 +1,8 @@
 package com.core.controller;
 
-public class SaleController {
+import org.springframework.stereotype.Controller;
 
+@Controller
+public class SaleController {
+	
 }

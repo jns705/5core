@@ -23,7 +23,6 @@ public class Member {
 
     // 고객/딜러 역할 
     @Enumerated(EnumType.STRING)
-    @NotBlank
     private Role role;
 
     // 로그인 ID
