@@ -30,7 +30,7 @@ public class MemberController {
 	// [1] 일반 사용자
 	// 회원가입 폼
 	@GetMapping("/add")
-	public String addMemberForm(Model model) {
+	public String addMemberForm(Model model) {		
 		model.addAttribute("member", new Member());
 		return "member/addMember";
 	}
@@ -66,7 +66,6 @@ public class MemberController {
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", e.getMessage());
 			return "member/addMember";
 		}
-				
-		return "redirect:/cars";
+		return "redirect:/main";
 	}
 }
