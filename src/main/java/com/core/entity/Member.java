@@ -75,15 +75,18 @@ public class Member {
 	private Address address;
 	
 	// 테이블에서 생성 제외
+	/*
+	 * 01: 고객, 02: 딜러
+	 */
 	@Transient
-	private boolean roleCheck;
+	private String roleCheck;
     
 	// 회원 생성 메서드
 	// - 비밀번호 암호화, 사용자역할 설정(True는 일반 사용자)	
-	public static Member createMember(Member member, PasswordEncoder passwordEncoder, Boolean roleCheck) {
+	public static Member createMember(Member member, PasswordEncoder passwordEncoder, String roleCheck) {
 		member.password = passwordEncoder.encode(member.password);
-		if(roleCheck) member.role = Role.CUSTOMER;
-		else member.role = Role.DEALER;
+		if(roleCheck.equals("01")) member.role = Role.CUSTOMER;
+		else if(roleCheck.equals("02")) member.role = Role.DEALER;
 		return member;
 	}
 }

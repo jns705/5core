@@ -130,7 +130,7 @@
     <!-- 중단 -->
     <div class="join">
         <form th:object="${member}" th:action="@{/member/add}" method="post">
-
+			<input type="hidden" name="roleCheck" th:field="*{roleCheck}">
             <div class="join_form">
                 <div>
                     <h1>회원가입</h1>
@@ -194,13 +194,13 @@
 					</div>
 					
 					<!-- 고객 회원가입 -->
-					<div th:if="${member.roleCheck == true}">
-						
+					<div th:if="${member.roleCheck == '01'}">
+						<div>고객</div>
 					</div>
 					
 					<!-- 딜러 회원가입 -->
-					<div th:if="${member.roleCheck == false}">
-											
+					<div th:if="${member.roleCheck == '02'}">
+						<div>딜러</div>		
 					</div>
 					
                 </div>
