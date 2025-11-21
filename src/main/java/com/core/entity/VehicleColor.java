@@ -1,6 +1,7 @@
 package com.core.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +9,7 @@ import lombok.Setter;
  * 차량 색상 정보
  */
 @Entity
-@Getter
-@Setter
+@Data
 public class VehicleColor {
 	
     @Id

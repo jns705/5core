@@ -1,9 +1,12 @@
 package com.core.entity;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.time.LocalDateTime;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,8 +15,7 @@ import lombok.Setter;
  * 고객/딜러 모두 공통적으로 사용
  */
 @Entity
-@Getter
-@Setter
+@Data
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,13 +58,29 @@ public class Member {
 
     // 가입 날짜 
     @Column(columnDefinition = "datetime default now()")
-    private String joinDate;
+    private LocalDateTime joinDate;
+    
+    // customer에서 외래키를 가짐
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Valid
+    private Customer customer;
+
+    // dealer에서 외래키를 가짐
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Valid
+    private Dealer dealer;
+    
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id")
+	@Valid
+	private Address address;
     
 	// 회원 생성 메서드
-	// - 비밀번호 암호화, 사용자역할 설정(일반 사용자)	
-	public static Member createMember(Member member, PasswordEncoder passwordEncoder) {
+	// - 비밀번호 암호화, 사용자역할 설정(True는 일반 사용자)	
+	public static Member createMember(Member member, PasswordEncoder passwordEncoder, Boolean role) {
 		member.password = passwordEncoder.encode(member.password);
-		member.role = Role.CUSTOMER;
+		if(role) member.role = Role.CUSTOMER;
+		else member.role = Role.DEALER;
 		return member;
 	}
 }

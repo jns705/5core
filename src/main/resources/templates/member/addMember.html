@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <style>
+        /* 전체 */
+        @import url('https://fonts.googleapis.com/css2?family=Love+Light&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap');
+        body {
+            background-color: #eee;
+            font-family: "Mukta", "Sunflower", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+        a {text-decoration: none; color : #000; cursor: pointer;}
+        button {cursor: pointer;}
+        #container {
+            width : 1600px;
+            margin : 0 auto;
+        }
+
+        /* 중단 - 회원가입 */
+        .join {
+            text-align: center;
+            width: 100%; height: 1400px; margin: 0;
+            background-color: #fff;
+            border: 1px solid #fff;
+        }
+        .join_form {
+            width: 100%; margin: 50px 0;
+        }
+        .join_form ul li{
+            list-style-type : none;
+            display: inline-block;
+        }
+
+        .join_label, .join_input {
+            display: inline-block;
+        }
+
+        .join_label {
+            width: 110px;
+        }
+        .join_input input {
+            margin-left: 10px;
+            width: 240px; height: 30px;
+        }
+        .center_title {
+            margin: 50px 0; font-size: 1.2em;
+        }
+        .radioBox {
+            display: inline-block;
+        }
+        .radioBox > label {
+            display: inline-block; width: 100px; border: 1px solid #000; border-radius: 10px;
+        }
+        input[name=gender], input[name=foreigner] {
+            display: none;
+        }
+        .radio_check {
+            font-size: 1.5em; cursor: pointer; 
+        }
+        input[name=gender]:checked + label, input[name=foreigner]:checked + label {
+            color: #fff; border: 1px solid #90cbfb; background-color: #90cbfb;
+        }
+
+        .brandBox {
+            display: inline-block;
+        }
+        .brandBox > input{
+            display: none;
+        }
+        .brandBox > label{
+            display: inline-block;
+            border: 1px solid #000;
+            width: 150px; margin: 5px;
+        }
+        input[name=brand]:checked ~ label {
+            color: #fff; border: 1px solid #7e00ff; background-color: #7e00ff; font-weight: 700;
+        }
+		
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let hope_style = document.querySelector("#hope_style");
+            let select_style = document.querySelector("#select_style");
+            let brand = document.querySelectorAll("[name=brand]");
+            let select_brand = document.querySelector("#select_brand");
+
+            hope_style.addEventListener("change", (e) => {
+                let options = e.currentTarget.options;
+                let styleList = [];
+                for(let i of options) {
+                    if(i.selected) {
+                        styleList.push(i.value);
+                    }
+                }
+                select_style.textContent = styleList;
+            });
+
+            let brandList = [];
+            brand.forEach((v, i) => {
+                v.addEventListener("change", (e) => {
+                    if(v.checked) {
+                        brandList.push(v.value);
+                    }
+                    if(!v.checked) {
+                        for(let i=0; i<brandList.length; i++){
+                            if(v.value == brandList[i]) {
+                                brandList.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+                    select_brand.textContent = brandList;
+                });
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div id="container">
+	<!-- 상단 -->
+
+
+    <!-- 중단 -->
+    <div class="join">
+        <form action="" method="post">
+            <div class="join_form">
+                <div>
+                    <h1>회원가입</h1>
+                </div>
+
+                <div class="join_detail_form">
+                    <div>
+                        <div class="join_label"><label for="memberId">아이디</label></div>
+                        <div class="join_input"><input type="text" name="memberId" id="memberId"></div>
+						<div class="col-sm-7">
+							<p class="text-danger" th:errors="*{memberId}"></p>		
+						</div>
+                    </div>
+                    
+                    <div>
+                        <div class="join_label"><label for="password">비밀번호</label></div>
+                        <div class="join_input"><input type="password" name="password" id="password"></div>
+						<div class="col-sm-7">
+							<p class="text-danger" th:errors="*{password}"></p>
+						</div>
+                    </div>
+                   
+                    <div>
+                        <div class="join_label"><label for="password2">비밀번호 확인</label></div>
+                        <div class="join_input"><input type="password" name="password2" id="password2"></div>
+						<div class="col-sm-7">
+							<p class="text-danger" th:errors="*{password2}"></p>
+						</div>
+                    </div>
+
+                    <div>
+                        <div class="join_label"><label for="name">이름</label></div>
+                        <div class="join_input"><input type="text" name="name" id="name"></div>
+						<div class="col-sm-7">
+							<p class="text-danger" th:errors="*{name}"></p>
+						</div>
+                    </div>
+                    
+                    <div>
+                        <div class="join_label"><label for="phone">휴대폰 번호</label></div>
+                        <div class="join_input"><input type="tel" name="phone" id="phone"></div>
+						<div class="col-sm-7">
+							<p class="text-danger" th:errors="*{phone}"></p>
+						</div>
+                    </div>
+                    
+                    <div>
+                        <div class="join_label"><label for="email">이메일</label></div>
+                        <div class="join_input"><input type="email" name="email" id="email"></div>
+						<div class="col-sm-7">
+							<p class="text-danger" th:errors="*{email}"></p>
+						</div>
+                    </div>
+
+                    <div>
+                        <div class="radioBox"><input type="radio" name="gender" value="남성" id="gender1"><label for="gender1" class="radio_check">남성</label></div>
+                        <div class="radioBox"><input type="radio" name="gender" value="여성" id="gender2"><label for="gender2" class="radio_check">여성</label></div>
+                    </div>
+					<div class="col-sm-4">
+						<p class="text-danger" th:errors="*{gender}"></p>
+					</div>
+
+                </div>
+
+            <input type="submit" value="가입하기">
+        </form>
+    </div>
+
+    <!-- 하단 -->
+
+
+</div>
+</body>
+</html>
