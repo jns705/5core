@@ -30,7 +30,8 @@ public class MemberController {
 	// [1] 일반 사용자
 	// 회원가입 폼
 	@GetMapping("/add")
-	public String addMemberForm(Model model) {		
+	public String addMemberForm(Model model) {
+		
 		model.addAttribute("member", new Member());
 		return "member/addMember";
 	}
@@ -38,6 +39,9 @@ public class MemberController {
 	// 회원가입 처리
 	@PostMapping("/add")
 	public String addMemberPro(@Valid @ModelAttribute Member member, BindingResult bindingResult, Model model) {
+		
+		boolean roleCheck = false;
+		
 		// 유효성 검사
 		if(bindingResult.hasErrors()) {
 			return "member/addMember";
@@ -58,6 +62,7 @@ public class MemberController {
 			Member m = Member.createMember(member, passwordEncoder, true);
 			m.setJoinDate(LocalDateTime.now());
 			memberService.saveMember(m);
+			
 		} catch(DataIntegrityViolationException e) {
 			// rejectValue(필드명, 오류코드, 메시지)
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", "이미 존재하는 회원 ID입니다.");
@@ -66,6 +71,7 @@ public class MemberController {
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", e.getMessage());
 			return "member/addMember";
 		}
+
 		return "redirect:/main";
 	}
 }
