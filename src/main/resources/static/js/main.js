@@ -1,10 +1,9 @@
 $(document).ready(() => {	
 	let fileNameList = [
-			"kv_the_2026_carnival_hi_limousine_pc.png","kv_the_2026_carnival_pc.png",
-			"kv_the_2026_ray_pc.png","kv_the_2026_sorento_pc.png",
-			"kv_the_2026_sportage_pc.png","kv_the_kia_ev5_pc.png",
-			"kv_used_car_pc.png", "kv_rental_pc_240527.png",  
-			"kv_flagship_store_pc.png"
+			"main_kv_ioniq6_n_pc.png","main_sonata_25my_w.png",
+			"Main-KV_Car_IONIQ-5-N.png", "main-santafe-25my-kv-w.png", 
+			"Main-KV_Car_TUCSON.png","main_kv_ioniq6_pc.png",
+			"Main-KV_Car_CASPER-Electric.png"
 		];
 		  
 	let imgList = document.querySelectorAll(".top-img"); // 배열
@@ -16,7 +15,7 @@ $(document).ready(() => {
   // bxSlider에 들어가 이미지 생성
   $(".slider1").bxSlider({
       slideWidth: 5000,           // 슬라이드의 너비
-      slideHeder: 800,           // 슬라이드의 높이
+      slideHeder: 500,           // 슬라이드의 높이
       maxSlides: 1,              // 최대 노출 개수
       minSlides: 1,              // 최소 노출 개수
       slideMargin: 20,           // 슬라이드의 좌우 마진
