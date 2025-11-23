@@ -3,9 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>main폼</title>
-	<!-- 부트스트랩 -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js" integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 	<!-- 제이쿼리 -->	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
@@ -16,128 +14,115 @@
 	<!-- 슬립 사용 -->
 	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-		
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4/dist/jquery.bxslider.css" />	
+
 	<!-- 개발자 설정: slick -->	 
 	<link th:href="@{/css/slick.css}" rel="stylesheet" >
 	<link th:href="@{/css/slick-theme.css}" rel="stylesheet">
 	<script th:src="@{/js/main.js}"></script>
 		
 	<style>
-		.container {
-			height: 600px;
+		body {
+			background:#f8f8f8;
+			margin:0;
 		}
-		.top-img {
-			height: 600px;
-			background: no-repeat center;
-			background-size: contain;
-			position: relative;
+
+		.slider-wrap {
+			max-width:1400px;
+			margin:0 auto;
+			padding:70px 0;
 		}
-		.top-txt {			
-			color: #000;
-			top: 100px;
-			bottom: 50px;
-			left: 80px;
-			text-align: center;
-		}		
-		.top-txt > p {
-			font-size: 1.1em;
-			font-weight: bold;
+
+		.car-slide {
+			text-align:center;
 		}
-		.top-txt > h5 {
-			font-size: 3.5em;
-			font-weight: bold;
-			margin-bottom: 30px;
-		}	
-		
-		.top-btn1, .top-btn2 {
-			width: 130px;
-			height: 50px;
-			line-height: 30px;
-			margin-right: 20px;
+
+		.car-title {
+			font-size:70px;
+			font-weight:800;
+			margin-bottom:20px;
 		}
-		
-		.top-btn1 {
-			background-color: white;
-			border: 3px solid white;
-			color: black;
+
+		.car-sub {
+			font-size:23px;
+			font-weight:400;
+			margin-bottom:40px;
 		}
-		
-		.top-btn1:hover {
-			background-color: black;
-			border: 3px solid black;
-			color: white;
+
+		.car-img {
+			width:100%;
+			max-width:1200px;
+			margin:auto;
 		}
-		.top-btn2 {
-			background-color: black;
-			border: 3px solid black;
-			color: white;
-			height: 55px;
+
+		/* bxSlider 기본 박스 제거 */
+		.bx-wrapper {
+			background:none;
+			border:none;
+			box-shadow:none;
 		}
-		
-		.top-btn2:hover {
-			background-color: white;
-			border: 3px solid white;
-			color: black;
-			height: 55px;
-		}		
-		
-	</style>	
+
+		/* 양쪽 네비게이션 */
+		.bx-wrapper .bx-prev {
+			left:-80px;
+		}
+		.bx-wrapper .bx-next {
+			right:-80px;
+		}
+	</style>
 </head>
 
 <body>
-<div class="container py-4">
-	
-	<!-- 상단 : bxSlider -->
-	<div class="row align-items-md-stretch text-center">
-		<div class="slider1">			
-			<div class="top-img">
-				<div class="top-txt">
-					<h5>IONIQ 6 N</h5>
-					<p></p>
-				</div>				
-			</div>
-			<div class="top-img">
-				<div class="top-txt">
-					<h5>SONATA The Edge</h5>
-					<p></p>
-				</div>
-			</div>
-			<div class="top-img">
-				<div class="top-txt">
-					<h5>IONIQ 5 N</h5>
-					<p></p>
-				</div>
-			</div>
-			<div class="top-img">
-				<div class="top-txt">
-					<h5>SANTA FE</h5>
-					<p></p>
-				</div>
-			</div>											
-				
-			<div class="top-img">
-				<div class="top-txt">
-					<h5>TUCSON</h5>
-					<p></p>
-				</div>
-			</div>
-			
-			<div class="top-img">
-				<div class="top-txt">
-					<h5>IONIQ 6</h5>
-					<p></p>
-				</div>
-			</div>				
+	<div class="slider-wrap">
+		<ul class="bxslider">
 
-			<div class="top-img">
-				<div class="top-txt">
-					<h5>CASPER</h5>
-					<p></p>
-				</div>
-			</div>					
-		</div>	
+			<!-- IONIQ 6 N -->
+			<li class="car-slide">
+				<div class="car-title">IONIQ 6 N</div>
+				<div class="car-sub">Rule the Paradigm</div>
+				<img th:src="@{/images/main_kv_ioniq6_n_pc.png}" class="car-img">
+			</li>
+
+			<!-- SONATA The Edg -->
+			<li class="car-slide">
+				<div class="car-title">SONATA The Edge</div>
+				<div class="car-sub">익숙함도 완전히 새롭게</div>
+				<img th:src="@{/images/main_sonata_25my_w.png}" class="car-img">
+			</li>
+
+			<!-- IONIQ 5 N -->
+			<li class="car-slide">
+				<div class="car-title">IONIQ 5 N</div>
+				<div class="car-sub">Everyday N Life</div>
+				<img th:src="@{/images/Main-KV_Car_IONIQ-5-N.png}" class="car-img">
+			</li>
+			
+			<!-- SANTA FE -->
+			<li class="car-slide">
+				<div class="car-title">SANTA FE</div>
+				<div class="car-sub">일상과 일상 사이를 열다</div>
+				<img th:src="@{/images/main-santafe-25my-kv-w.png}" class="car-img">
+			</li>
+			<!-- TUCSON -->
+			<li class="car-slide">
+				<div class="car-title">TUCSON</div>
+				<div class="car-sub">날개를 달다</div>
+				<img th:src="@{/images/Main-KV_Car_TUCSON.png}" class="car-img">
+			</li>
+			<!-- IONIQ 6 -->
+			<li class="car-slide">
+				<div class="car-title">IONIQ 6</div>
+				<div class="car-sub">새로운 흐름의 시작</div>
+				<img th:src="@{/images/main_kv_ioniq6_pc.png}" class="car-img">
+			</li>
+			<!-- 2026 CASPER Electric -->					
+			<li class="car-slide">
+				<div class="car-title">2026 CASPER Electric</div>
+				<div class="car-sub">아이코닉한 디자인의 완성</div>
+				<img th:src="@{/images/Main-KV_Car_CASPER-Electric.png}" class="car-img">
+			</li>	
+		</ul>
 	</div>
-</div>	
 </body>
 
 </html>
