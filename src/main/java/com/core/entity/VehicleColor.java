@@ -1,6 +1,7 @@
 package com.core.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +9,7 @@ import lombok.Setter;
  * 차량 색상 정보
  */
 @Entity
-@Getter
-@Setter
+@Data
 public class VehicleColor {
 	
     @Id
@@ -20,8 +20,8 @@ public class VehicleColor {
     @Column(columnDefinition = "varchar(30)")
     private String color;
 
-    // 색상 이미지 URL 
-    @Column(columnDefinition = "varchar(30) default 'no_image.jpg'")
+    // 색상 이미지 URL
+    @Column(columnDefinition = "varchar(255) default 'no_image.jpg'")
     private String imageColorUrl;
 
     // 차량 참조 

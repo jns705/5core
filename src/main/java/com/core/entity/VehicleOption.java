@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +12,7 @@ import lombok.Setter;
  * 차량 옵션 정보
  */
 @Entity
-@Getter
-@Setter
+@Data
 public class VehicleOption {
 	
     @Id
@@ -31,5 +31,6 @@ public class VehicleOption {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
+    
     
 }
