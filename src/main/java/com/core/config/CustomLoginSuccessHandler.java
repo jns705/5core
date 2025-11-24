@@ -26,14 +26,10 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		
 		for(GrantedAuthority authority : authorities) {
 			
-			System.out.println("-=-------------------------");
-			System.out.println(authentication.getName());
-			System.out.println("-=-------------------------");
-			
 			if(authority.getAuthority().equals("ROLE_DEALER")) { // 딜러 권한
 				redirectUrl = "/dealer";
 			} else { // 고객 권한
-				redirectUrl = "/car";
+				redirectUrl = "/main";
 			}
  		}
 		

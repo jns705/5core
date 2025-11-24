@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
         /* 전체 */
         @import url('https://fonts.googleapis.com/css2?family=Love+Light&display=swap');
@@ -66,59 +69,21 @@
         input[name=gender]:checked + label, input[name=foreigner]:checked + label {
             color: #fff; border: 1px solid #90cbfb; background-color: #90cbfb;
         }
-
-        .brandBox {
-            display: inline-block;
-        }
-        .brandBox > input{
-            display: none;
-        }
-        .brandBox > label{
-            display: inline-block;
-            border: 1px solid #000;
-            width: 150px; margin: 5px;
-        }
-        input[name=brand]:checked ~ label {
-            color: #fff; border: 1px solid #7e00ff; background-color: #7e00ff; font-weight: 700;
-        }
 		
     </style>
     <script>
+		
+		function searchAddress() {
+			new daum.Postcode({
+		        oncomplete: function(data) {
+		            document.getElementById("zipcode").value = data.zonecode;
+					document.getElementById("basicAddress").value = data.address;
+		        }
+		    }).open();
+		}
+		
         document.addEventListener("DOMContentLoaded", () => {
-            let hope_style = document.querySelector("#hope_style");
-            let select_style = document.querySelector("#select_style");
-            let brand = document.querySelectorAll("[name=brand]");
-            let select_brand = document.querySelector("#select_brand");
-
-            hope_style.addEventListener("change", (e) => {
-                let options = e.currentTarget.options;
-                let styleList = [];
-                for(let i of options) {
-                    if(i.selected) {
-                        styleList.push(i.value);
-                    }
-                }
-                select_style.textContent = styleList;
-            });
-
-            let brandList = [];
-            brand.forEach((v, i) => {
-                v.addEventListener("change", (e) => {
-                    if(v.checked) {
-                        brandList.push(v.value);
-                    }
-                    if(!v.checked) {
-                        for(let i=0; i<brandList.length; i++){
-                            if(v.value == brandList[i]) {
-                                brandList.splice(i, 1);
-                                break;
-                            }
-                        }
-                    }
-                    select_brand.textContent = brandList;
-                });
-            });
-
+			
         });
     </script>
 </head>
@@ -192,6 +157,56 @@
 					<div class="col-sm-4">
 						<p class="text-danger" th:errors="*{gender}"></p>
 					</div>
+					
+					
+					<div class="mb-3 row">
+						<label class="col-sm-2 control-label">국가명</label>
+						<div class="col-sm-3">
+							<select name="address.country" class="form-control" th:field="*{address.country}">
+								<option value="한국">한국</option>
+								<option value="일본">일본</option>
+								<option value="중국">중국</option>
+								<option value="미국">미국</option>
+								<option value="영국">영국</option>
+								<option value="프랑스">프랑스</option>
+							</select>
+						</div>
+						<div class="col-sm-4">
+							<p class="text-danger" th:errors="*{address.country}"></p>
+						</div>
+					</div>
+					
+					<div class="mb-3 row">
+						<label class="col-sm-2 control-label">우편번호</label>
+						<div class="col-sm-3">
+							<input type="text" name="address.zipcode" class="form-control" id="zipcode" th:field="*{address.zipcode}" readonly>
+						</div>
+						<div class="col-sm-2">
+							<a th:href="|javascript:searchAddress()|" class="btn btn-success" role="button">주소검색</a>
+						</div>
+						<div class="col-sm-4">
+							<p class="text-danger" th:errors="*{address.zipcode}"></p>
+						</div>
+					</div>
+					<div class="mb-3 row">
+						<label class="col-sm-2 control-label">기본 주소</label>
+						<div class="col-sm-5">
+							<input type="text" name="address.basicAddress" class="form-control" id="basicAddress" th:field="*{address.basicAddress}" readonly>
+						</div>
+						<div class="col-sm-4">
+							<p class="text-danger" th:errors="*{address.basicAddress}"></p>
+						</div>
+					</div>
+					<div class="mb-3 row">
+						<label class="col-sm-2 control-label">상세 주소</label>
+						<div class="col-sm-5">
+							<input type="text" name="address.detailAddress" class="form-control" th:field="*{address.detailAddress}">
+						</div>
+						<div class="col-sm-4">
+							<p class="text-danger" th:errors="*{address.detailAddress}"></p>
+						</div>
+					</div>
+					
 					
 					<!-- 고객 회원가입 -->
 					<div th:if="${member.roleCheck == '01'}">
