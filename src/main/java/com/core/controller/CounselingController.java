@@ -18,12 +18,12 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/counseling")
+@RequestMapping("/counseling")
 public class CounselingController {
 
     private final CounselingService counselingService;
 
-    // 전체 조회
+    // 전체 조회 
     @GetMapping
     public List<Counseling> list() {
         return counselingService.findAll();
