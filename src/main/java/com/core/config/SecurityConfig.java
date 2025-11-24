@@ -34,6 +34,7 @@ public class SecurityConfig {
 		http.csrf(AbstractHttpConfigurer::disable)
 			// 사용자 권한에 따른 접근 권한 설정
 			.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+				.requestMatchers("/admin/**").hasRole("ADMIN")		// ADMIN 권한
 				.requestMatchers("/dealer/**").hasRole("DEALER")	// 딜러 권한
 				.anyRequest().permitAll())
 			
@@ -41,7 +42,6 @@ public class SecurityConfig {
 			.formLogin(formLogin -> formLogin
 				.loginPage("/login")
 				.loginProcessingUrl("/login")
-				//.defaultSuccessUrl("/cars")
 				.successHandler(customLoginSuccessHandler)
 				.failureUrl("/loginfailed")
 				.usernameParameter("username")
@@ -49,7 +49,7 @@ public class SecurityConfig {
 			// 로그아웃 처리
 			.logout(logout -> logout
 				.logoutUrl("/logout")
-				.logoutSuccessUrl("/cars"));
+				.logoutSuccessUrl("/main"));
 		
 		return http.build();
 	}
