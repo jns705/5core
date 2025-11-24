@@ -32,11 +32,11 @@ import lombok.extern.java.Log;
 public class VehicleController {
 	
 	private final VehicleService vehicleService;
-	
+	/*
 	// 페이징 설정
 	private int pageSize = 12;
 	private int pageBlock = 5;
-
+*/
 	
 	// 전체 및 검색에 따른 차량 목록 조회 -> 페이징 처리
 	@GetMapping

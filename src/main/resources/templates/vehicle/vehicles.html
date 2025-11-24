@@ -179,6 +179,24 @@
 				</div>
             </div>
         </main>
+		<nav>
+		    <ul>
+		        <li th:if="${paging.hasPrevious()}">
+		            <a th:href="@{|?page=${paging.number - 1}|}">이전</a>
+		        </li>
+
+		        <li th:each="i : ${#numbers.sequence(0, paging.totalPages - 1)}">
+		            <a th:href="@{|?page=${i}|}"
+		               th:text="${i + 1}"
+		               th:classappend="${paging.number == i} ? 'active'">
+		            </a>
+		        </li>
+
+		        <li th:if="${paging.hasNext()}">
+		            <a th:href="@{|?page=${paging.number + 1}|}">다음</a>
+		        </li>
+		    </ul>
+		</nav>
     </div>
 	<th:block th:replace="~{/bottom.html}"></th:block>
 </body>
