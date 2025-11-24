@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/counseling")
 public class CounselingController {
 
-    private final CounselingService counselingService;
-
     // 상담 글 단건 조회
     @GetMapping("/main")
     public String counseling() {
