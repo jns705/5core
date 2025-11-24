@@ -7,7 +7,7 @@ import lombok.Setter;
 /**
  * 상담 엔터티
  * - 고객이 신청 → 딜러가 상태 변경
- */
+ */  
 @Entity
 @Getter
 @Setter
