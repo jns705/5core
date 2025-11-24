@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>main폼</title>
-
+	<th:block th:replace="~{/top.html}"></th:block>
 	<!-- 제이쿼리 -->	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
@@ -22,16 +22,11 @@
 	<script th:src="@{/js/main.js}"></script>
 		
 	<style>
-		body {
+/*		body {
 			background:#f8f8f8;
 			margin:0;
-		}
+		}*/
 		
-		img {
-			width: 1200px;
-			height: 600px;
-		}
-
 		.slider-wrap {
 			max-width:1600px;
 			margin:0 auto;
@@ -55,9 +50,11 @@
 		}
 
 		.car-img {
-			width:100%;
-			max-width:1200px;
+			/*width:100%;*/
+			/*max-width:1200px;*/
 			margin:auto;
+			width: 1200px;
+			height: 600px;
 		}
 
 		/* bxSlider 기본 박스 제거 */
@@ -78,6 +75,7 @@
 </head>
 
 <body>
+	
 	<div class="slider-wrap">
 		<ul class="bxslider">
 
@@ -128,6 +126,8 @@
 			</li>	
 		</ul>
 	</div>
+	
+	<th:block th:replace="~{/bottom.html}"></th:block>	
 </body>
 
 </html>

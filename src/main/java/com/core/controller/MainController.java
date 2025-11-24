@@ -8,14 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
-@Log
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/main")
 public class MainController {
 
-	@GetMapping
-	public String requestCarList(Model model) {
+	@GetMapping("/")
+	public String requestMain(Model model) {
 		return "main";
 	}
 }
