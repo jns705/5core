@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>구매상담 신청</title>
+	<script th:src="@{counseling.js}"></script>
 	<style>
 		/* 접힌 상태의 기본 스타일 */
 		.accordion-content {
@@ -11,7 +12,7 @@
 		    max-height: 0;
 		    overflow: hidden;
 		    /* 펼쳐지거나 접힐 때 부드러운 전환 효과를 추가합니다. */
-		    transition: max-height 0.3s ease-out; 
+		    transition: max-height 1s ease-out; 
 		    padding: 0 18px; /* 숨길 때 패딩도 0으로 만듭니다 */
 		}
 
@@ -151,7 +152,7 @@
 		    cursor: pointer;
 		    background-color: #f9f9f9;
 		    border-radius: 8px 8px 0 0;
-		    border-bottom: 1px solid #eee;
+		   	border-bottom: 1px solid #eee;
 		    user-select: none;
 		}
 
@@ -186,13 +187,15 @@
 
 		/* 선택된 차량 스타일을 위한 class (JS 필요) */
 		.car-selected {
-		    border: 3px solid #002c5f !important;
+		    border: 3px solid #002c5f;
 		}
 
 		/* --- Step 2: 지역 선택 --- */
 		details:nth-child(2) {
+			/*
 		    display: flex;
 		    flex-wrap: wrap;
+			*/
 		    align-items: center;
 		    gap: 20px;
 		}
@@ -203,15 +206,19 @@
 		}
 
 		details:nth-child(2) select {
+			width: 200px;
+			height: 50px;
 		    padding: 10px 15px;
 		    border: 1px solid #ccc;
 		    border-radius: 4px;
-		    font-size: 15px;
+		    font-size: 17px;
 		    margin-right: 10px;
 		    appearance: none; /* 기본 스타일 제거 */
 		    background-color: #fff;
+			/*
 		    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%20221.7l-133%20133.2c-5%205-11.8%208.2-19%208.2-7.2%200-14-3.2-19-8.2l-133-133.2c-10.4-10.4-10.4-27.3%200-37.8s27.3-10.4%2037.8%200l114.4%20114.4L249.2%20184c10.4-10.4%2027.3-10.4%2037.8%200s10.4%2027.3%200%2037.8z%22%2F%3E%3C%2Fsvg%3E');
 		    background-repeat: no-repeat;
+			*/
 		    background-position: right 10px top 50%;
 		    background-size: 10px auto;
 		}
@@ -329,16 +336,6 @@
 		    margin-top: 50px;
 		}
 
-		/* --- HTML 수정 사항 반영을 위한 추가 스타일 --- */
-		/* HTML에 버튼이 <body> 직속으로 있고 메인으로 버튼이 없으므로, 이미지대로 버튼 2개를 중앙에 배치하려면 HTML 수정이 필요합니다. */
-		/* HTML을 아래와 같이 수정했다고 가정하고 버튼 스타일링 */
-		/*
-		<div class="btn-area">
-		    <button class="submit-btn">구매상담 신청</button>
-		    <button class="sub-btn">메인으로</button>
-		</div>
-		*/
-
 		.submit-btn {
 		    background: #002c5f;
 		    color: #fff;
@@ -373,37 +370,37 @@
             <img src="/img/ev9.png">
     </details>
     <details>
-        <summary id="select_bar">Step2.구매상담 희망지역</summary>
-            <select>
-                <option>시/도</option>
-                <option>부산광역시</option>
-                <option>대구광역시</option>
-                <option>대전광역시</option>
-                <option>울산광역시</option>
-                <option>인천광역시</option>
-                <option>광주광역시</option>
-                <option>세종특별자치시</option>
-            </select>
-            <select>
-                <option>시/군/구</option>
-                <option>부산광역시</option>
-                <option>대구광역시</option>
-                <option>대전광역시</option>
-                <option>울산광역시</option>
-                <option>인천광역시</option>
-                <option>광주광역시</option>
-                <option>세종특별자치시</option>
-            </select>
-            <select>
-                <option>읍/면/동</option>
-                <option>부산광역시</option>
-                <option>대구광역시</option>
-                <option>대전광역시</option>
-                <option>울산광역시</option>
-                <option>인천광역시</option>
-                <option>광주광역시</option>
-                <option>세종특별자치시</option>
-            </select>
+		<summary id="select_bar">Step2.구매상담 희망지역</summary>
+        <select>
+            <option>시/도</option>
+            <option>부산광역시</option>
+            <option>대구광역시</option>
+            <option>대전광역시</option>
+            <option>울산광역시</option>
+            <option>인천광역시</option>
+            <option>광주광역시</option>
+            <option>세종특별자치시</option>
+        </select>
+        <select>
+            <option>시/군/구</option>
+            <option>부산광역시</option>
+            <option>대구광역시</option>
+            <option>대전광역시</option>
+            <option>울산광역시</option>
+            <option>인천광역시</option>
+            <option>광주광역시</option>
+            <option>세종특별자치시</option>
+        </select>
+        <select>
+            <option>읍/면/동</option>
+            <option>부산광역시</option>
+            <option>대구광역시</option>
+            <option>대전광역시</option>
+            <option>울산광역시</option>
+            <option>인천광역시</option>
+            <option>광주광역시</option>
+            <option>세종특별자치시</option>
+        </select>
     </details>
     <details>
     <summary id="select_bar">Step3.구매희망정보</summary>
