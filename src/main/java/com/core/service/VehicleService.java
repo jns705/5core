@@ -3,7 +3,9 @@ package com.core.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.core.entity.Vehicle;
@@ -61,8 +63,33 @@ public class VehicleService {
 		return vehicleRepository.findByNameContainingOrVehicleTypeContaining(keyword, keyword, pageable);
 	}
 	
+	/*
+	public Page<Vehicle> getList(int pageNum, String state, String keyword, int pageSize, String sortField, String sortWay) {
+		Pageable pageable = PageRequest.of(pageNum-1, pageSize, 
+					sortWay.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
+		
+		switch(state) {
+		case "vehicleType": 
+			return vehicleRepository.findByVehicleType(keyword, pageable);
+		case "fuelType": 
+			return vehicleRepository.findByFuelType(keyword, pageable);
+		case "brand": 
+			return vehicleRepository.findByBrand(keyword, pageable);
+		case "search":  // search일 때 처리(검색)
+			return vehicleRepository.findByNameContainingOrVehicleTypeContaining(keyword, keyword, pageable);
+		default:        // all일 때 처리
+			return vehicleRepository.findAll(pageable);
+		}
+	}
+	*/
+	
 	// 차량 상세 정보 조회
 	public Vehicle getVehicleByModelCode(String modelCode) {
 		return vehicleRepository.findByModelCode(modelCode).get();
+	}
+	
+	// 차량 등록
+	public void addVehicle(Vehicle vehicle) {
+		vehicleRepository.save(vehicle);
 	}
 }

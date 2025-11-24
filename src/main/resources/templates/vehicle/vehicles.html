@@ -1,1 +1,190 @@
-<h1>dd</h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<title>main폼</title>
+	<th:block th:replace="~{/top.html}"></th:block>
+	
+	<style>
+/*		body {
+			background:#f8f8f8;
+			margin:0;
+		}*/
+
+		/* 전체 레이아웃 컨테이너 */
+		.container {
+		    display: flex;
+		    gap: 32px;
+		    align-items: flex-start;
+		}
+
+		/* 왼쪽 사이드바 */
+		.sidebar {
+		    width: 260px;
+		}
+
+		.filter-group {
+		    margin-bottom: 28px;
+		}
+
+		.filter-title {
+		    font-weight: 700;
+		    margin-bottom: 12px;
+		}
+
+		.filter-list {
+		    background: #fff;
+		    padding: 16px;
+		    border-radius: 8px;
+		    border: 1px solid #eee;
+		}
+
+		.filter-item {
+		    display: flex;
+		    align-items: center;
+		    gap: 10px;
+		    padding: 8px 4px;
+		    color: var(--muted);
+		    cursor: pointer;
+		}
+
+		.filter-item input {
+		    accent-color: var(--accent);
+		}
+
+		/* 메인 */
+		.main {
+		    flex: 1;
+		}
+
+		.price-note {
+		    color: var(--muted);
+		    margin-bottom: 12px;
+		}
+
+		.grid {
+		    display: grid;
+		    grid-template-columns: repeat(4, 1fr);
+		    gap: 28px;
+		}
+
+		/* 차량 */
+		.card {
+		    background: #fff;
+		    border-radius: 6px;
+		    overflow: hidden;
+		    border: 1px solid #eee;
+		    box-shadow: 0 6px 18px rgba(15, 15, 15, 0.02);
+		    display: flex;
+		    flex-direction: column;
+		}
+
+		.card .card-media {
+		    background: var(--card-bg);
+		    height: 160px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		}
+
+		.card .card-media img {
+		    max-width: 100%;
+		    max-height: 140px;
+		    object-fit: contain;
+		}
+
+		.card .card-body {
+		    padding: 18px;
+		}
+
+		.card .title {
+		    font-weight: 700;
+		    margin-bottom: 6px;
+		}
+
+		.card .price {
+		    color: var(--accent);
+		    font-weight: 700;
+		    margin-bottom: 12px;
+		}
+
+		.card .actions {
+		    display: flex;
+		    gap: 12px;
+		    font-size: 13px;
+		    color: var(--muted);
+		}
+	</style>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="filter-group">
+                <div class="filter-title">타입</div>
+                <div class="filter-list">
+                    <label class="filter-item"><input type="radio" name="type" checked> ALL</label>
+                    <label class="filter-item"><input type="radio" name="type"> SEDAN</label>
+                    <label class="filter-item"><input type="radio" name="type"> SUV & MINIVAN</label>
+                    <label class="filter-item"><input type="radio" name="type"> MOTOR SPORTS</label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-title">파워트레인</div>
+                <div class="filter-list">
+                    <label class="filter-item"><input type="checkbox" checked> ALL</label>
+                    <label class="filter-item"><input type="checkbox"> HEV</label>
+                    <label class="filter-item"><input type="checkbox"> PHEV</label>
+                    <label class="filter-item"><input type="checkbox"> GASOLINE</label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-title">가격</div>
+                <div class="filter-list">
+                    <label class="filter-item"><input type="radio" name="price" checked> ALL</label>
+                    <label class="filter-item"><input type="radio" name="price"> 7천만원 이상</label>
+                    <label class="filter-item"><input type="radio" name="price"> 5천만원 이상 ~ 7천만원 미만</label>
+                    <label class="filter-item"><input type="radio" name="price"> 5천만원 미만</label>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="price-note">KRW 가격은 예시이며, 차량별 기본가를 표시합니다.</div>
+
+            <div class="grid">
+				
+				<!-- 차량 리스트 반복 -->
+				<div class="card" th:each="v : ${vehicleList}">
+				    <div class="card-media">
+				        <img th:src="@{|/images/${v.fileName}|}">
+				    </div>
+
+				    <div class="card-body">
+				        <div class="title" th:text="${v.name}">MODEL NAME</div>
+				        
+				        <div class="price">
+				            KRW <span th:text="${#numbers.formatInteger(v.price, 3, 'COMMA')}"></span> ~
+				        </div>
+
+				        <div class="actions">
+				            <a href="#">모델 보기</a> ·
+				            <a href="#">시승 신청</a>
+				        </div>
+				    </div>
+				</div>
+            </div>
+        </main>
+    </div>
+	<th:block th:replace="~{/bottom.html}"></th:block>
+</body>
+
+</html>
+
+
+
+
