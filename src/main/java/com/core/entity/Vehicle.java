@@ -3,6 +3,8 @@ package com.core.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -67,6 +70,10 @@ public class Vehicle {
 	@Column(columnDefinition = "varchar(30) default 'no_image.jpg'")
 	private String fileName;  // 차량이미지의 파일명
 	
+	@Transient
+	private MultipartFile vehicleImage; // 업로드된 차량 이미지
+	
+	
     // 차량 옵션
     // - 차량 상담 시 그 차량에 대해서 선택한 옵션들이 리스트로 한번에 저장되게끔
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
@@ -82,7 +89,8 @@ public class Vehicle {
     -- ex) 스탠다드: + 0원, 익스클루시브: + 200만원, 프레스티지: + 400만원
     */
     @Column(columnDefinition = "varchar(20)")
-    private String trim; // Standard, Exclusive, Prestige
+    private String trim; // Standard, Exclusive, Prestige (대소문자 구분 없음 -> 서비스에서 처리)
+
 
     
 }
