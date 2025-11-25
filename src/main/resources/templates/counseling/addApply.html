@@ -37,28 +37,12 @@
 		    border: 1px solid gray;
 
 		}
-		
-		.container {
-		    max-width: 1200px; 
-		    
-		    margin-left: auto;
-		    margin-right: auto;
-		    
-		    padding: 20px 0; 
-		}
-
-
-		.center-form {
-		    background-color: white;
-		    padding: 30px;
-		    min-width: 300px;
-		}
 
 		/* 기본 설정 */
 		body {
 		    font-family: 'Noto Sans KR', sans-serif;
 		    background: #f7f5f2; /* 연한 베이지색 배경 */
-		    margin-left: 0;
+		    margin: 0;
 		    padding: 0;
 		    color: #222;
 		    line-height: 1.6;
@@ -93,9 +77,9 @@
 
 		.steps {
 		    display: flex;
-			flex-wrap: nowrap;
 		    justify-content: center;
 		    align-items: flex-start;
+		    flex-wrap: nowrap;
 		    margin-bottom: 60px;
 		}
 
@@ -159,7 +143,7 @@
 		}
 
 		#select_bar {
-		    display: inline-block;
+		    display: block;
 		    padding: 20px;
 		    font-size: 18px;
 		    font-weight: 700;
@@ -289,7 +273,7 @@
 		    border: 1px solid #ccc;
 		    border-radius: 4px;
 		    margin-left: 10px;
-		    width: 400px;
+		    width: 200px;
 		}
 
 		input[type="date"] {
@@ -301,22 +285,17 @@
 
 
 		/* --- 버튼 영역 --- */
-		.body-menu {
-			text-align: center;
-		}
-		
 		button {
 		    display: block;
 		    width: 250px;
 		    padding: 15px 30px;
-		    margin-left: 980px;
+		    margin: 40px auto;
 		    font-size: 18px;
 		    font-weight: 700;
 		    border: none;
 		    border-radius: 6px;
 		    cursor: pointer;
 		    transition: background-color 0.2s;
-			position: absolute;
 		}
 
 		/* 구매 신청 버튼 */
@@ -385,183 +364,161 @@
 </head>
 
 <body>
-	<div class="container">
-		<div class="center-form">
-		    <details>
-		        <summary id="select_bar">Step1.차량선택</summary>
-		            <img src="/img/avante.jpg">
-		            <img src="/img/casper.jpg">
-		            <img src="/img/ev5.jpg">
-		            <img src="/img/ev6.jpg">
-		            <img src="/img/ev9.png">
-		    </details>
-		    <details>
-		        <summary id="select_bar">Step2.구매상담 희망지역</summary>
-		           	<select>
-		                <option>시/도</option>
-		                <option>부산광역시</option>
-		                <option>대구광역시</option>
-		                <option>대전광역시</option>
-		                <option>울산광역시</option>
-		                <option>인천광역시</option>
-		                <option>광주광역시</option>
-		                <option>세종특별자치시</option>
-		            </select>
-		            <select>
-		                <option>시/군/구</option>
-		                <option>부산광역시</option>
-		                <option>대구광역시</option>
-		                <option>대전광역시</option>
-		                <option>울산광역시</option>
-		                <option>인천광역시</option>
-		                <option>광주광역시</option>
-		                <option>세종특별자치시</option>
-		            </select>
-		            <select>
-		                <option>읍/면/동</option>
-		                <option>부산광역시</option>
-		                <option>대구광역시</option>
-		                <option>대전광역시</option>
-		                <option>울산광역시</option>
-		                <option>인천광역시</option>
-		                <option>광주광역시</option>
-		                <option>세종특별자치시</option>
-		            </select>
-		    </details>
-		    <details>
-			    <summary id="select_bar">Step3.구매희망정보</summary>
-			        <div>
-			            <p>더 나은 구매상담을 위해 고객님의 구매 희망 관련 정보를 확인하고 있습니다.</p>
-			            <p>(*가 표시된 항목은 필수 선택 항목입니다.)</p>
-			        </div>
-		        <form action="/submit-survey" method="post">
-		            <div class="survey-section">
-		                <p class="question-title required">차량 구매 목적</p>
-		                <hr>
-		                <div class="input-group">
-		                    <input type="checkbox" id="purpose_commute" name="purpose" value="commute">
-		                    <label for="purpose_commute">출퇴근용</label>
-		                </div>
-		                
-		                <div class="input-group">
-		                    <input type="checkbox" id="purpose_family" name="purpose" value="family">
-		                    <label for="purpose_family">패밀리카</label>
-		                </div>
-		                
-		                <div class="input-group">
-		                    <input type="checkbox" id="purpose_business" name="purpose" value="business">
-		                    <label for="purpose_business">업무용</label>
-		                </div>
-		                
-		                <div class="input-group">
-		                    <input type="checkbox" id="purpose_secondcar" name="purpose" value="secondcar">
-		                    <label for="purpose_secondcar">세컨드카</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="checkbox" id="purpose_other" name="purpose" value="other">
-		                    <label for="purpose_other">기타</label>
-		                    <input type="text" name="purpose_other_detail" class="other-input" placeholder="기타 사유를 입력하세요">
-		                </div>
-		            </div>
-		            <hr>    
-		            <div class="survey-section">
-		                <p class="question-title required">희망 구매 시점</p>
-		                <hr>
-		                <div class="input-group">
-		                    <input type="radio" id="time_1m" name="purchase_time" value="1month">
-		                    <label for="time_1m">1개월 이내</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="radio" id="time_3m" name="purchase_time" value="3month">
-		                    <label for="time_3m">3개월 이내</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="radio" id="time_6m" name="purchase_time" value="6month">
-		                    <label for="time_6m">6개월 이내</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="radio" id="time_undecided" name="purchase_time" value="undecided" checked>
-		                    <label for="time_undecided">미정</label>
-		                </div>
-		            </div>
-		            <hr>
-		            <div class="survey-section">
-		                <p class="question-title">선호 차량 유형</p>
-		                <hr>
-		                <div class="input-group">
-		                    <input type="checkbox" id="type_sedan" name="car_type" value="sedan">
-		                    <label for="type_sedan">세단</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="checkbox" id="type_suv" name="car_type" value="suv">
-		                    <label for="type_suv">SUV</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="checkbox" id="type_other" name="car_type" value="other">
-		                    <label for="type_other">기타</label>
-		                </div>
-		            </div>
-		            <hr>
-		            <div class="survey-section">
-		                <p class="question-title">선호 엔진</p>
-		                <hr>
-		                <div class="input-group">
-		                    <input type="checkbox" id="engine_gas" name="engine" value="gasoline">
-		                    <label for="engine_gas">가솔린</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="checkbox" id="engine_ev" name="engine" value="electric">
-		                    <label for="engine_ev">전기</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="checkbox" id="engine_hybrid" name="engine" value="hybrid">
-		                    <label for="engine_hybrid">하이브리드</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="checkbox" id="engine_fcev" name="engine" value="fcev">
-		                    <label for="engine_fcev">수소</label>
-		                </div>
-		                <div class="input-group">
-		                    <input type="checkbox" id="engine_n" name="engine" value="high_performance">
-		                    <label for="engine_n">고성능 (N)</label>
-		                </div>
-		            </div>
-					<div class="survey-section">
-					    <p class="question-title">희망연락 시간설정</p>
-					    <hr>
-						<label for="needs_time">희망연락시간</label>
-				        <input type="text" name="needs_time_detail" placeholder="원하시는 시간을 적어주세요.">
-				        <input type="date" name="needs_date" value="other">
-					</div>
-		        </form>
-		    </details>
-		</div>
-	</div>
+    <details>
+        <summary id="select_bar">Step1.차량선택</summary>
+            <img src="/img/avante.jpg">
+            <img src="/img/casper.jpg">
+            <img src="/img/ev5.jpg">
+            <img src="/img/ev6.jpg">
+            <img src="/img/ev9.png">
+    </details>
+    <details>
+        <summary id="select_bar">Step2.구매상담 희망지역</summary>
+            <select name="sido">
+                <option value="">시/도</option>
+                <option value="서울특별시">서울특별시</option>
+                <option value="대구광역시">대구광역시</option>
+                <option value="대전광역시">대전광역시</option>
+                <option value="울산광역시">울산광역시</option>
+                <option value="인천광역시">인천광역시</option>
+                <option value="광주광역시">광주광역시</option>
+                <option>세종특별자치시</option>
+            </select>
+            <select name="siGunGu">
+                <option value="">시/군/구</option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+            </select>
+            <select name="eupMyeonDong">
+                <option value="">읍/면/동</option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+            </select>
+    </details>
+    <details>
+    <summary id="select_bar">Step3.구매희망정보</summary>
+        <div>
+            <p>더 나은 구매상담을 위해 고객님의 구매 희망 관련 정보를 확인하고 있습니다.</p>
+            <p>(*가 표시된 항목은 필수 선택 항목입니다.)</p>
+        </div>
+        <form th:object="${counseling}" th:action="@{/counseling/add}" method="post">
+            <div class="survey-section">
+                <p class="question-title required">차량 구매 목적</p>
+                <hr>
+                <div class="input-group">
+                    <input type="checkbox" id="p1" name="purchasePurpose" value="출퇴근용">
+                    <label for="purpose_commute">출퇴근용</label>
+					<div class="col-sm-7">
+						<p class="text-danger" th:errors="*{purchasePurpose}"></p>		
+					</div>					
+                </div>
+                
+                <div class="input-group">
+                    <input type="checkbox" id="p2" name="purchasePurpose" value="패밀리카">
+                    <label for="purpose_family">패밀리카</label>
+					<div class="col-sm-7">
+						<p class="text-danger" th:errors="*{purchasePurpose}"></p>		
+					</div>	
+                </div>
+                
+                <div class="input-group">
+                    <input type="checkbox" id="p3" name="purchasePurpose" value="업무용">
+                    <label for="purpose_business">업무용</label>
+                </div>
+                
+                <div class="input-group">
+                    <input type="checkbox" id="p4" name="purchasePurpose" value="세컨드카">
+                    <label for="purpose_secondcar">세컨드카</label>
+                </div>
+                <div class="input-group">
+                    <input type="checkbox" id="p5" name="purchasePurpose" value="기타">
+                    <label for="purchasePurposeOther">기타</label>
+                    <input type="text" name="purchasePurposeOther" class="other-input" placeholder="기타 사유를 입력하세요">
+                </div>
+            </div>
+            <hr>    
+            <div class="survey-section">
+                <p class="question-title required">희망 구매 시점</p>
+                <hr>
+                <div class="input-group">
+                    <input type="radio" id="pt1m" name="purchase_time" value="1개월 이내">
+                    <label for="time_1m">1개월 이내</label>
+                </div>
+                <div class="input-group">
+                    <input type="radio" id="pt3m" name="purchase_time" value="3개월 이내">
+                    <label for="time_3m">3개월 이내</label>
+                </div>
+                <div class="input-group">
+                    <input type="radio" id="pt6m" name="purchase_time" value="6개월 이내">
+                    <label for="time_6m">6개월 이내</label>
+                </div>
+                <div class="input-group">
+                    <input type="radio" id="ptNon" name="purchase_time" value="미정" checked>
+                    <label for="ptNon">미정</label>
+                </div>
+            </div>
+            <hr>
+            <div class="survey-section">
+                <p class="question-title">선호 차량 유형</p>
+                <hr>
+                <div class="input-group">
+                    <input type="checkbox" id="vt1" name="vehicleType" value="sedan">
+                    <label for="type_sedan">세단</label>
+                </div>
+                <div class="input-group">
+                    <input type="checkbox" id="vt2" name="vehicleType" value="suv">
+                    <label for="type_suv">SUV</label>
+                </div>
+                <div class="input-group">
+                    <input type="checkbox" id="vt3" name="vehicleType" value="other">
+                    <label for="vehicleTypeOther">기타</label>
+                </div>
+            </div>
+            <hr>
+            <div class="survey-section">
+                <p class="question-title">선호 엔진</p>
+                <hr>
+                <div class="input-group">
+                    <input type="checkbox" id="et1" name="engineType" value="가솔린">
+                    <label for="engine_gas">가솔린</label>
+                </div>
+                <div class="input-group">
+                    <input type="checkbox" id="et2" name="engineType" value="전기">
+                    <label for="engine_ev">전기</label>
+                </div>
+                <div class="input-group">
+                    <input type="checkbox" id="et3" name="engineType" value="하이브리드">
+                    <label for="engine_hybrid">하이브리드</label>
+                </div>
+                <div class="input-group">
+                    <input type="checkbox" id="et4" name="engineType" value="수소">
+                    <label for="engine_fcev">수소</label>
+                </div>
+                <div class="input-group">
+                    <input type="checkbox" id="et5" name="engineType" value="고성능 (N)">
+                    <label for="engine_n">고성능 (N)</label>
+                </div>
+                <div class="input-group">
+                    <label for="counselingLikeTime">희망연락시간</label>
+                    <input type="text" id="counselingLikeTime" name="counselingLikeTime"  placeholder="원하시는 시간을 적어주세요.">
+                </div>
+            </div>
+        </form>
+    </details>
 </body>
 <button>구매신청</button>
 <footer>
 
 </footer>
-<script>
-	document.addEventListener('DOMContentLoaded', function() {
-	    // 1. 모든 단계 항목 요소(step-item)를 가져옵니다.
-	    const select_bar2 = document.querySelectorAll('.select-bar');
 
-	    // 2. 각 항목에 클릭 이벤트 리스너를 추가합니다.
-	    select_bar.forEach(select => {
-	        select.addEventListener('click', function() {
-	            // A. 기존에 선택된 항목의 'selected' 클래스를 제거합니다.
-	            //    -> 이렇게 해야 한 번에 하나의 항목만 선택된 상태를 유지할 수 있습니다.
-	            select_bar.forEach(i => {
-	                i.classList.remove('selected');
-	            });
 
-	            // B. 현재 클릭된 항목에 'selected' 클래스를 추가하여 선택 상태를 표시합니다.
-	            this.classList.add('selected');
-
-	            // C. (선택 사항) 어떤 항목이 선택되었는지 콘솔에 출력합니다.
-	            console.log('선택된 항목:', this.textContent.trim());
-	        });
-	    });
-	});
-</script>

@@ -1,137 +1,181 @@
+
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="utf-8">
-	<title>main폼</title>
-	<th:block th:replace="~{/top.html}"></th:block>
-	<!-- 제이쿼리 -->	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-	<!-- bxSlider -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.css">	
-	<!-- kakao daum 주소 검색 -->
-	<script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>	
-	<!-- 슬립 사용 -->
-	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4/dist/jquery.bxslider.css" />	
+  <meta charset="utf-8">
+  <title>main폼</title>
+  <th:block th:replace="~{/top.html}"></th:block>
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-	<!-- 개발자 설정: slick -->	 
-	<link th:href="@{/css/slick.css}" rel="stylesheet" >
-	<link th:href="@{/css/slick-theme.css}" rel="stylesheet">
-	<script th:src="@{/js/main.js}"></script>
-		
-	<style>
-/*		body {
-			background:#f8f8f8;
-			margin:0;
-		}*/
-		
-		.slider-wrap {
-			max-width:1600px;
-			margin:0 auto;
-			padding:70px 0;
-		}
+  <!-- bxSlider CSS/JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-		.car-slide {
-			text-align:center;
-		}
-
-		.car-title {
-			font-size:70px;
-			font-weight:800;
-			margin-bottom:20px;
-		}
-
-		.car-sub {
-			font-size:23px;
-			font-weight:400;
-			margin-bottom:40px;
-		}
-
-		.car-img {
-			/*width:100%;*/
-			/*max-width:1200px;*/
-			margin:auto;
-			width: 1200px;
-			height: 600px;
-		}
-
-		/* bxSlider 기본 박스 제거 */
-		.bx-wrapper {
-			background:none;
-			border:none;
-			box-shadow:none;
-		}
-
-		/* 양쪽 네비게이션 */
-		.bx-wrapper .bx-prev {
-			left:-80px;
-		}
-		.bx-wrapper .bx-next {
-			right:-80px;
-		}
-	</style>
 </head>
-
 <body>
-	
-	<div class="slider-wrap">
-		<ul class="bxslider">
+  <div class="slider-wrap">
+    <button class="bx-prev">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223"/>
+      </svg>
+    </button>
+    <button class="bx-next">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671"/>
+      </svg>
+    </button>
 
-			<!-- IONIQ 6 N -->
-			<li class="car-slide">
-				<div class="car-title">IONIQ 6 N</div>
-				<div class="car-sub">Rule the Paradigm</div>
-				<img th:src="@{/images/main_kv_ioniq6_n_pc.png}" class="car-img">
-			</li>
-
-			<!-- SONATA The Edg -->
-			<li class="car-slide">
-				<div class="car-title">SONATA The Edge</div>
-				<div class="car-sub">익숙함도 완전히 새롭게</div>
-				<img th:src="@{/images/main_sonata_25my_w.png}" class="car-img">
-			</li>
-
-			<!-- IONIQ 5 N -->
-			<li class="car-slide">
-				<div class="car-title">IONIQ 5 N</div>
-				<div class="car-sub">Everyday N Life</div>
-				<img th:src="@{/images/Main-KV_Car_IONIQ-5-N.png}" class="car-img">
-			</li>
-			
-			<!-- SANTA FE -->
-			<li class="car-slide">
-				<div class="car-title">SANTA FE</div>
-				<div class="car-sub">일상과 일상 사이를 열다</div>
-				<img th:src="@{/images/main-santafe-25my-kv-w.png}" class="car-img">
-			</li>
-			<!-- TUCSON -->
-			<li class="car-slide">
-				<div class="car-title">TUCSON</div>
-				<div class="car-sub">날개를 달다</div>
-				<img th:src="@{/images/Main-KV_Car_TUCSON.png}" class="car-img">
-			</li>
-			<!-- IONIQ 6 -->
-			<li class="car-slide">
-				<div class="car-title">IONIQ 6</div>
-				<div class="car-sub">새로운 흐름의 시작</div>
-				<img th:src="@{/images/main_kv_ioniq6_pc.png}" class="car-img">
-			</li>
-			<!-- 2026 CASPER Electric -->					
-			<li class="car-slide">
-				<div class="car-title">2026 CASPER Electric</div>
-				<div class="car-sub">아이코닉한 디자인의 완성</div>
-				<img th:src="@{/images/Main-KV_Car_CASPER-Electric.png}" class="car-img">
-			</li>	
-		</ul>
+	    <ul class="bxslider">
+	        <li class="car-slide">
+	            <div class="car-title">IONIQ 6 N</div>
+	            <div class="car-sub">Rule the Paradigm</div>
+	            <img th:src="@{/icons/main_kv_ioniq6_n_pc.png}" class="car-img">
+	        </li>
+	        <li class="car-slide">
+	            <div class="car-title">SONATA The Edge</div>
+	            <div class="car-sub">익숙함도 완전히 새롭게</div>
+	            <img th:src="@{/icons/main_sonata_25my_w.png}" class="car-img">
+	        </li>
+	        <li class="car-slide">
+	            <div class="car-title">IONIQ 5 N</div>
+	            <div class="car-sub">Everyday N Life</div>
+	            <img th:src="@{/icons/Main-KV_Car_IONIQ-5-N.png}" class="car-img">
+	        </li>
+	        <li class="car-slide">
+	            <div class="car-title">SANTA FE</div>
+	            <div class="car-sub">일상과 일상 사이를 열다</div>
+	            <img th:src="@{/icons/main-santafe-25my-kv-w.png}" class="car-img">
+	        </li>
+	        <li class="car-slide">
+	            <div class="car-title">TUCSON</div>
+	            <div class="car-sub">날개를 달다</div>
+	            <img th:src="@{/icons/Main-KV_Car_TUCSON.png}" class="car-img">
+	        </li>
+	        <li class="car-slide">
+	            <div class="car-title">IONIQ 6</div>
+	            <div class="car-sub">새로운 흐름의 시작</div>
+	            <img th:src="@{/icons/main_kv_ioniq6_pc.png}" class="car-img">
+	        </li>
+	        <li class="car-slide">
+	            <div class="car-title">2026 CASPER Electric</div>
+	            <div class="car-sub">아이코닉한 디자인의 완성</div>
+	            <img th:src="@{/icons/Main-KV_Car_CASPER-Electric.png}" class="car-img">
+	        </li>
+	    </ul>
 	</div>
-	
-	<th:block th:replace="~{/bottom.html}"></th:block>	
+
+  <th:block th:replace="~{/bottom.html}"></th:block>
+  <style>
+    .slider-wrap {
+      width: 100%;
+      margin: 0 auto;
+      padding: 70px 0;
+      position: relative;
+    }
+    .car-slide {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .car-title, .car-sub {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+    }
+    .car-title {
+      font-size: 71px; font-weight: 800; margin-bottom: 20px;
+    }
+    .car-sub {
+      font-size: 23px; font-weight: 400; margin-bottom: 40px;
+    }
+
+    .car-img {
+      margin: auto;
+      width: 70%; height: auto;
+      max-height: 650px;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+    }
+
+    .bx-prev, .bx-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 60px; height: 60px;
+      background: none; border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .bx-prev { left: 30px; }
+    .bx-next { right: 30px; }
+
+    .bx-prev svg, .bx-next svg {
+      width: 50px; height: 50px; fill: #000;
+    }
+    .bx-prev:hover, .bx-next:hover { opacity: 1; background: none; }
+    .bx-wrapper .bx-prev::before, .bx-wrapper .bx-next::before { content: ""; }
+  </style>
+  <script>
+    $(function() {
+        // 슬라이더 초기화
+        var slider = $('.bxslider').bxSlider({
+            pager: false,
+            controls: false,
+            mode: 'fade',
+            speed: 500,
+            pause: 5000,
+            onSliderLoad: animateSlide,
+            onSlideAfter: function($slide, oldIndex, newIndex) {
+                resetSlide(oldIndex);
+                animateSlide(newIndex);
+            }
+        });
+
+        // 화살표 클릭
+        $('.bx-prev').click(function(){ slider.goToPrevSlide(); });
+        $('.bx-next').click(function(){ slider.goToNextSlide(); });
+
+        // 애니메이션 함수
+        function animateSlide(idx) {
+            var $slide = $('.bxslider li').eq(idx);
+            var $title = $slide.find('.car-title');
+            var $sub = $slide.find('.car-sub');
+            var $img = $slide.find('.car-img');
+
+            // 텍스트 먼저
+            gsap.fromTo([$title, $sub],
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1, stagger: 0.2 }
+            );
+
+            // 자동차 오른쪽에서 달려오기
+            gsap.fromTo($img,
+                { x: 900, opacity: 0 },
+                { x: 0, opacity: 1, duration: 3, ease: "power2.out" }
+            );
+        }
+
+        // 이전 슬라이드 초기화
+        function resetSlide(idx) {
+            var $slide = $('.bxslider li').eq(idx);
+            $slide.find('.car-title, .car-sub').css({ opacity: 0, transform: 'translateY(50px)' });
+            $slide.find('.car-img').css({ opacity: 0, transform: 'translateX(900px)' });
+        }
+    });
+    </script>
+
 </body>
-
 </html>
-
-
-
-

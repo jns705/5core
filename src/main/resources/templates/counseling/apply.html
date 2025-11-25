@@ -8,7 +8,7 @@
 	<style>
 		body {
 		    font-family: 'Noto Sans KR', sans-serif;
-		    background: #f7f5f2;
+		    background: white;
 		    margin: 0;
 		    padding: 0;
 		    color: #222;
@@ -18,11 +18,11 @@
 		.header {
 		    text-align: center;
 		    padding: 60px 20px 40px;
-		    background: #efe9e2;
+		    background: white;
 		}
 
 		.header h1 {
-		    font-size: 36px;
+		    font-size: 70px;
 		    margin-bottom: 10px;
 		}
 
@@ -33,12 +33,13 @@
 		/* 스텝 프로세스 */
 		.steps {
 		    display: flex;
+			flex-wrap: wrap;
 		    justify-content: center;
 		    align-items: center;
 		    margin: 60px auto;
 		    max-width: 1100px;
 		    gap: 20px;
-		    flex-wrap: wrap;
+		   
 		}
 
 		.step {
@@ -46,14 +47,15 @@
 		}
 
 		.icon-circle {
-		    width: 110px;
-		    height: 110px;
-		    background: #e8ded3;
+		    width: 150px;
+		    height: 160px;
+		    background: white;
 		    border-radius: 50%;
 		    display: flex;
 		    justify-content: center;
 		    align-items: center;
 		    margin: 0 auto 10px;
+			border: 1px solid lightgray;
 		}
 
 		.icon-circle img {
@@ -86,6 +88,7 @@
 		    justify-content: center;
 		    gap: 20px;
 		    margin-bottom: 100px;
+			
 		}
 
 		.submit-btn {
@@ -96,6 +99,7 @@
 		    font-size: 16px;
 		    cursor: pointer;
 		    border-radius: 4px;
+			text-decoration: none;
 		}
 
 		.sub-btn {
@@ -105,6 +109,7 @@
 		    font-size: 16px;
 		    cursor: pointer;
 		    border-radius: 4px;
+			text-decoration: none;
 		}
 
 		.submit-btn:hover {
@@ -121,7 +126,9 @@
 <body>
 <header class="header">
     <h1>구매상담 신청</h1>
-    <p>현대자동차 차량 구매 정보를 신속하고 정확하게 알려드립니다.</p>
+    <b><p>현대자동차 차량 구매 정보를 신속하고 정확하게 알려드립니다. </p></b>
+	<br>
+	<hr>
 </header>
 
 <!-- 프로세스 step -->
@@ -131,43 +138,43 @@
 	        <div class="step">
 	            <p class="step-title">01. 차량 선택</p>
 	            <div class="icon-circle">
-	                <img src="./img/icon/drive.png">
+	                <img th:src="@{/icons/drive.png}">
 	            </div>
 	        </div>
 	        <div class="arrow">
-	            <img src="./img/icon/arrow.png">
+	            <img th:src="@{/icons/arrow.png}">
 	        </div>
 	        <div class="step">
 	            <p class="step-title">02. 구매상담 매장/지역 선택</p>
 	            <div class="icon-circle">
-	                <img src="./img/icon/destination.png">
+	                <img th:src="@{/icons/destination.png}">
 	            </div>
 	        </div>
 	        <div class="arrow2">
-	            <img src="./img/icon/arrow.png">
+	            <img th:src="@{/icons/arrow.png}">
 	        </div>
 	        <div class="step">
 	            <p class="step-title">03. 구매 희망 정보</p>
 	            <div class="icon-circle">
-	                <img src="./img/icon/test.png">
+	                <img th:src="@{/icons/test.png}">
 	            </div>
 	        </div>
 	        <div class="arrow">
-	            <img src="./img/icon/arrow.png">
+	            <img th:src="@{/icons/arrow.png}">
 	        </div>
 	        <div class="step">
 	            <p class="step-title">04. 구매상담 신청 완료</p>
 	            <div class="icon-circle">
-	                <img src="./img/icon/success.png">
+	                <img th:src="@{/icons/success.png}">
 	            </div>
 	        </div>
 	        <div class="arrow">
-	            <img src="./img/icon/arrow.png">
+	            <img th:src="@{/icons/arrow.png}">
 	        </div>
 	        <div class="step">
 	            <p class="step-title">05. 안내전화 및 상담 진행</p>
 	            <div class="icon-circle">
-	                <img src="./img/icon/car.png">
+	                <img th:src="@{/icons/car.png}">
 	            </div>
 	        </div>
 	    </section>
@@ -176,7 +183,7 @@
 
 <!-- 버튼 -->
 <section class="btn-area">
-    <a class="submit-btn" th:href="@{/counseling/detail}">구매상담 신청</a>
+    <a class="submit-btn" th:href="@{/counseling/addApply}">구매상담 신청</a>
     <a class="sub-btn" th:href="@{/main}">메인으로</a>
 </section>
 
