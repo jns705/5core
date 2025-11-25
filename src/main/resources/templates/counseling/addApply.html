@@ -1,524 +1,402 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>구매상담 신청</title>
-	<style>
-		/* 접힌 상태의 기본 스타일 */
-		.accordion-content {
-		    /* 초기에는 내용을 숨깁니다. */
-		    max-height: 0;
-		    overflow: hidden;
-		    /* 펼쳐지거나 접힐 때 부드러운 전환 효과를 추가합니다. */
-		    transition: max-height 0.3s ease-out; 
-		    padding: 0 18px; /* 숨길 때 패딩도 0으로 만듭니다 */
-		}
+<meta charset="UTF-8">
+<title>아코디언 상담 신청</title>
+<style>
+    .applyContainer {
+        font-family: "Pretendard", Arial, sans-serif;
+        padding: 30px;
+        background: #fff;
+        color: #222;
+		margin: 100px;
+    }
+	
+	.applyContent {
+		padding: 50px;
+	}
 
-		/* 펼쳐진 상태의 스타일 (JavaScript로 이 클래스를 추가/제거합니다) */
-		.accordion-content.active {
-		    /* 펼쳐질 콘텐츠의 실제 크기보다 충분히 큰 값으로 설정합니다. */
-		    max-height: 1000px;
-		    padding: 10px 18px; /* 펼쳐질 때 원하는 패딩을 다시 적용합니다 */
-		}
+    .accordion-item {
+        border-bottom: 1px solid #ddd;
+        padding: 20px;
+    }
 
-		/* 화살표 아이콘 스타일 (선택 사항) */
-		.arrow-icon {
-		    float: right;
-		    transition: transform 0.3s;
-		}
+    .accordion-header {
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        padding: 18px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-		/* 펼쳐진 상태일 때 화살표 회전 */
-		.accordion-header.active .arrow-icon {
-		    transform: rotate(180deg); 
-		}
+    .accordion-header:hover {
+        color: #0360a1;
+    }
 
-		#select_bar {
-		    border: 1px solid gray;
+    .accordion-arrow {
+        transition: 0.3s;
+        font-size: 20px;
+    }
 
-		}
+    .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+        background: #f6f4f2;
+        padding: 0 0;
+    }
 
-		/* 기본 설정 */
-		body {
-		    font-family: 'Noto Sans KR', sans-serif;
-		    background: #f7f5f2; /* 연한 베이지색 배경 */
-		    margin: 0;
-		    padding: 0;
-		    color: #222;
-		    line-height: 1.6;
-		}
+    .accordion-content.open {
+        padding: 25px 10px;
+        max-height: 500px;
+    }
 
-		/* --- 헤더 및 전체 타이틀 영역 --- */
-		.header {
-		    text-align: center;
-		    padding: 80px 20px 40px;
-		    background: #efe9e2; /* 프로세스 바 배경과 유사한 색상 */
-		    margin-bottom: 40px;
-		}
+    /* 예시 입력폼 스타일 */
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+        align-items: center;
+    }
 
-		.header h1 {
-		    font-size: 38px;
-		    font-weight: 700;
-		    margin-bottom: 10px;
-		    color: #002c5f; /* 강조 색상 */
-		}
+    .form-row label {
+        width: 90px;
+        font-weight: 600;
+    }
+	
+	.required::after {
+	    content: '*';
+	    color: #d9001b;
+	    margin-left: 5px;
+	}
 
-		.header p {
-		    color: #666;
-		    font-size: 16px;
-		}
+    .area {
+        width: 200px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        appearance: none;
+        background: #fff;
+    }
+	
+	.input-group {
+	    display: inline-flex;
+	    align-items: center;
+	    margin-right: 25px;
+	    margin-bottom: 10px;
+	}
 
-		/* --- 스텝 프로세스 바 (상단) --- */
-		.steps-container {
-		    max-width: 1200px;
-		    margin: 40px auto;
-		    padding: 0 20px;
-		}
+	.input-group input[type="checkbox"],
+	.input-group input[type="radio"] {
+	    margin-right: 8px;
+	    transform: scale(1.2); /* 체크박스/라디오 버튼 크기 키우기 */
+	    accent-color: #002c5f; /* 체크 색상 변경 */
+	}
 
-		.steps {
-		    display: flex;
-		    justify-content: center;
-		    align-items: flex-start;
-		    flex-wrap: nowrap;
-		    margin-bottom: 60px;
-		}
+	.input-group label {
+	    font-weight: 400;
+	    cursor: pointer;
+	}
 
-		.step {
-		    text-align: center;
-		    flex-shrink: 0;
-		}
-
-		.icon-circle {
-		    width: 110px;
-		    height: 110px;
-		    /* 배경색은 이미지와 유사하게 설정 */
-		    background: #e8ded3; 
-		    border-radius: 50%;
-		    display: flex;
-		    justify-content: center;
-		    align-items: center;
-		    margin: 0 auto 10px;
-		    /* 실제 이미지는 HTML에서 <img src="아이콘경로">로 대체됩니다. */
-		    /* 현재는 아이콘 이미지가 없는 상태이므로, 아이콘 역할을 할 배경 이미지를 HTML에 추가해야 합니다. */
-		}
-
-		.step-title {
-		    font-size: 15px;
-		    font-weight: 500;
-		    color: #444;
-		    white-space: nowrap;
-		}
-
-		/* 화살표 스타일 */
-		.arrow {
-		    display: flex;
-		    align-items: center;
-		    justify-content: center;
-		    margin: 0 15px; /* 단계 사이 간격 */
-		    height: 110px;
-		    flex-shrink: 0;
-		    font-size: 30px; /* 화살표 아이콘 크기 (만약 텍스트로 처리한다면) */
-		    color: #999;
-		}
-		/* 화살표 이미지 사용 시 */
-		.arrow img {
-		    width: 30px;
-		    margin: 0;
-		}
-
-
-		/* --- 메인 컨텐츠 (Details 섹션) --- */
-		.main-content {
-		    max-width: 800px;
-		    margin: 0 auto 100px;
-		    padding: 20px;
-		}
-
-		details {
-		    margin-bottom: 20px;
-		    border: 1px solid #ddd;
-		    border-radius: 8px;
-		    background-color: #fff;
-		    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-		}
-
-		#select_bar {
-		    display: block;
-		    padding: 20px;
-		    font-size: 18px;
-		    font-weight: 700;
-		    color: #002c5f;
-		    cursor: pointer;
-		    background-color: #f9f9f9;
-		    border-radius: 8px 8px 0 0;
-		    border-bottom: 1px solid #eee;
-		    user-select: none;
-		}
-
-		/* Details가 열려있을 때 summary 스타일 */
-		details[open] > #select_bar {
-		    color: #d9001b; /* 강조색 */
-		    background-color: #fff;
-		    border-bottom: 1px solid #ddd;
-		}
-
-		/* Details 내부 컨텐츠 */
-		details > *:not(summary) {
-		    padding: 20px;
-		}
-
-		/* --- Step 1: 차량 선택 --- */
-		details:nth-child(1) img {
-		    width: 150px;
-		    height: 100px;
-		    object-fit: cover;
-		    margin-right: 15px;
-		    border-radius: 4px;
-		    cursor: pointer;
-		    transition: transform 0.2s, box-shadow 0.2s;
-		    border: 3px solid transparent;
-		}
-
-		details:nth-child(1) img:hover {
-		    transform: translateY(-3px);
-		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		}
-
-		/* 선택된 차량 스타일을 위한 class (JS 필요) */
-		.car-selected {
-		    border: 3px solid #002c5f !important;
-		}
-
-		/* --- Step 2: 지역 선택 --- */
-		details:nth-child(2) {
-		    display: flex;
-		    flex-wrap: wrap;
-		    align-items: center;
-		    gap: 20px;
-		}
-
-		details:nth-child(2) label {
-		    font-weight: 500;
-		    margin-right: 5px;
-		}
-
-		details:nth-child(2) select {
-		    padding: 10px 15px;
-		    border: 1px solid #ccc;
-		    border-radius: 4px;
-		    font-size: 15px;
-		    margin-right: 10px;
-		    appearance: none; /* 기본 스타일 제거 */
-		    background-color: #fff;
-		    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%20221.7l-133%20133.2c-5%205-11.8%208.2-19%208.2-7.2%200-14-3.2-19-8.2l-133-133.2c-10.4-10.4-10.4-27.3%200-37.8s27.3-10.4%2037.8%200l114.4%20114.4L249.2%20184c10.4-10.4%2027.3-10.4%2037.8%200s10.4%2027.3%200%2037.8z%22%2F%3E%3C%2Fsvg%3E');
-		    background-repeat: no-repeat;
-		    background-position: right 10px top 50%;
-		    background-size: 10px auto;
-		}
-		.select-group {
-		    display: flex;
-		    align-items: center;
-		    margin-bottom: 10px;
-		}
-
-		/* --- Step 3: 구매 희망 정보 --- */
-		details:nth-child(3) p {
-		    margin: 5px 0;
-		}
-
-		details:nth-child(3) .required::after {
-		    content: '*';
-		    color: #d9001b;
-		    margin-left: 5px;
-		}
-
-		.survey-section {
-		    padding: 15px 0;
-		}
-
-		.question-title {
-		    font-size: 16px;
-		    font-weight: 700;
-		    margin: 0 0 10px 0;
-		}
-
-		hr {
-		    border: none;
-		    border-top: 1px solid #eee;
-		    margin: 10px 0 20px 0;
-		}
-
-		.input-group {
-		    display: inline-flex;
-		    align-items: center;
-		    margin-right: 25px;
-		    margin-bottom: 10px;
-		}
-
-		.input-group input[type="checkbox"],
-		.input-group input[type="radio"] {
-		    margin-right: 8px;
-		    transform: scale(1.2); /* 체크박스/라디오 버튼 크기 키우기 */
-		    accent-color: #002c5f; /* 체크 색상 변경 */
-		}
-
-		.input-group label {
-		    font-weight: 400;
-		    cursor: pointer;
-		}
-
-		.other-input,
-		input[type="text"][placeholder="원하시는 시간을 적어주세요."] {
-		    padding: 8px 10px;
-		    border: 1px solid #ccc;
-		    border-radius: 4px;
-		    margin-left: 10px;
-		    width: 200px;
-		}
-
-		input[type="date"] {
-		    padding: 8px 10px;
-		    border: 1px solid #ccc;
-		    border-radius: 4px;
-		    margin-left: 10px;
-		}
-
-
-		/* --- 버튼 영역 --- */
-		button {
-		    display: block;
-		    width: 250px;
-		    padding: 15px 30px;
-		    margin: 40px auto;
-		    font-size: 18px;
-		    font-weight: 700;
-		    border: none;
-		    border-radius: 6px;
-		    cursor: pointer;
-		    transition: background-color 0.2s;
-		}
-
-		/* 구매 신청 버튼 */
-		body > button:nth-of-type(1) { /* 구매신청 버튼 */
-		    background: #002c5f;
-		    color: #fff;
-		    width: 200px;
-		    display: inline-block; /* 인라인 블록으로 바꿔서 메인으로와 나란히 */
-		}
-
-		body > button:nth-of-type(1):hover {
-		    background: #003a7c;
-		}
-
-		/* 메인으로 버튼 (HTML에 없지만 추가한다고 가정하고 스타일링) */
-		.main-btn {
-		    background: #fff;
-		    color: #666;
-		    border: 1px solid #ccc;
-		    width: 200px;
-		    margin-left: 10px;
-		    display: inline-block;
-		}
-
-		.main-btn:hover {
-		    background: #f0f0f0;
-		}
-
-		.btn-area {
-		    text-align: center;
-		    margin-top: 50px;
-		}
-
-		/* --- HTML 수정 사항 반영을 위한 추가 스타일 --- */
-		/* HTML에 버튼이 <body> 직속으로 있고 메인으로 버튼이 없으므로, 이미지대로 버튼 2개를 중앙에 배치하려면 HTML 수정이 필요합니다. */
-		/* HTML을 아래와 같이 수정했다고 가정하고 버튼 스타일링 */
-		/*
-		<div class="btn-area">
-		    <button class="submit-btn">구매상담 신청</button>
-		    <button class="sub-btn">메인으로</button>
-		</div>
-		*/
-
-		.submit-btn {
-		    background: #002c5f;
-		    color: #fff;
-		    padding: 16px 36px;
-		    border: none;
-		    font-size: 16px;
-		    cursor: pointer;
-		    border-radius: 4px;
-		    font-weight: 700;
-		}
-
-		.sub-btn {
-		    background: #fff;
-		    border: 1px solid #aaa;
-		    color: #444;
-		    padding: 16px 28px;
-		    font-size: 16px;
-		    cursor: pointer;
-		    border-radius: 4px;
-		    font-weight: 500;
-		}
-	</style>
+	.other-input,
+	input[type="text"][placeholder="원하시는 시간을 적어주세요."] {
+	    padding: 8px 10px;
+	    border: 1px solid #ccc;
+	    border-radius: 4px;
+	    margin-left: 10px;
+	    width: 200px;
+	}
+	
+	/* --- 버튼 영역 --- */
+	.btns { text-align: center;}    
+	.btns > input[type=button] { 
+	     width: 120px; height: 40px;
+	     border: 2px solid lightgray; background-color: gray; color: white; 
+	     border-radius: 7px;
+	     font-size: 1.02em;
+	     font-weight: bold;
+	     cursor: pointer;
+	 }
+	 .btns input[type=button]:hover {
+	     background-color: white;
+	     color: gray;
+	     border: 2px solid lightgray;
+	 }
+	 .btns > input[type=reset] { 
+	     width: 120px; height: 40px;
+	     border: 2px solid lightgray; background-color: white; color: gray; 
+	     border-radius: 7px;
+	     font-size: 1.02em;
+	     font-weight: bold;
+	     cursor: pointer;
+	 }  
+	 .btns input[type=reset]:hover {
+	     background-color: gray;
+	     color: white;
+	     border: 2px solid lightgray;
+	 }
+	 
+	 .result {
+	     width: 900px;
+	 }   
+</style>
 </head>
-
-<body>
-    <details>
-        <summary id="select_bar">Step1.차량선택</summary>
-            <img src="/img/avante.jpg">
-            <img src="/img/casper.jpg">
-            <img src="/img/ev5.jpg">
-            <img src="/img/ev6.jpg">
-            <img src="/img/ev9.png">
-    </details>
-    <details>
-        <summary id="select_bar">Step2.구매상담 희망지역</summary>
-            <select name="sido">
-                <option value="">시/도</option>
-                <option value="서울특별시">서울특별시</option>
-                <option value="대구광역시">대구광역시</option>
-                <option value="대전광역시">대전광역시</option>
-                <option value="울산광역시">울산광역시</option>
-                <option value="인천광역시">인천광역시</option>
-                <option value="광주광역시">광주광역시</option>
-                <option>세종특별자치시</option>
-            </select>
-            <select name="siGunGu">
-                <option value="">시/군/구</option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-            </select>
-            <select name="eupMyeonDong">
-                <option value="">읍/면/동</option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-            </select>
-    </details>
-    <details>
-    <summary id="select_bar">Step3.구매희망정보</summary>
-        <div>
-            <p>더 나은 구매상담을 위해 고객님의 구매 희망 관련 정보를 확인하고 있습니다.</p>
-            <p>(*가 표시된 항목은 필수 선택 항목입니다.)</p>
-        </div>
-        <form th:object="${counseling}" th:action="@{/counseling/add}" method="post">
-            <div class="survey-section">
-                <p class="question-title required">차량 구매 목적</p>
-                <hr>
-                <div class="input-group">
-                    <input type="checkbox" id="p1" name="purchasePurpose" value="출퇴근용">
-                    <label for="purpose_commute">출퇴근용</label>
-					<div class="col-sm-7">
-						<p class="text-danger" th:errors="*{purchasePurpose}"></p>		
-					</div>					
-                </div>
-                
-                <div class="input-group">
-                    <input type="checkbox" id="p2" name="purchasePurpose" value="패밀리카">
-                    <label for="purpose_family">패밀리카</label>
-					<div class="col-sm-7">
-						<p class="text-danger" th:errors="*{purchasePurpose}"></p>		
-					</div>	
-                </div>
-                
-                <div class="input-group">
-                    <input type="checkbox" id="p3" name="purchasePurpose" value="업무용">
-                    <label for="purpose_business">업무용</label>
-                </div>
-                
-                <div class="input-group">
-                    <input type="checkbox" id="p4" name="purchasePurpose" value="세컨드카">
-                    <label for="purpose_secondcar">세컨드카</label>
-                </div>
-                <div class="input-group">
-                    <input type="checkbox" id="p5" name="purchasePurpose" value="기타">
-                    <label for="purchasePurposeOther">기타</label>
-                    <input type="text" name="purchasePurposeOther" class="other-input" placeholder="기타 사유를 입력하세요">
-                </div>
-            </div>
-            <hr>    
-            <div class="survey-section">
-                <p class="question-title required">희망 구매 시점</p>
-                <hr>
-                <div class="input-group">
-                    <input type="radio" id="pt1m" name="purchase_time" value="1개월 이내">
-                    <label for="time_1m">1개월 이내</label>
-                </div>
-                <div class="input-group">
-                    <input type="radio" id="pt3m" name="purchase_time" value="3개월 이내">
-                    <label for="time_3m">3개월 이내</label>
-                </div>
-                <div class="input-group">
-                    <input type="radio" id="pt6m" name="purchase_time" value="6개월 이내">
-                    <label for="time_6m">6개월 이내</label>
-                </div>
-                <div class="input-group">
-                    <input type="radio" id="ptNon" name="purchase_time" value="미정" checked>
-                    <label for="ptNon">미정</label>
-                </div>
-            </div>
-            <hr>
-            <div class="survey-section">
-                <p class="question-title">선호 차량 유형</p>
-                <hr>
-                <div class="input-group">
-                    <input type="checkbox" id="vt1" name="vehicleType" value="sedan">
-                    <label for="type_sedan">세단</label>
-                </div>
-                <div class="input-group">
-                    <input type="checkbox" id="vt2" name="vehicleType" value="suv">
-                    <label for="type_suv">SUV</label>
-                </div>
-                <div class="input-group">
-                    <input type="checkbox" id="vt3" name="vehicleType" value="other">
-                    <label for="vehicleTypeOther">기타</label>
-                </div>
-            </div>
-            <hr>
-            <div class="survey-section">
-                <p class="question-title">선호 엔진</p>
-                <hr>
-                <div class="input-group">
-                    <input type="checkbox" id="et1" name="engineType" value="가솔린">
-                    <label for="engine_gas">가솔린</label>
-                </div>
-                <div class="input-group">
-                    <input type="checkbox" id="et2" name="engineType" value="전기">
-                    <label for="engine_ev">전기</label>
-                </div>
-                <div class="input-group">
-                    <input type="checkbox" id="et3" name="engineType" value="하이브리드">
-                    <label for="engine_hybrid">하이브리드</label>
-                </div>
-                <div class="input-group">
-                    <input type="checkbox" id="et4" name="engineType" value="수소">
-                    <label for="engine_fcev">수소</label>
-                </div>
-                <div class="input-group">
-                    <input type="checkbox" id="et5" name="engineType" value="고성능 (N)">
-                    <label for="engine_n">고성능 (N)</label>
-                </div>
-                <div class="input-group">
-                    <label for="counselingLikeTime">희망연락시간</label>
-                    <input type="text" id="counselingLikeTime" name="counselingLikeTime"  placeholder="원하시는 시간을 적어주세요.">
-                </div>
-            </div>
-        </form>
-    </details>
+<body>	
+	<div class="applyContainer">
+		<form th:object="${counseling}" th:action="@{/counseling/add}" method="post" name="applyForm">
+		<h2 style="margin-bottom:30px; font-size:24px;">상담 신청</h2>
+			<div class="applyContent">
+				<!-- ▼▼▼ Step 1 -->
+				<div class="accordion-item">
+				   <div class="accordion-header">
+				        <span>Step1. 상담 차종 *</span>
+				        <span class="accordion-arrow">▼</span>
+				    </div>
+				    <div class="accordion-content">
+				        <p>차량 모델 선택 내용 들어가는 영역</p>
+				    </div>
+				</div>
+	
+				<!-- ▼▼▼ Step 2 -->
+				<div class="accordion-item">
+				    <div class="accordion-header">
+				        <span>Step2. 구매 상담 희망 지역 *</span>
+				        <span class="accordion-arrow">▼</span>
+				    </div>
+				    <div class="accordion-content">
+				        <div class="form-row">
+				            <label>시/도</label>
+				            <select class="area" name="sido" id="sido">
+				                <option>시/도</option>
+				                <option>서울특별시</option>
+				                <option>부산광역시</option>
+				            </select>	
+				            <label>시/군/구</label>
+				            <select class="area" name="siGunGu" id="siGunGu">
+				                <option>시/군/구</option>
+								<option>종로구</option>
+								<option>중구</option>
+				            </select>
+	
+				            <label>읍/면/동</label>
+				            <select class="area" name="eupMyeonDong" id="eupMyeonDong">
+				                <option>읍/면/동</option>
+								<option>테스트</option>
+				            </select>
+				        </div>
+					</div>
+				</div>
+	
+				<!-- ▼▼▼ Step 3 -->
+				<div class="accordion-item">
+				    <div class="accordion-header">
+				        <span>Step3. 구매 희망 정보 *</span>
+				        <span class="accordion-arrow">▼</span>
+				    </div>
+				    <div class="accordion-content">
+						<div>
+						    <p>더 나은 구매상담을 위해 고객님의 구매 희망 관련 정보를 확인하고 있습니다.</p>
+							<p>(*가 표시된 항목은 필수 선택 항목입니다.)</p>
+						</div>
+						   
+				        <div class="survey-section">
+				            <p class="question-title required">차량 구매 목적</p>
+				            <hr>
+				            <div class="input-group">
+				                <input type="checkbox" id="p1" name="purchasePurpose" value="출퇴근용">
+				                <label for="purpose_commute">출퇴근용</label>
+								<div class="col-sm-7">
+									<p class="text-danger" th:errors="*{purchasePurpose}"></p>		
+								</div>					
+				            </div>
+				            
+				            <div class="input-group">
+				                <input type="checkbox" id="p2" name="purchasePurpose" value="패밀리카">
+				                <label for="purpose_family">패밀리카</label>
+								<div class="col-sm-7">
+									<p class="text-danger" th:errors="*{purchasePurpose}"></p>		
+								</div>	
+				            </div>
+				            
+				            <div class="input-group">
+				                <input type="checkbox" id="p3" name="purchasePurpose" value="업무용">
+				                <label for="purpose_business">업무용</label>
+				            </div>
+				            
+				            <div class="input-group">
+				                <input type="checkbox" id="p4" name="purchasePurpose" value="세컨드카">
+				                <label for="purpose_secondcar">세컨드카</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="checkbox" id="p5" name="purchasePurpose" value="기타">
+				                <label for="purchasePurposeOther">기타</label>
+				                <input type="text" name="purchasePurposeOther" class="other-input" placeholder="기타 사유를 입력하세요">
+				            </div>
+				        </div>
+						<hr>    
+				        <div class="survey-section">
+				            <p class="question-title required">희망 구매 시점</p>
+				            <hr>
+				            <div class="input-group">
+				                <input type="radio" id="pt1m" name="purchasePeriod" value="1개월 이내">
+				                <label for="time_1m">1개월 이내</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="radio" id="pt3m" name="purchasePeriod" value="3개월 이내">
+				                <label for="time_3m">3개월 이내</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="radio" id="pt6m" name="purchasePeriod" value="6개월 이내">
+				                <label for="time_6m">6개월 이내</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="radio" id="ptNon" name="purchasePeriod" value="미정" checked>
+				                <label for="ptNon">미정</label>
+				            </div>
+				        </div>
+					    <hr>
+				        <div class="survey-section">
+				            <p class="question-title">선호 차량 유형</p>
+				            <hr>
+				            <div class="input-group">
+				                <input type="checkbox" id="vt1" name="vehicleType" value="세단">
+				                <label for="type_sedan">세단</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="checkbox" id="vt2" name="vehicleType" value="SUV">
+				                <label for="type_suv">SUV</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="checkbox" id="vt3" name="vehicleType" value="other">
+				                <label for="vehicleTypeOther">기타</label>
+				            </div>
+				        </div>
+				    		<hr>
+				        <div class="survey-section">
+				            <p class="question-title">선호 엔진</p>
+				            <hr>
+				            <div class="input-group">
+				                <input type="checkbox" id="et1" name="engineType" value="가솔린">
+				                <label for="engine_gas">가솔린</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="checkbox" id="et2" name="engineType" value="전기">
+				                <label for="engine_ev">전기</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="checkbox" id="et3" name="engineType" value="하이브리드">
+				                <label for="engine_hybrid">하이브리드</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="checkbox" id="et4" name="engineType" value="수소">
+				                <label for="engine_fcev">수소</label>
+				            </div>
+				            <div class="input-group">
+				                <input type="checkbox" id="et5" name="engineType" value="고성능 (N)">
+				                <label for="engine_n">고성능 (N)</label>
+				            </div>
+				            <div class="input-group">
+				                <label for="counselingLikeTime">희망연락시간</label>
+				                <input type="text"  id="counselingLikeTime" name="counselingLikeTime"  placeholder="원하시는 시간을 적어주세요.">
+				            </div>
+				        </div>
+	
+				    	</div>
+				</div>
+			</div>
+			<div class="btns">
+		         <input type="button" value="구매신청" id="btnApply">
+		         <input type="reset" value="취소">
+			</div>	
+			<br>
+			<hr>
+			<br>
+			<div>
+			    <p class="result"></p>
+			</div> 		
+		</form>
+	</div>
 </body>
-<button>구매신청</button>
-<footer>
-
-</footer>
 
 
+<script>
+    let items = document.querySelectorAll(".accordion-item");
+
+    items.forEach((item) => {
+        let header = item.querySelector(".accordion-header");
+
+        header.addEventListener("click", () => {
+            let openItem = document.querySelector(".accordion-content.open");
+
+            // 열려 있는 패널이 있고, 그게 지금 클릭한 것이 아니라면 닫기
+            if (openItem && openItem !== item.querySelector(".accordion-content")) {
+                openItem.classList.remove("open");
+                openItem.previousElementSibling.querySelector(".accordion-arrow").style.transform = "rotate(0deg)";
+            }
+
+            // 현재 패널 open/close toggle
+            let content = item.querySelector(".accordion-content");
+            let arrow = item.querySelector(".accordion-arrow");
+            content.classList.toggle("open");
+
+            // 화살표 회전
+            if (content.classList.contains("open")) {
+                arrow.style.transform = "rotate(180deg)";
+            } else {
+                arrow.style.transform = "rotate(0deg)";
+            }
+        });
+    });
+	
+	document.addEventListener("DOMContentLoaded", () => {
+
+		let text = "";
+		let form = document.applyForm;
+		let result = document.querySelector(".result");
+		let btnApply = document.querySelector("#btnApply");
+		btnApply.addEventListener("click", () => {
+			let purchasePurposeList = [];
+			let engineTypeList = [];
+			let vehicleTypeList = [];
+			let purchasePurpose = document.querySelectorAll("[name=purchasePurpose]");    
+			let engineType = document.querySelectorAll("[name=engineType]");    
+			let purchasePeriod = form.purchasePeriod.value;
+			let vehicleType = document.querySelectorAll("[name=vehicleType]");      
+			//let vehicleTypeOther = form.vehicleTypeOther.value;
+			let sido = document.querySelector("#sido");
+			let siGunGu = document.querySelector("#siGunGu");
+			let eupMyeonDong = document.querySelector("#eupMyeonDong");
+			let counselingLikeTime = form.counselingLikeTime.value;
+			
+			purchasePurpose.forEach(v  => {
+			    if (v.checked) {
+			        purchasePurposeList.push(v.value);
+			    }
+			});
+			
+			engineType.forEach(v  => {
+			    if (v.checked) {
+			        engineTypeList.push(v.value);
+			    }
+			});
+
+			
+			vehicleType.forEach(v  => {
+			    if (v.checked) {
+			        vehicleTypeList.push(v.value);
+			    }
+			});
+			
+			
+			
+			let txt = `선호 엔진: ${engineTypeList} <br>희망 구매 시점: ${purchasePeriod}<br>차량 구매 목적: ${purchasePurposeList}<br>선호 차량: ${vehicleTypeList}<br><br>
+			    시도: ${sido.value} <br> 시군구: ${siGunGu.value} <br>읍면동: ${eupMyeonDong.value}`;
+			    result.innerHTML = txt;
+			
+		})
+	});	
+</script>
+
+
+</html>
