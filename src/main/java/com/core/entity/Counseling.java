@@ -30,21 +30,21 @@ public class Counseling {
     private String vehicleId;
     
     /** 구매 상담 희망지역 **/   
-    @NotBlank(message = "시도는 필수 입력 사항입니다.")
+    @NotBlank(message = "시도는 필수 선택 사항입니다.")
     @Column(columnDefinition = "varchar(30)")	
     private String sido;
     
-    @NotBlank(message = "시군구는 필수 입력 사항입니다.")
+    @NotBlank(message = "시군구는 필수 선택 사항입니다.")
     @Column(columnDefinition = "varchar(30)")	
     private String siGunGu;
     
-    @NotBlank(message = "읍면동은 필수 입력 사항입니다.")
+    @NotBlank(message = "읍면동은 필수 선택 사항입니다.")
     @Column(columnDefinition = "varchar(30)")	
     private String eupMyeonDong;
     
     /** 구매 희망 정보 **/
     // 차량 구매 목적
-    @NotBlank(message = "차량 구매 목적은 필수 입력 사항입니다.")
+    @NotBlank(message = "차량 구매 목적은 필수 선택 사항입니다.")
     @Column(columnDefinition = "varchar(100)")	
     private String purchasePurpose;
 
@@ -52,7 +52,7 @@ public class Counseling {
     private String customPurpose;   // ‘기타’ 입력 시
 
     // 희망 구매 시점
-    @NotBlank(message = "희망 구매 시점은 필수 입력 사항입니다.")
+    @NotBlank(message = "희망 구매 시점은 필수 선택 사항입니다.")
     @Column(columnDefinition = "varchar(100)")	
     private String purchasePeriod;
 
@@ -83,7 +83,7 @@ public class Counseling {
     
     // 상담 생성 메서드
     public static Counseling createCounseling(Counseling counseling) {
-    	return counseling;
+    		return counseling;
     }
     
     
