@@ -53,35 +53,15 @@ public class VehicleService {
 		return vehicleRepository.findAll();
 	}
 	
-	public Page<Vehicle> getVehiclePage(String keyword, Pageable pageable) {
-		// 검색어가 없을 경우 전체 목록 조회
-		if(keyword == null || keyword.isBlank()) {
+	public Page<Vehicle> getVehiclePage(String keyword, String type, String fuel, Pageable pageable) {
+		// 조건이 null이거나 없다면 전체 목록을 조회
+		if((keyword == null || keyword.isBlank()) && (type == null || type.isBlank()) && (fuel == null || fuel.isBlank())) {
 			return vehicleRepository.findAll(pageable);
 		}
-		
-		// 검색어가 있는 경우에는 검색
-		return vehicleRepository.findByNameContainingOrVehicleTypeContaining(keyword, keyword, pageable);
+		// 조건이 있다면 조건에 맞게 검색 결과를 조회
+		return vehicleRepository.searchVehicle(keyword, type, fuel, pageable);
 	}
 	
-	/*
-	public Page<Vehicle> getList(int pageNum, String state, String keyword, int pageSize, String sortField, String sortWay) {
-		Pageable pageable = PageRequest.of(pageNum-1, pageSize, 
-					sortWay.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
-		
-		switch(state) {
-		case "vehicleType": 
-			return vehicleRepository.findByVehicleType(keyword, pageable);
-		case "fuelType": 
-			return vehicleRepository.findByFuelType(keyword, pageable);
-		case "brand": 
-			return vehicleRepository.findByBrand(keyword, pageable);
-		case "search":  // search일 때 처리(검색)
-			return vehicleRepository.findByNameContainingOrVehicleTypeContaining(keyword, keyword, pageable);
-		default:        // all일 때 처리
-			return vehicleRepository.findAll(pageable);
-		}
-	}
-	*/
 	
 	// 차량 상세 정보 조회
 	public Vehicle getVehicleByModelCode(String modelCode) {

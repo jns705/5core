@@ -2,6 +2,7 @@ package com.core.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,31 +33,37 @@ import lombok.extern.java.Log;
 public class VehicleController {
 	
 	private final VehicleService vehicleService;
-	/*
-	// 페이징 설정
-	private int pageSize = 12;
-	private int pageBlock = 5;
-*/
+
 	
-	// 전체 및 검색에 따른 차량 목록 조회 -> 페이징 처리
+	// 메인 화면 페이징 처리
 	@GetMapping
-	public String requestVehicleList(@RequestParam(name = "keyword", required=false) String keyword, 
-			@PageableDefault(
-					page = 0,                      // 처음 접속하면 첫 페이지부터 보여줌
-					size = 12,                     // 한 페이지에서 보여주는 개수
-					sort = "name",                 // 정렬 기준 필드
-					direction = Sort.Direction.ASC // 정렬 방법
-			) Pageable pageable, Model model) {
+	public String requestVehicleList(
+	        @RequestParam(name = "keyword", required = false) String keyword,
+	        @RequestParam(name = "type", required = false) String type,
+	        @RequestParam(name = "fuel", required = false) String fuel,
+	        @PageableDefault(
+	                page = 0,
+	                size = 8,
+	                sort = "name",
+	                direction = Sort.Direction.ASC
+	        ) Pageable pageable,
+	        Model model) {
+		// ALL 버튼용 처리
+		if(keyword != null && keyword.isBlank()) keyword = null;
+		if(type != null && type.isBlank()) type = null;
+		if(fuel != null && fuel.isBlank()) fuel = null;
 		
-	    Page<Vehicle> paging = vehicleService.getVehiclePage(keyword, pageable);
-	    log.info("페이지" + paging.toString());
-	    
+
+	    Page<Vehicle> paging = vehicleService.getVehiclePage(keyword, type, fuel, pageable);
 
 	    model.addAttribute("keyword", keyword);
-	    model.addAttribute("paging", paging);                     // 전체 Page 전달
-	    model.addAttribute("vehicleList", paging.getContent());   // 본문 카드 목록
-		return "vehicle/vehicles";
+	    model.addAttribute("type", type);
+	    model.addAttribute("fuel", fuel);
+	    model.addAttribute("paging", paging);
+	    model.addAttribute("vehicleList", paging.getContent());
+	    return "vehicle/vehicles";
 	}
+
 
 	
 	

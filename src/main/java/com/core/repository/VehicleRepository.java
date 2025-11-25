@@ -4,6 +4,8 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.core.entity.Vehicle;
@@ -31,5 +33,13 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 	// 차량 목록 검색(차량명, 차종)
 	Page<Vehicle> findByNameContainingOrVehicleTypeContaining(String name, String vehicleType, Pageable pageable);
 	
+	// 키워드, 차종, 연료타입별 조회 (사이드 메뉴 라디오 버튼)
+	@Query("""
+			SELECT v FROM Vehicle v
+			WHERE (:keyword IS NULL OR v.name LIKE CONCAT('%', :keyword, '%'))
+			AND (:type IS NULL OR v.vehicleType = :type)
+			AND (:fuel IS NULL OR v.fuelType = :fuel)
+			""")
+	Page<Vehicle> searchVehicle(@Param("keyword") String keyword, @Param("type") String type, @Param("fuel") String fuel, Pageable pageable);
 	
 }
