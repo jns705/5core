@@ -36,8 +36,6 @@ public class CounselingService {
     @Transactional
     public Counseling updateCounseling(Long id, Counseling newData) {
         Counseling counseling = findById(id); // 기존 데이터 조회
-        counseling.setTitle(newData.getTitle());
-        counseling.setContent(newData.getContent());
         counseling.setStatus(newData.getStatus());
         counseling.setDealer(newData.getDealer());
         return counseling;  // JPA dirty checking 자동 반영

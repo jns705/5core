@@ -1,9 +1,17 @@
 package com.core.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 상담 엔터티
@@ -16,14 +24,48 @@ public class Counseling {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+   
+    @NotBlank(message = "차량 선택은 필수 사항입니다.")
+    @Column(unique= true, columnDefinition = "varchar(30)")
+    private String vehicleId;
+    
+    /** 구매 상담 희망지역 **/
+    @NotBlank(message = "시군구는 필수 입력 사항입니다.")
+    @Column(columnDefinition = "varchar(30)")	
+    private String siGunGu;
+    
+    @NotBlank(message = "시도는 필수 입력 사항입니다.")
+    @Column(columnDefinition = "varchar(30)")	
+    private String sido;
+    
+    @NotBlank(message = "읍면동은 필수 입력 사항입니다.")
+    @Column(columnDefinition = "varchar(30)")	
+    private String eupMyeonDong;
+    
+    /** 구매 희망 정보 **/
+    // 차량 구매 목적
+    @NotBlank(message = "차량 구매 목적은 필수 입력 사항입니다.")
+    @Column(columnDefinition = "varchar(100)")	
+    private String purchasePurpose;
 
-    // 상담 제목 (회원 id님이 상담 신청했습니다)
-    @Column(columnDefinition = "varchar(50)")
-    private String title;
+    @Column(columnDefinition = "varchar(100)")	
+    private String customPurpose;   // ‘기타’ 입력 시
 
-    // 상담 내용 
-    @Column(columnDefinition = "text")
-    private String content;
+    // 희망 구매 시점
+    @NotBlank(message = "희망 구매 시점은 필수 입력 사항입니다.")
+    @Column(columnDefinition = "varchar(100)")	
+    private String purchasePeriod;
+
+    // 선호 차량 유형
+    @Column(columnDefinition = "varchar(100)")	
+    private String vehicleType;
+
+    // 선호 엔진
+    @Column(columnDefinition = "varchar(100)")	
+    private String engineType;
+
+    // 상담 희망 시간
+    private LocalDateTime counselingLikeTime;
 
     // 상담 상태 (상담신청/상담완료/판매완료) 
     @Column(columnDefinition = "varchar(20) default '상담신청'")
