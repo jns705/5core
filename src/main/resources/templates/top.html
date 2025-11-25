@@ -11,11 +11,15 @@
 		<!-- 중앙: 카테고리 메뉴 -->
         <ul class="hyu-nav d-none align-items-center d-md-flex fs-5">
             <li><a th:href="@{/vehicles}" class="hyu-nav-link">모델</a></li>
+			<li><a href="#" class="hyu-nav-link">구매</a></li>
             <li><a href="#" class="hyu-nav-link">지점 및 정비소 찾기</a></li>
 		    <li><a href="#" class="hyu-nav-link">보조금 · 충전소 안내</a></li>
 		    <li><a href="#" class="hyu-nav-link">고객 센터</a></li>
 		    <li><a href="#" class="hyu-nav-link">이벤트</a></li>
 		</ul>
+		<span class="nav-link fw-bold mx-4 separation-bar"> | </span>
+		
+		<!-- 로그인 아이콘 -->
 		<!-- 회원가입, 로그인 : 익명 상태(로그인을 하지 않은 상태) --> 
 		<a sec:authorize="isAnonymous()" th:href="@{/login}" class="nav-link">
 			<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
@@ -45,7 +49,14 @@
 		
         <!-- 오른쪽: 검색 + 회사 선택 + 로그인 -->
         <!--div class="d-flex align-items-center"-->		
-
+		
+		<!-- 검색 아이콘 -->
+		<a href="#" class="nav-link">	
+			<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+			  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+			</svg>
+		</a>		
+		<!-- 메뉴 아이콘-->
 		<a href="#" class="nav-link">
 			<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
 			  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
@@ -77,10 +88,10 @@
 
 .main-logo {
 	margin-bottom: -10px;
-	margin-right: 100px;
+	margin-right: 130px;
 }
 .main-logo-image {
-	width: 150px;	
+	width: 160px;	
 }
 
 /* 로고 글자 */
@@ -94,20 +105,29 @@
 .hyu-nav {
     list-style: none;
     display: flex;
-    gap: 24px;
+    gap: 60px;
     padding: 0;
 	font-weight: bold;
 	margin-bottom: -10px;
+	margin-right: 10px;
 }
 
 .hyu-nav-link {
     position: relative;
-    font-size: 0.8em;
+    font-size: 0.85em;
     color: #444;
     text-decoration: none;
     transition: color 0.2s;
 }
 
+.nav-link {
+	margin-top: 23px;
+	margin-right: 15px;
+}
+
+.separation-bar {
+	color: #666;
+}
 /* hover / active 시 밑줄 효과 */
 .hyu-nav-link::after {
     content: "";
