@@ -33,6 +33,9 @@ public class CounselingController {
 		return "counseling/addApply";
 	}
 	
+	/*
+	 * 상담신청 등록
+	 */
 	@PostMapping("/add")
 	public String addCounselingApply(@Valid @ModelAttribute Counseling counseling, BindingResult bindingResult, Model model) {
 		
