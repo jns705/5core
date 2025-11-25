@@ -29,14 +29,14 @@ public class Counseling {
     @Column(unique= true, columnDefinition = "varchar(30)")
     private String vehicleId;
     
-    /** 구매 상담 희망지역 **/
-    @NotBlank(message = "시군구는 필수 입력 사항입니다.")
-    @Column(columnDefinition = "varchar(30)")	
-    private String siGunGu;
-    
+    /** 구매 상담 희망지역 **/   
     @NotBlank(message = "시도는 필수 입력 사항입니다.")
     @Column(columnDefinition = "varchar(30)")	
     private String sido;
+    
+    @NotBlank(message = "시군구는 필수 입력 사항입니다.")
+    @Column(columnDefinition = "varchar(30)")	
+    private String siGunGu;
     
     @NotBlank(message = "읍면동은 필수 입력 사항입니다.")
     @Column(columnDefinition = "varchar(30)")	
@@ -80,5 +80,11 @@ public class Counseling {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dealer_id")
     private Dealer dealer;
+    
+    // 상담 생성 메서드
+    public static Counseling createCounseling(Counseling counseling) {
+    	return counseling;
+    }
+    
     
 }
