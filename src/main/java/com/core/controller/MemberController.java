@@ -66,14 +66,6 @@ public class MemberController {
 		// DataIntegrityViolationException -> unique 속성을 위배했을 때 발생하는 예외
 		try {
 			
-			////////////////////////////////////////////////////////////////////////////////////////////
-			// 딜러, 고객 구분해서 true false 넣어야 함
-			////////////////////////////////////////////////////////////////////////////////////////////
-			
-			System.out.println("--------------------------------------");
-			System.out.println(member.getRoleCheck());
-			System.out.println("---------------------------------");
-			
 			Member m = Member.createMember(member, passwordEncoder, member.getRoleCheck());
 			m.setJoinDate(LocalDateTime.now());
 			memberService.saveMember(m);
@@ -99,4 +91,7 @@ public class MemberController {
 
 		return "redirect:/main";
 	}
+	
+	
+	
 }

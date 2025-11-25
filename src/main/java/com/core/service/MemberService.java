@@ -1,5 +1,6 @@
 package com.core.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.userdetails.User;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.core.entity.Member;
+import com.core.entity.Role;
 import com.core.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -44,5 +46,11 @@ public class MemberService implements UserDetailsService {
 	public Member findByMemberId(String memberId) {
 		return memberRepository.findByMemberId(memberId).get();
 	}
+	
+	// Role로 회원 조회
+	public List<Member> findByRole(Role role) {
+		return memberRepository.findByRole(role);
+	}
+	
 	
 }
