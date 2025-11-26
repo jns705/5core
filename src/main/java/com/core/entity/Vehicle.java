@@ -74,10 +74,14 @@ public class Vehicle {
 	private MultipartFile vehicleImage; // 업로드된 차량 이미지
 	
 	
-    // 차량 옵션
+    // 차량 옵션 / 컬러
     // - 차량 상담 시 그 차량에 대해서 선택한 옵션들이 리스트로 한번에 저장되게끔
+	// - 차량 데이터 추가 시 옵션과 컬러 데이터를 한번에 저장
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<VehicleOption> options = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    private List<VehicleColor> colors = new ArrayList<>();
     
     
     
