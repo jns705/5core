@@ -28,11 +28,14 @@
       font-size: 16px;
       cursor: pointer;
       transition: 0.2s;
+	  color: #fff;
     }
     .menu-item:hover {
       background: rgba(255,255,255,0.15);
     }
-
+	.sidebar > a {
+		text-decoration-line: none;
+	}
     /* 메인 컨테이너 */
     .main { flex: 1; display: flex; flex-direction: column; }
     .header {
@@ -87,14 +90,14 @@
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>관리 메뉴</h2>
-    <div class="menu-item">딜러 프로필</div>
-    <div class="menu-item">고객 관리</div>
-    <div class="menu-item">구매 관리</div>
-    <div class="menu-item">보고서 / 분석</div>
-    <div class="menu-item">설정</div>
-  </div>
+	<div class="sidebar">
+	  <h2>관리 메뉴</h2>
+	<a th:href="@{/dealer}"><div class="menu-item">딜러 프로필</div></a>
+	<a th:href="@{/dealer/care}"><div class="menu-item">고객 관리</div></a>
+	<a><div class="menu-item">상담 신청 명단</div></a>
+	<a><div class="menu-item">구매 관리</div></a>
+	<a><div class="menu-item">보고서 / 분석</div></a>
+	</div>
 
   <div class="main">
     <div class="header">
@@ -141,7 +144,7 @@
 
         <!-- 고객 오른쪽 -->
         <div style="flex:1; display:flex; flex-direction:column;">
-          <h2 style="margin-bottom:12px;">상담 신청 고객</h2>
+          <h2 style="margin-bottom:12px;">고객 명단 (수정해야함)</h2>
 
           <div style="max-height:300px; overflow-y:auto; margin-bottom:20px; padding-right:10px;">
             <div class="customer-list">
