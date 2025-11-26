@@ -26,10 +26,14 @@
 		</div>
 		<!-- 본문 내용 -->
 		<!-- 주문내역: 상품명 -->
-		<div class="row align-items-md-stretch">
-			
-
-			<table class="table table-hover mt-2">
+		<div>
+			<tr th:each="counseling : ${counselingList}">
+			    <td>[[${counseling.status}]]</td>
+				<input th:value="${counseling.Id}">
+		
+				
+			</tr>
+			<!--<table class="table table-hover mt-2">
 				<tr>
 					<th width="4%">선택</th>
 					<th width="6%">고객ID</th>
@@ -55,6 +59,7 @@
 					</tr>
 				</div>
 			</table>
+			-->
 		</div>
 		
 		<!-- 페이지 정보 -->
