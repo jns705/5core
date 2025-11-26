@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 	<meta charset="utf-8">
-	<title>main폼</title>
+	<title>차량 전체보기</title>
 	<th:block th:replace="~{/top.html}"></th:block>
 	<style>
 /*		body {
@@ -68,13 +68,13 @@
 		    display: grid;
 		    grid-template-columns: repeat(4, 1fr);
 		    gap: 28px;
-		    min-height: 1000px;
+		    min-height: 700px;
 		}
 
 		/* 차량 */
 		.card {
 		    height: 320px;
-			width: 410px;
+			width: 380px;
 		    display: flex;
 		    flex-direction: column;
 		}
@@ -226,7 +226,7 @@
 				<!-- 차량 리스트 반복 -->
 				<!-- 차량 이미지와 차량 이름 클릭하여 차량 상세보기 이동 -->
 				<div class="card" th:each="v : ${vehicleList}">
-					<a th:href="@{|/vehicle/${v.modelCode}|}">
+					<a th:href="@{|/vehicles/vehicle/${v.modelCode}|}">
 						<div class="card-img">
 					        <img th:src="@{|/images/${v.fileName}|}">
 					    </div>
@@ -234,7 +234,7 @@
 				    
 					<div class="card-body">
 				        <div class="card-title">
-							<a th:href="@{|/vehicle/${v.modelCode}|}" th:text="${v.name}"></a>
+							<a th:href="@{|/vehicles/vehicle/${v.modelCode}|}" th:text="${v.name}"></a>
 						</div>
 				        
 				        <div class="card-price">
@@ -242,7 +242,7 @@
 				        </div>
 
 				        <div class="card-function">
-				            <a th:href="@{|/vehicle/${v.modelCode}|}">모델 보기</a> ·
+				            <a th:href="@{|/vehicles/vehicle/${v.modelCode}|}">모델 보기</a> ·
 				            <a href="#">시승 신청</a>
 				        </div>
 				    </div>
