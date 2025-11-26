@@ -33,6 +33,11 @@ public class CounselingController {
 		return "counseling/addApply";
 	}
 	
+	@GetMapping("/applyList")
+	public String counselingApplyList() {
+		return "counseling/applyList";
+	}
+	
 	/*
 	 * 상담신청 등록
 	 */
