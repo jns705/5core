@@ -35,8 +35,9 @@
                 </div>
                 <select class="family-select">
                     <option>Family Site</option>
-                    <option>Family</option>
-                    <option>Site</option>
+                    <option>현대자동차그룹</option>
+                    <option>인재채용</option>
+					<option>제네시스닷컴</option>
                 </select>
             </div>
         </div>
@@ -54,74 +55,171 @@
         <div class="badge-section">
             <div class="badge-row">
                 <div class="badge">
-                    <img th:src="@{/icons/bottomLogo01.png}" alt="환경경영">
-                    <p>탄소중립 환경경영</p>
+                    <img th:src="@{/icons/bottomLogo01.png}">
+                    <p>가족친화우수기관</p>
                 </div>
                 <div class="badge">
-                    <img th:src="@{/icons/bottomLogo02.png}" alt="우수디자인">
-                    <p>우수디자인 지식경제부 선정</p>
+                    <img th:src="@{/icons/bottomLogo02.png}">
+                    <p>한국서비스품질지수</p>
                 </div>
                 <div class="badge">
-                    <img th:src="@{/icons/bottomLogo03.png}" alt="가족친화">
-                    <p>가족친화 우수기관</p>
+                    <img th:src="@{/icons/bottomLogo03.png}">
+                    <p>국가고객만족도(NCSI)</p>
                 </div>
                 <div class="badge">
-                    <img th:src="@{/icons/bottomLogo04.png}" alt="KSQI">
-                    <p>한국서비스품질지수 연속 1위</p>
+                    <img th:src="@{/icons/bottomLogo04.png}">
+                    <p>한국산업의고객만족도(KCSI)</p>
                 </div>
 				<div class="badge">
-				    <img th:src="@{/icons/bottomLogo06.png}" alt="KSQI">
-				    <p>임의</p>
+				    <img th:src="@{/icons/bottomLogo05.png}">
+				    <p>한국품질만족지수(KS-QEI)</p>
 				</div>
 				<div class="badge">
-				    <img th:src="@{/icons/bottomLogo06.png}" alt="KSQI">
-				    <p>임의</p>
+				    <img th:src="@{/icons/bottomLogo06.png}">
+				    <p>웹 접근성 품질인증</p>
 				</div>
 				<div class="badge">
-				    <img th:src="@{/icons/bottomLogo06.png}" alt="KSQI">
-				    <p>임의</p>
+				    <img th:src="@{/icons/bottomLogo07.png}">
+				    <p>우수디자인지식경제부선정</p>
 				</div>
-				<div class="badge">
-				    <img th:src="@{/icons/bottomLogo06.png}" alt="KSQI">
-				    <p>임의</p>
-				</div>
-            </div>
-            <div class="badge-text">
-                <p>2023년 고객감동경영대상(KCSO) 자동차 부문 1위 수상</p>
-                <p>2023년 한국산업의 고객만족도(KCSI) 조사 2년 연속 1위</p>
-                <p>2023년 브랜드만족지수(KS-QEI) 조사 12개 부문 1위</p>
             </div>
         </div>
     </div>
 </footer>
 <style>
-.hyu-footer {color:darkslategray; font-family: Roboto,Apple SD Gothic Neo,Arial; padding: 40px 0}
-.hyu-container {color:darkslategray; max-width: 1300px; margin: auto; padding: 0 24px}
+.hyu-footer {
+    color: darkslategray;
+    font-family: Roboto, Apple SD Gothic Neo, Arial, sans-serif;
+    padding: 45px 0;
+    background-color: #f8f8f8; /* 필요 시 배경색 추가 */
+}
 
-.top-row {display: flex; align-items: flex-start; justify-content: space-between; gap: 20px}
-.hyu-logo {height: 42px; filter: brightness(1.2)}
+.hyu-container {
+    max-width: 2000px;
+    margin: auto;
+    padding: 0 24px;
+}
+.top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
 
-.menu-links {margin-left: 60px; flex: 1; display: flex; flex-wrap: wrap; gap:14px; font-size: 16px;}
-.menu-links a {text-decoration:none;color:grey}
-.menu-links a:hover {color:darkslategray}
+.logo-left .hyu-logo {
+    height: 80px;
+}
 
-.right-side {display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-.brand-social {display:flex;gap:16px;font-size:50px;color:darkslategray}
+/* 메뉴 링크 */
+.menu-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    font-size: 20px;
+    margin-left: 80px;
+}
 
-.family-select {background:seashell; border:1px solid silver; color:darkslategray; padding:16px 20px; border-radius:4px;}
+.menu-links a {
+    text-decoration: none;
+    color: grey;
+    transition: color 0.2s;
+}
 
-.info-row {margin-top:16px;font-size:16px}
-.cs strong {color:black}
-.copy {margin-top:4px;color:darkslategray}
+.menu-links a:hover {
+    color: darkslategray;
+}
 
-.divider {border:0;border-top:1px solid black;margin:24px 0}
+/* 소셜 + 패밀리 사이트 */
+.right-side {
+    display: flex;
+    /*flex-direction: column;*/
+    align-items: flex-end;
+    gap: 10px;
+}
 
-.badge-row {display:flex; gap:30px; flex-wrap:wrap; margin-bottom:18px}
-.badge {display:flex; flex-direction:column; align-items:center; text-align:center; width:120px}
-.badge img {height:48px; margin-bottom:8px}
-.badge p {font-size:12px; color:gray; line-height:1.4}
+.brand-social {
+    display: flex;
+    gap: 16px;
+    font-size: 24px;
+}
 
-.badge-text p {font-size:12px;margin:4px 0;color:darkslategray;line-height:1.5}
+.brand-social svg {
+    fill: darkslategray;
+    transition: fill 0.2s;
+}
+
+.brand-social a:hover svg {
+    fill: #007bff; /* 호버시 색상 */
+}
+
+.family-select {
+    background: seashell;
+    border: 1px solid silver;
+    color: darkslategray;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.info-row {
+    /*margin-top: 16px;*/
+    font-size: 16px;
+}
+
+.info-row .cs strong {
+    color: black;
+}
+
+.info-row .copy {
+    /*margin-top: 4px;*/
+    color: darkslategray;
+}
+
+.divider {
+	border: 0;
+    border-top: 1px solid black;
+    margin: 24px 0;
+}
+
+.badge-section {
+    margin-bottom: 20px;
+}
+.badge-row {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    padding-left:40px; /* 왼쪽 여백을 주어 전체 오른쪽으로 밀기 */
+}
+
+.badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 120px;
+}
+
+.badge img {
+    height: 48px;
+	align-items: center;
+    margin-bottom: 8px;
+}
+
+.badge p {
+    font-size: 12px;
+    color: gray;
+    line-height: 1.4;
+}
+
+
+.badge-text p {
+    font-size: 12px;
+    margin: 4px 0;
+    color: darkslategray;
+    line-height: 1.5;
+}
+
 </style>
 
-</footer>
+

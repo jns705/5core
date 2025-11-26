@@ -102,7 +102,7 @@
   <div class="main">
     <div class="header">
       <div class="logo">HYUNDAI CRM</div>
-      <div class="user-info">[[${dealer.name}]] 님 <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="logout">로그아웃</a></div>
+      <div class="user-info">홍길동 님 <span class="logout">로그아웃</span></div>
     </div>
 
     <div class="content">
@@ -122,8 +122,8 @@
             </div>
 
             <div style="border-top:1px solid #eee; padding-top:15px;">
-				<p style="font-size:14px; color:#333;">이메일: [[${dealer.email}]]</p>
-            	<p style="font-size:14px; color:#333;">전화번호: [[${dealer.phone}]]</p>
+              <p style="font-size:14px; color:#333;">전화번호: [[${dealer.phone}]]</p>
+              <p style="font-size:14px; color:#333;">이메일: [[${dealer.email}]]</p>
             </div>
 
             <!-- KPI -->
