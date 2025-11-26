@@ -49,7 +49,6 @@ public class VehicleController {
 	        ) Pageable pageable,
 	        Model model) {
 		// ALL 버튼용 처리
-		// - 조건이 없을 때 null로 처리하여 서비스로 전달 (전체 조회)
 		if(keyword != null && keyword.isBlank()) keyword = null;
 		if(type != null && type.isBlank()) type = null;
 		if(fuel != null && fuel.isBlank()) fuel = null;

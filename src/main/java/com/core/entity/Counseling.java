@@ -53,7 +53,7 @@ public class Counseling {
     private String purchasePurpose;
 
     @Column(columnDefinition = "varchar(100)")	
-    private String customPurpose;   // ‘기타’ 입력 시
+    private String otherInput;   // ‘기타’ 입력 시
 
     // 희망 구매 시점
     @NotBlank(message = "희망 구매 시점은 필수 선택 사항입니다.")
