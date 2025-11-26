@@ -2,6 +2,7 @@ package com.core.entity;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -30,9 +33,10 @@ public class Counseling {
     private String vehicleId;
     
     /** 구매 상담 희망지역 **/   
-    @NotBlank(message = "시도는 필수 선택 사항입니다.")
-    @Column(columnDefinition = "varchar(30)")	
-    private String sido;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id")
+	@Valid
+    private HopeArea hopeArea;
     
     @NotBlank(message = "시군구는 필수 선택 사항입니다.")
     @Column(columnDefinition = "varchar(30)")	
