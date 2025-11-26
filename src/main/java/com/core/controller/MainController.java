@@ -29,9 +29,12 @@ public class MainController {
 	
 	
 	
-	
-	
-	// 딜러(매니저) (Role.DEALER)
+	/*
+	 * -------------------------------------------------------------------------------------------
+	 * DEALER
+	 * -------------------------------------------------------------------------------------------
+	 */
+	// 딜러(Role.DEALER)
 	@GetMapping("/dealer")
 	public String requestDealerMain() {
 		
@@ -39,7 +42,7 @@ public class MainController {
 	}
 	
 	@GetMapping("/dealer/profile")
-	public String requestManagerProfile(Principal principal, Model model) {
+	public String requestDealerProfile(Principal principal, Model model) {
 		Member dealer = memberService.findByMemberId(principal.getName());
 		
 		List<Member> customerList = memberService.findByRole(Role.CUSTOMER);
@@ -47,11 +50,15 @@ public class MainController {
 		model.addAttribute("customerList", customerList);
 		model.addAttribute("dealer", dealer);
 		
-		return "/dealer/profile";
+		return "dealer/profile";
 	}
 	
-	
-	
+	// 딜러
+	@GetMapping("/dealer/care")
+	public String requestDealercarList() {
+		
+		return "dealer/careList";
+	}
 	
 	
 	

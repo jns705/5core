@@ -65,11 +65,6 @@ public class VehicleController {
 	}
 
 
-	
-	
-	
-	
-	
 	// 차량 상세 정보 조회 - 모델 코드로 조회
 	@GetMapping("/vehicle/{modelCode}")
 	public String requestVehicleDetail(@PathVariable("modelCode") String modelCode, Model model) {
@@ -78,6 +73,8 @@ public class VehicleController {
 		model.addAttribute("vehicle", vehicle);
 		return "vehicle/vehicle";
 	}
+	
+	
 	
 	// 딜러 차량 등록 폼
 	@GetMapping("/dealer/add")
