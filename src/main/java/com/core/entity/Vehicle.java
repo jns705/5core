@@ -46,9 +46,9 @@ public class Vehicle {
     @Column(columnDefinition = "varchar(30)")
     private String brand;
 
-    // 연료 타입 ( 가솔린, 디젤, 전기 등)
+    // 연료 타입
     @Column(columnDefinition = "varchar(30)")
-    private String fuelType;
+    private String fuelType; // 휘발유, 경유, 전기 3종
 
     // 연식 
     @Column(columnDefinition = "varchar(10)")
