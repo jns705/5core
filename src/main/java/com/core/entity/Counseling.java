@@ -38,14 +38,6 @@ public class Counseling {
 	@Valid
     private HopeArea hopeArea;
     
-    @NotBlank(message = "시군구는 필수 선택 사항입니다.")
-    @Column(columnDefinition = "varchar(30)")	
-    private String siGunGu;
-    
-    @NotBlank(message = "읍면동은 필수 선택 사항입니다.")
-    @Column(columnDefinition = "varchar(30)")	
-    private String eupMyeonDong;
-    
     /** 구매 희망 정보 **/
     // 차량 구매 목적
     @NotBlank(message = "차량 구매 목적은 필수 선택 사항입니다.")
