@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -13,8 +12,6 @@
   <!-- bxSlider CSS/JS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <!-- Swiper CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <!-- Swiper JS -->
@@ -33,7 +30,6 @@
         <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671"/>
       </svg>
     </button>
-
 	    <ul class="bxslider">
 	        <li class="car-slide">
 	            <div class="car-title">IONIQ 6 N</div>
@@ -71,111 +67,166 @@
 	            <img th:src="@{/images/Main-KV_Car_CASPER-Electric.png}" class="car-img">
 	        </li>
 	    </ul>
-	</div>
-
+	</div>	
+	<!-- 상담 아이콘 -->
+	<a href="#" class="consult-icon" target="_blank" aria-label="상담하기">
+	    <img th:src="@{/icons/speech-bubble.png}" >
+	</a>
+</body>
+</html>	
   <th:block th:replace="~{/bottom.html}"></th:block>
   <style>
-    .slider-wrap {
-      width: 100%;
-      margin: 0 auto;
-      padding: 70px 0;
-      position: relative;
-    }
-    .car-slide {
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
+.slider-wrap {
+	width: 100%;
+	margin: 0 auto;
+	padding: 70px 0;
+	position: relative;
+	border: none !important;
+	box-shadow: none !important;
+}
+  /* bxSlider wrapper의 위아래 선 제거 */
+.bx-wrapper {
+    border: none !important;
+    box-shadow: none !important;
+}
 
-    .car-title, .car-sub {
-      position: relative;
-      z-index: 2;
-      opacity: 0;
-    }
-    .car-title {
-      font-size: 71px; font-weight: 800; margin-bottom: 20px;
-    }
-    .car-sub {
-      font-size: 23px; font-weight: 400; margin-bottom: 40px;
-    }
+.car-slide {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.car-title, .car-sub {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+}
+.car-title {
+    font-size: 71px; font-weight: 800; margin-bottom: 20px;
+}
+.car-sub {
+    font-size: 23px; font-weight: 400; margin-bottom: 40px;
+}
 
-    .car-img {
-      margin: auto;
-      width: 70%; height: auto;
-      max-height: 650px;
-      object-fit: cover;
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-    }
+.car-img {
+    margin: auto;
+    width: 70%; height: auto;
+    max-height: 650px;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+}
 
-    .bx-prev, .bx-next {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
-      width: 60px; height: 60px;
-      background: none; border: none;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-    }
-    .bx-prev { left: 30px; }
-    .bx-next { right: 30px; }
+.bx-prev, .bx-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 60px; height: 60px;
+    background: none; border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+}
+.bx-prev { left: 200px; }
+.bx-next { right: 200px; }
 
-    .bx-prev svg, .bx-next svg {
-      width: 50px; height: 50px; fill: #000;
-    }
-    .bx-prev:hover, .bx-next:hover { opacity: 1; background: none; }
-    .bx-wrapper .bx-prev::before, .bx-wrapper .bx-next::before { content: ""; }
-  </style>
-  <script>
-    $(function() {
-        // 슬라이더 초기화
-        var slider = $('.bxslider').bxSlider({
-            pager: false,
-            controls: false,
-            mode: 'fade',
-            speed: 500,
-            pause: 5000,
-            onSliderLoad: animateSlide,
-            onSlideAfter: function($slide, oldIndex, newIndex) {
-                resetSlide(oldIndex);
-                animateSlide(newIndex);
-            }
-        });
+.bx-prev svg, .bx-next svg {
+    width: 50px; height: 50px; fill: #000;
+}
+.bx-prev:hover, .bx-next:hover { opacity: 1; background: none; }
+.bx-wrapper .bx-prev::before, .bx-wrapper .bx-next::before { content: ""; }
+	
+	
+/* 상담 아이콘 고정 */
+.consult-icon {
+    position: fixed;
+    bottom: 100px;       /* 화면 아래쪽 거리 */
+    right: 30px;        /* 화면 오른쪽 거리 */
+    width: 100px;        /* 아이콘 크기 */
+    height: 100px;
+    z-index: 1000;      /* 항상 위에 */
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%; /* 동그란 버튼 */
+    background-color: navy; /* 원하는 색상 */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+.consult-icon img {
+	width: 80%;
+	height: 80%;
+}
+.consult-icon:hover {
+	transform: scale(1.1); /* 호버 시 살짝 커짐 */
+	cursor: pointer;
+}	
+ </style>
 
-        // 화살표 클릭
-        $('.bx-prev').click(function(){ slider.goToPrevSlide(); });
-        $('.bx-next').click(function(){ slider.goToNextSlide(); });
+ <script>
+ $(function() {
+     var slider = $('.bxslider').bxSlider({
+         pager: false,
+         controls: false,
+         mode: 'fade',
+         speed: 500,
+         pause: 5000,
+         auto: true,
+         onSlideBefore: function($slideElement) {
+             // 이전 슬라이드 요소 초기화
+             $slideElement.find('.car-title').css({opacity: 0, transform: 'translateY(50px)', transition: 'none'});
+             $slideElement.find('.car-sub').css({opacity: 0, transform: 'translateY(50px)', transition: 'none'});
+             $slideElement.find('.car-img').css({opacity: 0, transform: 'translateX(500px)', transition: 'none'});
+         },
+         onSlideAfter: function($slideElement) {
+             // 새 슬라이드 등장 애니메이션
+             setTimeout(function() {
+                 $slideElement.find('.car-title').css({
+                     opacity: 1,
+                     transform: 'translateY(0)',
+                     transition: 'all 1s ease-out 0.2s'
+                 });
+                 $slideElement.find('.car-sub').css({
+                     opacity: 1,
+                     transform: 'translateY(0)',
+                     transition: 'all 1s ease-out 0.4s'
+                 });
+				 $slideElement.find('.car-img').css({
+				     opacity: 0,
+				     transform: 'translateX(500px)', // 시작 위치
+				     transition: 'none'
+				 });
+				 $slideElement.find('.car-img').css({
+				     opacity: 1,
+				     transform: 'translateX(0)',
+				     transition: 'all 2.4s cubic-bezier(0.4, 0, 0.2, 1)' // 기존 1.2s → 2.4s로 느리게
+				 });
 
-        // 애니메이션 함수
-        function animateSlide(idx) {
-            var $slide = $('.bxslider li').eq(idx);
-            var $title = $slide.find('.car-title');
-            var $sub = $slide.find('.car-sub');
-            var $img = $slide.find('.car-img');
+             }, 50);
+         }
+     });
 
-            // 텍스트 먼저
-            gsap.fromTo([$title, $sub],
-                { y: 50, opacity: 0 },
-                { y: 0, opacity: 1, duration: 1, stagger: 0.2 }
-            );
+     // 이전/다음 버튼
+     $('.bx-prev').click(function(){ slider.goToPrevSlide(); });
+     $('.bx-next').click(function(){ slider.goToNextSlide(); });
 
-            // 자동차 오른쪽에서 달려오기
-            gsap.fromTo($img,
-                { x: 900, opacity: 0 },
-                { x: 0, opacity: 1, duration: 3, ease: "power2.out" }
-            );
-        }
+     // 첫 슬라이드 초기 애니메이션
+     var $first = $('.bxslider li').eq(0);
+     $first.find('.car-title').css({
+         opacity: 1,
+         transform: 'translateY(0)',
+         transition: 'all 1s ease-out 0.2s'
+     });
+     $first.find('.car-sub').css({
+         opacity: 1,
+         transform: 'translateY(0)',
+         transition: 'all 1s ease-out 0.4s'
+     });
+     $first.find('.car-img').css({
+         opacity: 1,
+         transform: 'translateX(0)',
+         transition: 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)'
+     });
+ });
+ </script>
 
-        // 이전 슬라이드 초기화
-        function resetSlide(idx) {
-            var $slide = $('.bxslider li').eq(idx);
-            $slide.find('.car-title, .car-sub').css({ opacity: 0, transform: 'translateY(50px)' });
-            $slide.find('.car-img').css({ opacity: 0, transform: 'translateX(900px)' });
-        }
-    });
-    </script>
-
-</body>
-</html>
