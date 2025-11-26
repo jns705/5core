@@ -204,7 +204,7 @@ public class Application {
 			memberService.saveMember(m8);
 			memberService.saveMember(m9);
 			memberService.saveMember(m10);
-			
+			     
 		};
 	}
 }
