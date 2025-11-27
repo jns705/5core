@@ -23,10 +23,7 @@ public class VehicleService {
 	
 	//############################################################
 	// 트림에 따른 가격 계산
-	public int getPriceByTrim(Long id) {
-		// 차량의 트림 정보를 조회
-		vehicle = vehicleRepository.findById(id).get();
-		String trim = vehicle.getTrim();
+	public int getPriceByTrim(String trim) {
 		
 		// 트림이 null인 경우 기본 가격
 		if(trim == null) return 0;
@@ -39,10 +36,12 @@ public class VehicleService {
 		};
 	}
 	// 총액 계산 (기본가격 + 트림가격)
-	public int getTotalPrice(Long id) {
-		vehicle = vehicleRepository.findById(id).get();
+	public int getTotalPrice(Long id, String trim) {
+		vehicle = vehicleRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("차량이 존재하지 않습니다."));
+		
 		int basePrice = vehicle.getPrice(); // 기본 가격
-		int trimPrice = getPriceByTrim(id); // 트림 가격
+		int trimPrice = getPriceByTrim(trim); // 트림 가격
 		
 		return basePrice + trimPrice; 		// 총액
 	}
