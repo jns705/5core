@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.core.entity.Customer;
 import com.core.entity.Dealer;
 import com.core.entity.Member;
+import com.core.entity.Role;
 import com.core.service.CustomerService;
 import com.core.service.DealerService;
 import com.core.service.MemberService;
@@ -90,7 +91,7 @@ public class MemberController {
 		return "redirect:/main";
 	}
 	
-
+	// 회원정보 조회
 	@GetMapping("/update/{memberId}")
 	public String updateCustomerForm(@PathVariable("memberId") String memberId, Model model) {
 		Member member = memberService.findByMemberId(memberId);
@@ -99,6 +100,32 @@ public class MemberController {
 		return "member/updateMember";
 	}
 	
+	// 회원정보 수정 처리
+	@PostMapping("/update")
+	public String updateMemberPro(@Valid @ModelAttribute Member member, BindingResult bindingResult) {
+		// 유효성 검사
+		if(bindingResult.hasErrors()) {
+			return "member/updateMember";
+		}
+		
+		// 입력한 비밀번호 2개가 일치하는지를 검사
+		if(!member.getPassword().equals(member.getPassword2())) {
+			bindingResult.rejectValue("password2", "passwordIncorrect", "입력한 비밀번호가 일치하지 않습니다.");
+			return "member/updateMember";
+		}
+		
+		// 추가해야함
+		
+		return "redirect:/member/update/" + member.getMemberId();
+	}
+	
+	// 회원삭제(탈퇴)
+	@GetMapping("/delete/{memberId}")
+	public String deleteMemberPro(@PathVariable("memberId") String memberId) {
+		//memberService.deleteMember(memberId);
+		
+		return "redirect:/logout";
+	}
 	
 	
 }

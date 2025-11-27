@@ -320,6 +320,22 @@
       transform: translateY(-1px);
       box-shadow: 0 9px 18px rgba(15, 23, 42, 0.24);
     }
+	
+	.radioBox {
+	    display: inline-block;
+	}
+	.radioBox > label {
+	    display: inline-block; width: 100px; border: 1px solid #cbd5e1; border-radius: 10px;
+	}
+	input[name=gender], input[name=foreigner] {
+	    display: none;
+	}
+	.radio_check {
+	    font-size: 1.5em; cursor: pointer; text-align: center;
+	}
+	input[name=gender]:checked + label, input[name=foreigner]:checked + label {
+	    color: #fff; border: 1px solid #90cbfb; background-color: #90cbfb;
+	}
 
     /* 반응형 */
     @media (max-width: 900px) {
@@ -381,7 +397,7 @@
             <a href="#" class="sidebar__link">상담 목록</a>
           </li>
           <li class="sidebar__item">
-            <a href="#" class="sidebar__link sidebar__link--active">회원수정</a>
+            <a th:href="@{|/member/update/${#authentication.getPrincipal().getUsername()}|}" class="sidebar__link sidebar__link--active">회원수정</a>
           </li>
           <li class="sidebar__item">
             <a href="#" class="sidebar__link">구매 내역</a>
@@ -421,14 +437,10 @@
 
               <div class="form-group">
                 <label class="form-label">성별</label>
-                <div class="gender-group">
-                  <label class="gender-option">
-                    <input type="radio" name="gender" value="남성" checked disabled /> 남성
-                  </label>
-                  <label class="gender-option">
-                    <input type="radio" name="gender" value="여성" disabled /> 여성
-                  </label>
-                </div>
+				<div class="gender-group">
+				    <div class="radioBox"><input type="radio" name="gender" value="남성" id="gender1"><label for="gender1" class="radio_check">남성</label></div>
+				    <div class="radioBox"><input type="radio" name="gender" value="여성" id="gender2"><label for="gender2" class="radio_check">여성</label></div>
+				</div>
               </div>
 
               <div class="form-group">
@@ -468,7 +480,7 @@
             </div>
 
             <div class="form-actions">
-              <button type="button" class="btn btn--ghost" onclick="window.history.back();">취소</button>
+              <button type="button" class="btn btn--ghost">삭제</button>
               <button type="submit" class="btn btn--primary">정보 수정하기</button>
             </div>
           </form>
