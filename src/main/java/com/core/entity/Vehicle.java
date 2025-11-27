@@ -55,7 +55,6 @@ public class Vehicle {
     private String year;
 
     // 배기량 
-    @Column(columnDefinition = "varchar(30)")
     private Integer displacement;
 
     // 차 상태 (SUV, 세단 등) 
@@ -72,6 +71,9 @@ public class Vehicle {
 	
 	@Transient
 	private MultipartFile vehicleImage; // 업로드된 차량 이미지
+	
+	// 연비
+	private Double fuelEfficiency;
 	
 	
     // 차량 옵션 / 컬러

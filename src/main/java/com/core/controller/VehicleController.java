@@ -73,13 +73,11 @@ public class VehicleController {
 		model.addAttribute("vehicle", vehicle);
 		return "vehicle/vehicle";
 	}
-	@GetMapping("/debug/image")
+	@GetMapping("/check")
 	@ResponseBody
-	public String debugImage() {
-	    File file = new File("C:/5core/grandeur_blue.png");
-	    return "존재여부: " + file.exists() + ", 크기: " + file.length();
+	public String check() {
+	    return "OK";
 	}
-	
 	
 	
 	// 딜러 차량 등록 폼

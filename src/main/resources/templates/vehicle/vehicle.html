@@ -155,7 +155,7 @@
 		<div class="detail-wrap">
 		
 		    <div class="image-section">
-		        <img id="mainImage" th:src="@{/images/{img}(img=${vehicle.fileName})}">
+		        <img id="mainImage" th:src="@{/images/{img}(img=${vehicle.colors[0].imageColorUrl})}"/>
 		        <div class="color-picker">
 					<div th:each="c : ${vehicle.colors}" 
 					     class="color-circle"
@@ -167,10 +167,23 @@
 		
 		    <div class="info-section">
 		        <table class="spec-table">
-		            <tr><td>연료</td><td>가솔린</td></tr>
-		            <tr><td>배기량</td><td>2497cc</td></tr>
-		            <tr><td>변속기</td><td>자동 8단</td></tr>
-		            <tr><td>연비</td><td>12.1km/L</td></tr>
+					<tr><td>차종</td><td>[[${vehicle.vehicleType}]]</td></tr>
+		            <tr><td>연료</td><td>[[${vehicle.fuelType}]]</td></tr>
+					<tr>
+						<td>배기량</td>
+						<td>
+							<span th:if="${vehicle.fuelType != '전기'}">[[${vehicle.displacement}]] cc</span>
+							<span th:if="${vehicle.fuelType == '전기'}">[[${vehicle.displacement}]] PS</span>
+						</td>
+					</tr>
+		            
+		            <tr>
+						<td>연비</td>
+						<td>
+							<span th:if="${vehicle.fuelType != '전기'}">[[${vehicle.fuelEfficiency}]] km/L</span>
+							<span th:if="${vehicle.fuelType == '전기'}">[[${vehicle.fuelEfficiency}]] km/kWh</span>
+						</td>
+					</tr>
 		        </table>
 		
 		        <div class="option-box">
