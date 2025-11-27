@@ -146,10 +146,10 @@
 	<div class="vehicle-detail">
 		<div class="vehicle-header">
 		    <div class="vehicle-title">
-		        <h1>그랜저</h1>
-		        <p>현대 · 세단 · 2025</p>
+		        <h1>[[${vehicle.name}]]</h1>
+		        <p>[[${vehicle.brand}]] · [[${vehicle.vehicleType}]] · [[${vehicle.year}]]</p>
 		    </div>
-		    <div class="price">KRW 39,000,000 ~</div>
+		    <div class="price">KRW [[${#numbers.formatInteger(vehicle.price, 3, 'COMMA')}]] ~</div>
 		</div>
 		
 		<div class="detail-wrap">
