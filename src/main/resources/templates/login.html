@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+	<th:block th:replace="~{/top.html}"></th:block>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login폼</title>
@@ -8,7 +9,7 @@
     <style>
         /* 전체 */
         body {
-            background-color: #eee;
+           /* background-color: #eee;*/
             font-family: "Mukta", "Sunflower", sans-serif;
             font-weight: 400;
             font-style: normal;
@@ -19,11 +20,27 @@
             width : 1600px;
             margin : 0 auto;
         }
-
-
         /* 중단 */
-        .login_menu { width: 100%; height: 600px; margin: 50px auto; text-align: center;}
-        .login_box {position: absolute; width: 700px; height: 580px; left: 600px; background-color: #fff; z-index: 1;}
+		.login_menu { 
+			background-color: #eee;
+		    width: 100%; 
+		    height: 600px; 
+		    margin: 50px auto; 
+		    text-align: center;
+		    position: relative;   /* ← 추가됨 */
+		}
+
+		/* 로그인 박스 가운데 정렬 */
+		.login_box {
+		    position: absolute;
+		    width: 700px;
+		    height: 500px;
+		    left: 50%;                /* ← 기존 600px 삭제 */
+		    top: 50%;                 /* 화면 반절 */
+		    transform: translate(-50%, -50%); /* ← 가운데 정렬 */
+		    background-color: #fff;
+		    z-index: 1;
+		}
         h1 {font-size: 3em;}
         .login_box1 { margin: 50px auto;}
         .login_box1 { clear: both; width: 600px; height: 150px;}
@@ -43,7 +60,6 @@
 
         /* 하단 */
 
-
     </style>
 	<script>
 		let flag = false;
@@ -62,9 +78,7 @@
 					flag = false;
 	                login_box3.style.display = "none";
 	            }
-	        };
-
-	        
+	        };        
 	    });
 		
 		function addCustomer() { 
@@ -72,16 +86,12 @@
 		}
 		function addDealer() { 
 			location.href = "/5core/member/add/" + "02";
-		}
-		
-	</script>
-	
+		}	
+	</script>	
 </head>
 <body>
 <div id="container">
     <!-- 상단 -->
-
-
     <!-- 중단 -->
     <div class="login_menu">
         <div class="login_box">
@@ -118,9 +128,8 @@
         </form>
         </div>
     </div>
-
     <!-- 하단 -->
-
 </div>
 </body>
 </html>
+<th:block th:replace="~{/bottom.html}"></th:block>

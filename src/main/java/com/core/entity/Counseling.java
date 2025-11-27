@@ -1,7 +1,4 @@
 package com.core.entity;
-
-import java.time.LocalDateTime;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,64 +20,65 @@ import lombok.Data;
 @Entity
 @Data
 public class Counseling {
-	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-   
-    @NotBlank(message = "차량 선택은 필수 사항입니다.")
-    @Column(unique= true, columnDefinition = "varchar(30)")
-    private String vehicleId;
-    
-    /** 구매 상담 희망지역 **/   
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@NotBlank(message = "차량 선택은 필수 사항입니다.")
+	@Column(unique= true, columnDefinition = "varchar(30)")
+	private String vehicleId;
+
+	/** 구매 상담 희망지역 **/   
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "hopearea_id")
 	@Valid
-    private HopeArea hopeArea;
-    
-    /** 구매 희망 정보 **/
-    // 차량 구매 목적
-    @NotBlank(message = "차량 구매 목적은 필수 선택 사항입니다.")
-    @Column(columnDefinition = "varchar(100)")	
-    private String purchasePurpose;
+	private HopeArea hopearea;
 
-    @Column(columnDefinition = "varchar(100)")	
-    private String otherInput;   // ‘기타’ 입력 시
+	/** 구매 희망 정보 **/
+	// 차량 구매 목적
+	@NotBlank(message = "차량 구매 목적은 필수 선택 사항입니다.")
+	@Column(columnDefinition = "varchar(100)")	
+	private String purchasePurpose;
 
-    // 희망 구매 시점
-    @NotBlank(message = "희망 구매 시점은 필수 선택 사항입니다.")
-    @Column(columnDefinition = "varchar(100)")	
-    private String purchasePeriod;
+	@Column(columnDefinition = "varchar(100)")	
+	private String otherInput;   // ‘기타’ 입력 시
 
-    // 선호 차량 유형
-    @Column(columnDefinition = "varchar(100)")	
-    private String vehicleType;
+	// 희망 구매 시점
+	@NotBlank(message = "희망 구매 시점은 필수 선택 사항입니다.")
+	@Column(columnDefinition = "varchar(100)")	
+	private String purchasePeriod;
 
-    // 선호 엔진
-    @Column(columnDefinition = "varchar(100)")	
-    private String engineType;
+	// 선호 차량 유형
+	@Column(columnDefinition = "varchar(100)")	
+	private String vehicleType;
 
-    // 상담 희망 시간
-    private LocalDateTime counselingLikeTime;
+	// 선호 엔진
+	@Column(columnDefinition = "varchar(100)")	
+	private String engineType;
 
-    // 상담 상태 (상담신청/상담완료/판매완료) 
-    @Column(columnDefinition = "varchar(20) default '상담신청'")
-    private String status;
+	// 상담 희망 시간
+	@Column(columnDefinition = "varchar(30)")
+	private String counselingLikeTime;
 
-    // 상담 신청 고객 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+	// 상담 상태 (상담신청/상담완료/판매완료) 
+	@Column(columnDefinition = "varchar(20) default '상담신청'")
+	private String status;
 
-    // 담당 딜러 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dealer_id")
-    private Dealer dealer;
-    
-    // 상담 생성 메서드
-    public static Counseling createCounseling(Counseling counseling) {
-    		return counseling;
-    }
-    
-    
+	// 상담 신청 고객 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
+
+	// 담당 딜러 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dealer_id")
+	private Dealer dealer;
+
+	// 상담 생성 메서드
+	public static Counseling createCounseling(Counseling counseling) {
+		return counseling;
+	}
+
+
 }

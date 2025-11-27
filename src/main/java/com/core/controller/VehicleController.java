@@ -2,7 +2,6 @@ package com.core.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.core.entity.Vehicle;
@@ -73,7 +73,11 @@ public class VehicleController {
 		model.addAttribute("vehicle", vehicle);
 		return "vehicle/vehicle";
 	}
-	
+	@GetMapping("/check")
+	@ResponseBody
+	public String check() {
+	    return "OK";
+	}
 	
 	
 	// 딜러 차량 등록 폼

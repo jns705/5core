@@ -657,13 +657,13 @@
       <li>
         <a th:href="@{/dealer/care}" class="menu-item">
           <span class="menu-item__bullet"></span>
-          <span>고객 관리</span>
+          <span>상담 신청 명단</span>
         </a>
       </li>
       <li>
         <a class="menu-item">
           <span class="menu-item__bullet"></span>
-          <span>상담 신청 명단</span>
+          <span>고객 관리</span>
         </a>
       </li>
       <li>
@@ -693,7 +693,7 @@
       <div class="user-info">
         <span class="user-info__role">담당 딜러</span>
         <span>홍길동 님</span>
-        <span class="logout">로그아웃</span>
+        <span class="logout"><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="nav-link">로그아웃</a></span>
       </div>
     </div>
 
@@ -894,113 +894,5 @@
     </div>
   </div>
 
-  <!-- 차트 스크립트 (예시, Chart.js 기반) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    // 딜러 월별 실적 (상담 vs 구매)
-    const performanceCtx = document.getElementById('dealerPerformance')?.getContext('2d');
-    if (performanceCtx) {
-      new Chart(performanceCtx, {
-        type: 'line',
-        data: {
-          labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
-          datasets: [
-            {
-              label: '상담',
-              data: [28, 34, 31, 40, 42, 45],
-              borderColor: '#0d47a1',
-              backgroundColor: 'rgba(13, 71, 161, 0.08)',
-              tension: 0.35,
-              fill: true,
-              pointRadius: 3,
-              pointHoverRadius: 4
-            },
-            {
-              label: '구매',
-              data: [6, 7, 8, 9, 10, 12],
-              borderColor: '#22c55e',
-              backgroundColor: 'rgba(34, 197, 94, 0.05)',
-              tension: 0.35,
-              fill: true,
-              pointRadius: 3,
-              pointHoverRadius: 4
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: true,
-              position: 'bottom'
-            }
-          },
-          scales: {
-            x: {
-              grid: {
-                display: false
-              }
-            },
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: 'rgba(148, 163, 184, 0.25)'
-              }
-            }
-          }
-        }
-      });
-    }
-
-    // 월간 판매량 차트
-    const monthlyCtx = document.getElementById('monthlySalesChart')?.getContext('2d');
-    if (monthlyCtx) {
-      new Chart(monthlyCtx, {
-        type: 'bar',
-        data: {
-          labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
-          datasets: [
-            {
-              label: '총 판매',
-              data: [14, 16, 13, 18, 20, 22],
-              backgroundColor: '#0d47a1',
-              borderRadius: 6,
-              maxBarThickness: 24
-            },
-            {
-              label: 'EV 판매',
-              data: [4, 5, 5, 7, 8, 9],
-              backgroundColor: '#22c55e',
-              borderRadius: 6,
-              maxBarThickness: 24
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false
-            }
-          },
-          scales: {
-            x: {
-              grid: {
-                display: false
-              }
-            },
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: 'rgba(148, 163, 184, 0.25)'
-              }
-            }
-          }
-        }
-      });
-    }
-  </script>
 </body>
 </html>

@@ -47,6 +47,11 @@ public class MemberService implements UserDetailsService {
 		return memberRepository.findByMemberId(memberId).get();
 	}
 	
+	public Member updateMember(Member member) {
+		memberRepository.queryUpdateMember(member);
+		return memberRepository.findByMemberId(member.getMemberId()).get();
+	}
+	
 	// Role로 회원 조회
 	public List<Member> findByRole(Role role) {
 		return memberRepository.findByRole(role);
