@@ -10,10 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			const imageName = btn.dataset.img;
 			
 			if(imageName) {
-				mainImage.src = "/images/" + imageName;
+				mainImage.src = "/5core/images/" + imageName;
 			}
-			console.log(document.getElementById("mainImage").src);
-			console.log("이미지 경로:", "/images/" + imageName);
 		});
 	});
 });
