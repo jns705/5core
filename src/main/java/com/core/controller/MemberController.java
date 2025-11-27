@@ -78,8 +78,6 @@ public class MemberController {
 				dealerService.saveDealer(dealer, member);
 			}
 			
-			
-			
 		} catch(DataIntegrityViolationException e) {
 			// rejectValue(필드명, 오류코드, 메시지)
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", "이미 존재하는 회원 ID입니다.");
@@ -90,6 +88,15 @@ public class MemberController {
 		}
 
 		return "redirect:/main";
+	}
+	
+
+	@GetMapping("/update/{memberId}")
+	public String updateCustomerForm(@PathVariable("memberId") String memberId, Model model) {
+		Member member = memberService.findByMemberId(memberId);
+		model.addAttribute("member", member);
+		
+		return "member/updateMember";
 	}
 	
 	

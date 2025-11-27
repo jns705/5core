@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>상담 신청 명단</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background: #f3f5f9;
+      color: #1f2933;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    :root {
+      --primary: #0d47a1;
+      --primary-soft: #e3eefc;
+      --bg-elevated: #ffffff;
+      --border-subtle: #e2e8f0;
+      --text-muted: #6b7280;
+      --danger: #e53935;
+      --success: #1aa36f;
+      --warning: #f59e0b;
+    }
+
+    .sidebar {
+      width: 248px;
+      background: linear-gradient(180deg, #0d47a1 0%, #093272 100%);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+    }
+
+    .sidebar__logo {
+      padding: 0 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 16px;
+    }
+
+    .sidebar__logo-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .sidebar__section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      opacity: 0.75;
+      padding: 0 24px;
+      margin-bottom: 6px;
+    }
+
+    .menu-list {
+      list-style: none;
+      padding: 0 8px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      margin: 2px 8px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.18s ease, transform 0.12s ease;
+      color: #eef3ff;
+      opacity: 0.9;
+    }
+
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+      opacity: 1;
+    }
+
+    .menu-item--active {
+      background: #ffffff;
+      color: #0d47a1;
+      opacity: 1;
+      font-weight: 600;
+    }
+
+    .menu-item__bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .menu-item--active .menu-item__bullet {
+      background: #0d47a1;
+    }
+
+    .sidebar__bottom {
+      margin-top: auto;
+      padding: 12px 24px 8px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .header {
+      height: 64px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .header__left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0d47a1;
+    }
+
+    .header__chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e3eefc;
+      font-size: 11px;
+      color: #1f3e7a;
+    }
+
+    .user-info {
+      font-size: 14px;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-info__role {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .user-info span.logout {
+      color: #0d47a1;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .content {
+      padding: 20px 24px 24px;
+      overflow-y: auto;
+    }
+
+    .page-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .page-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .filter-pill {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .filter-pill--active {
+      background: #0d47a1;
+      color: #ffffff;
+      border-color: #0d47a1;
+      font-weight: 500;
+    }
+
+    .card {
+      background: var(--bg-elevated);
+      padding: 18px 18px 16px;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .card__title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .card__subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .card__chip {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .care-table-wrapper {
+      margin-top: 4px;
+      max-height: 460px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .care-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .care-table thead {
+      position: sticky;
+      top: 0;
+      background: #f9fafb;
+      z-index: 1;
+    }
+
+    .care-table th,
+    .care-table td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid #edf2f7;
+      white-space: nowrap;
+    }
+
+    .care-table th {
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 600;
+    }
+
+    .care-row {
+      transition: background 0.12s ease;
+    }
+
+    .care-row:hover {
+      background: #f3f4ff;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .badge--care {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .badge--progress {
+      background: #ecfdf3;
+      color: #166534;
+    }
+
+    .badge--done {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-select {
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      font-size: 12px;
+      color: #374151;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .status-select:focus {
+      border-color: #0d47a1;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.08s ease, box-shadow 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn:hover {
+      transform: translateY(-0.5px);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+    }
+
+    .btn--primary {
+      background: #0d47a1;
+      color: #ffffff;
+    }
+
+    .btn--ghost {
+      background: #ffffff;
+      color: #374151;
+      border: 1px solid #d1d5db;
+    }
+
+    .change-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 960px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        height: 56px;
+      }
+      .sidebar__logo {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+      .sidebar__section-title,
+      .sidebar__bottom {
+        display: none;
+      }
+      .menu-list {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        padding-right: 16px;
+      }
+      .menu-item {
+        margin: 0 4px;
+        padding: 6px 10px;
+      }
+      .main {
+        height: calc(100vh - 56px);
+      }
+    }
+	
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-title">관리 메뉴</div>
+    </div>
+    <div class="sidebar__section-title">Navigation</div>
+    <ul class="menu-list">
+      <li>
+        <a th:href="@{/dealer}" class="menu-item">
+          <span class="menu-item__bullet"></span>
+          <span>딜러 프로필</span>
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/dealer/care}" class="menu-item menu-item--active">
+          <span class="menu-item__bullet"></span>
+          <span>상담 신청 명단</span>
+        </a>
+      </li>
+      <li>
+        <a class="menu-item">
+          <span class="menu-item__bullet"></span>
+          <span>고객 관리</span>
+        </a>
+      </li>
+      <li>
+        <a class="menu-item">
+          <span class="menu-item__bullet"></span>
+          <span>구매 관리</span>
+        </a>
+      </li>
+      <li>
+        <a class="menu-item">
+          <span class="menu-item__bullet"></span>
+          <span>보고서 / 분석</span>
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar__bottom">
+      HYUNDAI CRM · Dealer Console
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <div class="header__left">
+        <div class="logo">HYUNDAI CRM</div>
+        <div class="header__chip">Consult Care</div>
+      </div>
+      <div class="user-info">
+        <span class="user-info__role">담당 딜러</span>
+        <span>홍길동 님</span>
+        <span class="logout">로그아웃</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="page-header-row">
+        <div>
+          <h1 class="page-title">상담 신청 명단</h1>
+          <p class="page-subtitle">온라인/전화로 접수된 상담 신청 현황 관리</p>
+        </div>
+        <div class="filter-group">
+          <span>보기:</span>
+          <button type="button" class="filter-pill filter-pill--active">전체</button>
+          <button type="button" class="filter-pill">신규 신청</button>
+          <button type="button" class="filter-pill">진행중</button>
+          <button type="button" class="filter-pill">완료</button>
+        </div>
+      </div>
+
+      <section class="card">
+        <div class="card__header">
+          <div>
+            <h2 class="card__title">상담 신청 리스트</h2>
+            <p class="card__subtitle">
+              오늘 접수: 0건 · 진행중: 0건
+            </p>
+          </div>
+          <span class="card__chip">실시간 동기화</span>
+        </div>
+
+        <div class="care-table-wrapper">
+          <table class="care-table">
+            <thead>
+              <tr>
+                <th>번호</th>
+                <th>신청일</th>
+                <th>신청자</th>
+                <th>연락처</th>
+                <th>상담 희망일</th>
+                <th>신청 현황</th>
+                <th>변경</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  class="care-row">
+                <td >1</td>
+                <td >2025-11-26 10:30</td>
+                <td >홍길동</td>
+                <td >010-1234-5678</td>
+                <td >2025-11-28 14:00</td>
+                <td>
+                  <span class="badge badge--care" >상담 신청</span>
+                  <span class="badge badge--progress" >상담 진행중</span>
+                  <span class="badge badge--done" >상담 완료</span>
+                </td>
+                <td>
+                  <div class="change-cell">
+                    <select class="status-select" >
+                      <option value="CARE">상담 신청</option>
+                      <option value="IN_PROGRESS">상담 진행중</option>
+                      <option value="DONE">상담 완료</option>
+                    </select>
+                    <button type="button" class="btn btn--primary btn-update" >
+                      수정
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr >
+                <td colspan="7" style="text-align:center; color:#6b7280; padding:16px;">
+                  등록된 상담 신청이 없습니다.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

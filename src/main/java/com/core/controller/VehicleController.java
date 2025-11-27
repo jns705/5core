@@ -49,7 +49,6 @@ public class VehicleController {
 	        ) Pageable pageable,
 	        Model model) {
 		// ALL 버튼용 처리
-		// - 조건이 없을 때 null로 처리하여 서비스로 전달 (전체 조회)
 		if(keyword != null && keyword.isBlank()) keyword = null;
 		if(type != null && type.isBlank()) type = null;
 		if(fuel != null && fuel.isBlank()) fuel = null;
@@ -66,11 +65,6 @@ public class VehicleController {
 	}
 
 
-	
-	
-	
-	
-	
 	// 차량 상세 정보 조회 - 모델 코드로 조회
 	@GetMapping("/vehicle/{modelCode}")
 	public String requestVehicleDetail(@PathVariable("modelCode") String modelCode, Model model) {
@@ -79,6 +73,8 @@ public class VehicleController {
 		model.addAttribute("vehicle", vehicle);
 		return "vehicle/vehicle";
 	}
+	
+	
 	
 	// 딜러 차량 등록 폼
 	@GetMapping("/dealer/add")
