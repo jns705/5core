@@ -61,7 +61,8 @@ public class Counseling {
     private String engineType;
 
     // 상담 희망 시간
-    private LocalDateTime counselingLikeTime;
+    @Column(columnDefinition = "varchar(30)")
+    private String counselingLikeTime;
 
     // 상담 상태 (상담신청/상담완료/판매완료) 
     @Column(columnDefinition = "varchar(20) default '상담신청'")
