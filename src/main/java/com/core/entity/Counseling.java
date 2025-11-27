@@ -65,7 +65,7 @@ public class Counseling {
 
     // 상담 상태 (상담신청/상담완료/판매완료) 
     @Column(columnDefinition = "varchar(20) default '상담신청'")
-    private String status;
+    private ApplyStatus status;
 
     // 상담 신청 고객 
     @ManyToOne(fetch = FetchType.LAZY)
