@@ -11,8 +11,9 @@ public class ResourceConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/images/**")                // 웹요청에 포함되도록 하는 외부 연결 URI 경로
-				.addResourceLocations("file:///" + "c:/5core/") // 파일 위치
-				.setCachePeriod(60*60*24*365);                   // 접근 파일 캐싱 시간, 365일
+				.addResourceLocations("file:///" + "c:/5core/")  // 파일 위치
+				.setCachePeriod(60*60*24*365);                    // 접근 파일 캐싱 시간, 365일
+
 	}
 
 }
