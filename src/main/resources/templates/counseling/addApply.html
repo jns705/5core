@@ -377,6 +377,9 @@
         <p class="apply-subtitle">희망 차종과 구매 계획을 알려주시면, 최적의 딜러와 연결해 드립니다.</p>
       </header>
 	  <div>
+		<p th:errors="*{hopearea.sido}"></p>
+		<p th:errors="*{hopearea.siGunGu}"></p>
+		<p th:errors="*{hopearea.eupMyeonDong}"></p>
 		<p th:errors="*{vehicleId}"></p>
 		<p th:errors="*{purchasePurpose}"></p>
 		<p th:errors="*{otherInput}"></p>
@@ -400,11 +403,12 @@
 			  <span class="step-right-text stepText1"></span>
 			  <span class="accordion-arrow">▼</span>
 			</div>
-
+			
 			
           </div>
           <div class="accordion-content">
             <p class="accordion-description">차량 모델 선택 UI가 들어갈 영역입니다. (차종 카드, 드롭다운, 검색 등)</p>
+			
           </div>
         </div>
 
@@ -427,22 +431,22 @@
           </div>
           <div class="accordion-content">
             <div class="form-row">
-              <label for="sido" class="required">시/도</label>
-              <select class="area" name="sido" id="sido">
+              <label for="sido"  class="required">시/도</label>
+              <select class="area" name="hopearea.sido" id="hopearea.sido" >
                 <option value="">시/도 선택</option>
                 <option>서울특별시</option>
                 <option>부산광역시</option>
               </select>
 
               <label for="siGunGu" class="required">시/군/구</label>
-              <select class="area" name="siGunGu" id="siGunGu">
+              <select class="area" name="hopearea.siGunGu" id="hopearea.siGunGu" >
                 <option value="">시/군/구 선택</option>
                 <option>종로구</option>
                 <option>중구</option>
               </select>
 
               <label for="eupMyeonDong">읍/면/동</label>
-              <select class="area" name="eupMyeonDong" id="eupMyeonDong">
+              <select class="area" name="hopearea.eupMyeonDong" id="hopearea.eupMyeonDong">
                 <option value="">읍/면/동 선택</option>
                 <option>테스트</option>
               </select>
@@ -612,9 +616,9 @@
 	  let form = document.applyForm;
       header.addEventListener("click", () => {
         let openContent = document.querySelector(".accordion-content.open");
-		let sido = document.querySelector("#sido");
-		let siGunGu = document.querySelector("#siGunGu");
-		let eupMyeonDong = document.querySelector("#eupMyeonDong");
+		let sido = document.querySelector("#hopearea.sido");
+		let siGunGu = document.querySelector("#hopearea.siGunGu");
+		let eupMyeonDong = document.querySelector("#hopearea.eupMyeonDong");
 		let stepText1 = document.querySelector(".stepText1");
 		let stepText2 = document.querySelector(".stepText2");
 		
@@ -701,14 +705,14 @@
       // 전체 신청 미리보기
       btnApply.addEventListener("click", () => {
 
-        let sido = document.querySelector("#sido");
-        let siGunGu = document.querySelector("#siGunGu");
-        let eupMyeonDong = document.querySelector("#eupMyeonDong");
+        let sido = document.querySelector("#hopearea.sido");
+        let siGunGu = document.querySelector("#hopearea.siGunGu");
+        let eupMyeonDong = document.querySelector("#hopearea.eupMyeonDong");
  
         let allTxt =
-		  `<br>시/도: ${sido.value || "-"}<br>` +
-		  `시/군/구: ${siGunGu.value || "-"}<br>` +
-		  `읍/면/동: ${eupMyeonDong.value || "-"}<br>` ;
+		  `<br>시/도: ${sido || "-"}<br>` +
+		  `시/군/구: ${siGunGu || "-"}<br>` +
+		  `읍/면/동: ${eupMyeonDong || "-"}<br>` ;
         	result.innerHTML = '<div class="info-block-title">구매 신청 미리보기</div>' + likeTxt + allTxt;
       });
     });

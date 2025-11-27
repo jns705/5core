@@ -39,10 +39,12 @@ public class CounselingController {
 	@PostMapping("/add")
 	public String addCounselingApply(@Valid @ModelAttribute Counseling counseling, BindingResult bindingResult, Model model) {
 		
+		//counseling.setVehicleId("testCarId2");
+		
 		if (bindingResult.hasErrors()) {
 			return "counseling/addApply";
 		}
-		
+		counseling.setStatus("상담대기");
 		counselingService.createCounseling(counseling);
 		List<Counseling> applyList = counselingService.findAll();
 		
