@@ -460,7 +460,7 @@
       <div class="user-info">
         <span class="user-info__role">담당 딜러</span>
         <span>홍길동 님</span>
-        <span class="logout">로그아웃</span>
+        <span class="logout"><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="nav-link">로그아웃</a></span>
       </div>
     </div>
 
