@@ -432,21 +432,21 @@
           <div class="accordion-content">
             <div class="form-row">
               <label for="sido"  class="required">시/도</label>
-              <select class="area" name="hopearea.sido" id="hopearea.sido" >
+              <select class="area" name="hopearea.sido" id="sido" >
                 <option value="">시/도 선택</option>
                 <option>서울특별시</option>
                 <option>부산광역시</option>
               </select>
 
               <label for="siGunGu" class="required">시/군/구</label>
-              <select class="area" name="hopearea.siGunGu" id="hopearea.siGunGu" >
+              <select class="area" name="hopearea.siGunGu" id="siGunGu" >
                 <option value="">시/군/구 선택</option>
                 <option>종로구</option>
                 <option>중구</option>
               </select>
 
               <label for="eupMyeonDong">읍/면/동</label>
-              <select class="area" name="hopearea.eupMyeonDong" id="hopearea.eupMyeonDong">
+              <select class="area" name="hopearea.eupMyeonDong" id="eupMyeonDong">
                 <option value="">읍/면/동 선택</option>
                 <option>테스트</option>
               </select>
@@ -616,9 +616,9 @@
 	  let form = document.applyForm;
       header.addEventListener("click", () => {
         let openContent = document.querySelector(".accordion-content.open");
-		let sido = document.querySelector("#hopearea.sido");
-		let siGunGu = document.querySelector("#hopearea.siGunGu");
-		let eupMyeonDong = document.querySelector("#hopearea.eupMyeonDong");
+		let sido = document.querySelector("#sido");
+		let siGunGu = document.querySelector("#siGunGu");
+		let eupMyeonDong = document.querySelector("#eupMyeonDong");
 		let stepText1 = document.querySelector(".stepText1");
 		let stepText2 = document.querySelector(".stepText2");
 		
@@ -705,14 +705,14 @@
       // 전체 신청 미리보기
       btnApply.addEventListener("click", () => {
 
-        let sido = document.querySelector("#hopearea.sido");
-        let siGunGu = document.querySelector("#hopearea.siGunGu");
-        let eupMyeonDong = document.querySelector("#hopearea.eupMyeonDong");
+        let sido = document.querySelector("#sido");
+        let siGunGu = document.querySelector("#siGunGu");
+        let eupMyeonDong = document.querySelector("#eupMyeonDong");
  
         let allTxt =
-		  `<br>시/도: ${sido || "-"}<br>` +
-		  `시/군/구: ${siGunGu || "-"}<br>` +
-		  `읍/면/동: ${eupMyeonDong || "-"}<br>` ;
+		  `<br>시/도: ${sido.value || "-"}<br>` +
+		  `시/군/구: ${siGunGu.value || "-"}<br>` +
+		  `읍/면/동: ${eupMyeonDong.value || "-"}<br>` ;
         	result.innerHTML = '<div class="info-block-title">구매 신청 미리보기</div>' + likeTxt + allTxt;
       });
     });
