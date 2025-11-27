@@ -22,7 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	
 	// 회원정보 수정
 	public final String UPDATE_MEMBER = "update member m inner join address a on m.address_id = a.id "
-			+ " set name = :#{#member.name}, password = :#{#member.password}, phone = :#{#member.phone}, email = :#{#member.email}, "
+			+ " set password = :#{#member.password}, phone = :#{#member.phone}, email = :#{#member.email}, "
 			+ " gender = :#{#member.gender}, country = :#{#member.address.country}, zipcode = :#{#member.address.zipcode}, "
 			+ " basic_address = :#{#member.address.basicAddress}, detail_address = :#{#member.address.detailAddress} "
 			+ " where member_id = :#{#member.memberId}";

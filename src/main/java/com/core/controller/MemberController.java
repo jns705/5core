@@ -114,7 +114,19 @@ public class MemberController {
 			return "member/updateMember";
 		}
 		
-		// 추가해야함
+		
+		// 고객은 01, 딜러는 02
+		if(member.getRole() == Role.CUSTOMER) member.setRoleCheck("01");
+		else if(member.getRole() == Role.DEALER) member.setRoleCheck("02");
+		
+		// 수정 처리
+		try {
+			Member m = Member.createMember(member, passwordEncoder, member.getRoleCheck());
+			memberService.updateMember(m);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "member/updateMember";
+		}
 		
 		return "redirect:/member/update/" + member.getMemberId();
 	}
@@ -122,7 +134,7 @@ public class MemberController {
 	// 회원삭제(탈퇴)
 	@GetMapping("/delete/{memberId}")
 	public String deleteMemberPro(@PathVariable("memberId") String memberId) {
-		//memberService.deleteMember(memberId);
+		memberService.deleteMember(memberId);
 		
 		return "redirect:/logout";
 	}
