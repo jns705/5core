@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class ResourceConfig implements WebMvcConfigurer {
 	
+	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/images/**")                // 웹요청에 포함되도록 하는 외부 연결 URI 경로
 				.addResourceLocations("file:///" + "c:/5core/") // 파일 위치

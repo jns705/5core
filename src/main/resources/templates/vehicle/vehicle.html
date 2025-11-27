@@ -155,12 +155,13 @@
 		<div class="detail-wrap">
 		
 		    <div class="image-section">
-		        <img th:src="@{|/images/${vehicle.fileName}|}" alt="그랜저">
+		        <img id="mainImage" th:src="@{/images/{img}(img=${vehicle.fileName})}">
 		        <div class="color-picker">
-		            <div class="color-circle" style="background:#ffffff"></div>
-		            <div class="color-circle" style="background:#000000"></div>
-		            <div class="color-circle" style="background:#cfcfcf"></div>
-		            <div class="color-circle" style="background:#6d6d6d"></div>
+					<div th:each="c : ${vehicle.colors}" 
+					     class="color-circle"
+					     th:style="'background:' + ${c.color}"
+					     th:attr="data-img=${c.imageColorUrl}">
+					</div>
 		        </div>
 		    </div>
 		
@@ -192,6 +193,8 @@
 	</div>
 </div>
 	<th:block th:replace="~{/bottom.html}"></th:block>
+	<!-- js -->
+	<script th:src="@{/js/vehicle.js}"></script>
 </body>
 
 </html>
