@@ -1,4 +1,8 @@
 package com.core.entity;
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -75,10 +79,13 @@ public class Counseling {
 	@JoinColumn(name = "dealer_id")
 	private Dealer dealer;
 
-	// 상담 생성 메서드
-	public static Counseling createCounseling(Counseling counseling, Customer customer, Dealer dealer) {
-		return counseling;
-	}
-
+	// 추가분
+	// 등록 날짜와 시간
+//	@CreatedDate
+//	private LocalDateTime createDate;
+	
+	// 수정 날짜와 시간
+//	private LocalDateTime modifyDate;
+	
 
 }

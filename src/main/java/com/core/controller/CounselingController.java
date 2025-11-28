@@ -22,7 +22,9 @@ import com.core.service.VehicleService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
+@Log
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/counseling")
@@ -51,8 +53,10 @@ public class CounselingController {
 	
 	@GetMapping("/applyList")
 	public String counselingapplyList(Model model) {
-		
-		return "/counseling/applyList";
+		List<Counseling> applyList = counselingService.findAll();
+		//applyList.forEach(c -> log.info(c.toString()));
+		model.addAttribute("applyList", applyList);
+		return "counseling/applyList";
 	}
 	
 	/*
@@ -75,10 +79,7 @@ public class CounselingController {
 		customer.setId(member.getId());
 		counseling.setCustomer(customer);
 		counselingService.createCounseling(counseling);
-		List<Counseling> applyList = counselingService.findAll();
-		
-		model.addAttribute("applyList", applyList);
-		return "counseling/applyList";
+		return "redirect:/counseling/applyList";
 	}
 	
 }
