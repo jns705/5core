@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>상담 신청</title>
+  <th:block th:replace="~{/top.html}"></th:block>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <style>
     :root {
@@ -23,12 +24,11 @@
     }
 
     body {
-      background: var(--bg-body);
       color: var(--text-main);
     }
 
     .apply-container {
-      max-width: 960px;
+      max-width: 1600px;
       margin: 40px auto;
       padding: 32px 32px 40px;
       background: #ffffff;
@@ -460,6 +460,7 @@
 <body>
   <div class="apply-container">
     <form th:object="${counseling}" th:action="@{/counseling/add}" method="post" name="applyForm">
+		<input type="hidden" id="memberId" sec:authorize="isAuthenticated()" th:value="${#authentication.getPrincipal().getUsername()}">
       <header class="apply-header">
         <h2 class="apply-title">상담 신청</h2>
         <p class="apply-subtitle">희망 차종과 구매 계획을 알려주시면, 최적의 딜러와 연결해 드립니다.</p>
@@ -493,14 +494,13 @@
           </div>
 		  <div class="accordion-content">
 		        <div class="vehicle-segment-tabs">
-		            <div class="segment-tab active" data-segment="전체">전체</div>
-		            <div class="segment-tab" data-segment="승용">승용</div>
+		            <div class="segment-tab  active" data-segment="승용">승용</div>
 		            <div class="segment-tab" data-segment="SUV">SUV</div>
 		            <div class="segment-tab" data-segment="친환경">친환경</div>
 		            <div class="segment-tab" data-segment="N">N/고성능</div>
 		        </div>
 		        <div class="vehicle-card-container" id="vehicleList">
-		            </div>
+		        </div>
 		        <input type="hidden" id="selectedVehicle" name="vehicleId" value="">
 		
 		        <div id="selectedVehicleInfo" style="display:none;">
@@ -527,35 +527,18 @@
           <div class="accordion-content">
             <div class="form-row">
               <label for="sido"  class="required">시/도</label>
-<<<<<<< HEAD
-              <select class="area" name="hopeArea.sido" id="hopeArea.sido" >
-=======
               <select class="area" name="hopearea.sido" id="sido" >
->>>>>>> branch 'main' of https://github.com/jns705/5core.git
                 <option value="">시/도 선택</option>
-                <option>서울특별시</option>
-                <option>부산광역시</option>
               </select>
 
               <label for="siGunGu" class="required">시/군/구</label>
-<<<<<<< HEAD
-              <select class="area" name="hopeArea.siGunGu" id="hopeArea.siGunGu" >
-=======
               <select class="area" name="hopearea.siGunGu" id="siGunGu" >
->>>>>>> branch 'main' of https://github.com/jns705/5core.git
                 <option value="">시/군/구 선택</option>
-                <option>종로구</option>
-                <option>중구</option>
               </select>
 
               <label for="eupMyeonDong">읍/면/동</label>
-<<<<<<< HEAD
-              <select class="area" name="hopeArea.eupMyeonDong" id="hopearea.eupMyeonDong">
-=======
               <select class="area" name="hopearea.eupMyeonDong" id="eupMyeonDong">
->>>>>>> branch 'main' of https://github.com/jns705/5core.git
                 <option value="">읍/면/동 선택</option>
-                <option>테스트</option>
               </select>
             </div>
           </div>
@@ -573,7 +556,7 @@
               </div>
             </div>
 			<div class="step-right">
-			  <span class="step-right-text stepText3">선택 안 함</span>
+			  <span class="step-right-text stepText3"></span>
 			  <span class="accordion-arrow">▼</span>
 			</div>				
           </div>
@@ -682,7 +665,7 @@
             </div>
 
             <div class="btns">
-              <input type="button" value="Step3 요약 보기" id="btnComplete" class="btn btn-outline">
+              <input type="button" value="확인" id="btnComplete" class="btn btn-outline">
             </div>
 
             <div class="info-block likeInfo">
@@ -763,15 +746,14 @@
       let result = document.querySelector(".result");
 	  let likeTxt = null;
       
-      const stepText1 = document.querySelector(".stepText1");
-      const stepText2 = document.querySelector(".stepText2");
-      const stepText3 = document.querySelector(".stepText3");
+      let stepText1 = document.querySelector(".stepText1");
+      let stepText2 = document.querySelector(".stepText2");
 
 
       // --- ▼▼▼ Step 1 차종 선택 기능 JavaScript 추가 ▼▼▼ ---
 		
 		// 차종 데이터 (실제 데이터베이스에서 가져와야 함)
-		const vehicles = [
+		let vehicles = [
 		    { name: '아이오닉 5', segment: '친환경', image: '/5core/images/grandeur_blue.png'},
 		    { name: '팰리세이드', segment: 'SUV', image: '/5core/images/grandeur_blue.png'},
 		    { name: '쏘나타', segment: '승용', image: '/5core/images/grandeur_blue.png'},
@@ -784,18 +766,18 @@
 		    { name: '벨로스터 N', segment: 'N', image: '/5core/images/grandeur_blue.png'}
 		];
 
-		const vehicleListContainer = document.getElementById('vehicleList');
-		const segmentTabs = document.querySelectorAll('.segment-tab');
-		const selectedVehicleInput = document.getElementById('selectedVehicle');
-		const selectedVehicleNameSpan = document.getElementById('selectedVehicleName');
-		const selectedVehicleInfoDiv = document.getElementById('selectedVehicleInfo');
+		let vehicleListContainer = document.getElementById('vehicleList');
+		let segmentTabs = document.querySelectorAll('.segment-tab');
+		let selectedVehicleInput = document.getElementById('selectedVehicle');
+		let selectedVehicleNameSpan = document.getElementById('selectedVehicleName');
+		let selectedVehicleInfoDiv = document.getElementById('selectedVehicleInfo');
 
 		// 1. 차종 카드 렌더링 함수
 		function renderVehicles(segment) {
 		    vehicleListContainer.innerHTML = ''; // 기존 목록 초기화
 		    
-		    const filteredVehicles = vehicles.filter(v => 
-		        segment === '전체' || v.segment === segment
+		    let filteredVehicles = vehicles.filter(v => 
+		        segment === '승용' || v.segment === segment
 		    );
 		    
 		    filteredVehicles.forEach(vehicle => {
@@ -881,8 +863,8 @@
 		    });
 		});
 
-		// 페이지 로드 시 '전체' 탭의 차량 목록 초기 렌더링
-		renderVehicles('전체'); 
+		// 페이지 로드 시 '승용' 탭의 차량 목록 초기 렌더링
+		renderVehicles('승용'); 
 		
 	  // Step3 요약
       btnComplete.addEventListener("click", () => {	
@@ -897,11 +879,12 @@
 		let counselingLikeTime = form.counselingLikeTime.value;
 		purchasePurpose.forEach( v  => {
 		    if (v.checked) {
-				if (v.value != "other") {
+				if (v.value != "기타") {
 					purchasePurposeList.push(v.value);
 				} else{
 					let otherInput = document.querySelector("#otherInput");
 					otherInputVal = otherInput.value;	
+					console.log(otherInput);
 				}	       
 		    }
 		});	
@@ -922,7 +905,6 @@
         if (purchasePeriod) summaryText.push(purchasePeriod);
         if (purchasePurposeList.length > 0) summaryText.push(`목적 ${purchasePurposeList.length}개`);
         if (engineTypeList.length > 0) summaryText.push(`엔진 ${engineTypeList.length}개`);     
-        stepText3.textContent = summaryText.length > 0 ? summaryText.join(' / ') : "선택 안 함";
         likeTxt =
           `차량 구매 목적: ${purchasePurposeList.join(", ") || "-"}<br>` +
           `차량 구매 목적(기타): ${otherInputVal || "-"}<br>` +
@@ -974,6 +956,63 @@
           otherInput.val("");
         }
       });
+	  
+	  let jusoData = {
+	      '서울특별시': {
+	          '강남구': ['역삼동', '삼성동', '압구정동'],
+	          '서초구': ['서초동', '방배동', '양재동'],
+	          '송파구': ['잠실동', '문정동', '방이동']
+	      },
+	      '부산광역시': {
+	          '해운대구': ['중동', '좌동', '우동'],
+	          '수영구': ['광안동', '남천동'],
+	          '부산진구': ['부전동', '전포동']
+	      },
+	      '경기도': {
+	          '성남시': ['분당동', '정자동', '수내동'],
+	          '용인시': ['수지구', '기흥구', '처인구'],
+	          '고양시': ['일산동', '일산서', '일산']
+	      }
+	  };
+	  
+	  let sidoSelect = $('#sido');
+
+	  Object.keys(jusoData).forEach(sido => {
+	  	sidoSelect.append(new Option(sido, sido));
+	  });
+	  
+	  
+	$('#sido').change(function () {
+		let sido = $(this).val();
+	    let sigunguSelect = $('#siGunGu');
+	    let eupSelect = $('#eupMyeonDong');
+
+	    sigunguSelect.empty().append(new Option("시/군/구 선택", ""));
+	    eupSelect.empty().append(new Option("읍/면/동 선택", ""));
+
+	    if (!sido) return;
+
+	        Object.keys(jusoData[sido]).forEach(sg => {
+	             sigunguSelect.append(new Option(sg, sg));
+	        });
+	    });
+
+	    // -------------------------
+	    // 시군구 선택 읍면동 세팅
+	    // -------------------------
+	    $('#siGunGu').change(function () {
+	         let sido = $('#sido').val();
+	         let siGunGu = $(this).val();
+	         let eupSelect = $('#eupMyeonDong');
+
+	         eupSelect.empty().append(new Option("읍/면/동 선택", ""));
+
+	         if (!siGunGu) return;
+
+	         jusoData[sido][siGunGu].forEach(eup => {
+	             eupSelect.append(new Option(eup, eup));
+	         });
+	    });
     });
   </script>
 </body>

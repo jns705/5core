@@ -24,7 +24,7 @@ public class Counseling {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
 	@NotBlank(message = "차량 선택은 필수 사항입니다.")
 	@Column(unique= true, columnDefinition = "varchar(30)")
 	private String vehicleId;
@@ -33,7 +33,7 @@ public class Counseling {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "hopearea_id")
 	@Valid
-	private HopeArea hopeArea;
+	private HopeArea hopearea;
 
 	/** 구매 희망 정보 **/
 	// 차량 구매 목적
@@ -76,7 +76,7 @@ public class Counseling {
 	private Dealer dealer;
 
 	// 상담 생성 메서드
-	public static Counseling createCounseling(Counseling counseling) {
+	public static Counseling createCounseling(Counseling counseling, Customer customer, Dealer dealer) {
 		return counseling;
 	}
 
