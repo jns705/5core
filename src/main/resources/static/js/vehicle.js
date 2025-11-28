@@ -1,7 +1,8 @@
-// 색상 예시 클릭 시 해당하는 색상 이미지로 변경
 document.addEventListener("DOMContentLoaded", () => {
+	
+	// 색상 원 클릭 시 해당하는 색상 이미지로 변경
 	const mainImage = document.getElementById("mainImage");
-	const colorBtns = document.querySelectorAll(".color-circle");
+	const colorBtns = document.querySelectorAll(".colorCircle");
 	
 	colorBtns.forEach(btn => {
 		btn.addEventListener("click", () => {
@@ -13,5 +14,30 @@ document.addEventListener("DOMContentLoaded", () => {
 				mainImage.src = "/5core/images/" + imageName;
 			}
 		});
+	});
+	
+	const btns = document.querySelectorAll("input[name='trim']");
+	const priceText = document.getElementById("priceText");
+	const basePrice = parseInt(priceText.dataset.base);
+
+	btns.forEach(btn => {
+	    btn.addEventListener("change", function() {
+
+	        let addPrice = 0;
+
+	        switch(this.value) {
+	            case "Exclusive":
+	                addPrice = 2000000;
+	                break;
+	            case "Prestige":
+	                addPrice = 4000000;
+	                break;
+	            default:
+	                addPrice = 0;
+	        }
+
+	        const result = basePrice + addPrice;
+	        priceText.innerText = result.toLocaleString();
+	    });
 	});
 });

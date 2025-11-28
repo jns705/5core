@@ -15,13 +15,13 @@
 			text-align: justify;
 		}
 		
-		.vehicle-detail {
+		.vehicleDetail {
 			max-width: 1520px;
 			position: relative;
 			left: 240px;
 		}
 
-		.vehicle-header {
+		.vehicleHeader {
 		    display: flex;
 		    justify-content: space-between;
 		    align-items: flex-end;
@@ -30,12 +30,12 @@
 		    margin-bottom: 40px;
 		}
 
-		.vehicle-title h1 {
+		.vehicleTitle h1 {
 		    font-size: 30px;
 		    font-weight: 700;
 		}
 
-		.vehicle-title p {
+		.vehicleTitle p {
 		    margin-top: 6px;
 		    color: #777;
 		}
@@ -45,77 +45,164 @@
 		    font-weight: bold;
 		}
 
-		.detail-wrap {
+		.detailSection {
 		    display: flex;
 		    gap: 40px;
 		}
 
-		.image-section {
+		.imageSection {
 			width: 500px;
 		    flex: 1;
 		}
 
-		.image-section img {
+		.imageSection img {
 		    width: 100%;
 		    border-radius: 14px;
 		}
 
-		.color-picker {
+		.colorPicker {
 		    display: flex;
 		    gap: 10px;
 		    margin-top: 20px;
 		}
 
-		.color-circle {
-		    width: 28px;
-		    height: 28px;
+		.colorCircle {
+		    width: 26px;
+		    height: 26px;
 		    border-radius: 50%;
 		    border: 2px solid #ddd;
 		    cursor: pointer;
+		    transition: 0.3s;
 		}
 
-		.info-section {
+		.colorCircle:hover {
+		    transform: scale(1.05);
+		    border: 2px solid #00387a;
+		}
+
+		.colorCircle.active {
+		    border: 2px solid #00387a;
+		    box-shadow: 0 0 0 2px rgba(0,56,122,0.2);
+		}
+
+		.infoSection {
 			width: 500px;
 		    flex: 1;
 		}
 
-		.spec-table {
+		.specTable {
 		    width: 100%;
 		    border-collapse: collapse;
 		    margin-bottom: 30px;
 		}
 
-		.spec-table td {
+		.specTable td {
 		    padding: 12px 0;
 		    border-bottom: 1px solid #f0f0f0;
 		}
 
-		.spec-table td:first-child {
+		.specTable td:first-child {
 		    width: 140px;
 		    color: #666;
 		}
 
-		.option-box {
+		.optionBox {
 		    background: #f9fafc;
 		    border-radius: 12px;
 		    padding: 20px;
 		}
 
-		.option-list {
+		.optionList {
 		    list-style: none;
 		    display: grid;
 		    grid-template-columns: repeat(2, 1fr);
 		    gap: 12px;
 		}
 
-		.option-list li {
+		.optionList li {
 		    background: #fff;
 		    padding: 10px 14px;
 		    border-radius: 8px;
 		    border: 1px solid #eee;
 		}
+		
+		/* 트림 선택 섹션 */
+		.trimSection {
+		    margin-top: 40px;
+		}
 
-		.action-buttons {
+		.trimSection h3 {
+		    font-size: 20px;
+		    font-weight: 600;
+		    margin-bottom: 14px;
+		}
+
+		.t-btn input {
+		    display: none;
+		}
+
+		.trimBtns {
+		    display: flex;
+		    gap: 12px;
+		}
+
+		.t-btn {
+		    padding: 10px 22px;
+		    border-radius: 30px;
+		    border: 2px solid #ccc;
+		    background: #fff;
+		    cursor: pointer;
+		    transition: all 0.2s ease;
+			min-width: 80px;
+			text-align: center;
+		    font-size: 15px;
+		}
+
+		.t-btn:hover {
+		    border-color: #002c5f;
+		    color: #002c5f;
+		}
+		
+		/* t-btn의 태그 중 checked 상태의 input 태그 */
+		.t-btn:has(input:checked) {
+			background: #002c5f;
+			color: #fff;
+			border-color: #002c5f;
+			box-shadow: 0 3px 8px rgba(0,44,95,0.25);
+		}
+
+		/* 적용 버튼 영역 */
+		.trimAction {
+		    text-align: right;
+		    margin-top: 18px;
+		}
+
+		.trimAction button {
+		    background: #002c5f;
+		    color: #fff;
+		    border: none;
+		    padding: 8px 16px;
+		    border-radius: 20px;
+		    font-size: 13px;
+		    cursor: pointer;
+		    transition: 0.2s;
+		}
+
+		.trimAction button:hover {
+		    background: #001f45;
+		}
+		
+		/* 선택된 트림에 해당하는 가격 */
+		.priceArea {
+		    font-size: 26px;
+		    font-weight: bold;
+		    margin-top: 30px;
+		    color: #000;
+		    letter-spacing: 1px;
+		}
+		
+		/* 차량 상담 페이지로 이동하는 버튼 (예정) */
+		.actionBtns {
 		    margin-top: 30px;
 		    display: flex;
 		    gap: 16px;
@@ -143,30 +230,30 @@
 
 <body>
 <div class="container">
-	<div class="vehicle-detail">
-		<div class="vehicle-header">
-		    <div class="vehicle-title">
+	<div class="vehicleDetail">
+		<div class="vehicleHeader">
+		    <div class="vehicleTitle">
 		        <h1>[[${vehicle.name}]]</h1>
 		        <p>[[${vehicle.brand}]] · [[${vehicle.vehicleType}]] · [[${vehicle.year}]]</p>
 		    </div>
-		    <div class="price">KRW [[${#numbers.formatInteger(vehicle.price, 3, 'COMMA')}]] ~</div>
+		    <div class="price">KRW [[${#numbers.formatInteger(vehicle.basePrice, 3, 'COMMA')}]] ~</div>
 		</div>
 		
-		<div class="detail-wrap">
+		<div class="detailSection">
 		
-		    <div class="image-section">
+		    <div class="imageSection">
 		        <img id="mainImage" th:src="@{/images/{img}(img=${vehicle.colors[0].imageColorUrl})}"/>
-		        <div class="color-picker">
+		        <div class="colorPicker">
 					<div th:each="c : ${vehicle.colors}" 
-					     class="color-circle"
+					     class="colorCircle"
 					     th:style="'background:' + ${c.color}"
 					     th:attr="data-img=${c.imageColorUrl}">
 					</div>
 		        </div>
 		    </div>
 		
-		    <div class="info-section">
-		        <table class="spec-table">
+		    <div class="infoSection">
+		        <table class="specTable">
 					<tr><td>차종</td><td>[[${vehicle.vehicleType}]]</td></tr>
 		            <tr><td>연료</td><td>[[${vehicle.fuelType}]]</td></tr>
 					<tr>
@@ -185,23 +272,62 @@
 						</td>
 					</tr>
 		        </table>
-		
-		        <div class="option-box">
+				<!--
+		        <div class="optionBox">
 		            <h3>기본 옵션</h3>
-		            <ul class="option-list">
+		            <ul class="optionList">
 		                <li>스마트 크루즈 컨트롤</li>
 		                <li>파노라마 선루프</li>
 		                <li>열선 시트</li>
 		                <li>12.3인치 내비게이션</li>
 		            </ul>
 		        </div>
-		
-		        <div class="action-buttons">
-		            <button class="btn primary">견적 계산</button>
-		            <button class="btn secondary">시승 신청</button>
+				-->
+				<form id="trimForm" th:action="@{/vehicles/vehicle/{modelCode}/update-trim(modelCode=${vehicle.modelCode})}"
+				      method="post">
+
+				    <input type="hidden" name="id" th:value="${vehicle.id}">
+
+				    <div class="trimSection">
+				        <h4>트림 선택</h4>
+
+				        <div class="trimBtns">
+				            <label class="t-btn">
+				                <input type="radio" name="trim" value="Standard"
+				                       th:checked="${vehicle.trim == 'Standard'}">
+				                Standard
+				            </label>
+
+				            <label class="t-btn">
+				                <input type="radio" name="trim" value="Exclusive"
+				                       th:checked="${vehicle.trim == 'Exclusive'}">
+				                Exclusive
+				            </label>
+
+				            <label class="t-btn">
+				                <input type="radio" name="trim" value="Prestige"
+				                       th:checked="${vehicle.trim == 'Prestige'}">
+				                Prestige
+				            </label>
+				        </div>
+
+				        <!-- 적용 버튼 오른쪽 정렬 -->
+				        <div class="trimAction">
+				            <button type="submit">트림 적용</button>
+				        </div>
+				    </div>
+				</form>
+				<div class="priceArea">
+				    KRW 
+					<span id="priceText" th:data-base="${vehicle.basePrice}">
+						[[${#numbers.formatInteger(totalPrice, 3, 'COMMA')}]]
+					</span>
+				</div>				
+		        <div class="actionBtns">
+		            <button type="button" class="btn primary">견적 계산</button>
+		            <button type="button" class="btn secondary">시승 신청</button>
 		        </div>
-		    </div>
-		
+			
 		</div>
 	</div>
 </div>

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.core.entity.Vehicle;
@@ -67,19 +66,38 @@ public class VehicleController {
 
 	// 차량 상세 정보 조회 - 모델 코드로 조회
 	@GetMapping("/vehicle/{modelCode}")
-	public String requestVehicleDetail(@PathVariable("modelCode") String modelCode, Model model) {
+	public String requestVehicleDetail(
+			@PathVariable("modelCode") String modelCode,
+			@RequestParam(name = "trim", required = false, defaultValue = "Standard") String trim, 
+			Model model) {
+		// 모델 코드로 차량 정보 획득
 		Vehicle vehicle = vehicleService.getVehicleByModelCode(modelCode);
 		
+		// Service의 계산 메서드 호출
+		int totalPrice = vehicleService.getTotalPrice(vehicle.getId(), trim);
+		
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("trim", trim);
 		model.addAttribute("vehicle", vehicle);
 		return "vehicle/vehicle";
 	}
-	@GetMapping("/check")
-	@ResponseBody
-	public String check() {
-	    return "OK";
+	
+	// 트림 선택 시 가격 + 트림 수정
+	@PostMapping("/vehicle/{modelCode}/update-trim")
+	public String updateTrimAndPriceForm(
+			@PathVariable("modelCode") String modelCode,
+			@RequestParam("id") Long id,
+			@RequestParam("trim") String trim) {
+		
+		vehicleService.updateTrimPrice(id, trim);
+		
+		return "redirect:/vehicles/vehicle/" + modelCode;
 	}
 	
 	
+	
+	
+	// ##########################################################################################
 	// 딜러 차량 등록 폼
 	@GetMapping("/dealer/add")
 	public String addVehicleForm(Model model) {
