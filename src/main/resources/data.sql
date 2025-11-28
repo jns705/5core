@@ -1,46 +1,50 @@
 use 5core;
 
-INSERT INTO vehicle
-	(model_code, name, brand, vehicle_type, trim, price, file_name,
-    fuel_type, year, displacement, fuel_efficiency)
+-- 차량 데이터 18대
+INSERT INTO vehicle(
+    model_code, name, brand, vehicle_type, trim, base_price, final_price, file_name,
+    fuel_type, year, displacement, fuel_efficiency
+)
 VALUES
-('avante', '아반떼', '현대', '세단', 'Standard', 20340000, 'avante_01.png', '휘발유', '2025', 1598, 15.20),
+('avante', '아반떼', '현대', '세단', 'Standard', 20348000, 0, 'avante_01.png', '휘발유', '2025', 1598, 15.20),
 
-('avante-n', '아반떼 N', '현대', '세단', 'Standard', 36000000, 'avante_n_01.png', '휘발유', '2025', 1998, 10.50),
+('avante-n', '아반떼 N', '현대', '세단', 'Standard', 36176000, 0, 'avante_n_01.png', '휘발유', '2025', 1998, 10.50),
 
-('sonata', '쏘나타', '현대', '세단', 'Standard', 28000000, 'sonata_01.png', '휘발유', '2025', 1999, 13.80),
+('sonata', '쏘나타', '현대', '세단', 'Standard', 28674000, 0, 'sonata_01.png', '휘발유', '2025', 1999, 13.80),
 
-('sonata-hybrid', '쏘나타 하이브리드', '현대', '세단', 'Standard', 34000000, 'sonata_hybrid_01.png', '하이브리드', '2025', 1999, 19.10),
+('sonata-hybrid', '쏘나타 하이브리드', '현대', '세단', 'Standard', 34000000, 0, 'sonata_hybrid_01.png', '하이브리드', '2025', 1999, 19.10),
 
-('grandeur', '그랜저', '현대', '세단', 'Standard', 39000000, 'grandeur_01.png', '휘발유', '2025', 2497, 11.20),
+('grandeur', '그랜저', '현대', '세단', 'Standard', 39638000, 0, 'grandeur_01.png', '휘발유', '2025', 2497, 11.20),
 
-('grandeur-hybrid', '그랜저 하이브리드', '현대', '세단', 'Standard', 46000000, 'grandeur_hybrid_01.png', '하이브리드', '2025', 2399, 18.00),
+('grandeur-hybrid', '그랜저 하이브리드', '현대', '세단', 'Standard', 46179000, 0, 'grandeur_hybrid_01.png', '하이브리드', '2025', 2399, 18.00),
 
-('tucson', '투싼', '현대', 'SUV', 'Standard', 32000000, 'tucson_01.png', '휘발유', '2025', 1598, 12.60),
+('tucson', '투싼', '현대', 'SUV', 'Standard', 32527000, 0, 'tucson_01.png', '휘발유', '2025', 1598, 12.60),
 
-('tucson-hybrid', '투싼 하이브리드', '현대', 'SUV', 'Standard', 38000000, 'tucson_hybrid_01.png', '하이브리드', '2025', 1598, 16.20),
+('tucson-hybrid', '투싼 하이브리드', '현대', 'SUV', 'Standard', 38772000, 0, 'tucson_hybrid_01.png', '하이브리드', '2025', 1598, 16.20),
 
-('santafe', '싼타페', '현대', 'SUV', 'Standard', 41000000, 'santafe_01.png', '디젤', '2025', 2199, 13.50),
+('santafe', '싼타페', '현대', 'SUV', 'Standard', 41611000, 0, 'santafe_01.png', '디젤', '2025', 2199, 13.50),
 
-('santafe-hybrid', '싼타페 하이브리드', '현대', 'SUV', 'Standard', 47000000, 'santafe_hybrid_01.png', '하이브리드', '2025', 1598, 14.50),
+('santafe-hybrid', '싼타페 하이브리드', '현대', 'SUV', 'Standard', 47916000, 0, 'santafe_hybrid_01.png', '하이브리드', '2025', 1598, 14.50),
 
-('palisade', '팰리세이드', '현대', 'SUV', 'Standard', 50000000, 'palisade_01.png', '디젤', '2025', 2199, 10.80),
+('palisade', '팰리세이드', '현대', 'SUV', 'Standard', 50570000, 0, 'palisade_01.png', '디젤', '2025', 2199, 10.80),
 
-('kona', '코나', '현대', 'SUV', 'Standard', 26000000, 'kona_01.png', '휘발유', '2025', 1598, 13.90),
+('kona', '코나', '현대', 'SUV', 'Standard', 26844000, 0, 'kona_01.png', '휘발유', '2025', 1598, 13.90),
 
-('casper', '캐스퍼', '현대', '경차', 'Standard', 14500000, 'casper_01.png', '휘발유', '2025', 998, 14.30),
+('casper', '캐스퍼', '현대', '경차', 'Standard', 14528000, 0, 'casper_01.png', '휘발유', '2025', 998, 14.30),
 
-('venue', '베뉴', '현대', 'SUV', 'Standard', 22000000, 'venue_01.png', '휘발유', '2025', 1598, 13.70),
+('venue', '베뉴', '현대', 'SUV', 'Standard', 22879000, 0, 'venue_01.png', '휘발유', '2025', 1598, 13.70),
 
 -- 전기차 (displacement = PS / 연비 = km/kWh)
-('kona-ev', '코나 EV', '현대', 'SUV', 'Standard', 48000000, 'kona_ev_01.png', '전기', '2025', 204, 5.80),
+('kona-ev', '코나 EV', '현대', 'SUV', 'Standard', 48650000, 0, 'kona_ev_01.png', '전기', '2025', 204, 5.80),
 
-('ioniq5', '아이오닉 5', '현대', 'SUV', 'Standard', 54000000, 'ioniq5_01.png', '전기', '2025', 229, 5.10),
+('ioniq5', '아이오닉 5', '현대', 'SUV', 'Standard', 54790000, 0, 'ioniq5_01.png', '전기', '2025', 229, 5.10),
 
-('ioniq6', '아이오닉 6', '현대', '세단', 'Standard', 52000000, 'ioniq6_01.png', '전기', '2025', 229, 6.20),
+('ioniq6', '아이오닉 6', '현대', '세단', 'Standard', 52150000, 0, 'ioniq6_01.png', '전기', '2025', 229, 6.20),
 
-('casper-ev', '캐스퍼 EV', '현대', '경차', 'Standard', 31000000, 'casper_ev_01.png', '전기', '2025', 136, 5.60);
+('casper-ev', '캐스퍼 EV', '현대', '경차', 'Standard', 31290000, 0, 'casper_ev_01.png', '전기', '2025', 136, 5.60);
 
+
+-- 모델 1페이지에 있는 차량 8대에 대한 색상 및 색상 이미지 데이터
 INSERT INTO vehicle_color (color, image_color_url, vehicle_id)
 VALUES
 ('white', 'grandeur_white.png', (select id from vehicle where model_code = 'grandeur')),

@@ -61,10 +61,15 @@ public class Vehicle {
     @Column(columnDefinition = "varchar(30)")
     private String vehicleType;
     
-    // 기본 가격 
+    // 기본 가격 - 초기값 
 	// 최소값 0, 음수는 사용불가, 전체 11자리, 소수점 2자리
 	@NotNull @Min(value=0) @Digits(integer=11, fraction=2)
-    private int price;
+    private int basePrice;
+	
+	// 최종 가격
+	// 기본 가격에 트림 별 가격이 계속 누적되므로, 기본 가격 + 트림 가격 = 최종 가격으로 해결 
+	@NotNull @Min(value=0) @Digits(integer=11, fraction=2)
+	private int finalPrice = 0;
     
 	@Column(columnDefinition = "varchar(30) default 'no_image.jpg'")
 	private String fileName;  // 차량이미지의 파일명

@@ -3,10 +3,9 @@ package com.core.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.core.entity.Vehicle;
 import com.core.repository.VehicleRepository;
@@ -19,7 +18,6 @@ public class VehicleService {
 	
 	private final VehicleRepository vehicleRepository;
 	
-	Vehicle vehicle = new Vehicle();
 	
 	//############################################################
 	// 트림에 따른 가격 계산
@@ -32,18 +30,31 @@ public class VehicleService {
 		return switch(trim.toUpperCase()) {
 			case "EXCLUSIVE" -> 2000000;
 			case "PRESTIGE" -> 4000000;
-			default -> 0; // Standard 트림은 기본 가격과 동일
+			default -> 0;   // Standard 트림은 기본 가격과 동일
 		};
 	}
-	// 총액 계산 (기본가격 + 트림가격)
+	
+	// 총액 계산 (기본가격 + 트림가격) - 화면 표시
 	public int getTotalPrice(Long id, String trim) {
-		vehicle = vehicleRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("차량이 존재하지 않습니다."));
+		Vehicle vehicle = vehicleRepository.findById(id).get();
 		
-		int basePrice = vehicle.getPrice(); // 기본 가격
-		int trimPrice = getPriceByTrim(trim); // 트림 가격
+		int basePrice = vehicle.getBasePrice();   // 기본 가격
+		int trimPrice = getPriceByTrim(trim);     // 트림 가격
 		
-		return basePrice + trimPrice; 		// 총액
+		return basePrice + trimPrice; 		      // 총액
+	}
+	
+	
+	// 트림에 따라 계산된 가격을 DB에 업데이트
+	@Transactional
+	public void updateTrimPrice(Long id, String trim) {
+		Vehicle vehicle = vehicleRepository.findById(id).get();
+		
+		int basePrice = vehicle.getBasePrice();    // 기본 가격
+		int trimPrice = getPriceByTrim(trim);      // 트림 가격
+		
+		vehicle.setTrim(trim);
+		vehicle.setFinalPrice(basePrice + trimPrice);
 	}
 	//############################################################
 	
@@ -61,12 +72,14 @@ public class VehicleService {
 		return vehicleRepository.searchVehicle(keyword, type, fuel, pageable);
 	}
 	
-	
 	// 차량 상세 정보 조회
 	public Vehicle getVehicleByModelCode(String modelCode) {
 		return vehicleRepository.findByModelCode(modelCode).get();
 	}
 	
+	
+	
+	// ###########################################################################################
 	// 차량 등록
 	public void addVehicle(Vehicle vehicle) {
 		vehicleRepository.save(vehicle);

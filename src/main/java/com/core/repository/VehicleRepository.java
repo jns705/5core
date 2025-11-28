@@ -4,9 +4,11 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.core.entity.Vehicle;
 
@@ -41,5 +43,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 			AND (:fuel IS NULL OR v.fuelType = :fuel)
 			""")
 	Page<Vehicle> searchVehicle(@Param("keyword") String keyword, @Param("type") String type, @Param("fuel") String fuel, Pageable pageable);
+	
+	// 상세보기에서 트림 선택 시 DB의 차량 트림과 가격을 변경
+	@Transactional
+	@Modifying
+	@Query("UPDATE Vehicle v SET v.trim = :trim, v.finalPrice = :price WHERE v.id = :id")
+	int updateTrimAndPrice(@Param("trim") String trim, @Param("price") int price, @Param("id") Long id);
 	
 }
