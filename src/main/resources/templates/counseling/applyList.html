@@ -73,9 +73,10 @@
         <select class="form-select form-select-sm" id="statusFilter" style="width: 140px" aria-label="상담 상태 필터">
           <option>전체 상태</option>
           <option>상담대기</option>
-          <option>진행중</option>
-          <option>완료</option>
-          <option>보류</option>
+          <option>상담진행중</option>
+          <option>상담취소</option>
+          <option>상담완료</option>
+		  <option>구매완료</option>
         </select>
         <select
           class="form-select form-select-sm" id="sortFilter" style="width: 140px" aria-label="정렬 기준 선택">
@@ -112,32 +113,34 @@
           </tr>
         </thead>
         <tbody id="tableBody">
-          <tr>
-            <td class="text-center">
-              <input type="checkbox" class="form-check-input rowCheckbox" />
-            </td>
-            <td class="text-center">C00123</td>
-            <td class="text-center">010-1234-5678</td>
-            <td class="text-end">3,000</td>
-            <td class="text-center">2025-11-25</td>
-            <td>
-              <div class="fw-semibold">현대 싼타페 (디젤 2.2)</div>
-              <div class="small text-muted">2022년식 · 2.3만km · 흰색</div>
-            </td>
-            <td>
-              <div class="small text-truncate" title="가족용 7인승 SUV 희망, 보험 이력 최소 / 무사고 위주로 상담 요청">
-                가족용 7인승 SUV 희망, 보험 이력 최소 / 무사고 위주로 상담 요청
-              </div>
-            </td>
-			<td class="text-end status-cell">
-			  <div class="d-inline-flex align-items-center gap-2 justify-content-end">
-			    <span class="badge bg-warning text-dark status-badge">상담대기</span>
-			    <button type="button" class="btn btn-sm btn-outline-danger btn-cancel" aria-label="상담 취소">
-			      취소
-			    </button>
-			  </div>
-			</td>
-          </tr>
+			<!--<div th:each="c : ${counseling}">-->
+	          <tr>
+	            <td class="text-center">
+	              <input type="checkbox" class="form-check-input rowCheckbox" />
+	            </td>
+	            <td class="text-center"></td>
+	            <td class="text-center">010-1234-5678</td>
+	            <td class="text-end">3,000</td>
+	            <td class="text-center">2025-11-25</td>
+	            <td>
+	              <div class="fw-semibold">현대 싼타페 (디젤 2.2)</div>
+	              <div class="small text-muted">2022년식 · 2.3만km · 흰색</div>
+	            </td>
+	            <td>
+	              <div class="small text-truncate" title="가족용 7인승 SUV 희망, 보험 이력 최소 / 무사고 위주로 상담 요청">
+	                가족용 7인승 SUV 희망, 보험 이력 최소 / 무사고 위주로 상담 요청
+	              </div>
+	            </td>
+				<td class="text-end status-cell">
+				  <div class="d-inline-flex align-items-center gap-2 justify-content-end">
+				    <span class="badge bg-warning text-dark status-badge">상담대기</span>
+				    <button type="button" class="btn btn-sm btn-outline-danger btn-cancel" aria-label="상담 취소">
+				      취소
+				    </button>
+				  </div>
+				</td>
+	          </tr>
+			</div>
           <tr>
             <td class="text-center">
               <input type="checkbox" class="form-check-input rowCheckbox" />
@@ -157,7 +160,7 @@
             </td>
 			<td class="text-end status-cell">
 			  <div class="d-inline-flex align-items-center gap-2 justify-content-end">
-			    <span class="badge bg-success status-badge">진행중</span>
+			    <span class="badge bg-success status-badge">상담진행중</span>
 			    <button type="button" class="btn btn-sm btn-outline-danger btn-cancel" aria-label="상담 취소">
 			      취소
 			    </button>
@@ -214,21 +217,25 @@
       return new Date(text);
     }
 
-    function isRowVisible(row, selectedStatus, keyword) {
-      const statusText =
-        row.querySelector('td:last-child > span')?.textContent.trim() ?? '';
-      const customerId = row.cells[1]?.textContent.toLowerCase() ?? '';
-      const contact = row.cells[2]?.textContent.toLowerCase() ?? '';
+	function isRowVisible(row, selectedStatus, keyword) {
+	  // 마지막 셀 안의 배지 텍스트를 상담 상태로 사용
+	  const statusText =
+	    row.querySelector('td:last-child .badge')?.textContent.trim() ?? '';
 
-      const statusMatch =
-        selectedStatus === '전체 상태' || statusText === selectedStatus;
-      const searchMatch =
-        keyword === '' ||
-        customerId.includes(keyword) ||
-        contact.includes(keyword);
+	  const customerId = row.cells[1]?.textContent.toLowerCase() ?? '';
+	  const contact = row.cells[2]?.textContent.toLowerCase() ?? '';
 
-      return statusMatch && searchMatch;
-    }
+	  // 상태 필터: "전체 상태"가 아니면 정확히 같은 상태만 통과
+	  const statusMatch =
+	    selectedStatus === '전체 상태' || statusText === selectedStatus;
+
+	  const searchMatch =
+	    keyword === '' ||
+	    customerId.includes(keyword) ||
+	    contact.includes(keyword);
+
+	  return statusMatch && searchMatch;
+	}
 
     /* ====== 메인 기능 ====== */
     // 필터&검색 결과 반영 + 정렬

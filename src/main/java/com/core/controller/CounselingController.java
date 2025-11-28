@@ -33,19 +33,34 @@ public class CounselingController {
 		return "counseling/addApply";
 	}
 	
+	@GetMapping("/applyList")
+	public String counselingapplyList() {
+		return "/counseling/applyList";
+	}
+	
 	/*
 	 * 상담신청 등록
 	 */
 	@PostMapping("/add")
 	public String addCounselingApply(@Valid @ModelAttribute Counseling counseling, BindingResult bindingResult, Model model) {
 		
+
+		counseling.setVehicleId("testCarId3");
+
 		//차량이 없으므로 아래의 코드를 주석 풀고 더미로 추가
 		//counseling.setVehicleId("testCarId");
+
 		
+
+//		if (bindingResult.hasErrors()) {
+//			return "counseling/addApply";
+//		}
+
 		// 등록확인을 하려면 주석필요
 		if (bindingResult.hasErrors()) {
 			return "counseling/addApply";
 		}
+
 		counseling.setStatus("상담대기");
 		counselingService.createCounseling(counseling);
 		List<Counseling> applyList = counselingService.findAll();
