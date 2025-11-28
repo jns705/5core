@@ -33,7 +33,7 @@ public class Counseling {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "hopearea_id")
 	@Valid
-	private HopeArea hopearea;
+	private HopeArea hopeArea;
 
 	/** 구매 희망 정보 **/
 	// 차량 구매 목적
