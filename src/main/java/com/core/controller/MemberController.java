@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.core.entity.Customer;
 import com.core.entity.Dealer;
 import com.core.entity.Member;
+import com.core.entity.Role;
 import com.core.service.CustomerService;
 import com.core.service.DealerService;
 import com.core.service.MemberService;
@@ -78,8 +79,6 @@ public class MemberController {
 				dealerService.saveDealer(dealer, member);
 			}
 			
-			
-			
 		} catch(DataIntegrityViolationException e) {
 			// rejectValue(필드명, 오류코드, 메시지)
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", "이미 존재하는 회원 ID입니다.");
@@ -92,8 +91,53 @@ public class MemberController {
 		return "redirect:/main";
 	}
 	
+	// 회원정보 조회
+	@GetMapping("/update/{memberId}")
+	public String updateCustomerForm(@PathVariable("memberId") String memberId, Model model) {
+		Member member = memberService.findByMemberId(memberId);
+		model.addAttribute("member", member);
+		
+		return "member/updateMember";
+	}
 	
+	// 회원정보 수정 처리
+	@PostMapping("/update")
+	public String updateMemberPro(@Valid @ModelAttribute Member member, BindingResult bindingResult) {
+		// 유효성 검사
+		if(bindingResult.hasErrors()) {
+			return "member/updateMember";
+		}
+		
+		// 입력한 비밀번호 2개가 일치하는지를 검사
+		if(!member.getPassword().equals(member.getPassword2())) {
+			bindingResult.rejectValue("password2", "passwordIncorrect", "입력한 비밀번호가 일치하지 않습니다.");
+			return "member/updateMember";
+		}
+		
+		
+		// 고객은 01, 딜러는 02
+		if(member.getRole() == Role.CUSTOMER) member.setRoleCheck("01");
+		else if(member.getRole() == Role.DEALER) member.setRoleCheck("02");
+		
+		// 수정 처리
+		try {
+			Member m = Member.createMember(member, passwordEncoder, member.getRoleCheck());
+			memberService.updateMember(m);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "member/updateMember";
+		}
+		
+		return "redirect:/member/update/" + member.getMemberId();
+	}
 	
+	// 회원삭제(탈퇴)
+	@GetMapping("/delete/{memberId}")
+	public String deleteMemberPro(@PathVariable("memberId") String memberId) {
+		memberService.deleteMember(memberId);
+		
+		return "redirect:/logout";
+	}
 	
 	
 }
