@@ -69,7 +69,10 @@
 	    </ul>
 	</div>	
 	<!-- 상담 아이콘 -->
-	<a th:href="@{counseling/addApply}" class="consult-icon" aria-label="상담하기">
+	<a sec:authorize="isAnonymous()" th:href="@{/login}" class="nav-link">
+		
+	</a>
+	<a sec:authorize="isAuthenticated()" th:href="@{counseling/addApply}" class="consult-icon" aria-label="상담하기">
 	    <img th:src="@{/icons/speech-bubble.png}" >
 	</a>
 </body>
