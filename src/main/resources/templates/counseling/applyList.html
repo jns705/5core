@@ -134,15 +134,14 @@
 				<td class="text-end status-cell">
 				  <div class="d-inline-flex align-items-center gap-2 justify-content-end">
 				    <span class="badge bg-warning text-dark status-badge" th:text="${apply.status}"></span>
-
 				  </div>
 				</td>
-				<td>
-					<div class="text-end status-cell">
-						<button type="button" class="btn btn-sm btn-outline-danger btn-cancel" aria-label="상담 취소">
-						  취소
-						</button>				
-					</div>
+				<td class="text-center">
+				  <div class="text-end status-cell">
+				    <button type="button" class="btn btn-sm btn-outline-danger btn-cancel" aria-label="상담 취소">
+				       취소
+					</button>				
+				  </div>
 				</td>
 	          </tr>
 			</div>
@@ -177,15 +176,15 @@
 
   <script>
     /* ====== 요소 선택 ====== */
-    const selectAllCheckbox = document.getElementById('selectAll');
-    const rowCheckboxes = () => document.querySelectorAll('input.rowCheckbox');
-    const statusFilter = document.getElementById('statusFilter');
-    const sortFilter = document.getElementById('sortFilter');
-    const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('searchBtn');
-    const tableBody = document.getElementById('tableBody');
-    const btnDeleteSelected = document.getElementById('btnDeleteSelected');
-    const btnExcelDownload = document.getElementById('btnExcelDownload');
+    let selectAllCheckbox = document.getElementById('selectAll');
+    let rowCheckboxes = () => document.querySelectorAll('input.rowCheckbox');
+    let statusFilter = document.getElementById('statusFilter');
+    let sortFilter = document.getElementById('sortFilter');
+    let searchInput = document.getElementById('searchInput');
+    let searchButton = document.getElementById('searchBtn');
+    let tableBody = document.getElementById('tableBody');
+    let btnDeleteSelected = document.getElementById('btnDeleteSelected');
+    let btnExcelDownload = document.getElementById('btnExcelDownload');
 
     /* ====== 유틸 함수 ====== */
     function parseBudget(text) {
@@ -198,17 +197,17 @@
 
 	function isRowVisible(row, selectedStatus, keyword) {
 	  // 마지막 셀 안의 배지 텍스트를 상담 상태로 사용
-	  const statusText =
+	  let statusText =
 	    row.querySelector('td:last-child .badge')?.textContent.trim() ?? '';
 
-	  const customerId = row.cells[1]?.textContent.toLowerCase() ?? '';
-	  const contact = row.cells[2]?.textContent.toLowerCase() ?? '';
+	  let customerId = row.cells[1]?.textContent.toLowerCase() ?? '';
+	  let contact = row.cells[2]?.textContent.toLowerCase() ?? '';
 
 	  // 상태 필터: "전체 상태"가 아니면 정확히 같은 상태만 통과
-	  const statusMatch =
+	  let statusMatch =
 	    selectedStatus === '전체 상태' || statusText === selectedStatus;
 
-	  const searchMatch =
+	  let searchMatch =
 	    keyword === '' ||
 	    customerId.includes(keyword) ||
 	    contact.includes(keyword);
@@ -219,8 +218,8 @@
     /* ====== 메인 기능 ====== */
     // 필터&검색 결과 반영 + 정렬
     function applyFiltersAndSorting() {
-      const selectedStatus = statusFilter.value;
-      const keyword = searchInput.value.trim().toLowerCase();
+      let selectedStatus = statusFilter.value;
+      let keyword = searchInput.value.trim().toLowerCase();
 
       Array.from(tableBody.rows).forEach((row) => {
         row.style.display = isRowVisible(row, selectedStatus, keyword)
@@ -233,7 +232,7 @@
 
     // 표시는 행만 정렬
     function sortVisibleRows(sortType) {
-      const visibleRows = Array.from(tableBody.rows).filter(
+      let visibleRows = Array.from(tableBody.rows).filter(
         (row) => row.style.display !== 'none'
       );
 
@@ -264,7 +263,7 @@
 
     // 전체 선택, 개별 선택 체크박스 동기화
     function handleSelectAllChange() {
-      const checked = selectAllCheckbox.checked;
+      let checked = selectAllCheckbox.checked;
       rowCheckboxes().forEach((cb) => {
         cb.checked = checked;
       });
@@ -272,7 +271,7 @@
 
     // 선택된 행 삭제
     function handleDeleteSelected() {
-      const checkedBoxes = Array.from(rowCheckboxes()).filter((cb) => cb.checked);
+      let checkedBoxes = Array.from(rowCheckboxes()).filter((cb) => cb.checked);
 
       if (checkedBoxes.length === 0) {
         alert('삭제할 항목을 선택해 주세요.');
@@ -281,7 +280,7 @@
       if (!confirm(`${checkedBoxes.length}건을 삭제하시겠습니까?`)) return;
 
       checkedBoxes.forEach((cb) => {
-        const row = cb.closest('tr');
+        let row = cb.closest('tr');
         if (row) row.remove();
       });
 
@@ -290,21 +289,21 @@
 
     // 테이블을 CSV로 변환
     function tableToCSV() {
-      const rows = [];
+      let rows = [];
 
-      const headers = [];
+      let headers = [];
       document.querySelectorAll('table thead th').forEach((th) => {
-        const text = th.textContent.trim();
+        let text = th.textContent.trim();
         if (text !== '') headers.push(`"${text}"`);
       });
       rows.push(headers.join(','));
 
       document.querySelectorAll('table tbody tr').forEach((tr) => {
         if (tr.style.display === 'none') return;
-        const data = [];
+        let data = [];
         tr.querySelectorAll('td').forEach((td, idx) => {
           if (idx === 0) return;
-          const text = td.textContent.trim().replace(/"/g, '""');
+          let text = td.textContent.trim().replace(/"/g, '""');
           data.push(`"${text}"`);
         });
         if (data.length) rows.push(data.join(','));
@@ -315,13 +314,13 @@
 
     // CSV 파일 다운로드
     function downloadCSV(csv, filename) {
-      const BOM = '\uFEFF';
-      const blob = new Blob([BOM + csv], {
+      let BOM = '\uFEFF';
+      let blob = new Blob([BOM + csv], {
         type: 'text/csv;charset=utf-8;',
       });
-      const url = URL.createObjectURL(blob);
+      let url = URL.createObjectURL(blob);
 
-      const link = document.createElement('a');
+      let link = document.createElement('a');
       link.href = url;
       link.download = filename;
       link.style.display = 'none';
@@ -334,8 +333,8 @@
 
     // 엑셀 다운로드 버튼 동작
     function handleExcelDownload() {
-      const csvData = tableToCSV();
-      const dateStr = new Date().toISOString().slice(0, 10);
+      let csvData = tableToCSV();
+      let dateStr = new Date().toISOString().slice(0, 10);
       downloadCSV(csvData, `구매신청리스트_${dateStr}.csv`);
     }
 
@@ -358,14 +357,14 @@
 	
 	// 상담 취소 버튼 클릭 시
 	function handleCancelClick(event) {
-	  const btn = event.target;
+	  let btn = event.target;
 	  if (!btn.classList.contains('btn-cancel')) return;
 
-	  const statusCell = btn.closest('.status-cell');
-	  const badge = statusCell.querySelector('.status-badge');
+	  let statusCell = btn.closest('.status-cell');
+	  let badge = statusCell.querySelector('.status-badge');
 	  if (!badge) return;
 
-	  const current = badge.textContent.trim();
+	  let current = badge.textContent.trim();
 	  if (current === '취소됨') return;
 
 	  if (!confirm('해당 상담을 취소하시겠습니까?')) {

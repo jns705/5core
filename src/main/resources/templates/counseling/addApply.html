@@ -241,42 +241,62 @@
     }
 
     /* Step 1 차종 선택 스타일 */
-    .vehicle-segment-tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 16px;
-        border-bottom: 1px solid var(--border-subtle);
-        padding-bottom: 8px;
-        overflow-x: auto;
-    }
-
-    .segment-tab {
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        white-space: nowrap;
-        border: 1px solid transparent;
-        transition: background-color 0.2s;
-    }
-
-    .segment-tab:hover {
-        background-color: #f3f4f6;
-    }
-
-    .segment-tab.active {
-        background-color: var(--primary);
-        color: #ffffff;
-        font-weight: 600;
-    }
+	.tabs { margin-bottom: 20px; }
+	 .tabs button {
+	     padding: 10px 15px;
+	     margin-right: 5px;
+	     border: 1px solid #ccc;
+	     background-color: #f8f8f8;
+	     cursor: pointer;
+	     font-weight: bold;
+	 }
+	 .tabs button.active {
+	     background-color: #007bff;
+	     color: white;
+	     border-color: #007bff;
+	 }
+	 .car-selection {
+	     display: grid;
+	     grid-template-columns: repeat(6, 1fr); 
+	     gap: 15px;
+	 }
+	 .car-item {
+	     border: 1px solid #ccc;
+	     padding: 10px;
+	     text-align: center;
+	     cursor: pointer;
+	     transition: all 0.2s;
+	     background-color: white;
+	     display: flex; 
+	     flex-direction: column;
+	     justify-content: space-between;
+	 }
+	 .car-item.hidden {
+	     display: none;
+	 }
+	 .car-item:hover {
+	     border-color: #007bff;
+	     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+	 }
+	 .car-item.selected {
+	     background-color: #e6f3ff; 
+	     border: 2px solid #007bff;
+	 }
+	 .car-item img {
+	     max-width: 80%; 
+	     height: auto;
+	     margin-bottom: 5px;
+	     display: block;
+	     margin-left: auto;
+	     margin-right: auto;
+	 }
+	 .selected-info {
+	     margin-top: 20px;
+	     padding: 10px;
+	     border: 1px solid #ddd;
+	     background-color: #f9f9f9;
+	 }
     
-    .vehicle-card-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        justify-content: flex-start;
-    }
 
     .vehicle-card {
         width: 200px;
@@ -493,18 +513,27 @@
 			</div>			
           </div>
 		  <div class="accordion-content">
-		        <div class="vehicle-segment-tabs">
-		            <div class="segment-tab  active" data-segment="승용">승용</div>
-		            <div class="segment-tab" data-segment="SUV">SUV</div>
-		            <div class="segment-tab" data-segment="친환경">친환경</div>
-		            <div class="segment-tab" data-segment="N">N/고성능</div>
+		        <div class="tabs">
+					<button type="button" class="tab-button active" data-vehicletype="세단">세단</button>
+					<button type="button" class="tab-button" data-vehicletype="SUV">SUV</button>
+					<button type="button" class="tab-button" data-vehicletype="경차">경차</button>
 		        </div>
-		        <div class="vehicle-card-container" id="vehicleList">
-		        </div>
-		        <input type="hidden" id="selectedVehicle" name="vehicleId" value="">
-		
-		        <div id="selectedVehicleInfo" style="display:none;">
-		            선택된 차종: <span id="selectedVehicleName"></span>
+		        <div class="car-selection">
+					<div th:each="vehicle : ${vehicleList}" 
+					     class="car-item"
+					     th:classappend="${vehicle.name == selectedVehicleName} ? 'selected'"
+					     th:data-vehicle-id="${vehicle.id}" 
+					     th:data-vehicle-name="${vehicle.name}"
+					     th:data-vehicletype="${vehicle.vehicleType}"> <img th:src="@{/images/} + ${vehicle.fileName}" 
+					         th:alt="${vehicle.name}" />
+					    
+					    <p th:text="${vehicle.name}"></p> 
+					    
+					</div>
+		        </div>	
+		        <div class="selected-info">
+					선택된 차량: **<span id="selectedCarDisplay" th:text="${selectedVehicleName ?: '선택된 차량 없음'}">벨로스터 N</span>**
+					  <input type="hidden" name="vehicleId" id="selectedVehicleId" th:field="*{vehicleId}" />
 		        </div>
 		    </div>
         </div>
@@ -692,331 +721,295 @@
   </div>
 
   <script>
-    // 아코디언
-    let items = document.querySelectorAll(".accordion-item");
+      // 아코디언
+      let items = document.querySelectorAll(".accordion-item");
 
-    items.forEach((item) => {
-      let header = item.querySelector(".accordion-header");
-	  let form = document.applyForm;
-      header.addEventListener("click", () => {
-        let openContent = document.querySelector(".accordion-content.open");
-		let sido = document.querySelector("#sido");
-		let siGunGu = document.querySelector("#siGunGu");
-		let eupMyeonDong = document.querySelector("#eupMyeonDong");
-		let stepText1 = document.querySelector(".stepText1");
-		let stepText2 = document.querySelector(".stepText2");
-		
-		// 열려 있는 패널이 있고, 그게 지금 클릭한 것이 아니라면 닫기
-        if (openContent && openContent !== item.querySelector(".accordion-content")) {
-          openContent.classList.remove("open");
-          
-          // Step 1 헤더 요약 텍스트 업데이트 (차종이 선택되었다면)
-          let selectedVehicleName = document.getElementById('selectedVehicle').value;
-          stepText1.textContent = selectedVehicleName || "선택 안 함";
+      items.forEach((item) => {
+        let header = item.querySelector(".accordion-header");
+  	  let form = document.applyForm;
+        header.addEventListener("click", () => {
+          let openContent = document.querySelector(".accordion-content.open");
+  		let sido = document.querySelector("#sido");
+  		let siGunGu = document.querySelector("#siGunGu");
+  		let eupMyeonDong = document.querySelector("#eupMyeonDong");
+  		let stepText1 = document.querySelector(".stepText1");
+  		let stepText2 = document.querySelector(".stepText2");
+  		
+  		// 열려 있는 패널이 있고, 그게 지금 클릭한 것이 아니라면 닫기
+          if (openContent && openContent !== item.querySelector(".accordion-content")) {
+            openContent.classList.remove("open");
+            
+            // Step 1 헤더 요약 텍스트 업데이트 (차종이 선택되었다면)
+            // *수정: 잘못된 변수(selectedVehicle) 대신 selectedCarDisplay의 텍스트를 사용*
+            let selectedVehicleName = document.getElementById('selectedCarDisplay').textContent;
+            stepText1.textContent = selectedVehicleName || "선택 안 함";
 
-          // Step 2 헤더 요약 텍스트 업데이트
-		  // Step 2가 닫힐 때만 지역 정보를 업데이트
-          if (openContent.closest('.accordion-item').querySelector('.step-badge').textContent === 'STEP 2') {
-			  let areaText = `${sido.value || ''} ${siGunGu.value || ''} ${eupMyeonDong.value || ''}`.trim();
-			  stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
-		  }
-
-
-          let openArrow = openContent.previousElementSibling.querySelector(".accordion-arrow");
-          if (openArrow) openArrow.style.transform = "rotate(0deg)";
-        }
-
-        // 현재 패널 open/close toggle
-        let content = item.querySelector(".accordion-content");
-        let arrow = item.querySelector(".accordion-arrow");
-        content.classList.toggle("open");
-
-        // 화살표 회전
-        if (content.classList.contains("open")) {
-          arrow.style.transform = "rotate(180deg)";
-        } else {
-          arrow.style.transform = "rotate(0deg)";
-        }
-      });
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-      let form = document.applyForm;
-      let likeInfo = document.querySelector(".likeInfo");
-      let result = document.querySelector(".result");
-	  let likeTxt = null;
-      
-      let stepText1 = document.querySelector(".stepText1");
-      let stepText2 = document.querySelector(".stepText2");
+            // Step 2 헤더 요약 텍스트 업데이트
+  		  // Step 2가 닫힐 때만 지역 정보를 업데이트
+            if (openContent.closest('.accordion-item').querySelector('.step-badge').textContent === 'STEP 2') {
+  			  let areaText = `${sido.value || ''} ${siGunGu.value || ''} ${eupMyeonDong.value || ''}`.trim();
+  			  stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
+  		  }
 
 
-      // --- ▼▼▼ Step 1 차종 선택 기능 JavaScript 추가 ▼▼▼ ---
-		
-		// 차종 데이터 (실제 데이터베이스에서 가져와야 함)
-		let vehicles = [
-		    { name: '아이오닉 5', segment: '친환경', image: '/5core/images/grandeur_blue.png'},
-		    { name: '팰리세이드', segment: 'SUV', image: '/5core/images/grandeur_blue.png'},
-		    { name: '쏘나타', segment: '승용', image: '/5core/images/grandeur_blue.png'},
-		    { name: '아반떼', segment: '승용', image:'/5core/images/grandeur_blue.png'},
-		    { name: '코나', segment: 'SUV', image: '/5core/images/grandeur_blue.png'},
-		    { name: '넥쏘', segment: '친환경', image: '/5core/images/grandeur_blue.png'},
-		    { name: '투싼', segment: 'SUV', image: '/5core/images/grandeur_blue.png'},
-		    { name: '그랜저', segment: '승용', image: '/5core/images/grandeur_blue.png'},
-		    { name: '아이오닉 6', segment: '친환경', image: '/5core/images/grandeur_blue.png'},
-		    { name: '벨로스터 N', segment: 'N', image: '/5core/images/grandeur_blue.png'}
-		];
+            let openArrow = openContent.previousElementSibling.querySelector(".accordion-arrow");
+            if (openArrow) openArrow.style.transform = "rotate(0deg)";
+          }
 
-		let vehicleListContainer = document.getElementById('vehicleList');
-		let segmentTabs = document.querySelectorAll('.segment-tab');
-		let selectedVehicleInput = document.getElementById('selectedVehicle');
-		let selectedVehicleNameSpan = document.getElementById('selectedVehicleName');
-		let selectedVehicleInfoDiv = document.getElementById('selectedVehicleInfo');
+          // 현재 패널 open/close toggle
+          let content = item.querySelector(".accordion-content");
+          let arrow = item.querySelector(".accordion-arrow");
+          content.classList.toggle("open");
 
-		// 1. 차종 카드 렌더링 함수
-		function renderVehicles(segment) {
-		    vehicleListContainer.innerHTML = ''; // 기존 목록 초기화
-		    
-		    let filteredVehicles = vehicles.filter(v => 
-		        segment === '승용' || v.segment === segment
-		    );
-		    
-		    filteredVehicles.forEach(vehicle => {
-		        const card = document.createElement('div');
-		        card.classList.add('vehicle-card');
-		        card.dataset.name = vehicle.name;
-		        // 임시 이미지 경로 수정 (실제 환경에 맞게 조정 필요)
-		        card.innerHTML = `
-		            <img src="${vehicle.image}" alt="${vehicle.name}"> 
-		            <p>${vehicle.name}</p>
-		        `;
-		        
-		        // 이전에 선택된 차종이 현재 카드라면 selected 클래스 추가
-		        if (selectedVehicleInput.value === vehicle.name) {
-		            card.classList.add('selected');
-		        }
-
-		        // 카드 클릭 이벤트 리스너 추가
-		        card.addEventListener('click', () => handleVehicleSelection(card));
-		        vehicleListContainer.appendChild(card);
-		    });
-		}
-
-		// 2. 차종 선택 처리 함수
-		function handleVehicleSelection(clickedCard) {
-		    const vehicleName = clickedCard.dataset.name;
-
-		    // 모든 카드에서 selected 클래스 제거
-		    document.querySelectorAll('.vehicle-card').forEach(card => {
-		        card.classList.remove('selected');
-		    });
-
-		    // 클릭된 카드 선택
-		    clickedCard.classList.add('selected');
-
-		    // 숨겨진 input 및 정보 표시 업데이트
-		    selectedVehicleInput.value = vehicleName;
-		    selectedVehicleNameSpan.textContent = vehicleName;
-		    selectedVehicleInfoDiv.style.display = 'block';
-        
-        // Step 1 헤더 요약 텍스트 업데이트
-        stepText1.textContent = vehicleName;
-
-		    // Step 1 아코디언 닫기 (선택 완료 후)
-		    let step1Item = document.querySelector(".accordion-item:nth-child(1)");
-		    let step1Content = step1Item.querySelector(".accordion-content");
-		    let step1Arrow = step1Item.querySelector(".accordion-arrow");
-		    
-		    if (step1Content.classList.contains("open")) {
-		        step1Content.classList.remove("open");
-		        step1Arrow.style.transform = "rotate(0deg)";
-		        
-		        // 다음 Step 2 자동으로 열기 
-		        let step2Item = document.querySelector(".accordion-item:nth-child(2)");
-		        let step2Content = step2Item.querySelector(".accordion-content");
-		        let step2Arrow = step2Item.querySelector(".accordion-arrow");
-		        
-                // Step 2가 이미 열려있지 않다면
-		        if (!step2Content.classList.contains("open")) {
-                    // 혹시 모를 다른 열린 패널 닫기 (Step 1을 닫았으므로 Step 3만 체크)
-                    let step3Content = document.querySelector(".accordion-item:nth-child(3) .accordion-content.open");
-                    if (step3Content) {
-                        step3Content.classList.remove("open");
-                        document.querySelector(".accordion-item:nth-child(3) .accordion-arrow").style.transform = "rotate(0deg)";
-                    }
-
-		            step2Content.classList.add("open");
-		            step2Arrow.style.transform = "rotate(180deg)";
-		        }
-		    }
-		}
-
-		// 3. 탭 클릭 이벤트 설정
-		segmentTabs.forEach(tab => {
-		    tab.addEventListener('click', function() {
-		        // 기존 active 탭 제거
-		        document.querySelector('.segment-tab.active').classList.remove('active');
-		        // 현재 탭 active 설정
-		        this.classList.add('active');
-		        
-		        const segment = this.dataset.segment;
-		        renderVehicles(segment); // 해당 세그먼트의 차량 렌더링
-		    });
-		});
-
-		// 페이지 로드 시 '승용' 탭의 차량 목록 초기 렌더링
-		renderVehicles('승용'); 
-		
-	  // Step3 요약
-      btnComplete.addEventListener("click", () => {	
-        let purchasePurposeList = [];
-		let engineTypeList = [];
-		let vehicleTypeList = [];
-		let otherInputVal = null; // Step 3 요약 버튼 클릭 시 초기화
-		let purchasePurpose = document.querySelectorAll("[name=purchasePurpose]");
-		let engineType = document.querySelectorAll("[name=engineType]");
-		let vehicleType = document.querySelectorAll("[name=vehicleType]");
-		let purchasePeriod = form.purchasePeriod.value;
-		let counselingLikeTime = form.counselingLikeTime.value;
-		purchasePurpose.forEach( v  => {
-		    if (v.checked) {
-				if (v.value != "기타") {
-					purchasePurposeList.push(v.value);
-				} else{
-					let otherInput = document.querySelector("#otherInput");
-					otherInputVal = otherInput.value;	
-					if (otherInputVal === null || otherInputVal === undefined || otherInputVal === "") {
-						alert("기타 선택시 반드시 입력란에 입력해주세요");
-						return;
-					}
-				}	       
-		    }
-		});	
-        engineType.forEach((v) => {
-          if (v.checked) {
-            engineTypeList.push(v.value);
+          // 화살표 회전
+          if (content.classList.contains("open")) {
+            arrow.style.transform = "rotate(180deg)";
+          } else {
+            arrow.style.transform = "rotate(0deg)";
           }
         });
+      });
 
-        vehicleType.forEach((v) => {
-          if (v.checked) {
-            vehicleTypeList.push(v.value);
-          }
-        });
+      document.addEventListener("DOMContentLoaded", () => {
+        let form = document.applyForm;
+        let likeInfo = document.querySelector(".likeInfo");
+        let result = document.querySelector(".result");
+  	  let likeTxt = null;
         
-        // Step 3 헤더 요약 텍스트 업데이트
-        const summaryText = [];
-        if (purchasePeriod) summaryText.push(purchasePeriod);
-        if (purchasePurposeList.length > 0) summaryText.push(`목적 ${purchasePurposeList.length}개`);
-        if (engineTypeList.length > 0) summaryText.push(`엔진 ${engineTypeList.length}개`);     
-        likeTxt =
-          `차량 구매 목적: ${purchasePurposeList.join(", ") || "-"}<br>` +
-          `차량 구매 목적(기타): ${otherInputVal || "-"}<br>` +
-          `희망 구매 시점: ${purchasePeriod || "-"}<br>` +
-          `선호 차량: ${vehicleTypeList.join(", ") || "-"}<br>` +
-          `선호 엔진: ${engineTypeList.join(", ") || "-"}<br>` +
-		  `희망 연락 시간: ${counselingLikeTime || "-"}`;
+        let stepText1 = document.querySelector(".stepText1");
+        let stepText2 = document.querySelector(".stepText2");
 
-        likeInfo.innerHTML = '<div class="info-block-title">선택한 Step3 요약</div>' + likeTxt;
-      });
-      // 전체 신청 미리보기
-      btnApply.addEventListener("click", () => {
 
-        let sido = document.querySelector("#sido");
-        let siGunGu = document.querySelector("#siGunGu");
-        let eupMyeonDong = document.querySelector("#eupMyeonDong");
-        let selectedVehicleName = document.getElementById('selectedVehicle').value; // Step 1 차종
- 
-        let allTxt =
-          `**선택된 상담 차종:** ${selectedVehicleName || '선택 안 함'}<br><br>` + 
-		  (likeTxt || "Step 3 정보가 없습니다.<br>") + 
-		  `<br>시/도: ${sido.value || "-"}<br>` +
-		  `시/군/구: ${siGunGu.value || "-"}<br>` +
-		  `읍/면/동: ${eupMyeonDong.value || "-"}<br>` ;
-        	result.innerHTML = '<div class="info-block-title">구매 신청 미리보기</div>' + allTxt;
-      });
-      
-      // Step 2 지역 선택 드롭다운 변경 시 헤더 업데이트
-      document.querySelectorAll('#sido, #siGunGu, #eupMyeonDong').forEach(select => {
-          select.addEventListener('change', () => {
-              const sido = document.querySelector("#sido").value || '';
-              const siGunGu = document.querySelector("#siGunGu").value || '';
-              const eupMyeonDong = document.querySelector("#eupMyeonDong").value || '';
-              const areaText = `${sido} ${siGunGu} ${eupMyeonDong}`.trim();
-              stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
+        // --- ▼▼▼ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▼▼▼ ---
+  	  // 중복된 document.addEventListener('DOMContentLoaded', function() { ... }); 제거
+  	      let carItems = document.querySelectorAll('.car-item');
+  	      let tabButtons = document.querySelectorAll('.tab-button'); 
+  	      let selectedCarDisplay = document.getElementById('selectedCarDisplay');
+  	      let selectedVehicleIdInput = document.getElementById('selectedVehicleId');
+
+  	      // --- 1. 탭 이동 및 필터링 기능 (vehicleType 기준으로 필터링) ---
+  	      function filterVehicles(vehicleType) {
+  	          carItems.forEach(item => {
+  	              if (item.getAttribute('data-vehicletype') === vehicleType) {
+  	                  item.classList.remove('hidden');
+  	              } else {
+  	                  item.classList.add('hidden');
+  	              }
+  	          });
+  	      }
+  	      
+  	      tabButtons.forEach(button => {
+  	          button.addEventListener('click', function() {
+  	              document.querySelector('.tab-button.active')?.classList.remove('active');
+  	              this.classList.add('active');
+  	              
+  	              let vehicleType = this.getAttribute('data-vehicletype');
+  	              filterVehicles(vehicleType);
+  	          });
+  	      });
+  	      
+  	      // 초기 로딩 시에도 data-vehicletype을 사용해 필터링
+  	      let initialVehicleType = document.querySelector('.tab-button.active')?.getAttribute('data-vehicletype');
+  	      if (initialVehicleType) {
+  	          filterVehicles(initialVehicleType);
+  	      }
+
+  	      // --- 2. 차량 선택 기능 (Step 1 헤더 업데이트 로직 추가) ---
+  	      carItems.forEach(item => {
+  	          item.addEventListener('click', function() {
+  	              document.querySelector('.car-item.selected')?.classList.remove('selected');
+  	              this.classList.add('selected');
+  	              
+  	              let vehicleId = this.getAttribute('data-vehicle-id');
+  	              let vehicleName = this.getAttribute('data-vehicle-name'); 
+
+  	              selectedCarDisplay.textContent = vehicleName;
+  	              selectedVehicleIdInput.value = vehicleId;
+                    
+                    // *수정: 차량 선택 시 Step 1 헤더 텍스트를 즉시 업데이트*
+                    stepText1.textContent = vehicleName;
+  	              
+  	              console.log("선택된 차량 ID:", vehicleId);
+  	          });
+  	      });
+
+  	      let initialId = selectedVehicleIdInput.value;
+            // 초기 vehicleName 설정 (페이지 로딩 시)
+            if (initialId) {
+                let initialSelectedItem = document.querySelector(`.car-item[data-vehicle-id="${initialId}"]`);
+                if (initialSelectedItem) {
+                    initialSelectedItem.classList.add('selected');
+                    let initialVehicleName = initialSelectedItem.getAttribute('data-vehicle-name');
+                    selectedCarDisplay.textContent = initialVehicleName;
+                    stepText1.textContent = initialVehicleName;
+                }
+            }
+  	  // --- ▲▲▲ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▲▲▲ ---
+  		
+  	  // Step3 요약
+        btnComplete.addEventListener("click", () => {	
+          let purchasePurposeList = [];
+  		let engineTypeList = [];
+  		let vehicleTypeList = [];
+  		let otherInputVal = null; // Step 3 요약 버튼 클릭 시 초기화
+  		let purchasePurpose = document.querySelectorAll("[name=purchasePurpose]");
+  		let engineType = document.querySelectorAll("[name=engineType]");
+  		let vehicleType = document.querySelectorAll("[name=vehicleType]");
+  		let purchasePeriod = form.purchasePeriod.value;
+  		let counselingLikeTime = form.counselingLikeTime.value;
+  		purchasePurpose.forEach( v  => {
+  		    if (v.checked) {
+  				if (v.value != "기타") {
+  					purchasePurposeList.push(v.value);
+  				} else{
+  					let otherInput = document.querySelector("#otherInput");
+  					otherInputVal = otherInput.value;	
+  					if (otherInputVal === null || otherInputVal === undefined || otherInputVal === "") {
+  						alert("기타 선택시 반드시 입력란에 입력해주세요");
+  						return;
+  					}
+  				}	       
+  		    }
+  		});	
+          engineType.forEach((v) => {
+            if (v.checked) {
+              engineTypeList.push(v.value);
+            }
           });
+
+          vehicleType.forEach((v) => {
+            if (v.checked) {
+              vehicleTypeList.push(v.value);
+            }
+          });
+          
+          // Step 3 헤더 요약 텍스트 업데이트
+          let summaryText = [];
+          if (purchasePeriod) summaryText.push(purchasePeriod);
+          if (purchasePurposeList.length > 0) summaryText.push(`목적 ${purchasePurposeList.length}개`);
+          if (engineTypeList.length > 0) summaryText.push(`엔진 ${engineTypeList.length}개`);     
+          
+          // Step 3 헤더 요약 텍스트 업데이트
+          let stepText3 = document.querySelector(".stepText3");
+          stepText3.textContent = summaryText.join(' / ') || "미선택 항목 있음";
+          
+          likeTxt =
+            `차량 구매 목적: ${purchasePurposeList.join(", ") || "-"}<br>` +
+            `차량 구매 목적(기타): ${otherInputVal || "-"}<br>` +
+            `희망 구매 시점: ${purchasePeriod || "-"}<br>` +
+            `선호 차량: ${vehicleTypeList.join(", ") || "-"}<br>` +
+            `선호 엔진: ${engineTypeList.join(", ") || "-"}<br>` +
+  		  `희망 연락 시간: ${counselingLikeTime || "-"}`;
+
+          likeInfo.innerHTML = '<div class="info-block-title">선택한 Step3 요약</div>' + likeTxt;
+        });
+        // 전체 신청 미리보기
+        btnApply.addEventListener("click", () => {
+
+          let sido = document.querySelector("#sido");
+          let siGunGu = document.querySelector("#siGunGu");
+          let eupMyeonDong = document.querySelector("#eupMyeonDong");
+          // *수정: 잘못된 변수(selectedVehicle) 대신 selectedCarDisplay의 텍스트를 사용*
+          let selectedVehicleName = document.getElementById('selectedCarDisplay').textContent; 
+   
+          let allTxt =
+            `**선택된 상담 차종:** ${selectedVehicleName || '선택 안 함'}<br><br>` + 
+  		  (likeTxt || "Step 3 정보가 없습니다.<br>") + 
+  		  `<br>시/도: ${sido.value || "-"}<br>` +
+  		  `시/군/구: ${siGunGu.value || "-"}<br>` +
+  		  `읍/면/동: ${eupMyeonDong.value || "-"}<br>` ;
+          	result.innerHTML = '<div class="info-block-title">구매 신청 미리보기</div>' + allTxt;
+        });
+        
+        // Step 2 지역 선택 드롭다운 변경 시 헤더 업데이트
+        document.querySelectorAll('#sido, #siGunGu, #eupMyeonDong').forEach(select => {
+            select.addEventListener('change', () => {
+                let sido = document.querySelector("#sido").value || '';
+                let siGunGu = document.querySelector("#siGunGu").value || '';
+                let eupMyeonDong = document.querySelector("#eupMyeonDong").value || '';
+                let areaText = `${sido} ${siGunGu} ${eupMyeonDong}`.trim();
+                stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
+            });
+        });
+        
+        // 기타(other) 입력 필드 활성화 로직 (jQuery 외부 로직과 통합)
+        $("#other").on("change", function () {
+          let otherInput = $("#otherInput");
+          if ($(this).is(":checked")) {
+            otherInput.removeAttr("disabled");
+            otherInput.focus();
+          } else {
+            otherInput.attr("disabled", "disabled");
+            otherInput.val("");
+          }
+        });
+        
+        // Step 3 헤더 초기 요약 (추가)
+        let stepText3 = document.querySelector(".stepText3");
+        stepText3.textContent = "미선택 항목 있음";
       });
-    });
+      
+      // jQuery: 주소 데이터 로직 (변경 없음)
+      $(document).ready(function () {
+  	  let jusoData = {
+  	      '서울특별시': {
+  	          '강남구': ['역삼동', '삼성동', '압구정동'],
+  	          '서초구': ['서초동', '방배동', '양재동'],
+  	          '송파구': ['잠실동', '문정동', '방이동']
+  	      },
+  	      '부산광역시': {
+  	          '해운대구': ['중동', '좌동', '우동'],
+  	          '수영구': ['광안동', '남천동'],
+  	          '부산진구': ['부전동', '전포동']
+  	      },
+  	      '경기도': {
+  	          '성남시': ['분당동', '정자동', '수내동'],
+  	          '용인시': ['수지구', '기흥구', '처인구'],
+  	          '고양시': ['일산동', '일산서', '일산']
+  	      }
+  	  };
+  	  
+  	  let sidoSelect = $('#sido');
 
-    // jQuery: 기타 선택 시 입력 활성/비활성
-    $(document).ready(function () {
-      $("#other").change(function () {
-        let otherInput = $("#otherInput");
-        if ($(this).is(":checked")) {
-          otherInput.removeAttr("disabled");
-          otherInput.focus();
-        } else {
-          otherInput.attr("disabled", "disabled");
-          otherInput.val("");
-        }
+  	  Object.keys(jusoData).forEach(sido => {
+  	  	sidoSelect.append(new Option(sido, sido));
+  	  });
+  	  
+  	  
+  	$('#sido').change(function () {
+  		let sido = $(this).val();
+  	    let sigunguSelect = $('#siGunGu');
+  	    let eupSelect = $('#eupMyeonDong');
+
+  	    sigunguSelect.empty().append(new Option("시/군/구 선택", ""));
+  	    eupSelect.empty().append(new Option("읍/면/동 선택", ""));
+
+  	    if (!sido) return;
+
+  	        Object.keys(jusoData[sido]).forEach(sg => {
+  	             sigunguSelect.append(new Option(sg, sg));
+  	        });
+  	    });
+
+  	    // -------------------------
+  	    // 시군구 선택 읍면동 세팅
+  	    // -------------------------
+  	    $('#siGunGu').change(function () {
+  	         let sido = $('#sido').val();
+  	         let siGunGu = $(this).val();
+  	         let eupSelect = $('#eupMyeonDong');
+
+  	         eupSelect.empty().append(new Option("읍/면/동 선택", ""));
+
+  	         if (!siGunGu) return;
+
+  	         jusoData[sido][siGunGu].forEach(eup => {
+  	             eupSelect.append(new Option(eup, eup));
+  	         });
+  	    });
       });
-	  
-	  let jusoData = {
-	      '서울특별시': {
-	          '강남구': ['역삼동', '삼성동', '압구정동'],
-	          '서초구': ['서초동', '방배동', '양재동'],
-	          '송파구': ['잠실동', '문정동', '방이동']
-	      },
-	      '부산광역시': {
-	          '해운대구': ['중동', '좌동', '우동'],
-	          '수영구': ['광안동', '남천동'],
-	          '부산진구': ['부전동', '전포동']
-	      },
-	      '경기도': {
-	          '성남시': ['분당동', '정자동', '수내동'],
-	          '용인시': ['수지구', '기흥구', '처인구'],
-	          '고양시': ['일산동', '일산서', '일산']
-	      }
-	  };
-	  
-	  let sidoSelect = $('#sido');
-
-	  Object.keys(jusoData).forEach(sido => {
-	  	sidoSelect.append(new Option(sido, sido));
-	  });
-	  
-	  
-	$('#sido').change(function () {
-		let sido = $(this).val();
-	    let sigunguSelect = $('#siGunGu');
-	    let eupSelect = $('#eupMyeonDong');
-
-	    sigunguSelect.empty().append(new Option("시/군/구 선택", ""));
-	    eupSelect.empty().append(new Option("읍/면/동 선택", ""));
-
-	    if (!sido) return;
-
-	        Object.keys(jusoData[sido]).forEach(sg => {
-	             sigunguSelect.append(new Option(sg, sg));
-	        });
-	    });
-
-	    // -------------------------
-	    // 시군구 선택 읍면동 세팅
-	    // -------------------------
-	    $('#siGunGu').change(function () {
-	         let sido = $('#sido').val();
-	         let siGunGu = $(this).val();
-	         let eupSelect = $('#eupMyeonDong');
-
-	         eupSelect.empty().append(new Option("읍/면/동 선택", ""));
-
-	         if (!siGunGu) return;
-
-	         jusoData[sido][siGunGu].forEach(eup => {
-	             eupSelect.append(new Option(eup, eup));
-	         });
-	    });
-    });
-  </script>
+    </script>
+  </body>
+  </html>
 </body>
 </html>
