@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.core.entity.ApplyStatus;
 import com.core.entity.Counseling;
 import com.core.entity.Customer;
 import com.core.entity.Member;
@@ -70,20 +71,22 @@ public class CounselingController {
 			return "counseling/addApply";
 		}
 		
-		counseling.setStatus("상담대기");
-		  //principal.getName()
+		// 상담 상태: 상담대기중
+		counseling.setStatus(ApplyStatus.COUNSELING_HODDING.getStatusName());
 		
 		Member member = memberService.findByMemberId(principal.getName());
 		Customer customer = new Customer();
 		customer.setId(member.getId());
+		customer.setMember(member);
 		counseling.setCustomer(customer);
-		
-		Long csVehicleId = Long.parseLong(counseling.getVehicleId());
+				
 		// 차량 이름 검색
+		Long csVehicleId = Long.parseLong(counseling.getVehicleId());
 		Optional<Vehicle> getVehicle = vehicleService.getVehicleByVehicleId(csVehicleId);
-		counseling.setVehicleId(getVehicle.get().getName());
-		counselingService.createCounseling(counseling);
 		
+		counseling.setVehicleId(getVehicle.get().getName());
+				
+		counselingService.createCounseling(counseling);	
 		return "redirect:/counseling/applyList";
 	}
 	

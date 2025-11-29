@@ -1,8 +1,4 @@
 package com.core.entity;
-import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.CreatedDate;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
