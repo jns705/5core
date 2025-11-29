@@ -2,6 +2,7 @@ package com.core.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -42,8 +43,7 @@ public class CounselingController {
 
 	@GetMapping("/addApply")
 	public String counselingApplyAdd(Model model) {
-		
-		
+			
 		List<Vehicle> getVehicleList = vehicleService.getVehicleList();
 		
 		model.addAttribute("vehicleList", getVehicleList);
@@ -52,9 +52,8 @@ public class CounselingController {
 	}
 	
 	@GetMapping("/applyList")
-	public String counselingapplyList(Model model) {
+	public String counselingApplyList(Model model) {
 		List<Counseling> applyList = counselingService.findAll();
-		//applyList.forEach(c -> log.info(c.toString()));
 		model.addAttribute("applyList", applyList);
 		return "counseling/applyList";
 	}
@@ -78,7 +77,13 @@ public class CounselingController {
 		Customer customer = new Customer();
 		customer.setId(member.getId());
 		counseling.setCustomer(customer);
+		
+		Long csVehicleId = Long.parseLong(counseling.getVehicleId());
+		// 차량 이름 검색
+		Optional<Vehicle> getVehicle = vehicleService.getVehicleByVehicleId(csVehicleId);
+		counseling.setVehicleId(getVehicle.get().getName());
 		counselingService.createCounseling(counseling);
+		
 		return "redirect:/counseling/applyList";
 	}
 	
