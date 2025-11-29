@@ -66,8 +66,11 @@ public class CounselingController {
 	@PreAuthorize("isAuthenticated()")
 	public String addCounselingApply(@Valid @ModelAttribute Counseling counseling, BindingResult bindingResult, Principal principal, Model model) {
 		
+		List<Vehicle> getVehicleList = vehicleService.getVehicleList();
+				
 		// 등록확인을 하려면 주석필요
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("vehicleList", getVehicleList);			
 			return "counseling/addApply";
 		}
 		
