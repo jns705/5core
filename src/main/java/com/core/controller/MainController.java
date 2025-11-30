@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.core.entity.Member;
 import com.core.entity.Role;
+import com.core.service.CounselingService;
 import com.core.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.extern.java.Log;
 public class MainController {
 	
 	private final MemberService memberService;
+	private final CounselingService counselingService;
 
 	@GetMapping("/main")
 	public String requestCarList(Model model) {
