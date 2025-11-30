@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>상담 신청 상세</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet"/>
+</head>
+<body>
+  <main class="container py-5">
+    <header class="mb-4">
+      <h1 class="display-6 fw-bold text-primary">상담 신청 상세 정보</h1>
+      <p class="text-muted">상담 신청 내용과 현재 상태를 확인하세요.</p>
+    </header>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">상담 기본 정보</h5>
+          </div>
+          <div class="card-body">
+            <dl class="row mb-0">
+              <dt class="col-sm-3">상담 ID</dt>
+              <dd class="col-sm-9" th:text="${counseling.id}"></dd>
+
+              <dt class="col-sm-3">선택 차량</dt>
+              <dd class="col-sm-9 fw-bold text-success" th:text="${counseling.vehicleId}"></dd>
+              
+              <dt class="col-sm-3">예약 희망 시간</dt>
+              <dd class="col-sm-9" th:text="${counseling.counselingLikeTime}"></dd>
+
+              <dt class="col-sm-3">상담 상태</dt>
+              <dd class="col-sm-9">
+                <span class="badge" th:classappend="${counseling.status == '상담완료'} ? 'bg-success' : (${counseling.status == '상담대기중'} ? 'bg-warning text-dark' : 'bg-secondary')" th:text="${counseling.status}"></span>
+              </dd>
+
+              <dt class="col-sm-3">구매 희망 시점</dt>
+              <dd class="col-sm-9" th:text="${counseling.purchasePeriod}"></dd>
+
+              <dt class="col-sm-3">차량 구매 목적</dt>
+              <dd class="col-sm-9" th:text="${counseling.purchasePurpose}"></dd>
+              
+              <th:block th:if="${counseling.otherInput != null and counseling.otherInput != ''}">
+                <dt class="col-sm-3">기타 입력 내용</dt>
+                <dd class="col-sm-9 text-info" th:text="${counseling.otherInput}"></dd>
+              </th:block>
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">고객 정보</h5>
+          </div>
+          <div class="card-body">
+            <dl class="row mb-0">
+              <dt class="col-4">고객 ID</dt>
+              <dd class="col-8" th:text="${counseling.customer.member.id}"></dd>
+              
+              <dt class="col-4">연락처</dt>
+              <dd class="col-8" th:text="${counseling.customer.member.phone}"></dd>
+
+              <dt class="col-4">담당 딜러</dt>
+              <dd class="col-8" th:if="${counseling.dealer != null}" th:text="${counseling.dealer.member.name} + ' (' + ${counseling.dealer.member.phone} + ')'">미정</dd>
+              <dd class="col-8 text-muted" th:unless="${counseling.dealer != null}">미정/배정 대기</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <a th:href="@{/counseling/applyList}" class="btn btn-outline-secondary">목록으로</a>
+      <button type="button" class="btn btn-warning" th:if="${counseling.status == '상담대기중'}">상담 진행으로 변경</button>
+      <button type="button" class="btn btn-danger">상담 취소</button>
+    </div>
+
+  </main>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
