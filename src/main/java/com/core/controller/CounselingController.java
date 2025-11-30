@@ -108,9 +108,7 @@ public class CounselingController {
 				break;
 			}
 		}
-		
-		
-		// 등록확인을 하려면 주석필요
+				
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("vehicleList", getVehicleList);			
 			return "counseling/addApply";
@@ -121,7 +119,6 @@ public class CounselingController {
 		Member member = memberService.findByMemberId(principal.getName());
 		Customer customer = new Customer();
 		customer.setId(member.getId());
-		customer.setMember(member);
 		counseling.setCustomer(customer);
 		counseling.setCreateDate(LocalDateTime.now());
 		
@@ -136,6 +133,7 @@ public class CounselingController {
 		}
 					
 		counselingService.createCounseling(counseling);	
+		
 		return "redirect:/counseling/applyList";
 	}
 	
@@ -145,9 +143,9 @@ public class CounselingController {
 	    Optional<Counseling> counselingOpt = counselingService.getCounselingById(id);
 	    
 	    if (counselingOpt.isPresent()) {
-	    	// 수정 화면에 필요한 차량 목록 등을 추가합니다.
-	    	List<Vehicle> getVehicleList = vehicleService.getVehicleList();
-	    	model.addAttribute("vehicleList", getVehicleList);
+		    // 수정 화면에 필요한 차량 목록 등을 추가합니다.
+		    	List<Vehicle> getVehicleList = vehicleService.getVehicleList();
+		    	model.addAttribute("vehicleList", getVehicleList);
 	        model.addAttribute("counseling", counselingOpt.get());
 	        return "counseling/applyDetail"; 
 	    } else {

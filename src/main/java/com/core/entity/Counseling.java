@@ -6,8 +6,6 @@ import org.springframework.data.annotation.CreatedDate;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +30,7 @@ public class Counseling {
 	private Long id;
 	
 	@NotBlank(message = "차량 선택은 필수 사항입니다.")
-	@Column(unique= true, columnDefinition = "varchar(30)")
+	@Column(columnDefinition = "varchar(30)")
 	private String vehicleId;
 	
 	@Column(columnDefinition = "varchar(30)")
