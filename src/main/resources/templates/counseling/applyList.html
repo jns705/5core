@@ -192,7 +192,7 @@
     >
       <div class="mb-2 mb-sm-0">
 		<a th:href="@{/counseling/addApply}" class="btn btn-secondary">
-		  메인 목록으로
+		  상담신청목록
 		</a>
         <button id="btnDeleteSelected" class="btn btn-outline-danger btn-sm" aria-label="선택 삭제">
           선택 삭제
@@ -216,16 +216,16 @@
                aria-disabled="true">이전</a>
           </li>
 
-          <li th:each="i : ${#numbers.sequence(0, counselingPage.totalPages - 1)}"
-              th:class="${i == counselingPage.number} ? 'page-item active' : 'page-item'">
-            <a class="page-link"
-               th:text="${i + 1}"
-               th:href="@{/counseling/applyList(
-                   page=${i}, 
-                   statusFilter=${statusFilter}, 
-                   sortFilter=${sortFilter}, 
-                   keyword=${keyword})}"></a>
-          </li>
+		  <li th:each="i : ${#numbers.sequence(0, counselingPage.totalPages - 1)}"
+		      th:class="${i == counselingPage.number} ? 'page-item active' : 'page-item'">
+		    <a class="page-link"
+		       th:text="${i + 1}"
+		       th:href="@{/counseling/applyList(
+		           page=${i}, 
+		           statusFilter=${statusFilter}, 
+		           sortFilter=${sortFilter}, 
+		           keyword=${keyword})}"></a>
+		  </li>
 
           <li class="page-item" th:classappend="${counselingPage.last} ? 'disabled'">
             <a class="page-link"
@@ -255,23 +255,25 @@
 
     /* ====== 서버 요청 유틸 함수 (클라이언트 필터링/정렬 로직 제거) ====== */
     function buildQueryString(page = 0) {
-        let status = statusFilter.value;
-        let sort = sortFilter.value;
-        let keyword = searchInput.value.trim();
+		let status = statusFilter.value;
+		let sort = sortFilter.value;
+		let keyword = searchInput.value.trim();
         
-        let params = new URLSearchParams();
+		let params = new URLSearchParams();
         params.append('page', page);
-        if (status !== '전체 상태') params.append('statusFilter', status);
+        // [수정된 부분] Controller에서 기대하는 파라미터 이름 'statusFilter'를 사용
+        if (status !== '전체 상태') params.append('statusFilter', status); 
         if (sort !== '등록일 최신순') params.append('sortFilter', sort);
         if (keyword !== '') params.append('keyword', keyword);
         
         return params.toString();
     }
-
+	
 	function applyFiltersAndSorting() {
-	    // 필터, 정렬, 검색 시 항상 첫 페이지(0)로 이동합니다.
-	    window.location.href = `/counseling/applyList?${buildQueryString(0)}`;
+		    // 필터, 정렬, 검색 시 항상 첫 페이지(0)로 이동합니다.
+		    window.location.href = `/5core/counseling/applyList?${buildQueryString(0)}`;
 	}
+	
 	statusFilter.addEventListener('change', applyFiltersAndSorting);
     
     // 개별 버튼 클릭 시 상세 페이지로 이동 방지 로직 및 액션 처리
