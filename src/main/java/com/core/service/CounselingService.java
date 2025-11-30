@@ -1,5 +1,6 @@
 package com.core.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,11 @@ public class CounselingService {
 	public Counseling findById(Long id) {
 		return counselingRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상담입니다."));
+	}
+	
+	public List<Counseling> findByCustomerId(Long id) {
+		List<Counseling> CounselingList = counselingRepository.findByCustomerId(id);
+		return CounselingList;
 	}
 
 
@@ -95,28 +101,82 @@ public class CounselingService {
 		return counselingRepository.save(counseling);
 	}
 
+	/**
+	 * 상담 전체 내용 수정 (applyDetail.html에서 사용)
+	 */
 	@Transactional
 	public Counseling updateCounseling(Long id, Counseling newData) {
-		Counseling counseling = findById(id); // 기존 데이터 조회
-		// 상태만 업데이트가 아니라, 필요한 필드만 선택적으로 업데이트 해야 합니다.
+		Counseling counseling = findById(id); 
+		
+		// 필수 필드 업데이트 (Controller에서 넘어온 값이 null이 아닌 경우에만 업데이트)
 		if(newData.getStatus() != null) {
 		    counseling.setStatus(newData.getStatus());
 		}
-		if(newData.getDealer() != null) {
-		    counseling.setDealer(newData.getDealer());
+		if(newData.getVehicleId() != null) {
+		    counseling.setVehicleId(newData.getVehicleId());
 		}
-		// ... 다른 필드 업데이트 로직 추가 가능 ...
-		return counseling;  // JPA dirty checking 자동 반영
+		if(newData.getCounselingLikeTime() != null) {
+		    counseling.setCounselingLikeTime(newData.getCounselingLikeTime());
+		}
+		if(newData.getPurchasePeriod() != null) {
+		    counseling.setPurchasePeriod(newData.getPurchasePeriod());
+		}
+		if(newData.getPurchasePurpose() != null) {
+		    counseling.setPurchasePurpose(newData.getPurchasePurpose());
+		}
+		if(newData.getOtherInput() != null) {
+		    counseling.setOtherInput(newData.getOtherInput());
+		}
+		// 딜러 정보는 별도의 배정/해제 로직이 있을 수 있으므로 단순 set은 피함.
+
+		// 수정 날짜 업데이트
+		counseling.setModifyDate(LocalDateTime.now());
+		
+		// JPA dirty checking 자동 반영
+		return counseling;  
 	}
 	
+	
+	// CounselingService.java 파일 내 findAll(Pageable pageable, String status, String keyword, String sort) 메서드
 	/**
-	 * 상담 상태 변경
+	 * 전체 상담 목록 조회 (페이징, 필터, 검색 지원)
 	 */
-	@Transactional
-	public void updateStatus(Long id, String newStatus) {
-	    Counseling counseling = findById(id);
-	    counseling.setStatus(newStatus);
+	public Page<Counseling> findAll(Pageable pageable, String status, String keyword, String sort) {
+	    String searchKeyword = (keyword != null) ? keyword.trim() : null;
+	    // status가 null이거나 "전체 상태"인 경우 필터링을 하지 않음
+	    boolean isStatusFiltered = (status != null && !status.equals("전체 상태")); 
+	    boolean isKeywordUsed = (searchKeyword != null && !searchKeyword.isEmpty());
+
+	    // 1. 상태 필터 + 검색어 적용
+	    if (isStatusFiltered && isKeywordUsed) {
+	        return counselingRepository.findByStatusAndCustomer_Member_IdContainingOrStatusAndCustomer_Member_PhoneContaining(
+	                status, searchKeyword, // status1, customerIdKeyword
+	                status, searchKeyword, // status2, phoneKeyword
+	                pageable);
+	    // 2. 상태 필터만 적용
+	    } else if (isStatusFiltered) { 
+	        return counselingRepository.findByStatus(status, pageable);
+	    // 3. 검색어만 적용
+	    } else if (isKeywordUsed) {
+	        return counselingRepository.findByCustomer_Member_IdContainingOrCustomer_Member_PhoneContaining(
+	                searchKeyword, searchKeyword, pageable);
+	    // 4. 필터/검색어 모두 없음 (전체 조회)
+	    } else {
+	        return counselingRepository.findAll(pageable);
+	    }
 	}
 
+	/**
+	 * 리스트에서 개별 취소 시 상담의 상태만 변경합니다.
+	 */
+	@Transactional
+	public void updateCounselingStatus(Long id, String newStatus) {
+	    Counseling counseling = findById(id); 
+	    counseling.setStatus(newStatus);
+	    counseling.setModifyDate(LocalDateTime.now());
+	    counselingRepository.save(counseling); 
+	}
 
+	
+	
 }

@@ -3,80 +3,147 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>상담 신청 상세</title>
+  <title>상담 신청 상세 및 수정</title>
+  <th:block th:replace="~{/top.html}"></th:block>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet"/>
 </head>
 <body>
   <main class="container py-5">
     <header class="mb-4">
-      <h1 class="display-6 fw-bold text-primary">상담 신청 상세 정보</h1>
-      <p class="text-muted">상담 신청 내용과 현재 상태를 확인하세요.</p>
+      <h1 class="display-6 fw-bold text-primary">상담 신청 상세 및 수정</h1>
+      <p class="text-muted">상담 내용을 수정하고 상태를 확인할 수 있습니다.</p>
     </header>
 
-    <div class="row g-4">
-      <div class="col-lg-8">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">상담 기본 정보</h5>
-          </div>
-          <div class="card-body">
-            <dl class="row mb-0">
-              <dt class="col-sm-3">상담 ID</dt>
-              <dd class="col-sm-9" th:text="${counseling.id}"></dd>
-
-              <dt class="col-sm-3">선택 차량</dt>
-              <dd class="col-sm-9 fw-bold text-success" th:text="${counseling.vehicleId}"></dd>
-              
-              <dt class="col-sm-3">예약 희망 시간</dt>
-              <dd class="col-sm-9" th:text="${counseling.counselingLikeTime}"></dd>
-
-              <dt class="col-sm-3">상담 상태</dt>
-              <dd class="col-sm-9">
-                <span class="badge" th:classappend="${counseling.status == '상담완료'} ? 'bg-success' : (${counseling.status == '상담대기중'} ? 'bg-warning text-dark' : 'bg-secondary')" th:text="${counseling.status}"></span>
-              </dd>
-
-              <dt class="col-sm-3">구매 희망 시점</dt>
-              <dd class="col-sm-9" th:text="${counseling.purchasePeriod}"></dd>
-
-              <dt class="col-sm-3">차량 구매 목적</dt>
-              <dd class="col-sm-9" th:text="${counseling.purchasePurpose}"></dd>
-              
-              <th:block th:if="${counseling.otherInput != null and counseling.otherInput != ''}">
-                <dt class="col-sm-3">기타 입력 내용</dt>
-                <dd class="col-sm-9 text-info" th:text="${counseling.otherInput}"></dd>
-              </th:block>
-            </dl>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-secondary text-white">
-            <h5 class="mb-0">고객 정보</h5>
-          </div>
-          <div class="card-body">
-            <dl class="row mb-0">
-              <dt class="col-4">고객 ID</dt>
-              <dd class="col-8" th:text="${counseling.customer.member.id}"></dd>
-              
-              <dt class="col-4">연락처</dt>
-              <dd class="col-8" th:text="${counseling.customer.member.phone}"></dd>
-
-              <dt class="col-4">담당 딜러</dt>
-              <dd class="col-8" th:if="${counseling.dealer != null}" th:text="${counseling.dealer.member.name} + ' (' + ${counseling.dealer.member.phone} + ')'">미정</dd>
-              <dd class="col-8 text-muted" th:unless="${counseling.dealer != null}">미정/배정 대기</dd>
-            </dl>
-          </div>
-        </div>
-      </div>
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <form th:action="@{/counseling/update/{id}(id=${counseling.id})}" th:object="${counseling}" method="post">
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h5 class="mb-0">상담 기본 정보 수정</h5>
+            </div>
+            <div class="card-body">
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">상담 ID</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control-plaintext" th:value="*{id}" readonly>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">상담 상태</label>
+                <div class="col-sm-9">
+                  <p class="form-control-plaintext" th:text="*{status}"></p>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">선택 차량</label>
+                <div class="col-sm-9">
+                    <p class="form-control-plaintext">
+                        <a th:href="@{/vehicles/vehicle/detail/{vehicleName}(vehicleName=*{vehicleId})}" 
+                           th:text="*{vehicleName}"
+                           class="fw-bold text-decoration-none text-primary"
+                           title="선택된 차량 모델 상세 페이지로 이동"
+                           target="_blank">
+                            차량 모델명
+                        </a>
+                        <span class="text-muted small ms-2">(선택 변경 불가)</span>
+                    </p>
+                    
+                    <input type="hidden" th:field="*{vehicleId}" /> 
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <label for="counselingLikeTime" class="col-sm-3 col-form-label">예약 희망 시간</label>
+                <div class="col-sm-9">
+                  <input type="text" id="counselingLikeTime" th:field="*{counselingLikeTime}" class="form-control">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="purchasePeriod" class="col-sm-3 col-form-label">구매 희망 시점</label>
+                <div class="col-sm-9">
+                  <input type="text" id="purchasePeriod" th:field="*{purchasePeriod}" class="form-control">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="purchasePurpose" class="col-sm-3 col-form-label">차량 구매 목적</label>
+                <div class="col-sm-9">
+                  <input type="text" id="purchasePurpose" th:field="*{purchasePurpose}" class="form-control">
+                </div>
+              </div>
+              
+              <div class="row mb-3" th:if="*{otherInput != null}">
+                <label for="otherInput" class="col-sm-3 col-form-label">기타 입력 내용</label>
+                <div class="col-sm-9">
+                  <textarea id="otherInput" th:field="*{otherInput}" class="form-control" rows="2"></textarea>
+                </div>
+              </div>
+              
+              <div class="row mb-0 border-top pt-3 mt-3">
+                <label class="col-sm-3 col-form-label small text-muted">등록일</label>
+                <div class="col-sm-9">
+                  <p class="form-control-plaintext small text-muted" th:text="${#temporals.format(counseling.createDate, 'yyyy-MM-dd HH:mm')}"></p>
+                </div>
+                <th:block th:if="*{modifyDate != null}">
+                    <label class="col-sm-3 col-form-label small text-muted">최종 수정일</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext small text-muted" th:text="${#temporals.format(counseling.modifyDate, 'yyyy-MM-dd HH:mm')}"></p>
+                    </div>
+                </th:block>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-header bg-secondary text-white">
+              <h5 class="mb-0">고객/딜러 정보 (읽기 전용)</h5>
+            </div>
+            <div class="card-body">
+              <dl class="row mb-0">
+                <dt class="col-4">고객 ID</dt>
+                <dd class="col-8" th:text="${counseling.customer.member.id}"></dd>
+				<dt class="col-4">고객명</dt>
+				<dd class="col-8" th:text="${counseling.customer.member.name}"></dd>                
+                <dt class="col-4">고객 연락처</dt>
+                <dd class="col-8" th:text="${counseling.customer.member.phone}"></dd>
+
+                <dt class="col-4">담당 딜러</dt>
+                <dd class="col-8" th:if="${counseling.dealer != null}" th:text="${counseling.dealer.member.name} + ' (' + ${counseling.dealer.member.phone} + ')'">미정</dd>
+                <dd class="col-8 text-muted" th:unless="${counseling.dealer != null}">미정/배정 대기</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        
+        <a th:href="@{/counseling/applyList}" class="btn btn-secondary">
+          메인 목록으로
+        </a>
+        
+        <button type="submit" class="btn btn-success">
+          상담 내용 저장 (수정 완료)
+        </button>
+      </div>
+    </form>
     
-    <div class="d-flex justify-content-end gap-2 mt-4">
-      <a th:href="@{/counseling/applyList}" class="btn btn-outline-secondary">목록으로</a>
-      <button type="button" class="btn btn-warning" th:if="${counseling.status == '상담대기중'}">상담 진행으로 변경</button>
-      <button type="button" class="btn btn-danger">상담 취소</button>
-    </div>
+    <form id="formUpdateStatus" method="post" style="display:none;"></form>
 
   </main>
   

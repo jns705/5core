@@ -2,6 +2,7 @@ package com.core.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -94,7 +95,15 @@ public class VehicleController {
 		return "redirect:/vehicles/vehicle/" + modelCode;
 	}
 	
-	
+	// 차량 상세 정보 조회 - ID로 조회
+	@GetMapping("/vehicle/detail/{id}")
+	public String requestVehicleDetail1(@PathVariable("id") Long id, Model model) {
+		
+		// 모델 ID로 차량 정보 획득
+		Optional<Vehicle> vehicle = vehicleService.getVehicleByVehicleId(id);
+		model.addAttribute("vehicle", vehicle);
+		return "redirect:/vehicles/vehicle/" + vehicle.get().getModelCode();
+	}	
 	
 	
 	// ##########################################################################################
@@ -132,4 +141,6 @@ public class VehicleController {
 		this.vehicleService.addVehicle(vehicle);
 		return "redirect:/vehicles";
 	}
+	
+
 }

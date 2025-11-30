@@ -725,17 +725,17 @@
       let items = document.querySelectorAll(".accordion-item");
 
       items.forEach((item) => {
-        let header = item.querySelector(".accordion-header");
+      let header = item.querySelector(".accordion-header");
   	  let form = document.applyForm;
         header.addEventListener("click", () => {
-          let openContent = document.querySelector(".accordion-content.open");
-  		let sido = document.querySelector("#sido");
-  		let siGunGu = document.querySelector("#siGunGu");
-  		let eupMyeonDong = document.querySelector("#eupMyeonDong");
-  		let stepText1 = document.querySelector(".stepText1");
-  		let stepText2 = document.querySelector(".stepText2");
+	      let openContent = document.querySelector(".accordion-content.open");
+	      let sido = document.querySelector("#sido");
+	  	  let siGunGu = document.querySelector("#siGunGu");
+	  	  let eupMyeonDong = document.querySelector("#eupMyeonDong");
+	  	  let stepText1 = document.querySelector(".stepText1");
+	  	  let stepText2 = document.querySelector(".stepText2");
   		
-  		// 열려 있는 패널이 있고, 그게 지금 클릭한 것이 아니라면 닫기
+  		  // 열려 있는 패널이 있고, 그게 지금 클릭한 것이 아니라면 닫기
           if (openContent && openContent !== item.querySelector(".accordion-content")) {
             openContent.classList.remove("open");
             
@@ -745,11 +745,11 @@
             stepText1.textContent = selectedVehicleName || "선택 안 함";
 
             // Step 2 헤더 요약 텍스트 업데이트
-  		  // Step 2가 닫힐 때만 지역 정보를 업데이트
+  		    // Step 2가 닫힐 때만 지역 정보를 업데이트
             if (openContent.closest('.accordion-item').querySelector('.step-badge').textContent === 'STEP 2') {
   			  let areaText = `${sido.value || ''} ${siGunGu.value || ''} ${eupMyeonDong.value || ''}`.trim();
   			  stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
-  		  }
+  		    }
 
 
             let openArrow = openContent.previousElementSibling.querySelector(".accordion-arrow");
@@ -774,103 +774,103 @@
         let form = document.applyForm;
         let likeInfo = document.querySelector(".likeInfo");
         let result = document.querySelector(".result");
-  	  let likeTxt = null;
+  	    let likeTxt = null;
         
         let stepText1 = document.querySelector(".stepText1");
         let stepText2 = document.querySelector(".stepText2");
 
 
         // --- ▼▼▼ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▼▼▼ ---
-  	  // 중복된 document.addEventListener('DOMContentLoaded', function() { ... }); 제거
-  	      let carItems = document.querySelectorAll('.car-item');
-  	      let tabButtons = document.querySelectorAll('.tab-button'); 
-  	      let selectedCarDisplay = document.getElementById('selectedCarDisplay');
-  	      let selectedVehicleIdInput = document.getElementById('selectedVehicleId');
+  	    // 중복된 document.addEventListener('DOMContentLoaded', function() { ... }); 제거
+  	    let carItems = document.querySelectorAll('.car-item');
+  	    let tabButtons = document.querySelectorAll('.tab-button'); 
+  	    let selectedCarDisplay = document.getElementById('selectedCarDisplay');
+  	    let selectedVehicleIdInput = document.getElementById('selectedVehicleId');
 
-  	      // --- 1. 탭 이동 및 필터링 기능 (vehicleType 기준으로 필터링) ---
-  	      function filterVehicles(vehicleType) {
-  	          carItems.forEach(item => {
-  	              if (item.getAttribute('data-vehicletype') === vehicleType) {
-  	                  item.classList.remove('hidden');
-  	              } else {
-  	                  item.classList.add('hidden');
-  	              }
-  	          });
-  	      }
+  	    // --- 1. 탭 이동 및 필터링 기능 (vehicleType 기준으로 필터링) ---
+  	    function filterVehicles(vehicleType) {
+  	        carItems.forEach(item => {
+  	            if (item.getAttribute('data-vehicletype') === vehicleType) {
+  	                item.classList.remove('hidden');
+  	            } else {
+  	                item.classList.add('hidden');
+  	            }
+  	        });
+  	    }
   	      
-  	      tabButtons.forEach(button => {
-  	          button.addEventListener('click', function() {
-  	              document.querySelector('.tab-button.active')?.classList.remove('active');
-  	              this.classList.add('active');
+  	    tabButtons.forEach(button => {
+  	        button.addEventListener('click', function() {
+  	            document.querySelector('.tab-button.active')?.classList.remove('active');
+  	            this.classList.add('active');
   	              
-  	              let vehicleType = this.getAttribute('data-vehicletype');
-  	              filterVehicles(vehicleType);
-  	          });
-  	      });
+  	            let vehicleType = this.getAttribute('data-vehicletype');
+  	            filterVehicles(vehicleType);
+  	        });
+  	    });
   	      
-  	      // 초기 로딩 시에도 data-vehicletype을 사용해 필터링
-  	      let initialVehicleType = document.querySelector('.tab-button.active')?.getAttribute('data-vehicletype');
-  	      if (initialVehicleType) {
-  	          filterVehicles(initialVehicleType);
-  	      }
+  	    // 초기 로딩 시에도 data-vehicletype을 사용해 필터링
+  	    let initialVehicleType = document.querySelector('.tab-button.active')?.getAttribute('data-vehicletype');
+  	    if (initialVehicleType) {
+  	        filterVehicles(initialVehicleType);
+  	    }
 
-  	      // --- 2. 차량 선택 기능 (Step 1 헤더 업데이트 로직 추가) ---
-  	      carItems.forEach(item => {
-  	          item.addEventListener('click', function() {
-  	              document.querySelector('.car-item.selected')?.classList.remove('selected');
-  	              this.classList.add('selected');
+  	    // --- 2. 차량 선택 기능 (Step 1 헤더 업데이트 로직 추가) ---
+  	    carItems.forEach(item => {
+  	        item.addEventListener('click', function() {
+  	            document.querySelector('.car-item.selected')?.classList.remove('selected');
+  	            this.classList.add('selected');
   	              
-  	              let vehicleId = this.getAttribute('data-vehicle-id');
-  	              let vehicleName = this.getAttribute('data-vehicle-name'); 
+  	            let vehicleId = this.getAttribute('data-vehicle-id');
+  	            let vehicleName = this.getAttribute('data-vehicle-name'); 
 
-  	              selectedCarDisplay.textContent = vehicleName;
-  	              selectedVehicleIdInput.value = vehicleId;
+  	            selectedCarDisplay.textContent = vehicleName;
+  	            selectedVehicleIdInput.value = vehicleId;
                     
-                    // *수정: 차량 선택 시 Step 1 헤더 텍스트를 즉시 업데이트*
-                    stepText1.textContent = vehicleName;
+                // *수정: 차량 선택 시 Step 1 헤더 텍스트를 즉시 업데이트*
+                stepText1.textContent = vehicleName;
   	              
-  	              console.log("선택된 차량 ID:", vehicleId);
-  	          });
-  	      });
+  	            console.log("선택된 차량 ID:", vehicleId);
+  	        });
+  	    });
 
-  	      let initialId = selectedVehicleIdInput.value;
-            // 초기 vehicleName 설정 (페이지 로딩 시)
-            if (initialId) {
-                let initialSelectedItem = document.querySelector(`.car-item[data-vehicle-id="${initialId}"]`);
+  	    let initialId = selectedVehicleIdInput.value;
+          // 초기 vehicleName 설정 (페이지 로딩 시)
+          if (initialId) {
+          	let initialSelectedItem = document.querySelector(`.car-item[data-vehicle-id="${initialId}"]`);
                 if (initialSelectedItem) {
                     initialSelectedItem.classList.add('selected');
                     let initialVehicleName = initialSelectedItem.getAttribute('data-vehicle-name');
                     selectedCarDisplay.textContent = initialVehicleName;
                     stepText1.textContent = initialVehicleName;
                 }
-            }
+          }
   	  // --- ▲▲▲ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▲▲▲ ---
   		
   	  // Step3 요약
         btnComplete.addEventListener("click", () => {	
           let purchasePurposeList = [];
-  		let engineTypeList = [];
-  		let vehicleTypeList = [];
-  		let otherInputVal = null; // Step 3 요약 버튼 클릭 시 초기화
-  		let purchasePurpose = document.querySelectorAll("[name=purchasePurpose]");
-  		let engineType = document.querySelectorAll("[name=engineType]");
-  		let vehicleType = document.querySelectorAll("[name=vehicleType]");
-  		let purchasePeriod = form.purchasePeriod.value;
-  		let counselingLikeTime = form.counselingLikeTime.value;
-  		purchasePurpose.forEach( v  => {
-  		    if (v.checked) {
-  				if (v.value != "기타") {
-  					purchasePurposeList.push(v.value);
-  				} else{
-  					let otherInput = document.querySelector("#otherInput");
-  					otherInputVal = otherInput.value;	
-  					if (otherInputVal === null || otherInputVal === undefined || otherInputVal === "") {
-  						alert("기타 선택시 반드시 입력란에 입력해주세요");
-  						return;
-  					}
-  				}	       
-  		    }
-  		});	
+	  	  let engineTypeList = [];
+	      let vehicleTypeList = [];
+	  	  let otherInputVal = null; // Step 3 요약 버튼 클릭 시 초기화
+	  	  let purchasePurpose = document.querySelectorAll("[name=purchasePurpose]");
+	  	  let engineType = document.querySelectorAll("[name=engineType]");
+	  	  let vehicleType = document.querySelectorAll("[name=vehicleType]");
+	  	  let purchasePeriod = form.purchasePeriod.value;
+	  	  let counselingLikeTime = form.counselingLikeTime.value;
+	  	  purchasePurpose.forEach( v  => {
+	  		    if (v.checked) {
+	  				if (v.value != "기타") {
+	  					purchasePurposeList.push(v.value);
+	  				} else {
+	  					let otherInput = document.querySelector("#otherInput");
+	  					otherInputVal = otherInput.value;	
+	  					if (otherInputVal === null || otherInputVal === undefined || otherInputVal === "") {
+	  						alert("기타 선택시 반드시 입력란에 입력해주세요");
+	  						return;
+	  					}
+	  				}	       
+	  		    }
+	  	  });	
           engineType.forEach((v) => {
             if (v.checked) {
               engineTypeList.push(v.value);
@@ -985,7 +985,6 @@
   	    eupSelect.empty().append(new Option("읍/면/동 선택", ""));
 
   	    if (!sido) return;
-
   	        Object.keys(jusoData[sido]).forEach(sg => {
   	             sigunguSelect.append(new Option(sg, sg));
   	        });
@@ -1009,7 +1008,5 @@
   	    });
       });
     </script>
-  </body>
-  </html>
 </body>
 </html>

@@ -1,7 +1,13 @@
 package com.core.entity;
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +34,10 @@ public class Counseling {
 	@NotBlank(message = "차량 선택은 필수 사항입니다.")
 	@Column(unique= true, columnDefinition = "varchar(30)")
 	private String vehicleId;
-
+	
+	@Column(columnDefinition = "varchar(30)")
+	private String vehicleName;
+    
 	/** 구매 상담 희망지역 **/   
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "hopearea_id")
@@ -77,11 +86,11 @@ public class Counseling {
 
 	// 추가분
 	// 등록 날짜와 시간
-//	@CreatedDate
-//	private LocalDateTime createDate;
+	@CreatedDate
+	private LocalDateTime createDate;
 	
 	// 수정 날짜와 시간
-//	private LocalDateTime modifyDate;
+	private LocalDateTime modifyDate;
 	
 
 }

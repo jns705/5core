@@ -1,5 +1,7 @@
 package com.core.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,5 +24,7 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long> {
 			String status1, String customerIdKeyword, 
 			String status2, String phoneKeyword, 
 			Pageable pageable);
+	
+	List<Counseling> findByCustomerId(Long id);
 }
 
