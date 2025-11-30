@@ -116,8 +116,6 @@ public class CounselingController {
 			return "counseling/addApply";
 		}
 		
-		// 상담 상태: 상담대기중
-		// ApplyStatus.COUNSELING_HODDING = "상담대기중" 가정
 		counseling.setStatus(ApplyStatus.COUNSELING_HODDING.getStatusName()); 
 		
 		Member member = memberService.findByMemberId(principal.getName());
@@ -132,6 +130,7 @@ public class CounselingController {
 		for (Counseling  getCounseling : getCounselingList) {
 			if (getCounseling.getVehicleId().equals(counseling.getVehicleId())) {
 				bindingResult.rejectValue("vehicleId", "duplecatedVehicleId", "이미 존재하는 상품입니다.");
+				model.addAttribute("vehicleList", getVehicleList);
 				return "counseling/addApply";
 			}
 		}
@@ -150,7 +149,6 @@ public class CounselingController {
 	    	List<Vehicle> getVehicleList = vehicleService.getVehicleList();
 	    	model.addAttribute("vehicleList", getVehicleList);
 	        model.addAttribute("counseling", counselingOpt.get());
-	        // 기존 뷰 이름 유지: counseling/applyDetail
 	        return "counseling/applyDetail"; 
 	    } else {
 	        return "redirect:/counseling/applyList";
@@ -168,17 +166,14 @@ public class CounselingController {
 	    RedirectAttributes redirectAttributes,
 	    Model model) {
 
-		// 유효성 검사 (필요에 따라)
+		// 유효성 검사
 		if (bindingResult.hasErrors()) {
-			// 오류 발생 시 차량 목록을 다시 뷰에 전달해야 합니다.
 			List<Vehicle> getVehicleList = vehicleService.getVehicleList();
-	    	model.addAttribute("vehicleList", getVehicleList);
-			// 기존 화면으로 복귀
+			model.addAttribute("vehicleList", getVehicleList);
 			return "counseling/applyDetail"; 
 		}
 
 		try {
-		    // 서비스 호출하여 데이터 업데이트
 		    counselingService.updateCounseling(id, counseling);
 		    redirectAttributes.addFlashAttribute("message", "상담 내용이 성공적으로 수정되었습니다.");
 		    
@@ -186,8 +181,7 @@ public class CounselingController {
 			redirectAttributes.addFlashAttribute("error", "상담 ID를 찾을 수 없습니다.");
 		    return "redirect:/counseling/applyList";
 		}
-
-	    return "redirect:/counseling/detail/" + id; // 수정 후 상세 페이지로 리다이렉트
+	    return "redirect:/counseling/detail/" + id; 
 	}
 	
 	@GetMapping("/applyList/cencel/{id}")
@@ -196,7 +190,6 @@ public class CounselingController {
 		    Model model) {
 		
 		try {
-		    // 서비스 호출하여 데이터 업데이트
 		    counselingService.updateCounselingStatus(id, ApplyStatus.COUNSELING_CENCEL.getStatusName());
 		    redirectAttributes.addFlashAttribute("message", "상담신청이 취소되었습니다.");
 		    
