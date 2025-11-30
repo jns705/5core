@@ -807,7 +807,7 @@
                     <th>이메일</th>
                     <th>등급</th>
                     <th>상태</th>
-                    <th>관심 차종</th>
+                    <th>구매 횟수</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -823,8 +823,8 @@
                     <td th:text="${customer.phone}"></td>
                     <td th:text="${customer.email}"></td>
                     <td>
-                      <span  class="badge badge--vip">VIP</span>
-                      <span  class="badge badge--lead">일반</span>
+                      <span th:if="${customer.customer.segment == 'vip'}" class="badge badge--vip">VIP</span>
+                      <span th:if="${customer.customer.segment == '일반'}" class="badge badge--lead">일반</span>
                     </td>
                     <td>
                       <span class="badge badge--pending" >상담 예정</span>
@@ -832,7 +832,7 @@
                       <span class="badge badge--vip" >구매 완료</span>
                     </td>
                     <td>
-                      <span class="customer-tag" >아이오닉 6</span>
+                      <span class="customer-tag" >[[${customer.customer.purchaseCount}]]</span>
                     </td>
                   </tr>
                 </tbody>
