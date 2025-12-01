@@ -17,6 +17,7 @@
 		
 		.vehicleDetail {
 			max-width: 1520px;
+			height: 800px;
 			position: relative;
 			left: 240px;
 		}
@@ -63,7 +64,7 @@
 		.colorPicker {
 		    display: flex;
 		    gap: 10px;
-		    margin-top: 20px;
+		    margin-top: 50px;
 		}
 
 		.colorCircle {
@@ -104,26 +105,6 @@
 		.specTable td:first-child {
 		    width: 140px;
 		    color: #666;
-		}
-
-		.optionBox {
-		    background: #f9fafc;
-		    border-radius: 12px;
-		    padding: 20px;
-		}
-
-		.optionList {
-		    list-style: none;
-		    display: grid;
-		    grid-template-columns: repeat(2, 1fr);
-		    gap: 12px;
-		}
-
-		.optionList li {
-		    background: #fff;
-		    padding: 10px 14px;
-		    border-radius: 8px;
-		    border: 1px solid #eee;
 		}
 		
 		/* 트림 선택 섹션 */
@@ -178,8 +159,8 @@
 		}
 
 		.trimAction button {
-		    background: #002c5f;
-		    color: #fff;
+		    background: #e7ebf0;
+		    color: #000;
 		    border: none;
 		    padding: 8px 16px;
 		    border-radius: 20px;
@@ -189,42 +170,50 @@
 		}
 
 		.trimAction button:hover {
-		    background: #001f45;
+		    background: #002c5f;
+			color: #fff;
 		}
+		
+		
+		/* 트림에 따른 가격 표시 + 상담 신청 버튼 */
+		.price-consult {
+			display: flex;
+			align-items: center;
+			margin-top: 70px;
+			justify-content: space-between;
+		}
+		
 		
 		/* 선택된 트림에 해당하는 가격 */
 		.priceArea {
-		    font-size: 26px;
+		    font-size: 28px;
 		    font-weight: bold;
-		    margin-top: 30px;
 		    color: #000;
 		    letter-spacing: 1px;
 		}
 		
-		/* 차량 상담 페이지로 이동하는 버튼 (예정) */
-		.actionBtns {
-		    margin-top: 30px;
-		    display: flex;
-		    gap: 16px;
-		}
-
-		.btn {
-		    flex: 1;
-		    padding: 16px;
-		    border-radius: 30px;
+		/* 상담 신청 버튼 */
+		.consultBtn {
+		    background: #e7ebf0;
 		    border: none;
-		    font-size: 15px;
+		    padding: 8px 16px;      /* ← 버튼 크기 조절 */
+		    border-radius: 30px;
+		    font-size: 14px;
 		    cursor: pointer;
+		    transition: 0.3s;
+		    font-weight: 500;
+		    color: #444;
 		}
 
-		.btn.primary {
-		    background: #002c5f;
-		    color: #fff;
+		/* hover */
+		.consultBtn:hover {
+		    background: #d4d8dd;
 		}
-
-		.btn.secondary {
-		    background: #eeeeee;
-		}		
+		
+		
+		
+		
+		
 	</style>
 </head>
 
@@ -272,17 +261,6 @@
 						</td>
 					</tr>
 		        </table>
-				<!--
-		        <div class="optionBox">
-		            <h3>기본 옵션</h3>
-		            <ul class="optionList">
-		                <li>스마트 크루즈 컨트롤</li>
-		                <li>파노라마 선루프</li>
-		                <li>열선 시트</li>
-		                <li>12.3인치 내비게이션</li>
-		            </ul>
-		        </div>
-				-->
 				<form id="trimForm" th:action="@{/vehicles/vehicle/{modelCode}/update-trim(modelCode=${vehicle.modelCode})}"
 				      method="post">
 
@@ -317,18 +295,21 @@
 				        </div>
 				    </div>
 				</form>
-				<div class="priceArea">
-				    KRW 
-					<span id="priceText" th:data-base="${vehicle.basePrice}">
-						[[${#numbers.formatInteger(totalPrice, 3, 'COMMA')}]]
-					</span>
-				</div>				
-		        <div class="actionBtns">
-		            <button type="button" class="btn primary">견적 계산</button>
-		            <button type="button" class="btn secondary">시승 신청</button>
-		        </div>
-			
+				<div class="price-consult">
+					<div class="priceArea">
+					    KRW 
+						<span id="priceText" th:data-base="${vehicle.basePrice}">
+							[[${#numbers.formatInteger(vehicle.finalPrice, 3, 'COMMA')}]]
+						</span>
+					</div>				
+					<a herf="#"><button type="button" class="consultBtn">상담 신청</button></a>
+				</div>
 		</div>
+	</div>
+	<h4>옵션</h4>
+	<div class="optionSection" th:each="option : ${optionList}">
+		<span th:text="${option.optionName}"></span>
+		
 	</div>
 </div>
 	<th:block th:replace="~{/bottom.html}"></th:block>

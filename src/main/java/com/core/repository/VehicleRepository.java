@@ -17,7 +17,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 	Optional<Vehicle> findById(Long id);
 	
 	// 모델 코드로 검색
-	Optional<Vehicle> findByModelCode(String modelCode);
+	@Query("SELECT v FROM Vehicle v LEFT JOIN FETCH v.options WHERE v.modelCode = :modelCode")
+	Optional<Vehicle> findWithOptionsByModelCode(@Param("modelCode") String modelCode);
 	
 	// 전체 차량 목록 조회 -> 메인화면을 위한 페이징 처리
 	Page<Vehicle> findAll(Pageable pageable);

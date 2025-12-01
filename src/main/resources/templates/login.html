@@ -1,135 +1,244 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<th:block th:replace="~{/top.html}"></th:block>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login폼</title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <style>
-        /* 전체 */
-        body {
-           /* background-color: #eee;*/
-            font-family: "Mukta", "Sunflower", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-        }
-        a {text-decoration: none; color : #000; cursor: pointer;}
-        button {cursor: pointer;}
-        #container {
-            width : 1600px;
-            margin : 0 auto;
-        }
-        /* 중단 */
-		.login_menu { 
-			background-color: #eee;
-		    width: 100%; 
-		    height: 600px; 
-		    margin: 50px auto; 
+    <title>로그인</title>
+	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" 
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+	</script-->
+    
+	<style>
+	    /* [전체] 기본 설정 */
+	    body {
+	        font-family: Arial, sans-serif;
+	        display: flex;
+	        justify-content: center;
+	        align-items: center;
+	        margin: 0;
+	        flex-direction: column;
+	    }
+	    a { text-decoration: none; color: #000; cursor: pointer; }
+	    button { cursor: pointer; }
+	    
+		/* [컨테이너] 로그인 박스 컨테이너 */
+		.login-container {
+		    background-color: #ffffff;
+		    border-radius: 10px;
+		    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
+		    padding: 40px;
+		    width: 100%;
+		    max-width: 400px; 
 		    text-align: center;
-		    position: relative;   /* ← 추가됨 */
+		    flex-shrink: 0; 
 		}
 
-		/* 로그인 박스 가운데 정렬 */
-		.login_box {
-		    position: absolute;
-		    width: 700px;
-		    height: 500px;
-		    left: 50%;                /* ← 기존 600px 삭제 */
-		    top: 50%;                 /* 화면 반절 */
-		    transform: translate(-50%, -50%); /* ← 가운데 정렬 */
-		    background-color: #fff;
-		    z-index: 1;
-		}
-        h1 {font-size: 3em;}
-        .login_box1 { margin: 50px auto;}
-        .login_box1 { clear: both; width: 600px; height: 150px;}
-        .login_input_box { float: left;}
-        .login_input_box > input { display: block; width: 430px; height: 50px; margin-bottom: 20px;}
-        #loginBtn, #orderSearch { margin-left: 30px; background-color: #000; color: #fff;}
-        #loginBtn { width: 132px; height: 132px;}
+	    /* 제목 (H1) */
+	    .login-container h1 {
+	        font-size: 2rem;
+	        font-weight: 700;
+	        color: black;
+	        margin-bottom: 30px;
+	    }
 
-        .login_tap, .login_box2 { display: flex; justify-content:center; align-items:center; width: 100%; margin: -10px 0 50px 0;}
- 		
-        .join_box {width: 600px; height: 70px; background-color: #7f8c8d;}
-        .join_box a { margin: 50px; line-height: 72px;}
-	
-		.login_box3 { width: 600px; display: none; justify-content:center; align-items:center; }
-		.join_box2 { margin: 10px; width: 150px; height: 50px; background-color: #7f8c8d;}
-        .join_box2 a { margin: 50px; line-height: 50px;}
+	    /* 입력 필드 스타일 */
+	    .login-input-box {
+	        margin-bottom: 20px;
+	    }
+	    .login-input-box input[type="text"],
+	    .login-input-box input[type="password"] {
+	        width: 100%;
+	        padding: 12px 15px;
+	        margin-bottom: 10px;
+	        border: 1px solid #ddd;
+	        border-radius: 5px;
+	        box-sizing: border-box;
+	        font-size: 15px;
+	        outline: none;
+	    }
+	    .login-input-box input:focus {
+	        border-color: #1f407b;
+	    }
 
-        /* 하단 */
+	    /* 로그인 버튼 스타일 */
+	    #loginBtn {
+	        width: 100%;
+	        padding: 12px 0;
+	        background-color: #1f407b;
+	        color: #fff;
+	        border: none;
+	        border-radius: 5px;
+	        font-size: 18px;
+	        font-weight: 600;
+	        cursor: pointer;
+	        transition: background-color 0.3s;
+	    }
+	    #loginBtn:hover {
+	        background-color: #15305a;
+	    }
 
-    </style>
-	<script>
-		let flag = false;
-	    document.addEventListener("DOMContentLoaded", () => {
-	        let tap1 = document.querySelector(".tap1");
-	        let login_box3 = document.querySelector(".login_box3");
-			
-			tap1.addEventListener("click", () => login_box_changer(flag));
-			
-	        let login_box_changer = (flag) => {
-				console.log(flag)
-	            if(!flag){
-					flag = true;
-	                login_box3.style.display = "flex";
-	            } else {
-					flag = false;
-	                login_box3.style.display = "none";
-	            }
-	        };        
-	    });
-		
-		function addCustomer() { 
+	    /* 아이디/비밀번호 찾기 링크 */
+	    .login-box2 {
+	        margin-top: 25px;
+	        display: flex;
+	        justify-content: center;
+	        gap: 20px; 
+	    }
+	    .login-box2 a {
+	        color: #666;
+	        font-size: 0.9rem;
+	        position: relative;
+	    }
+	    .login-box2 a:hover {
+	        color: #1f407b;
+	    }
+
+	    /* 회원가입 버튼 영역 */
+	    .join-buttons {
+	        margin-top: 30px;
+	        padding-top: 20px;
+	        border-top: 1px solid #eee;
+	    }
+	    .join-buttons button {
+	        width: 100%;
+	        padding: 10px;
+	        margin-bottom: 10px;
+	        border: 1px solid #1f407b;
+	        border-radius: 5px;
+	        background-color: #fff;
+	        color: #1f407b;
+	        font-size: 16px;
+	        font-weight: 600;
+	        transition: all 0.3s;
+	    }
+	    .join-buttons button:hover {
+	        background-color: #1f407b;
+	        color: #fff;
+	    }
+	    
+	    /* 소셜 로그인 버튼 영역 스타일 */
+	    .social-login-container {
+	        margin-top: 30px;
+	        padding-top: 20px;
+	        border-top: 1px solid #eee;
+	    }
+
+	    .social-login-container p {
+	        font-size: 14px;
+	        color: #666;
+	        margin-bottom: 15px;
+	    }
+	    
+	    /* 소셜 버튼 그룹 (가로 정렬) */
+	    .social-button-group {
+	        display: flex;
+	        justify-content: space-between;
+	        gap: 10px;
+	        margin-bottom: 10px;
+	    }
+
+	    .social-button {
+	        flex: 1;
+	        display: flex; 
+	        align-items: center;
+	        justify-content: center;
+	        padding: 12px 0;
+	        border: none;
+	        border-radius: 5px;
+	        font-size: 16px;
+	        font-weight: 600;
+	        text-decoration: none;
+	        cursor: pointer;
+	        position: relative;
+	    }
+
+	    /* 네이버 버튼 스타일 */
+	    .social-naver {
+	        background-color: #03c75a;
+	        color: #fff;
+	    }
+	    .social-naver:hover {
+	        background-color: #029445;
+	    }
+	    
+	    /* 카카오 버튼 스타일 */
+	    .social-kakao {
+	        background-color: #fee500;
+	        color: #3c1e1e;
+	    }
+	    .social-kakao:hover {
+	        background-color: #e6cd00;
+	    }
+	    
+	    /* 아이콘 이미지 태그용 스타일 */
+	    .social-icon {
+	        width: 27px;
+	        height: 27px;
+	        margin-right: 10px;
+	    }
+
+	    /* 로그인 실패 메시지를 위한 스타일 */
+	    .alert-error {
+	        padding: 10px; 
+	        border: 1px solid #dc3545; 
+	        color: #dc3545; 
+	        background-color: #f8d7da; 
+	        border-radius: 5px; 
+	        margin-bottom: 20px; 
+	        font-size: 0.9rem;
+	    }
+	</style>
+    
+    <script>
+		function addMember() { 
 			location.href = "/5core/member/add/" + "01";
 		}
 		function addDealer() { 
 			location.href = "/5core/member/add/" + "02";
-		}	
+		}
+        // 소셜 로그인 버튼의 페이지 이동을 막기 위해 onclick="return false;"를 사용했습니다.
 	</script>	
 </head>
 <body>
 <div id="container">
-    <!-- 상단 -->
-    <!-- 중단 -->
-    <div class="login_menu">
-        <div class="login_box">
-		<!-- 로그인 실패 처리 -->
-		<div th:if="${error}" class="alert alert-danger mb-5">
-			<div>Username 또는 Password가 올바르지 않습니다.</div>
-		</div>
+    <div class="login-container">
+        <div th:if="${error}" class="alert-error">
+            <div>Username 또는 Password가 올바르지 않습니다.</div>
+        </div>
         <form th:action="@{/login}" method="post" class="form1">
             <h1>로그인</h1>
-            <div class="login_box1">
-                <div class="login_input_box">
-                    <input type="text" name="username" id="username" placeholder="아이디">
-                    <input type="password" name="password" id="password" placeholder="비밀번호">
-                </div>
-                <input type="submit" value="로그인" id="loginBtn">
+            <div class="login-input-box">
+                <input type="text" name="username" id="username" placeholder="아이디" required>
+                <input type="password" name="password" id="password" placeholder="비밀번호" required>
             </div>
-
-            <div class="login_box2">
-                <div class="join_box">
-                    <a href="#">아이디 찾기</a>
-                    <a href="#">비밀번호 찾기</a>
-                    <a class="tap1">회원가입</a>
-                </div>
+            <input type="submit" value="로그인" id="loginBtn">
+            <div class="login-box2">
+                <a href="#">아이디 찾기</a>
+                <a href="#">비밀번호 찾기</a>
             </div>
-			
-			<div class="login_box3">
-				<div class="join_box2">
-					<a th:href="|javascript:addCustomer()|">고객</a>
-				</div>
-				<div class="join_box2">
-					<a th:href="|javascript:addDealer()|">딜러</a>
-				</div>
-			</div>
-        </form>
+        </form>  
+        
+        <div class="social-login-container">
+            <p>소셜 계정으로 간편 로그인</p>
+            
+            <div class="social-button-group"> 
+                <a href="#" class="social-button social-naver" onclick="return false;">
+                    <img th:src="@{/icons/naver.png}" alt="네이버 아이콘" class="social-icon"/>
+                    네이버
+                </a>
+                <a href="#" class="social-button social-kakao" onclick="return false;">
+                    <img th:src="@{/icons/kakaotalk.png}" alt="카카오톡 아이콘" class="social-icon"/>
+                    카카오톡
+                </a>
+            </div>
+        </div> 
+        <div class="join-buttons">
+            <button onclick="addMember()">개인 회원가입</button>
+            <button onclick="addDealer()">딜러 회원가입</button>
         </div>
     </div>
-    <!-- 하단 -->
 </div>
+
 </body>
 </html>
-<th:block th:replace="~{/bottom.html}"></th:block>
