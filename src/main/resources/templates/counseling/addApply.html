@@ -242,7 +242,7 @@
 
     /* Step 1 차종 선택 스타일 */
 	.tabs { margin-bottom: 20px; }
-	 .tabs button {
+	.tabs button {
 	     padding: 10px 15px;
 	     margin-right: 5px;
 	     border: 1px solid #ccc;
@@ -434,53 +434,21 @@
       border-top: 1px solid #e5e7eb;
       margin: 24px 0 16px;
     }
-/*
-    @media (max-width: 768px) {
-      .apply-container {
-        margin: 16px;
-        padding: 20px 16px 24px;
-      }
-      .accordion-header {
-        padding: 12px 14px;
-        font-size: 15px;
-      }
-      .accordion-content.open {
-        padding: 14px;
-      }
-      .area {
-        width: 100%;
-      }
-      .other-input,
-      input[type="text"][placeholder="원하시는 시간을 적어주세요."] {
-        width: 100%;
-        margin-left: 0;
-        margin-top: 6px;
-      }
-      .form-row {
-        align-items: flex-start;
-      }
-	  .step-right {
-	    display: flex;
-	    align-items: center;
-	    gap: 8px;
-	    padding-right: 12px;
-	  }
+	
+	select {
+	  width: 200px;
+	  height: 35px;
+	  font-size: 16px;
+	  margin-right: 10px;
+	}	
 
-	  .step-right-text {
-	    font-size: 15px;
-	    color: #374151;
-	    font-weight: 500;
-	  }
-      .vehicle-card {
-        width: calc(33.33% - 10.66px); 
-      }
-*/
   </style>
 </head>
 <body>
   <div class="apply-container">
     <form th:object="${counseling}" th:action="@{/counseling/add}" method="post" name="applyForm">
 		<input type="hidden" id="memberId" sec:authorize="isAuthenticated()" th:value="${#authentication.getPrincipal().getUsername()}">
+		
       <header class="apply-header">
         <h2 class="apply-title">상담 신청</h2>
         <p class="apply-subtitle">희망 차종과 구매 계획을 알려주시면, 최적의 딜러와 연결해 드립니다.</p>
@@ -555,18 +523,21 @@
           </div>
           <div class="accordion-content">
             <div class="form-row">
+			  <input type="hidden" name="sido" id="sidoName" th:field="*{hopearea.sido}">
+			  <input type="hidden" name="siGunGu" id="siGunGuName" th:field="*{hopearea.siGunGu}">
+			  <input type="hidden" name="eupMyeonDong" id="eupMyeonDongName" th:field="*{hopearea.eupMyeonDong}">
               <label for="sido"  class="required">시/도</label>
-              <select class="area" name="hopearea.sido" id="sido" >
+              <select class="area" name="sido" id="sido" >
                 <option value="">시/도 선택</option>
               </select>
 
               <label for="siGunGu" class="required">시/군/구</label>
-              <select class="area" name="hopearea.siGunGu" id="siGunGu" >
+              <select class="area" name="siGunGu" id="siGunGu" >
                 <option value="">시/군/구 선택</option>
               </select>
 
               <label for="eupMyeonDong">읍/면/동</label>
-              <select class="area" name="hopearea.eupMyeonDong" id="eupMyeonDong">
+              <select class="area" name="eupMyeonDong" id="eupMyeonDong">
                 <option value="">읍/면/동 선택</option>
               </select>
             </div>
@@ -689,7 +660,7 @@
             <div class="survey-section">
               <p class="question-title">희망 연락 시간</p>
               <hr class="section-divider">
-              <input type="text" id="counselingLikeTime" name="counselingLikeTime" class="other-input"
+              <input type="datetime-local" id="counselingLikeTime" name="counselingLikeTime" class="other-input"
                      placeholder="예: 평일 오후 7시 이후 연락 바랍니다.">
             </div>
 
@@ -729,11 +700,16 @@
   	  let form = document.applyForm;
         header.addEventListener("click", () => {
 	      let openContent = document.querySelector(".accordion-content.open");
-	      let sido = document.querySelector("#sido");
-	  	  let siGunGu = document.querySelector("#siGunGu");
-	  	  let eupMyeonDong = document.querySelector("#eupMyeonDong");
+		  let sidoEl = document.querySelector("#sidoName");
+	      let siGunGuEl = document.querySelector("#siGunGuName");
+	      let eupMyeonDongEl = document.querySelector("#eupMyeonDongName");
+	      let sido = sidoEl.value;
+	      let siGunGu = siGunGuEl.value;
+	      let eupMyeonDong = eupMyeonDongEl.value;
 	  	  let stepText1 = document.querySelector(".stepText1");
 	  	  let stepText2 = document.querySelector(".stepText2");
+		  
+		  
   		
   		  // 열려 있는 패널이 있고, 그게 지금 클릭한 것이 아니라면 닫기
           if (openContent && openContent !== item.querySelector(".accordion-content")) {
@@ -747,7 +723,7 @@
             // Step 2 헤더 요약 텍스트 업데이트
   		    // Step 2가 닫힐 때만 지역 정보를 업데이트
             if (openContent.closest('.accordion-item').querySelector('.step-badge').textContent === 'STEP 2') {
-  			  let areaText = `${sido.value || ''} ${siGunGu.value || ''} ${eupMyeonDong.value || ''}`.trim();
+  			  let areaText = sido + '   ' +  siGunGu + '  ' +  eupMyeonDong;
   			  stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
   		    }
 
@@ -891,43 +867,63 @@
           
           // Step 3 헤더 요약 텍스트 업데이트
           let stepText3 = document.querySelector(".stepText3");
-          stepText3.textContent = summaryText.join(' / ') || "미선택 항목 있음";
-          
           likeTxt =
             `차량 구매 목적: ${purchasePurposeList.join(", ") || "-"}<br>` +
             `차량 구매 목적(기타): ${otherInputVal || "-"}<br>` +
             `희망 구매 시점: ${purchasePeriod || "-"}<br>` +
             `선호 차량: ${vehicleTypeList.join(", ") || "-"}<br>` +
             `선호 엔진: ${engineTypeList.join(", ") || "-"}<br>` +
-  		  `희망 연락 시간: ${counselingLikeTime || "-"}`;
+  		    `희망 연락 시간: ${counselingLikeTime || "-"}`;
 
           likeInfo.innerHTML = '<div class="info-block-title">선택한 Step3 요약</div>' + likeTxt;
         });
+		
+		let sidoEl = document.querySelector("#sidoName");
+		let siGunGuEl = document.querySelector("#siGunGuName");
+		let eupMyeonDongEl = document.querySelector("#eupMyeonDongName");
+		let sidoTxt = sidoEl.value;
+		let siGunGuTxt = siGunGuEl.value;
+		let eupMyeonDongTxt = eupMyeonDongEl.value;
+		
         // 전체 신청 미리보기
         btnApply.addEventListener("click", () => {
-
-          let sido = document.querySelector("#sido");
-          let siGunGu = document.querySelector("#siGunGu");
-          let eupMyeonDong = document.querySelector("#eupMyeonDong");
+		  let sidoTxt = $("#sidoName").val();
+		  let siGunGuTxt = $("#siGunGuName").val();
+		  let eupMyeonDongTxt = $("#eupMyeonDongName").val();
           // *수정: 잘못된 변수(selectedVehicle) 대신 selectedCarDisplay의 텍스트를 사용*
           let selectedVehicleName = document.getElementById('selectedCarDisplay').textContent; 
    
           let allTxt =
             `**선택된 상담 차종:** ${selectedVehicleName || '선택 안 함'}<br><br>` + 
   		  (likeTxt || "Step 3 정보가 없습니다.<br>") + 
-  		  `<br>시/도: ${sido.value || "-"}<br>` +
-  		  `시/군/구: ${siGunGu.value || "-"}<br>` +
-  		  `읍/면/동: ${eupMyeonDong.value || "-"}<br>` ;
+  		  `<br>시/도: ${sidoTxt || "-"}<br>` +
+  		  `시/군/구: ${siGunGuTxt || "-"}<br>` +
+  		  `읍/면/동: ${eupMyeonDongTxt || "-"}<br>` ;
           	result.innerHTML = '<div class="info-block-title">구매 신청 미리보기</div>' + allTxt;
         });
         
-        // Step 2 지역 선택 드롭다운 변경 시 헤더 업데이트
-        document.querySelectorAll('#sido, #siGunGu, #eupMyeonDong').forEach(select => {
+		// Step 2 지역 선택 드롭다운 변경 시 헤더 업데이트
+        document.querySelectorAll('#sidoName, #siGunGuName, #eupMyeonDongName').forEach(select => {
             select.addEventListener('change', () => {
-                let sido = document.querySelector("#sido").value || '';
-                let siGunGu = document.querySelector("#siGunGu").value || '';
-                let eupMyeonDong = document.querySelector("#eupMyeonDong").value || '';
-                let areaText = `${sido} ${siGunGu} ${eupMyeonDong}`.trim();
+                // 기존 코드: .value (지역 코드) 사용
+                // let sido = document.querySelector("#sido").value || '';
+                // let siGunGu = document.querySelector("#siGunGu").value || '';
+                // let eupMyeonDong = document.querySelector("#eupMyeonDong").value || '';
+
+                // **수정된 코드: selectedOptions[0].textContent (한글 이름) 사용**
+                let sidoSel = document.querySelector("#sidoName");
+                let siGunGuSel = document.querySelector("#siGunGuName");
+                let eupMyeonDongSel = document.querySelector("#eupMyeonDongName");
+				console.log(sidoSel.value);
+
+                // 선택된 옵션의 텍스트를 가져옵니다. "시/도 선택"과 같은 기본 옵션은 빈 문자열로 처리합니다.
+                let sidoTxt = sidoSel.selectedIndex > 0 ? sidoSel.options[sidoSel.selectedIndex].textContent : '';
+                let siGunGuTxt = siGunGuSel.selectedIndex > 0 ? siGunGuSel.options[siGunGuSel.selectedIndex].textContent : '';
+                let eupMyeonDongTxt = eupMyeonDongSel.selectedIndex > 0 ? eupMyeonDongSel.options[eupMyeonDongSel.selectedIndex].textContent : '';
+
+                let areaText = `${sidoSel.value} ${siGunGuSel.value} ${eupMyeonDongSel.value}`.trim();
+                
+                // Step 2 헤더 업데이트
                 stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
             });
         });
@@ -943,70 +939,146 @@
             otherInput.val("");
           }
         });
-        
-        // Step 3 헤더 초기 요약 (추가)
-        let stepText3 = document.querySelector(".stepText3");
-        stepText3.textContent = "미선택 항목 있음";
       });
       
-      // jQuery: 주소 데이터 로직 (변경 없음)
-      $(document).ready(function () {
-  	  let jusoData = {
-  	      '서울특별시': {
-  	          '강남구': ['역삼동', '삼성동', '압구정동'],
-  	          '서초구': ['서초동', '방배동', '양재동'],
-  	          '송파구': ['잠실동', '문정동', '방이동']
-  	      },
-  	      '부산광역시': {
-  	          '해운대구': ['중동', '좌동', '우동'],
-  	          '수영구': ['광안동', '남천동'],
-  	          '부산진구': ['부전동', '전포동']
-  	      },
-  	      '경기도': {
-  	          '성남시': ['분당동', '정자동', '수내동'],
-  	          '용인시': ['수지구', '기흥구', '처인구'],
-  	          '고양시': ['일산동', '일산서', '일산']
-  	      }
-  	  };
-  	  
-  	  let sidoSelect = $('#sido');
+	  document.addEventListener("DOMContentLoaded", () => {
+	  	  	
+  	  	/*
+  	  		도메인 변경 (25-11-13)
+  	  		sgis.lostat.go.kr -> sgis.mods.go.kr
+  	  	*/
+  	  	
+  	  	// 토큰기간: ~ 2025-12-30일
+  	    let CONSUMER_KEY = "51d6b465af6e457f8f55";        // 🔹 SGIS 발급
+  	    let CONSUMER_SECRET = "ad81dbbb3fea4f0eaeb5";  // 🔹 SGIS 발급
 
-  	  Object.keys(jusoData).forEach(sido => {
-  	  	sidoSelect.append(new Option(sido, sido));
-  	  });
-  	  
-  	  
-  	$('#sido').change(function () {
-  		let sido = $(this).val();
-  	    let sigunguSelect = $('#siGunGu');
-  	    let eupSelect = $('#eupMyeonDong');
+  	      // 1) AccessToken 발급
+  	    async function getToken() {
+  	      let url = `https://sgisapi.mods.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
+  	      let res = await fetch(url);
+  	      let json = await res.json();
+  	      return json.result.accessToken;
+  	  	}
 
-  	    sigunguSelect.empty().append(new Option("시/군/구 선택", ""));
-  	    eupSelect.empty().append(new Option("읍/면/동 선택", ""));
+  	    // 2) 시/도 조회 (상위 단계)
+  	    async function loadSido(token) {
+		  let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}`;
+		  let res = await fetch(url);
+		  let json = await res.json();
 
-  	    if (!sido) return;
-  	        Object.keys(jusoData[sido]).forEach(sg => {
-  	             sigunguSelect.append(new Option(sg, sg));
-  	        });
+		  let sidoSel = document.getElementById("sido");
+
+		  json.result.forEach(item => {
+			let op = document.createElement("option");
+			op.value = item.cd;
+			op.textContent = item.addr_name;
+	        sidoSel.appendChild(op);
   	    });
 
-  	    // -------------------------
-  	    // 시군구 선택 읍면동 세팅
-  	    // -------------------------
-  	    $('#siGunGu').change(function () {
-  	         let sido = $('#sido').val();
-  	         let siGunGu = $(this).val();
-  	         let eupSelect = $('#eupMyeonDong');
+    	// 시도 변경 시 시군구 로드
+  	  	sidoSel.addEventListener("change", (e) => {
+    			let options = e.currentTarget.options;
+    			let idx = e.currentTarget.options.selectedIndex;
+    			console.log("시도값: "+ options[idx].textContent);
+				$("#sidoName").val(options[idx].textContent);
+    	        loadSigungu(token, sidoSel.value);
+    		});
+        }
+	  	  	
+          // 3) 시군구 조회
+  	    async function loadSigungu(token, sidoCode) {
+	  	    let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sidoCode}`;
+	  	    let res = await fetch(url);
+	  	    let json = await res.json();
 
-  	         eupSelect.empty().append(new Option("읍/면/동 선택", ""));
+	  	    let sgSel = document.getElementById("siGunGu");
+	  	    sgSel.innerHTML = `<option value="">시/군/구 선택</option>`;
 
-  	         if (!siGunGu) return;
+	  	    let emdSel = document.getElementById("eupMyeonDong");
+	  	    emdSel.innerHTML = `<option value="">읍/면/동 선택</option>`;
 
-  	         jusoData[sido][siGunGu].forEach(eup => {
-  	             eupSelect.append(new Option(eup, eup));
-  	         });
-  	    });
-      });
+	  	    json.result.forEach(item => {
+	  		  let op = document.createElement("option");
+	  		  op.value = item.cd;
+	  		  op.textContent = item.addr_name;
+	  		  sgSel.appendChild(op);
+	  	    });
+        
+  	      // 이 부분의 이벤트 리스너를 한 번만 등록하도록 DOMContentLoaded 바깥으로 이동합니다.
+          // 시군구 선택 시 읍면동 로드는 이제 changeSigungu 함수에서 담당합니다.
+  	    }
+	  	  	
+  	    // 4) 읍면동 조회
+  	    async function loadEmd(token, sigunguCode) {
+	  	    const url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sigunguCode}`;
+	  	  	const res = await fetch(url);
+	  	  	const json = await res.json();
+
+	  	  	const emdSel = document.getElementById("eupMyeonDong");
+	  	  	emdSel.innerHTML = `<option value="">읍/면/동 선택</option>`;
+
+	  	  	json.result.forEach(item => {
+	  	  	  const op = document.createElement("option");
+	  	  	  op.value = item.cd;
+	  	  	  op.textContent = item.addr_name;
+	  	  	  emdSel.appendChild(op);
+	  	    });
+  	  	  
+	  	  	// 읍면동 선택 시 값 출력
+	  	  	// 이 부분의 이벤트 리스너를 한 번만 등록하도록 DOMContentLoaded 바깥으로 이동합니다.
+  	  	}
+	        
+        // 5) 시군구 변경 시 호출될 이벤트 리스너 함수
+        function changeSigungu(token) {
+            const sgSel = document.getElementById("siGunGu");
+            
+            sgSel.addEventListener("change", (e) => {
+                const options = e.currentTarget.options;
+                const idx = e.currentTarget.options.selectedIndex;
+                // 텍스트 출력
+                console.log("시군구값: "+ options[idx].textContent);
+				$("#siGunGuName").val(options[idx].textContent);
+                // 읍면동 로드
+                loadEmd(token, sgSel.value);
+            });
+        }
+	        
+        // 6) 읍면동 변경 시 호출될 이벤트 리스너 함수
+        function changeEmd() {
+            const emdSel = document.getElementById("eupMyeonDong");
+            
+            emdSel.addEventListener("change", (e) => {
+                const options = e.currentTarget.options;
+                const idx = e.currentTarget.options.selectedIndex;
+                // 텍스트 출력
+                console.log("읍면동값: "+ options[idx].textContent);
+				$("#eupMyeonDongName").val(options[idx].textContent);
+            });
+        }
+	  	  	
+	  	// 초기 실행
+	  	(async function() {
+	  	    const token = await getToken();   // 1) 토큰 발급
+	  	  	  loadSido(token);                // 2) 시도 로드
+	            changeSigungu(token);         // 5) 시군구 리스너 등록
+	            changeEmd();                  // 6) 읍면동 리스너 등록
+	  	  	})();	  	
+	    });
+		
+		window.onload = function() {
+	        // memberId 요소를 DOM에서 찾습니다.
+	        let memberIdElement = document.getElementById('memberId');
+	
+	        // 요소가 존재하지 않으면 (즉, 로그아웃 상태이면)
+	        if (!memberIdElement) {
+	            alert('로그인이 필요한 서비스입니다.');
+
+	        } else {
+	            // 로그인 상태일 경우, memberId 값을 가져와 활용할 수 있습니다.
+	            const memberId = memberIdElement.value;
+	            console.log('로그인된 사용자 ID:', memberId);
+	        }
+		};
     </script>
 </body>
 </html>
