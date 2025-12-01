@@ -173,6 +173,13 @@
 		    width: 100%; 
 		}
 	</style>
+	<script>
+
+		function addCustomer() { 
+			location.href = "/5core/member/add/" + "01";
+		}
+	</script>
+
 </head>
 <body>
 	<div id="container">
@@ -274,7 +281,7 @@
 			            <li>블루멤버스에게 제공되는 다양한 혜택 안내</li>
 			            <li>기타 특화 서비스 제공</li>
 			        </ul>
-			        <a href="#" class="btn">Hyundai 회원가입 바로가기 ▶</a>
+			        <a th:href="|javascript:addCustomer()|" class="btn">Hyundai 회원가입 바로가기 ▶</a>
 			    </div>
 			</div>
 
