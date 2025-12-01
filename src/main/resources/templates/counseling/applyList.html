@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet"/>
   <style>
     body {
-      background-color: #f8f9fa;
+      background-color: rgb(255, 255, 255);
     }
     header h1 {
       color: #0d6efd;
@@ -65,10 +65,10 @@
 	.table thead th:nth-child(2) { width: 8%; } /* 고객ID */
 	.table thead th:nth-child(3) { width: 10%; } /* 연락처 */
 	.table thead th:nth-child(4) { width: 14%; } /* 예약시간 */
-	.table thead th:nth-child(5) { width: 14%; } /* 등록일 */
-	.table thead th:nth-child(6) { width: 14%; } /* 선택차량 (수정됨) */
-	.table thead th:nth-child(7) { width: 18%; } /* 상담내역 */
-	.table thead th:nth-child(8) { width: 8%; } /* 상담상태 */
+	.table thead th:nth-child(5) { width: 18%; } /* 등록일 */
+	.table thead th:nth-child(6) { width: 15%; } /* 선택차량 (수정됨) */
+	.table thead th:nth-child(7) { width: 15%; } /* 상담내역 */
+	.table thead th:nth-child(8) { width: 12%; } /* 상담상태 */
 	.table thead th:nth-child(9) { width: 10%; } /* 버튼 그룹 */
 
   </style>
@@ -84,7 +84,7 @@
 
     <section class="d-flex flex-wrap justify-content-between align-items-center mb-3">
       <div class="d-flex gap-2">
-        <select class="form-select form-select-sm" id="statusFilter" style="width: 140px" aria-label="상담 상태 필터">
+        <select class="form-select form-select-sm" id="statusFilter"  aria-label="상담 상태 필터">
           <option th:selected="${statusFilter == null or statusFilter == '전체 상태'}">전체 상태</option>
           <option th:selected="${statusFilter == '상담대기'}">상담대기</option>
           <option th:selected="${statusFilter == '상담진행중'}">상담진행중</option>
@@ -96,9 +96,6 @@
           class="form-select form-select-sm" id="sortFilter" style="width: 140px" aria-label="정렬 기준 선택">
           <option th:selected="${sortFilter == null or sortFilter == '등록일 최신순'}">등록일 최신순</option>
           <option th:selected="${sortFilter == '등록일 오래된순'}">등록일 오래된순</option>
-          <option disabled>-----</option>
-          <option th:selected="${sortFilter == '예산 높은순'}" disabled>예산 높은순</option> 
-          <option th:selected="${sortFilter == '예산 낮은순'}" disabled>예산 낮은순</option>
         </select>
       </div>
 
@@ -114,16 +111,16 @@
       <table class="table table-striped table-hover align-middle">
         <thead class="table-light">
           <tr>
-            <th>
+            <th class="text-center">
               <input type="checkbox" id="selectAll" class="form-check-input" aria-label="전체 선택"/>
             </th>
-            <th>고객ID</th>
-            <th>담당딜러</th>
-            <th>예약시간</th>
-            <th>등록일</th>
-            <th>선택차량</th> 
-		    <th>상담내역</th>
-            <th class="text-end">상담상태</th>
+            <th class="text-center">고객ID</th>
+            <th class="text-center">담당딜러</th>
+            <th class="text-center">예약시간</th>
+            <th class="text-center">등록일</th>
+            <th class="text-center">선택차량</th> 
+		    <th class="text-center">상담내역</th>
+            <th class="text-center">상담상태</th>
 			<th class="text-center">관리</th>
           </tr>
         </thead>
@@ -181,7 +178,7 @@
 				  </div>
 				</td>
 			</tr>
-			<tr th:if="${applyList == null}">
+			<tr th:if="${applyList == null or #lists.isEmpty(applyList)}">
 				<td colspan="9" class="text-center text-muted py-4">조회된 상담 내역이 없습니다.</td>
 			</tr>
         </tbody>
