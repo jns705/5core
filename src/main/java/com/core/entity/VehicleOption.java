@@ -19,9 +19,12 @@ public class VehicleOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 옵션명 
+    // 옵션명 - 화면에 표시되는 한글 옵션명
     private String optionName;
-
+    
+    // 옵션코드 - DB에서 처리하고 파일 이름을 위한 영문 코드
+    private String optionCode;
+    
     // 차량 참조 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id")

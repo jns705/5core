@@ -17,7 +17,7 @@
 		
 		.vehicleDetail {
 			max-width: 1520px;
-			height: 800px;
+			height: 1000px;
 			position: relative;
 			left: 240px;
 		}
@@ -210,7 +210,47 @@
 		    background: #d4d8dd;
 		}
 		
-		
+		/* 옵션 목록 */
+		.optionSection {
+			width: 80%;
+		    margin-top: 80px;
+		}
+
+		.optionSection h3 {
+		    font-size: 22px;
+		    font-weight: 700;
+		    margin-bottom: 20px;
+		}
+
+		/* 옵션 목록 2열 그리드 */
+		.optionGrid {
+		    display: grid;
+		    grid-template-columns: repeat(5, 1fr);
+		    gap: 18px 20px;
+		}
+
+		.optionItem {
+		    padding: 8px 10px;
+		    border-radius: 10px;
+		    border: 1px solid #ddd;
+		    background: #fafafa;
+		    text-align: center;
+		    transition: 0.2s;
+		}
+
+		.optionItem.on {
+		    border-color: #002c5f;
+		    background: #eaf2fb;
+		}
+
+		.optionItem.off {
+		    opacity: 0.6;
+		}
+
+		.optionName {
+		    font-size: 15px;
+		    font-weight: 500;
+		}
 		
 		
 		
@@ -272,19 +312,19 @@
 				        <div class="trimBtns">
 				            <label class="t-btn">
 				                <input type="radio" name="trim" value="Standard"
-				                       th:checked="${vehicle.trim == 'Standard'}">
+				                       th:checked="${trim == 'Standard'}">
 				                Standard
 				            </label>
 
 				            <label class="t-btn">
 				                <input type="radio" name="trim" value="Exclusive"
-				                       th:checked="${vehicle.trim == 'Exclusive'}">
+				                       th:checked="${trim == 'Exclusive'}">
 				                Exclusive
 				            </label>
 
 				            <label class="t-btn">
 				                <input type="radio" name="trim" value="Prestige"
-				                       th:checked="${vehicle.trim == 'Prestige'}">
+				                       th:checked="${trim == 'Prestige'}">
 				                Prestige
 				            </label>
 				        </div>
@@ -306,10 +346,19 @@
 				</div>
 		</div>
 	</div>
-	<h4>옵션</h4>
-	<div class="optionSection" th:each="option : ${optionList}">
-		<span th:text="${option.optionName}"></span>
-		
+	<div class="optionSection">
+	    <h3>옵션</h3>
+
+	    <div class="optionGrid">
+			<!-- included 참/거짓에 따라 class에 on/off를 추가 -->
+	        <div class="optionItem" 
+	             th:each="o : ${optionList}"
+	             th:classappend="${o.included} ? 'on' : 'off'">
+
+	            <!-- 옵션명 -->
+	            <span class="optionName">[[${o.optionName}]]</span>
+	        </div>
+	    </div>
 	</div>
 </div>
 	<th:block th:replace="~{/bottom.html}"></th:block>

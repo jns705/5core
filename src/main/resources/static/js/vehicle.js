@@ -1,44 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
-	
-	// 색상 원 클릭 시 해당하는 색상 이미지로 변경
-	const mainImage = document.getElementById("mainImage");
-	const colorBtns = document.querySelectorAll(".colorCircle");
-	
-	colorBtns.forEach(btn => {
-		btn.addEventListener("click", () => {
-			
-			// data-img에 저장된 파일명
-			const imageName = btn.dataset.img;
-			
-			if(imageName) {
-				mainImage.src = "/5core/images/" + imageName;
-			}
-		});
-	});
-	
-	// trim을 선택하면 웹에서 보여지는 가격이 바뀜
-	const btns = document.querySelectorAll("input[name='trim']");
-	const priceText = document.getElementById("priceText");
-	const basePrice = parseInt(priceText.dataset.base);
 
-	btns.forEach(btn => {
-	    btn.addEventListener("change", function() {
+    // 색상 클릭 → 이미지 변경
+    const mainImage = document.getElementById("mainImage");
+    const colorBtns = document.querySelectorAll(".colorCircle");
 
-	        let addPrice = 0;
+    colorBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const img = btn.dataset.img;
+            if(img) mainImage.src = "/5core/images/" + img;
+        });
+    });
 
-	        switch(this.value) {
-	            case "Exclusive":
-	                addPrice = 2000000;
-	                break;
-	            case "Prestige":
-	                addPrice = 4000000;
-	                break;
-	            default:
-	                addPrice = 0;
-	        }
 
-	        const result = basePrice + addPrice;
-	        priceText.innerText = result.toLocaleString();
-	    });
-	});
+    // 트림 선택 → 화면 가격만 미리보기
+    const trimBtns = document.querySelectorAll("input[name='trim']");
+    const priceText = document.getElementById("priceText");
+    const basePrice = parseInt(priceText.dataset.base);
+
+    trimBtns.forEach(btn => {
+        btn.addEventListener("change", () => {
+
+            let add = 0;
+            if(btn.value === "Exclusive") add = 2000000;
+            if(btn.value === "Prestige")  add = 4000000;
+
+            priceText.innerText = (basePrice + add).toLocaleString();
+        });
+    });
+
 });

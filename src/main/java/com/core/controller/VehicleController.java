@@ -77,12 +77,14 @@ public class VehicleController {
 		// 모델 코드로 차량 정보 획득
 		Vehicle vehicle = vehicleService.getVehicleByModelCode(modelCode);
 		
+		// 트림 정보가 없다면 DB에서 획득
+		if(trim == null || trim.isBlank()) {
+            trim = vehicle.getTrim();
+        }
+		
 		// 차량의 옵션 리스트를 획득
 		List<VehicleOptionView> optionList = vehicleService.getOptionList(vehicle, trim);
-		
-		for(VehicleOptionView o : optionList) {
-			log.info(o.getOptionName());
-		}
+		System.out.println("[컨트롤러] trim = " + trim);
 		
 		model.addAttribute("optionList", optionList);
 		model.addAttribute("trim", trim);
@@ -100,7 +102,7 @@ public class VehicleController {
 		// service의 계산 + 수정 메서드로 최종 가격을 수정
 		vehicleService.updateTrimPrice(id, trim);
 		
-		return "redirect:/vehicles/vehicle/" + modelCode;
+		return "redirect:/vehicles/vehicle/" + modelCode + "?trim=" + trim;
 	}
 	
 	// 차량 상세 정보 조회 - ID로 조회

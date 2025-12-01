@@ -63,7 +63,6 @@ public class VehicleService {
 		vehicle.setFinalPrice(basePrice + trimPrice);
 		
 		vehicleRepository.updateTrimAndPrice(trim, vehicle.getFinalPrice(), id);
-		log.info("최종"+vehicle.getFinalPrice());
 	}
 	//############################################################
 	
@@ -95,20 +94,28 @@ public class VehicleService {
 	// ####################################################################################################
 	// 트림에 따른 옵션의 포함 여부
 	public boolean isOptionIncluded(String optionTrim, String selectedTrim) {
-		switch(optionTrim.toUpperCase()) {
 
-		case "STANDARD":  // Standard의 옵션은 모든 트림에서 포함
-			return true;
-			
-		case "EXCLUSIVE": // Exclusive의 옵션은 익스클루시브와 프레스티지에 포함
-			return selectedTrim.equals("Exclusive") || selectedTrim.equals("Prestige");
-			
-		case "PRESTIGE":  // Prestige의 옵션은 프레스티지에서만 포함 
-			return selectedTrim.equals("Prestige");
-			
-		default:
-			return false;
-		}
+	    if (optionTrim == null || selectedTrim == null) {
+	        return false;
+	    }
+
+	    String option = optionTrim.toUpperCase().trim();    // STANDARD / EXCLUSIVE / PRESTIGE
+	    String selected = selectedTrim.toUpperCase().trim(); // STANDARD / EXCLUSIVE / PRESTIGE
+
+	    switch(option) {
+
+	    case "STANDARD":  // Standard의 옵션은 모든 트림에서 포함
+	        return true;
+
+	    case "EXCLUSIVE": // Exclusive의 옵션은 익스클루시브와 프레스티지에 포함
+	        return selected.equals("EXCLUSIVE") || selected.equals("PRESTIGE");
+
+	    case "PRESTIGE":  // Prestige의 옵션은 프레스티지에서만 포함 
+	        return selected.equals("PRESTIGE");
+
+	    default:
+	        return false;
+	    }
 	}
 	
 	// 트림에 따른 옵션 리스트 조회
@@ -119,8 +126,9 @@ public class VehicleService {
 			boolean included = isOptionIncluded(o.getTrimLevel(), selectedTrim);
 			VehicleOptionView view = new VehicleOptionView(o.getOptionName(), included);
 			
-			optionList.add(view);
+	        optionList.add(view);
 		}
+		
 		return optionList;
 	}
 	
