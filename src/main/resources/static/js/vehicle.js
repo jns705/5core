@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	});
 	
+	// trim을 선택하면 웹에서 보여지는 가격이 바뀜
 	const btns = document.querySelectorAll("input[name='trim']");
 	const priceText = document.getElementById("priceText");
 	const basePrice = parseInt(priceText.dataset.base);

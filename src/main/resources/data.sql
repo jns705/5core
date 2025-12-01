@@ -86,3 +86,109 @@ VALUES
 ('black', 'avante_black.png', (select id from vehicle where model_code = 'avante')),
 ('silver', 'avante_silver.png', (select id from vehicle where model_code = 'avante')),
 ('blue', 'avante_blue.png', (select id from vehicle where model_code = 'avante'));
+
+-- 모델 1페이지의 차량 8대에 대한 옵션 데이터
+INSERT INTO vehicle_option(option_name, vehicle_id, trim_level) VALUES
+-- 1. 그랜저 (id = 1)
+('스마트 크루즈 컨트롤', 1, 'Standard'),
+('전방 충돌방지', 1, 'Standard'),
+('후측방 경고', 1, 'Standard'),
+('8 에어백', 1, 'Standard'),
+('후방 카메라', 1, 'Standard'),
+
+('12.3인치 내비게이션', 1, 'Exclusive'),
+('통풍 시트', 1, 'Exclusive'),
+
+('파노라마 선루프', 1, 'Prestige'),
+('Bose 프리미엄 사운드', 1, 'Prestige'),
+('서라운드 뷰 모니터', 1, 'Prestige'),
+
+-- 2. 그랜저 하이브리드 (id = 2)
+('스마트 크루즈 컨트롤', 2, 'Standard'),
+('전방 충돌방지', 2, 'Standard'),
+('후측방 경고', 2, 'Standard'),
+('8 에어백', 2, 'Standard'),
+('후방 카메라', 2, 'Standard'),
+
+('12.3인치 내비게이션', 2, 'Exclusive'),
+('통풍 시트', 2, 'Exclusive'),
+
+('파노라마 선루프', 2, 'Prestige'),
+('Bose 프리미엄 사운드', 2, 'Prestige'),
+('서라운드 뷰 모니터', 2, 'Prestige'),
+
+-- 3. 베뉴 (id = 3)
+('스마트 크루즈 컨트롤', 3, 'Standard'),
+('전방 충돌방지', 3, 'Standard'),
+('후측방 경고', 3, 'Standard'),
+('8 에어백', 3, 'Standard'),
+('후방 카메라', 3, 'Standard'),
+
+('12.3인치 내비게이션', 3, 'Exclusive'),
+('통풍 시트', 3, 'Exclusive'),
+
+('파노라마 선루프', 3, 'Prestige'),
+
+-- 4. 싼타페 (id = 4)
+('스마트 크루즈 컨트롤', 4, 'Standard'),
+('전방 충돌방지', 4, 'Standard'),
+('후측방 경고', 4, 'Standard'),
+('8 에어백', 4, 'Standard'),
+('후방 카메라', 4, 'Standard'),
+
+('12.3인치 내비게이션', 4, 'Exclusive'),
+('통풍 시트', 4, 'Exclusive'),
+
+('파노라마 선루프', 4, 'Prestige'),
+('서라운드 뷰 모니터', 4, 'Prestige'),
+
+-- 5. 싼타페 하이브리드 (id = 5)
+('스마트 크루즈 컨트롤', 5, 'Standard'),
+('전방 충돌방지', 5, 'Standard'),
+('후측방 경고', 5, 'Standard'),
+('8 에어백', 5, 'Standard'),
+('후방 카메라', 5, 'Standard'),
+
+('12.3인치 내비게이션', 5, 'Exclusive'),
+('통풍 시트', 5, 'Exclusive'),
+
+('파노라마 선루프', 5, 'Prestige'),
+('서라운드 뷰 모니터', 5, 'Prestige'),
+
+-- 6. 쏘나타 (id = 6)
+('스마트 크루즈 컨트롤', 6, 'Standard'),
+('전방 충돌방지', 6, 'Standard'),
+('후측방 경고', 6, 'Standard'),
+('8 에어백', 6, 'Standard'),
+('후방 카메라', 6, 'Standard'),
+
+('12.3인치 내비게이션', 6, 'Exclusive'),
+('통풍 시트', 6, 'Exclusive'),
+
+('파노라마 선루프', 6, 'Prestige'),
+('Bose 프리미엄 사운드', 6, 'Prestige'),
+
+-- 7. 쏘나타 하이브리드 (id = 7)
+('스마트 크루즈 컨트롤', 7, 'Standard'),
+('전방 충돌방지', 7, 'Standard'),
+('후측방 경고', 7, 'Standard'),
+('8 에어백', 7, 'Standard'),
+('후방 카메라', 7, 'Standard'),
+
+('12.3인치 내비게이션', 7, 'Exclusive'),
+('통풍 시트', 7, 'Exclusive'),
+
+('파노라마 선루프', 7, 'Prestige'),
+('Bose 프리미엄 사운드', 7, 'Prestige'),
+
+-- 8. 아반떼 (id = 8)
+('스마트 크루즈 컨트롤', 8, 'Standard'),
+('전방 충돌방지', 8, 'Standard'),
+('후측방 경고', 8, 'Standard'),
+('8 에어백', 8, 'Standard'),
+('후방 카메라', 8, 'Standard'),
+
+('12.3인치 내비게이션', 8, 'Exclusive'),
+('통풍 시트', 8, 'Exclusive'),
+
+('파노라마 선루프', 8, 'Prestige');

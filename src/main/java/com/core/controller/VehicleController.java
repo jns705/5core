@@ -2,6 +2,7 @@ package com.core.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.core.dto.VehicleOptionView;
 import com.core.entity.Vehicle;
+import com.core.entity.VehicleOption;
 import com.core.service.VehicleService;
 
 import jakarta.validation.Valid;
@@ -74,10 +77,14 @@ public class VehicleController {
 		// 모델 코드로 차량 정보 획득
 		Vehicle vehicle = vehicleService.getVehicleByModelCode(modelCode);
 		
-		// Service의 계산 메서드 호출
-		int totalPrice = vehicleService.getTotalPrice(vehicle.getId(), trim);
+		// 차량의 옵션 리스트를 획득
+		List<VehicleOptionView> optionList = vehicleService.getOptionList(vehicle, trim);
 		
-		model.addAttribute("totalPrice", totalPrice);
+		for(VehicleOptionView o : optionList) {
+			log.info(o.getOptionName());
+		}
+		
+		model.addAttribute("optionList", optionList);
 		model.addAttribute("trim", trim);
 		model.addAttribute("vehicle", vehicle);
 		return "vehicle/vehicle";
@@ -90,6 +97,7 @@ public class VehicleController {
 			@RequestParam("id") Long id,
 			@RequestParam("trim") String trim) {
 		
+		// service의 계산 + 수정 메서드로 최종 가격을 수정
 		vehicleService.updateTrimPrice(id, trim);
 		
 		return "redirect:/vehicles/vehicle/" + modelCode;
