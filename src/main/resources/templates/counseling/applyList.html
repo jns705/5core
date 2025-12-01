@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <th:block th:replace="~{/top.html}"></th:block>
   <title>고객용 구매신청 리스트</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet"/>
   <style>
@@ -103,9 +104,9 @@
 
       <div class="d-flex gap-2 mt-2 mt-sm-0">
         <input type="search" id="searchInput" class="form-control form-control-sm" placeholder="고객ID 또는 연락처 검색" aria-label="고객ID 또는 연락처 검색" th:value="${keyword}"/>
-        <button id="searchBtn" class="btn btn-sm btn-primary" aria-label="검색 버튼">
+        <!--<button id="searchBtn" class="btn btn-sm btn-primary" aria-label="검색 버튼">
           검색
-        </button>
+        </button>-->
       </div>
     </section>
 
@@ -194,9 +195,6 @@
 		<a th:href="@{/counseling/addApply}" class="btn btn-secondary">
 		  상담신청목록
 		</a>
-        <button id="btnDeleteSelected" class="btn btn-outline-danger btn-sm" aria-label="선택 삭제">
-          선택 삭제
-        </button>
         <button id="btnExcelDownload" class="btn btn-outline-secondary btn-sm" aria-label="엑셀 다운로드">
           엑셀 다운로드
         </button>
@@ -250,7 +248,6 @@
     let searchInput = document.getElementById('searchInput');
     let searchButton = document.getElementById('searchBtn');
     let tableBody = document.getElementById('tableBody');
-    let btnDeleteSelected = document.getElementById('btnDeleteSelected');
     let btnExcelDownload = document.getElementById('btnExcelDownload');
 
     /* ====== 서버 요청 유틸 함수 (클라이언트 필터링/정렬 로직 제거) ====== */
@@ -338,60 +335,65 @@
     }
 	
     // 테이블을 CSV로 변환 (서버에서 받은 현재 페이지 데이터만 변환)
-    function tableToCSV() {
-      let rows = [];
+	// 선택된 행만 CSV로 변환
+	function tableToCSVWithSelection() {
+	  let rows = [];
 
-      let headers = [];
-      document.querySelectorAll('table thead th').forEach((th, idx) => {
-        // 체크박스 열(0)과 관리 열(마지막)은 제외
-		if (idx === 0 || idx === document.querySelectorAll('table thead th').length - 1) return; 
-        let text = th.textContent.trim();
-        if (text !== '') headers.push(`"${text}"`);
-      });
-      rows.push(headers.join(','));
+	  let headers = [];
+	  document.querySelectorAll('table thead th').forEach((th, idx) => {
+	    // 체크박스 열(0)과 관리 열(마지막)은 제외
+	    if (idx === 0 || idx === document.querySelectorAll('table thead th').length - 1) return; 
+	    let text = th.textContent.trim();
+	    if (text !== '') headers.push(`"${text}"`);
+	  });
+	  rows.push(headers.join(','));
 
-      document.querySelectorAll('table tbody tr').forEach((tr) => {
-        // '조회된 내역 없음' 행 제외
-        if (tr.querySelector('td[colspan="9"]')) return; 
+	  // **변경: 선택된 체크박스만 필터링**
+	  let checkedBoxes = Array.from(rowCheckboxes()).filter((cb) => cb.checked);
+	  
+	  checkedBoxes.forEach((cb) => {
+	    let tr = cb.closest('tr');
+	    if (!tr) return;
 
-        let data = [];
-        tr.querySelectorAll('td').forEach((td, idx) => {
-          // 체크박스 열(0)과 관리 열(마지막)은 제외
-          if (idx === 0 || idx === tr.querySelectorAll('td').length - 1) return;
-		  
-		  // 상담상태 셀(인덱스 7)의 경우 배지 텍스트를 사용
-		  if (idx === 7) {
-			  let badge = td.querySelector('.status-badge');
-			  let text = badge ? badge.textContent.trim() : td.textContent.trim();
-			  data.push(`"${text.replace(/"/g, '""')}"`);
-			  return;
-		  }
-		  
-          // 선택 차량 셀(인덱스 5)의 경우 링크 텍스트를 사용
-          if (idx === 5) {
-             let link = td.querySelector('a');
-             let text = link ? link.textContent.trim() : td.textContent.trim();
-             data.push(`"${text.replace(/"/g, '""')}"`);
-             return;
-          }
-		  
-          // 상담내역 셀(인덱스 6)의 경우 title 속성 사용
-          if (idx === 6) {
-             let titleAttr = td.querySelector('.text-truncate')?.title;
-             // "차량 구매 목적: "을 제거하고 내용만 추출
-             let text = titleAttr ? titleAttr.replace('차량 구매 목적: ', '').trim() : td.textContent.trim();
-             data.push(`"${text.replace(/"/g, '""')}"`);
-             return;
-          }
-		  
-          let text = td.textContent.trim().replace(/"/g, '""');
-          data.push(`"${text}"`);
-        });
-        if (data.length) rows.push(data.join(','));
-      });
+	    let data = [];
+	    tr.querySelectorAll('td').forEach((td, idx) => {
+	      // 체크박스 열(0)과 관리 열(마지막)은 제외
+	      if (idx === 0 || idx === tr.querySelectorAll('td').length - 1) return;
 
-      return rows.join('\n');
-    }
+	      // 상담상태 셀(인덱스 7)의 경우 배지 텍스트를 사용
+	      if (idx === 7) {
+	        let badge = td.querySelector('.status-badge');
+	        let text = badge ? badge.textContent.trim() : td.textContent.trim();
+	        data.push(`"${text.replace(/"/g, '""')}"`);
+	        return;
+	      }
+
+	      // 선택 차량 셀(인덱스 5)의 경우 링크 텍스트를 사용
+	      if (idx === 5) {
+	         let link = td.querySelector('a');
+	         let text = link ? link.textContent.trim() : td.textContent.trim();
+	         data.push(`"${text.replace(/"/g, '""')}"`);
+	         return;
+	      }
+
+	      // 상담내역 셀(인덱스 6)의 경우 title 속성 사용
+	      if (idx === 6) {
+	         let titleAttr = td.querySelector('.text-truncate')?.title;
+	         // "차량 구매 목적: "을 제거하고 내용만 추출
+	         let text = titleAttr ? titleAttr.replace('차량 구매 목적: ', '').trim() : td.textContent.trim();
+	         data.push(`"${text.replace(/"/g, '""')}"`);
+	         return;
+	      }
+
+	      let text = td.textContent.trim().replace(/"/g, '""');
+	      data.push(`"${text}"`);
+	    });
+	    if (data.length) rows.push(data.join(','));
+	  });
+
+	  return rows.join('\n');
+	}
+
 
     // CSV 파일 다운로드
     function downloadCSV(csv, filename) {
@@ -412,12 +414,26 @@
       URL.revokeObjectURL(url);
     }
 
-    // 엑셀 다운로드 버튼 동작
-    function handleExcelDownload() {
-      let csvData = tableToCSV();
-      let dateStr = new Date().toISOString().slice(0, 10);
-      downloadCSV(csvData, `구매신청리스트_${dateStr}.csv`);
-    }
+	// 엑셀 다운로드 버튼 동작 (선택된 행만 다운로드)
+	function handleExcelDownload() {
+	  let checkedBoxes = Array.from(rowCheckboxes()).filter((cb) => cb.checked);
+	  
+	  // **변경: 체크박스 선택 필수**
+	  if (checkedBoxes.length === 0) {
+	    alert('다운로드할 행을 선택해 주세요.');
+	    return;
+	  }
+	  
+	  if (!confirm(`선택된 ${checkedBoxes.length}건의 데이터를 CSV(엑셀)로 다운로드하시겠습니까?\n\n(엑셀에서 정상적으로 열립니다.)`)) {
+	    return;
+	  }
+	  
+	  let csvData = tableToCSVWithSelection();
+	  let dateStr = new Date().toISOString().slice(0, 10);
+	  downloadCSV(csvData, `구매신청리스트_${dateStr}.csv`);
+	}
+
+
 
 	// 상담 취소 기능
 	function handleCancel(btn, id, customerId, vehicleName) {
@@ -433,7 +449,6 @@
 	    return;
 	  }
 	  
-	  // **TODO**: 실제 DB 업데이트 API 호출 (fetch)
 	  
 	  // 임시 프론트엔드 처리
 	  badge.textContent = '상담취소';
@@ -463,18 +478,17 @@
     // 필터, 정렬, 검색 버튼 클릭/변경 시 서버로 요청
     statusFilter.addEventListener('change', applyFiltersAndSorting);
     sortFilter.addEventListener('change', applyFiltersAndSorting);
-    searchButton.addEventListener('click', applyFiltersAndSorting);
+    //searchButton.addEventListener('click', applyFiltersAndSorting);
     searchInput.addEventListener('keyup', (e) => {
       if (e.key === 'Enter') applyFiltersAndSorting();
     });
-    btnDeleteSelected.addEventListener('click', handleDeleteSelected);
     btnExcelDownload.addEventListener('click', handleExcelDownload);
 	
 	// 취소/삭제 버튼 클릭 처리 (이벤트 위임)
 	tableBody.addEventListener('click', handleActionClick);
 
-    /* ====== 초기 실행 ====== */
     
   </script>
+  <th:block th:replace="~{/bottom.html}"></th:block>
 </body>
 </html>
