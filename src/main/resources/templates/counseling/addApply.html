@@ -660,7 +660,7 @@
             <div class="survey-section">
               <p class="question-title">희망 연락 시간</p>
               <hr class="section-divider">
-              <input type="datetime-local" id="counselingLikeTime" name="counselingLikeTime" class="other-input"
+              <input type="date" id="counselingLikeTime" name="counselingLikeTime" class="other-input"
                      placeholder="예: 평일 오후 7시 이후 연락 바랍니다.">
             </div>
 
@@ -670,9 +670,10 @@
 
             <div class="info-block likeInfo">
               <div class="info-block-title">선택한 Step3 요약</div>
-              <small>버튼을 눌러 현재 선택 내용을 확인하세요.</small>
-            </div>
+              <small>버튼을 눌러 현재 선택 내용을 확인하세요.</small> 
+            </div>			
           </div>
+	  		  
         </div>
       </div>
 	  
@@ -803,8 +804,7 @@
   	            selectedVehicleIdInput.value = vehicleId;
                     
                 // *수정: 차량 선택 시 Step 1 헤더 텍스트를 즉시 업데이트*
-                stepText1.textContent = vehicleName;
-  	              
+                stepText1.textContent = vehicleName;  	              
   	            console.log("선택된 차량 ID:", vehicleId);
   	        });
   	    });
@@ -820,8 +820,8 @@
                     stepText1.textContent = initialVehicleName;
                 }
           }
-  	  // --- ▲▲▲ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▲▲▲ ---
-  		
+		  
+  	  // --- ▲▲▲ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▲▲▲ ---  		
   	  // Step3 요약
         btnComplete.addEventListener("click", () => {	
           let purchasePurposeList = [];
@@ -846,7 +846,8 @@
 	  					}
 	  				}	       
 	  		    }
-	  	  });	
+	  	  });
+		  	
           engineType.forEach((v) => {
             if (v.checked) {
               engineTypeList.push(v.value);
@@ -905,12 +906,6 @@
 		// Step 2 지역 선택 드롭다운 변경 시 헤더 업데이트
         document.querySelectorAll('#sidoName, #siGunGuName, #eupMyeonDongName').forEach(select => {
             select.addEventListener('change', () => {
-                // 기존 코드: .value (지역 코드) 사용
-                // let sido = document.querySelector("#sido").value || '';
-                // let siGunGu = document.querySelector("#siGunGu").value || '';
-                // let eupMyeonDong = document.querySelector("#eupMyeonDong").value || '';
-
-                // **수정된 코드: selectedOptions[0].textContent (한글 이름) 사용**
                 let sidoSel = document.querySelector("#sidoName");
                 let siGunGuSel = document.querySelector("#siGunGuName");
                 let eupMyeonDongSel = document.querySelector("#eupMyeonDongName");
@@ -946,11 +941,10 @@
   	  	/*
   	  		도메인 변경 (25-11-13)
   	  		sgis.lostat.go.kr -> sgis.mods.go.kr
-  	  	*/
-  	  	
+  	  	*/ 	  	
   	  	// 토큰기간: ~ 2025-12-30일
   	    let CONSUMER_KEY = "51d6b465af6e457f8f55";        // 🔹 SGIS 발급
-  	    let CONSUMER_SECRET = "ad81dbbb3fea4f0eaeb5";  // 🔹 SGIS 발급
+  	    let CONSUMER_SECRET = "ad81dbbb3fea4f0eaeb5";     // 🔹 SGIS 발급
 
   	      // 1) AccessToken 발급
   	    async function getToken() {
@@ -1003,38 +997,32 @@
 	  		  op.textContent = item.addr_name;
 	  		  sgSel.appendChild(op);
 	  	    });
-        
-  	      // 이 부분의 이벤트 리스너를 한 번만 등록하도록 DOMContentLoaded 바깥으로 이동합니다.
-          // 시군구 선택 시 읍면동 로드는 이제 changeSigungu 함수에서 담당합니다.
   	    }
 	  	  	
   	    // 4) 읍면동 조회
   	    async function loadEmd(token, sigunguCode) {
-	  	    const url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sigunguCode}`;
-	  	  	const res = await fetch(url);
-	  	  	const json = await res.json();
+	  	    let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sigunguCode}`;
+	  	  	let res = await fetch(url);
+	  	  	let json = await res.json();
 
-	  	  	const emdSel = document.getElementById("eupMyeonDong");
+	  	  	let emdSel = document.getElementById("eupMyeonDong");
 	  	  	emdSel.innerHTML = `<option value="">읍/면/동 선택</option>`;
 
 	  	  	json.result.forEach(item => {
-	  	  	  const op = document.createElement("option");
+	  	  	  let op = document.createElement("option");
 	  	  	  op.value = item.cd;
 	  	  	  op.textContent = item.addr_name;
 	  	  	  emdSel.appendChild(op);
 	  	    });
-  	  	  
-	  	  	// 읍면동 선택 시 값 출력
-	  	  	// 이 부분의 이벤트 리스너를 한 번만 등록하도록 DOMContentLoaded 바깥으로 이동합니다.
   	  	}
 	        
         // 5) 시군구 변경 시 호출될 이벤트 리스너 함수
         function changeSigungu(token) {
-            const sgSel = document.getElementById("siGunGu");
+            let sgSel = document.getElementById("siGunGu");
             
             sgSel.addEventListener("change", (e) => {
-                const options = e.currentTarget.options;
-                const idx = e.currentTarget.options.selectedIndex;
+                let options = e.currentTarget.options;
+                let idx = e.currentTarget.options.selectedIndex;
                 // 텍스트 출력
                 console.log("시군구값: "+ options[idx].textContent);
 				$("#siGunGuName").val(options[idx].textContent);
@@ -1045,11 +1033,11 @@
 	        
         // 6) 읍면동 변경 시 호출될 이벤트 리스너 함수
         function changeEmd() {
-            const emdSel = document.getElementById("eupMyeonDong");
+            let emdSel = document.getElementById("eupMyeonDong");
             
             emdSel.addEventListener("change", (e) => {
-                const options = e.currentTarget.options;
-                const idx = e.currentTarget.options.selectedIndex;
+                let options = e.currentTarget.options;
+                let idx = e.currentTarget.options.selectedIndex;
                 // 텍스트 출력
                 console.log("읍면동값: "+ options[idx].textContent);
 				$("#eupMyeonDongName").val(options[idx].textContent);
@@ -1058,7 +1046,7 @@
 	  	  	
 	  	// 초기 실행
 	  	(async function() {
-	  	    const token = await getToken();   // 1) 토큰 발급
+	  	    let token = await getToken();   // 1) 토큰 발급
 	  	  	  loadSido(token);                // 2) 시도 로드
 	            changeSigungu(token);         // 5) 시군구 리스너 등록
 	            changeEmd();                  // 6) 읍면동 리스너 등록
@@ -1066,16 +1054,12 @@
 	    });
 		
 		window.onload = function() {
-	        // memberId 요소를 DOM에서 찾습니다.
 	        let memberIdElement = document.getElementById('memberId');
 	
-	        // 요소가 존재하지 않으면 (즉, 로그아웃 상태이면)
 	        if (!memberIdElement) {
 	            alert('로그인이 필요한 서비스입니다.');
-
 	        } else {
-	            // 로그인 상태일 경우, memberId 값을 가져와 활용할 수 있습니다.
-	            const memberId = memberIdElement.value;
+	            let memberId = memberIdElement.value;
 	            console.log('로그인된 사용자 ID:', memberId);
 	        }
 		};
