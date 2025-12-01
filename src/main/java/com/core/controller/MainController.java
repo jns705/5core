@@ -84,11 +84,18 @@ public class MainController {
 	// 딜러가 상담 선택
 	@GetMapping("/care/choice/{id}/{status}")
 	public String requestUpdateStatus(Model model) {
+		// counseling_like_time수정, 딜러아이디추가 해야함
 		
-		
-		return "redirect:/dealer/profile";
+		return "redirect:/dealer/myCustomer";
 	}
 	
+	// 딜러의 상담고객
+	@GetMapping("/dealer/myCustomer")
+	public String requestMyCustomer(Model model) {
+		
+		
+		return "dealer/myCustomerList";
+	}
 	
 	
 	
