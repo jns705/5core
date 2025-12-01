@@ -407,6 +407,22 @@
 	
   </style>
 </head>
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		let status = document.querySelectorAll(".status");
+		let btnCounseling = document.querySelectorAll(".btnCounseling");
+		let counselingId = document.querySelectorAll(".counselingId");
+		
+		for(let i=0; i<btnCounseling.length; i++) {
+			btnCounseling[i].addEventListener("click", function() {
+				console.log("status: " + status[i].value);
+				console.log("counselingId: " + counselingId[i].value);
+				console.log("btnCounseling: " + btnCounseling[i].value);
+				location.href = "/5core/care/choice/" + counselingId[i].value +"/"+ stauts[i].value;
+			});
+		}
+	});
+</script>
 <body>
 
   <div class="sidebar">
@@ -499,35 +515,34 @@
                 <th>신청자</th>
                 <th>연락처</th>
                 <th>상담 희망일</th>
-                <th>신청 현황</th>
-                <th>변경</th>
+                <th>신청 내용</th>
+                <th>딜러</th>
               </tr>
             </thead>
             <tbody>
-              <tr  class="care-row">
-                <td >1</td>
-                <td >2025-11-26 10:30</td>
-                <td >홍길동</td>
-                <td >010-1234-5678</td>
-                <td >2025-11-28 14:00</td>
+              <tr th:each="counseling, counselingStat : ${counselingList}" class="care-row">
+                <td >[[${counselingStat.count}]]</td>
+                <td >[[|${#temporals.format(counseling.createDate, 'yyyy-MM-dd')}|]]</td>
+                <td >[[${counseling.customer.member.name}]]</td>
+                <td >[[${counseling.customer.member.phone}]]</td>
+                <td >[[${counseling.counselingLikeTime}]]</td>
                 <td>
-                  <span class="badge badge--care" >상담 신청</span>
-                  <span class="badge badge--progress" >상담 진행중</span>
-                  <span class="badge badge--done" >상담 완료</span>
+                  <span class="badge badge--care" >[[${counseling.vehicleName}]]</span>
+                  <span class="badge badge--progress" >[[${counseling.engineType}]]</span>
+                  <span class="badge badge--done" >[[${counseling.purchasePurpose}]]</span>
                 </td>
                 <td>
                   <div class="change-cell">
-                    <select class="status-select" >
-                      <option value="CARE">상담 신청</option>
-                      <option value="IN_PROGRESS">상담 진행중</option>
-                      <option value="DONE">상담 완료</option>
+					<input type="hidden" th:value="${counseling.id}" class="counselingId">
+                    <select class="status-select status" >
+                      <option value="상담대기">상담대기</option>
+                      <option value="상담진행중">상담진행중</option>
                     </select>
-                    <button type="button" class="btn btn--primary btn-update" >
-                      수정
-                    </button>
+                    <a class="btn btn--primary btn-update btnCounseling">상담하기</a>
                   </div>
                 </td>
               </tr>
+			  
               <tr >
                 <td colspan="7" style="text-align:center; color:#6b7280; padding:16px;">
                   등록된 상담 신청이 없습니다.

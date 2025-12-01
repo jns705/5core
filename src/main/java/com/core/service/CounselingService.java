@@ -179,4 +179,18 @@ public class CounselingService {
 
 	
 	
+	
+	/**
+	 * 상태별 리스트 조회
+	 */
+	public Page<Counseling> findByStatus(Pageable pageable, String status) {
+		return counselingRepository.findByStatus(status, pageable);
+	}
+	
+	
+	
+	
+	
+	
+	
 }
