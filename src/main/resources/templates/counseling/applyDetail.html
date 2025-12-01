@@ -6,6 +6,57 @@
   <title>상담 신청 상세 및 수정</title>
   <th:block th:replace="~{/top.html}"></th:block>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <style>
+    /* 구매 희망 정보 레이아웃을 위해 간단한 스타일 추가 */
+    .form-check-inline {
+        margin-right: 1.5rem;
+    }
+    .form-check-input {
+        margin-right: 0.3rem;
+    }
+    .custom-label-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    .custom-label-group label {
+        font-weight: 500;
+        margin-right: 1rem;
+    }
+    .other-input {
+        width: 100%;
+        max-width: 270px;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+    /* 지역 선택 드롭다운 스타일 */
+    .area-select {
+      width: 125px; /* 상세 페이지에 맞게 조정 */
+      height: 35px;
+      padding: .375rem .75rem;
+      font-size: 1rem;
+      border: 1px solid #ced4da;
+      border-radius: .25rem;
+    }
+    .area-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .area-group label {
+        margin-right: 5px;
+        font-weight: normal;
+    }
+  </style>
 </head>
 <body>
   <main class="container py-5">
@@ -63,33 +114,92 @@
               </div>
               
               <div class="row mb-3">
-                <label for="counselingLikeTime" class="col-sm-3 col-form-label">예약 희망 시간</label>
+                <label class="col-sm-3 col-form-label">희망 지역</label>
                 <div class="col-sm-9">
-                  <input type="text" id="counselingLikeTime" th:field="*{counselingLikeTime}" class="form-control">
+                    <div class="area-group">
+                        <input type="hidden" id="sidoName" th:field="*{hopearea.sido}">
+                        <input type="hidden" id="siGunGuName" th:field="*{hopearea.siGunGu}">
+                        <input type="hidden" id="eupMyeonDongName" th:field="*{hopearea.eupMyeonDong}">
+
+                        <label for="sido">시/도</label>
+                        <select class="area-select" id="sido">
+                            <option value="">시/도 선택</option>
+                        </select>
+
+                        <label for="siGunGu">시/군/구</label>
+                        <select class="area-select" id="siGunGu">
+                            <option value="">시/군/구 선택</option>
+                        </select>
+
+                        <label for="eupMyeonDong">읍/면/동</label>
+                        <select class="area-select" id="eupMyeonDong">
+                            <option value="">읍/면/동 선택</option>
+                        </select>
+                    </div>
                 </div>
               </div>
 
               <div class="row mb-3">
-                <label for="purchasePeriod" class="col-sm-3 col-form-label">구매 희망 시점</label>
+                <label class="col-sm-3 col-form-label">구매 희망 시점</label>
                 <div class="col-sm-9">
-                  <input type="text" id="purchasePeriod" th:field="*{purchasePeriod}" class="form-control">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="pt1m" th:field="*{purchasePeriod}" value="1개월 이내">
+                    <label class="form-check-label" for="pt1m">1개월 이내</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="pt3m" th:field="*{purchasePeriod}" value="3개월 이내">
+                    <label class="form-check-label" for="pt3m">3개월 이내</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="pt6m" th:field="*{purchasePeriod}" value="6개월 이내">
+                    <label class="form-check-label" for="pt6m">6개월 이내</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="ptNon" th:field="*{purchasePeriod}" value="미정">
+                    <label class="form-check-label" for="ptNon">미정</label>
+                  </div>
                 </div>
               </div>
-
+              
               <div class="row mb-3">
-                <label for="purchasePurpose" class="col-sm-3 col-form-label">차량 구매 목적</label>
+                <label class="col-sm-3 col-form-label">차량 구매 목적</label>
                 <div class="col-sm-9">
-                  <input type="text" id="purchasePurpose" th:field="*{purchasePurpose}" class="form-control">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input purpose-checkbox" type="checkbox" id="p1" name="purchasePurpose" value="출퇴근용" 
+                            th:checked="${#strings.contains(counseling.purchasePurpose, '출퇴근용')}">
+                        <label class="form-check-label" for="p1">출퇴근용</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input purpose-checkbox" type="checkbox" id="p2" name="purchasePurpose" value="패밀리카" 
+                            th:checked="${#strings.contains(counseling.purchasePurpose, '패밀리카')}">
+                        <label class="form-check-label" for="p2">패밀리카</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input purpose-checkbox" type="checkbox" id="p3" name="purchasePurpose" value="업무용" 
+                            th:checked="${#strings.contains(counseling.purchasePurpose, '업무용')}">
+                        <label class="form-check-label" for="p3">업무용</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input purpose-checkbox" type="checkbox" id="p4" name="purchasePurpose" value="세컨드카" 
+                            th:checked="${#strings.contains(counseling.purchasePurpose, '세컨드카')}">
+                        <label class="form-check-label" for="p4">세컨드카</label>
+                    </div>
+                    <div class="form-check form-check-inline custom-label-group">
+                        <input class="form-check-input purpose-checkbox" type="checkbox" id="other" name="purchasePurpose" value="기타" 
+                            th:checked="${#strings.contains(counseling.purchasePurpose, '기타')}">
+                        <label class="form-check-label" for="other">기타</label>
+                        <input type="text" id="otherInputText" th:field="*{otherInput}" class="other-input form-control-sm"
+                               placeholder="기타 사유를 입력하세요" 
+                               th:disabled="${!#strings.contains(counseling.purchasePurpose, '기타')}">
+                    </div>
                 </div>
               </div>
-              
-              <div class="row mb-3" th:if="*{otherInput != null}">
-                <label for="otherInput" class="col-sm-3 col-form-label">기타 입력 내용</label>
-                <div class="col-sm-9">
-                  <textarea id="otherInput" th:field="*{otherInput}" class="form-control" rows="2"></textarea>
-                </div>
-              </div>
-              
+			  <div class="row mb-3">
+			    <label for="counselingLikeTime" class="col-sm-3 col-form-label">예약 희망 시간</label>
+			    <div class="col-sm-9">
+			      <input type="date" id="counselingLikeTime" th:field="*{counselingLikeTime}" class="form-control">
+			    </div>
+			  </div>              
               <div class="row mb-0 border-top pt-3 mt-3">
                 <label class="col-sm-3 col-form-label small text-muted">등록일</label>
                 <div class="col-sm-9">
@@ -147,5 +257,154 @@
   </main>
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+      // 기타(other) 입력 필드 활성화 로직
+      $(document).ready(function() {
+          const $otherCheckbox = $("#other");
+          const $otherInputText = $("#otherInputText");
+          const initialSidoName = $("#sidoName").val();
+          const initialSiGunGuName = $("#siGunGuName").val();
+          const initialEupMyeonDongName = $("#eupMyeonDongName").val();
+          let apiToken = null;
+
+          // --- 1. 기타(other) 입력 필드 활성화 로직 ---
+          // 초기 상태 설정
+          if ($otherCheckbox.is(":checked")) {
+              $otherInputText.prop("disabled", false);
+          } else {
+              $otherInputText.prop("disabled", true);
+          }
+
+          // 체크박스 변경 이벤트
+          $otherCheckbox.on("change", function () {
+              if ($(this).is(":checked")) {
+                  $otherInputText.prop("disabled", false);
+                  $otherInputText.focus();
+              } else {
+                  $otherInputText.prop("disabled", true);
+                  $otherInputText.val("");
+              }
+          });
+
+
+          // --- 2. 지역 선택 API 연동 로직 (addApply.html 참조) ---
+          
+          let CONSUMER_KEY = "51d6b465af6e457f8f55";
+          let CONSUMER_SECRET = "ad81dbbb3fea4f0eaeb5";
+
+          // 2-1) AccessToken 발급
+          async function getToken() {
+            let url = `https://sgisapi.mods.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
+            let res = await fetch(url);
+            let json = await res.json();
+            return json.result.accessToken;
+          }
+
+          // 2-2) 시/도 조회 (상위 단계)
+          async function loadSido(token) {
+            let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}`;
+            let res = await fetch(url);
+            let json = await res.json();
+
+            let sidoSel = document.getElementById("sido");
+
+            json.result.forEach(item => {
+              let op = document.createElement("option");
+              op.value = item.cd;
+              op.textContent = item.addr_name;
+              sidoSel.appendChild(op);
+              
+              // 기존 저장된 값과 일치하면 선택 처리
+              if (item.addr_name === initialSidoName) {
+                  op.selected = true;
+                  // 시군구 자동 로드 (code는 item.cd)
+                  loadSigungu(token, item.cd, initialSiGunGuName, initialEupMyeonDongName);
+              }
+            });
+
+            // 시도 변경 시 시군구 로드
+            $(sidoSel).on("change", function(e) {
+                const selectedText = $(this).find('option:selected').text();
+                $("#sidoName").val(selectedText !== '시/도 선택' ? selectedText : '');
+                loadSigungu(token, this.value, '', ''); // 시/도 변경 시 시/군/구, 읍/면/동 초기화
+            });
+          }
+
+          // 2-3) 시군구 조회
+          async function loadSigungu(token, sidoCode, initialSiGunGu, initialEupMyeonDong) {
+            let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sidoCode}`;
+            let res = await fetch(url);
+            let json = await res.json();
+
+            let sgSel = document.getElementById("siGunGu");
+            $(sgSel).empty().append(`<option value="">시/군/구 선택</option>`);
+            
+            let emdSel = document.getElementById("eupMyeonDong");
+            $(emdSel).empty().append(`<option value="">읍/면/동 선택</option>`);
+
+            if (sidoCode) {
+              json.result.forEach(item => {
+                let op = document.createElement("option");
+                op.value = item.cd;
+                op.textContent = item.addr_name;
+                sgSel.appendChild(op);
+                
+                // 기존 저장된 값과 일치하면 선택 처리
+                if (item.addr_name === initialSiGunGu) {
+                    op.selected = true;
+                    // 읍면동 자동 로드 (code는 item.cd)
+                    loadEmd(token, item.cd, initialEupMyeonDong);
+                }
+              });
+            }
+
+            // 시군구 변경 시 읍면동 로드
+            $(sgSel).off('change').on("change", function(e) {
+                const selectedText = $(this).find('option:selected').text();
+                $("#siGunGuName").val(selectedText !== '시/군/구 선택' ? selectedText : '');
+                loadEmd(token, this.value, ''); // 시/군/구 변경 시 읍/면/동 초기화
+            });
+          }
+
+          // 2-4) 읍면동 조회
+          async function loadEmd(token, sigunguCode, initialEupMyeonDong) {
+            let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sigunguCode}`;
+            let res = await fetch(url);
+            let json = await res.json();
+
+            let emdSel = document.getElementById("eupMyeonDong");
+            $(emdSel).empty().append(`<option value="">읍/면/동 선택</option>`);
+
+            if (sigunguCode) {
+              json.result.forEach(item => {
+                let op = document.createElement("option");
+                op.value = item.cd;
+                op.textContent = item.addr_name;
+                emdSel.appendChild(op);
+
+                // 기존 저장된 값과 일치하면 선택 처리
+                if (item.addr_name === initialEupMyeonDong) {
+                    op.selected = true;
+                }
+              });
+            }
+
+            // 읍면동 변경 시 hidden 필드 업데이트
+            $(emdSel).off('change').on("change", function(e) {
+                const selectedText = $(this).find('option:selected').text();
+                $("#eupMyeonDongName").val(selectedText !== '읍/면/동 선택' ? selectedText : '');
+            });
+          }
+          
+          // 초기 실행: 지역 정보 로드
+          (async function() {
+              apiToken = await getToken();
+              loadSido(apiToken);
+          })();
+      });
+  </script>
+  
+  <th:block th:replace="~{/bottom.html}"></th:block>
 </body>
 </html>
