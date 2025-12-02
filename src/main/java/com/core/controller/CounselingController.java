@@ -27,6 +27,7 @@ import com.core.entity.Customer;
 import com.core.entity.Member;
 import com.core.entity.Vehicle; // Vehicle import 추가
 import com.core.service.CounselingService;
+import com.core.service.CustomerService;
 import com.core.service.MemberService;
 import com.core.service.VehicleService;
 
@@ -43,6 +44,7 @@ public class CounselingController {
 	private final CounselingService counselingService;
 	private final MemberService memberService;
 	private final VehicleService vehicleService; // VehicleService 의존성 주입
+	private final CustomerService customerService;
 
 	// 상담 글 단건 조회
 	@GetMapping
@@ -117,8 +119,8 @@ public class CounselingController {
 		counseling.setStatus(ApplyStatus.COUNSELING_HODDING.getStatusName()); 
 		
 		Member member = memberService.findByMemberId(principal.getName());
-		Customer customer = new Customer();
-		customer.setId(member.getId());
+		Customer customer = customerService.findByMember(member);
+		
 		counseling.setCustomer(customer);
 		counseling.setCreateDate(LocalDateTime.now());
 		

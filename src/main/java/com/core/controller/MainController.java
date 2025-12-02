@@ -74,7 +74,7 @@ public class MainController {
 			Model model) {
 		Sort sortObj = Sort.by("createDate").ascending();
 		Pageable pageable = PageRequest.of(page, 10, sortObj);  
-		Page<Counseling> counselingList = counselingService.findByStatus(pageable, "상담대기");
+		Page<Counseling> counselingList = counselingService.findCounselingsByFilter("상담대기", null, pageable);
 		
 		model.addAttribute("counselingList", counselingList);
 		
