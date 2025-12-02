@@ -77,8 +77,7 @@ public class MemberController {
 				customerService.saveCustomer(customer, member);
 			} else if(member.getRoleCheck().equals("02")) {
 				dealerService.saveDealer(dealer, member);
-			}
-			
+			} 			
 		} catch(DataIntegrityViolationException e) {
 			// rejectValue(필드명, 오류코드, 메시지)
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", "이미 존재하는 회원 ID입니다.");
