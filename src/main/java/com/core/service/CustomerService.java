@@ -19,4 +19,9 @@ public class CustomerService {
 		customerRepository.save(customer);
 	}
 	
+	public Customer findByMember(Member member) {
+		return customerRepository.findByMember(member).get();
+	}
+	
+	
 }
