@@ -418,7 +418,7 @@
 				console.log("status: " + status[i].value);
 				console.log("counselingId: " + counselingId[i].value);
 				console.log("btnCounseling: " + btnCounseling[i].value);
-				location.href = "/5core/care/choice/" + counselingId[i].value +"/"+ stauts[i].value;
+				location.href = "/5core/care/choice/" + counselingId[i].value + "/" + status[i].value;
 			});
 		}
 	});
@@ -525,7 +525,7 @@
                 <td >[[|${#temporals.format(counseling.createDate, 'yyyy-MM-dd')}|]]</td>
                 <td >[[${counseling.customer.member.name}]]</td>
                 <td >[[${counseling.customer.member.phone}]]</td>
-                <td >[[${counseling.counselingLikeTime}]]</td>
+                <td ><input type="date" th:value="${counseling.counselingLikeTime}">   [[${counseling.counselingLikeTime}]]</td>
                 <td>
                   <span class="badge badge--care" >[[${counseling.vehicleName}]]</span>
                   <span class="badge badge--progress" >[[${counseling.engineType}]]</span>
@@ -542,7 +542,6 @@
                   </div>
                 </td>
               </tr>
-			  
               <tr >
                 <td colspan="7" style="text-align:center; color:#6b7280; padding:16px;">
                   등록된 상담 신청이 없습니다.

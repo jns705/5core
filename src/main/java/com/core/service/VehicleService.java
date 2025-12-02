@@ -1,5 +1,6 @@
 package com.core.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,13 +9,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.core.dto.VehicleOptionView;
 import com.core.entity.Vehicle;
+import com.core.entity.VehicleOption;
 import com.core.repository.VehicleRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
 @RequiredArgsConstructor
 @Service
+@Log
 public class VehicleService {
 	
 	private final VehicleRepository vehicleRepository;
@@ -56,6 +61,8 @@ public class VehicleService {
 		
 		vehicle.setTrim(trim);
 		vehicle.setFinalPrice(basePrice + trimPrice);
+		
+		vehicleRepository.updateTrimAndPrice(trim, vehicle.getFinalPrice(), id);
 	}
 	//############################################################
 	
@@ -64,6 +71,7 @@ public class VehicleService {
 		return vehicleRepository.findAll();
 	}
 	
+	// 전체 상품 목록 조회 -> 페이징 처리 o
 	public Page<Vehicle> getVehiclePage(String keyword, String type, String fuel, Pageable pageable) {
 		// 조건이 null이거나 없다면 전체 목록을 조회
 		if((keyword == null || keyword.isBlank()) && (type == null || type.isBlank()) && (fuel == null || fuel.isBlank())) {
@@ -75,13 +83,59 @@ public class VehicleService {
 	
 	// 차량 상세 정보 조회
 	public Vehicle getVehicleByModelCode(String modelCode) {
-		return vehicleRepository.findByModelCode(modelCode).get();
+		return vehicleRepository.findWithOptionsByModelCode(modelCode).get();
 	}
 	
 	// 차량ID에 해당하는 차량 1건 조회
 	public Optional<Vehicle> getVehicleByVehicleId(Long vehicleId) {
 		return vehicleRepository.findById(vehicleId);
 	}
+	
+	// ####################################################################################################
+	// 트림에 따른 옵션의 포함 여부
+	public boolean isOptionIncluded(String optionTrim, String selectedTrim) {
+
+	    if (optionTrim == null || selectedTrim == null) {
+	        return false;
+	    }
+
+	    String option = optionTrim.toUpperCase().trim();    // STANDARD / EXCLUSIVE / PRESTIGE
+	    String selected = selectedTrim.toUpperCase().trim(); // STANDARD / EXCLUSIVE / PRESTIGE
+
+	    switch(option) {
+
+	    case "STANDARD":  // Standard의 옵션은 모든 트림에서 포함
+	        return true;
+
+	    case "EXCLUSIVE": // Exclusive의 옵션은 익스클루시브와 프레스티지에 포함
+	        return selected.equals("EXCLUSIVE") || selected.equals("PRESTIGE");
+
+	    case "PRESTIGE":  // Prestige의 옵션은 프레스티지에서만 포함 
+	        return selected.equals("PRESTIGE");
+
+	    default:
+	        return false;
+	    }
+	}
+	
+	// 트림에 따른 옵션 리스트 조회
+	public List<VehicleOptionView> getOptionList(Vehicle vehicle, String selectedTrim) {
+		List<VehicleOptionView> optionList = new ArrayList<>();
+		
+		for(VehicleOption o : vehicle.getOptions()) {
+			boolean included = isOptionIncluded(o.getTrimLevel(), selectedTrim);
+			VehicleOptionView view = new VehicleOptionView(o.getOptionName(), included);
+			
+	        optionList.add(view);
+		}
+		
+		return optionList;
+	}
+	
+	
+	
+	
+	
 	
 	// ###########################################################################################
 	// 차량 등록
