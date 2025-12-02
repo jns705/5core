@@ -91,4 +91,6 @@ public class Member {
 		return member;
 	}
 	
+	@Column(columnDefinition = "varchar(20) default 'ACTIVE'")
+	private String status = "ACTIVE";
 }

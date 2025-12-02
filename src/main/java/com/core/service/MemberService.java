@@ -92,11 +92,12 @@ public class MemberService implements UserDetailsService {
             throw new IllegalArgumentException("유효하지 않은 역할(Role)입니다.");
         }
 
+        // 상태 업데이트
+        member.setStatus(newStatus);
         
         // save()는 Transaction 종료 시 자동 호출되나, 명시적으로 호출 가능
         return member;
     }
-	
 
     /**
      * 멤버 정보 수정 (권한만 수정)
