@@ -201,13 +201,13 @@
 					   class="btn btn-sm btn-outline-danger btn-cancel"
 					   aria-label="상담 취소"
 					   onclick="event.stopPropagation();"
-					   th:classappend="${(apply.status == '상담진행중' || apply.status == '상담취소')} ? ' disabled-link'">
+					   th:classappend="${(apply.status == '상담진행중' or apply.status == '상담취소')} ? ' disabled-link'">
 					   취소
 					</a>					
 					<a th:href="@{/counseling/detail/{id}(id=${apply.id})}" 
 					   class="btn btn-sm btn-outline-primary btn-edit"
 					   aria-label="상담 수정"
-					   th:classappend="${(apply.status == '상담진행중' || apply.status == '상담취소')} ? ' disabled-link'">
+					   th:classappend="${(apply.status == '상담진행중' or apply.status == '상담취소')} ? ' disabled-link'">
 					   수정
 					</a>
 				  </div>
