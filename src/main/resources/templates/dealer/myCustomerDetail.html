@@ -404,6 +404,80 @@
         height: calc(100vh - 56px);
       }
     }
+	.detail-list {
+	  display: flex;
+	  flex-direction: column;
+	  gap: 20px;
+	}
+
+	.detail-section {
+	  padding: 16px 14px;
+	  border-radius: 12px;
+	  border: 1px solid #e5e7eb;
+	  background: #f9fafb;
+	  margin-bottom: 8px;
+	}
+
+	.detail-section__title {
+	  font-size: 14px;
+	  font-weight: 600;
+	  margin-bottom: 10px;
+	  color: #111827;
+	}
+
+	.detail-grid {
+	  display: grid;
+	  grid-template-columns: repeat(3, minmax(0, 1fr));
+	  gap: 10px 16px;
+	}
+
+	.detail-field {
+	  display: flex;
+	  flex-direction: column;
+	  gap: 4px;
+	}
+
+	.detail-field--full {
+	  grid-column: 1 / -1;
+	}
+
+	.detail-label {
+	  font-size: 12px;
+	  color: #6b7280;
+	}
+
+	.detail-input {
+	  padding: 7px 10px;
+	  border-radius: 8px;
+	  border: 1px solid #d1d5db;
+	  background: #f9fafb;
+	  font-size: 13px;
+	  color: #111827;
+	}
+
+	.detail-input[readonly] {
+	  background: #f3f4f6;
+	  color: #4b5563;
+	}
+
+	.detail-input:focus {
+	  outline: none;
+	  border-color: #0d47a1;
+	  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.1);
+	}
+
+	.detail-actions {
+	  margin-top: 14px;
+	  display: flex;
+	  justify-content: flex-end;
+	  gap: 8px;
+	}
+
+	@media (max-width: 960px) {
+	  .detail-grid {
+	    grid-template-columns: 1fr;
+	  }
+	}
 	
   </style>
 </head>
@@ -479,82 +553,104 @@
       </div>
     </div>
 
-    <div class="content">
-      <div class="page-header-row">
-        <div>
-          <h1 class="page-title">고객 관리</h1>
-          <p class="page-subtitle">상담 고객 명단</p>
-        </div>
-        <div class="filter-group">
-          <span>보기:</span>
-          <button type="button" class="filter-pill filter-pill--active">전체</button>
-          <button type="button" class="filter-pill">상담진행중</button>
-		  <button type="button" class="filter-pill">상담취소</button>
-          <button type="button" class="filter-pill">상담완료</button>
-        </div>
-      </div>
+	<div class="content">
+	  <div class="page-header-row">
+	    <div>
+	      <h1 class="page-title">고객 관리</h1>
+	      <p class="page-subtitle">상담 고객 상세 정보</p>
+	    </div>
+	  </div>
 
-      <section class="card">
-        <div class="card__header">
-          <div>
-            <h2 class="card__title">상담 신청 리스트</h2>
-            <p class="card__subtitle">
-              접수: [[${#lists.size(counselingList.content)}]]건
-            </p>
-          </div>
-          <span class="card__chip">실시간 동기화</span>
-        </div>
+	  <section class="card">
+	    <div class="card__header">
+	      <div>
+	        <h2 class="card__title">상담 고객 정보</h2>
+	        <p class="card__subtitle">고객 기본 정보와 차량 상담 정보를 확인하세요.</p>
+	      </div>
+	    </div>
 
-        <div class="care-table-wrapper">
-          <table class="care-table">
-            <thead>
-              <tr>
-                <th>번호</th>
-                <th>신청일</th>
-                <th>신청자</th>
-                <th>연락처</th>
-                <th>상담 예정일</th>
-                <th>신청 내용</th>
-                <th>딜러</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="counseling, counselingStat : ${counselingList}" class="care-row" th:onclick="|location.href='/5core/dealer/myCustomer/${counseling.id}'|">
-				
-                <td >[[${counselingStat.count}]]</td>
-                <td >[[|${#temporals.format(counseling.createDate, 'yyyy-MM-dd')}|]]</td>
-                <td >[[${counseling.customer.member.name}]]</td>
-                <td >[[${counseling.customer.member.phone}]]</td>
-                <td >[[${counseling.counselingLikeTime}]]</td>
-                <td>
-                  <span class="badge badge--care" >[[${counseling.vehicleName}]]</span>
-                  <span class="badge badge--progress" >[[${counseling.engineType}]]</span>
-                  <span class="badge badge--done" >[[${counseling.purchasePurpose}]]</span>
-                </td>
-				
-                <td>
-                  <div class="change-cell">
-					<input type="hidden" th:value="${counseling.id}" class="counselingId">
-                    <select class="status-select status" >
-                      <option value="상담진행중">상담진행중</option>
-					  <option value="상담취소">상담취소</option>
-					  <option value="상담완료">상담완료</option>
-                    </select>
-                    <a class="btn btn--primary btn-update btnCounseling">확인</a>
-                  </div>
-                </td>
-				
-              </tr>
-              <tr th:if="${#lists.isEmpty(counselingList.content)}">
-                <td colspan="7" style="text-align:center; color:#6b7280; padding:16px;">
-                  등록된 상담 신청이 없습니다.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+	    <!-- 리스트 형식 전체 컨테이너 -->
+	    <div class="care-table-wrapper" style="max-height:none;">
+	      <div class="detail-list">
+	        <!-- 1. 기본 정보 -->
+	        <div class="detail-section">
+	          <h3 class="detail-section__title">1. 기본 정보</h3>
+	          <div class="detail-grid">
+	            <div class="detail-field">
+	              <label class="detail-label">이름</label>
+	              <input class="detail-input" type="text" th:field="*{counseling.customer.member.name}" readonly>
+	            </div>
+	            <div class="detail-field">
+	              <label class="detail-label">연락처</label>
+	              <input class="detail-input" type="text" th:field="*{counseling.customer.member.phone}" readonly>
+	            </div>
+	            <div class="detail-field">
+	              <label class="detail-label">이메일</label>
+	              <input class="detail-input" type="text" th:field="*{counseling.customer.member.email}" readonly>
+	            </div>
+	            <div class="detail-field detail-field--full">
+	              <label class="detail-label">주소</label>
+	              <input class="detail-input" type="text" th:field="*{counseling.customer.member.address.basicAddress}" readonly>
+	            </div>
+	          </div>
+	        </div>
+
+	        <!-- 2. 차량 정보 -->
+	        <div class="detail-section">
+	          <h3 class="detail-section__title">2. 차량 정보</h3>
+	          <div class="detail-grid">
+	            <div class="detail-field">
+	              <label class="detail-label">선택 차량</label>
+	              <input class="detail-input" type="text"  readonly>
+	            </div>
+	            <div class="detail-field">
+	              <label class="detail-label">차 엔진</label>
+	              <input class="detail-input" type="text"  readonly>
+	            </div>
+	            <div class="detail-field">
+	              <label class="detail-label">차 유형</label>
+	              <input class="detail-input" type="text" readonly>
+	            </div>
+	            <div class="detail-field detail-field--full">
+	              <label class="detail-label">구매 희망 지역</label>
+	              <input class="detail-input" type="text"  readonly>
+	            </div>
+	            <div class="detail-field detail-field--full">
+	              <label class="detail-label">차량 구매 목적</label>
+	              <input class="detail-input" type="text"  readonly>
+	            </div>
+	          </div>
+	        </div>
+
+	        <!-- 3. 가격 및 액션 -->
+	        <div class="detail-section">
+	          <h3 class="detail-section__title">3. 상담 정보</h3>
+	          <div class="detail-grid">
+	            <div class="detail-field detail-field--full">
+	              <label class="detail-label">제안 가격 (원)</label>
+	              <input class="detail-input" type="number" min="0"
+	                     placeholder="제안할 차량 가격을 입력하세요">
+	            </div>
+	          </div>
+
+	          <div class="detail-actions">
+	            <button type="button"
+	                    class="btn btn--ghost detail-btn-complete">
+	              상담완료
+	            </button>
+	            <button type="button"
+	                    class="btn btn--primary detail-btn-buy">
+	              구매완료
+	            </button>
+	          </div>
+	        </div>
+	      </div>
+
+
+	    </div>
+	  </section>
+	</div>
+	
   </div>
 </body>
 </html>

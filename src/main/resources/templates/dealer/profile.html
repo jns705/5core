@@ -661,7 +661,7 @@
         </a>
       </li>
       <li>
-        <a class="menu-item">
+        <a th:href="@{/dealer/myCustomer}" class="menu-item">
           <span class="menu-item__bullet"></span>
           <span>고객 관리</span>
         </a>
@@ -692,7 +692,7 @@
       </div>
       <div class="user-info">
         <span class="user-info__role">담당 딜러</span>
-        <span>[[${dealer.name}]] 님</span>
+        <span>[[${#authentication.getPrincipal().getUsername()}]] 님</span>
         <span class="logout"><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="nav-link">로그아웃</a></span>
       </div>
     </div>
@@ -796,7 +796,7 @@
           <section class="card customer-section">
             <div class="card__header">
               <h3 class="card__title">고객 리스트</h3>
-              <div class="card__subtitle">오늘 등록: 5명 · VIP: 3명</div>
+              <div class="card__subtitle"></div>
             </div>
             <div class="customer-list-wrapper">
               <table class="customer-table">

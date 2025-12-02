@@ -412,13 +412,12 @@
 		let status = document.querySelectorAll(".status");
 		let btnCounseling = document.querySelectorAll(".btnCounseling");
 		let counselingId = document.querySelectorAll(".counselingId");
+		let counselingLikeTime = document.querySelectorAll(".counselingLikeTime");
 		
 		for(let i=0; i<btnCounseling.length; i++) {
 			btnCounseling[i].addEventListener("click", function() {
-				console.log("status: " + status[i].value);
-				console.log("counselingId: " + counselingId[i].value);
-				console.log("btnCounseling: " + btnCounseling[i].value);
-				location.href = "/5core/care/choice/" + counselingId[i].value + "/" + status[i].value;
+				if(status[i].value == "상담대기") alert("상담진행중으로 변경해주세요");
+				location.href = "/5core/care/choice/" + counselingId[i].value + "/" + status[i].value + "/" + counselingLikeTime[i].value;
 			});
 		}
 	});
@@ -444,7 +443,7 @@
         </a>
       </li>
       <li>
-        <a class="menu-item">
+        <a th:href="@{/dealer/myCustomer}" class="menu-item">
           <span class="menu-item__bullet"></span>
           <span>고객 관리</span>
         </a>
@@ -475,7 +474,7 @@
       </div>
       <div class="user-info">
         <span class="user-info__role">담당 딜러</span>
-        <span>홍길동 님</span>
+        <span>[[${#authentication.getPrincipal().getUsername()}]] 님</span>
         <span class="logout"><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="nav-link">로그아웃</a></span>
       </div>
     </div>
@@ -484,14 +483,7 @@
       <div class="page-header-row">
         <div>
           <h1 class="page-title">상담 신청 명단</h1>
-          <p class="page-subtitle">온라인/전화로 접수된 상담 신청 현황 관리</p>
-        </div>
-        <div class="filter-group">
-          <span>보기:</span>
-          <button type="button" class="filter-pill filter-pill--active">전체</button>
-          <button type="button" class="filter-pill">신규 신청</button>
-          <button type="button" class="filter-pill">진행중</button>
-          <button type="button" class="filter-pill">완료</button>
+          <p class="page-subtitle">온라인 상담 신청 현황 관리</p>
         </div>
       </div>
 
@@ -500,7 +492,7 @@
           <div>
             <h2 class="card__title">상담 신청 리스트</h2>
             <p class="card__subtitle">
-              오늘 접수: 0건 · 진행중: 0건
+              접수: [[${#lists.size(counselingList.content)}]]건
             </p>
           </div>
           <span class="card__chip">실시간 동기화</span>
@@ -525,7 +517,7 @@
                 <td >[[|${#temporals.format(counseling.createDate, 'yyyy-MM-dd')}|]]</td>
                 <td >[[${counseling.customer.member.name}]]</td>
                 <td >[[${counseling.customer.member.phone}]]</td>
-                <td ><input type="date" th:value="${counseling.counselingLikeTime}">   [[${counseling.counselingLikeTime}]]</td>
+                <td ><input type="date" th:value="${counseling.counselingLikeTime}" class="counselingLikeTime"></td>
                 <td>
                   <span class="badge badge--care" >[[${counseling.vehicleName}]]</span>
                   <span class="badge badge--progress" >[[${counseling.engineType}]]</span>
@@ -542,7 +534,7 @@
                   </div>
                 </td>
               </tr>
-              <tr >
+              <tr th:if="${#lists.isEmpty(counselingList.content)}">
                 <td colspan="7" style="text-align:center; color:#6b7280; padding:16px;">
                   등록된 상담 신청이 없습니다.
                 </td>

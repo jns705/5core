@@ -18,4 +18,8 @@ public class DealerService {
 		dealer.setMember(member);
 		dealerRepository.save(dealer);
 	}
+	
+	public Dealer findByMember(Member member) {
+		return dealerRepository.findByMember(member).get();
+	}
 }
