@@ -39,7 +39,7 @@
     }
     /* 지역 선택 드롭다운 스타일 */
     .area-select {
-      width: 125px; /* 상세 페이지에 맞게 조정 */
+      width: 170px; /* 상세 페이지에 맞게 조정 */
       height: 35px;
       padding: .375rem .75rem;
       font-size: 1rem;
@@ -114,24 +114,21 @@
               </div>
               
               <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">희망 지역</label>
+                <label class="col-sm-3 col-form-label">구매 희망 지역</label>
                 <div class="col-sm-9">
                     <div class="area-group">
                         <input type="hidden" id="sidoName" th:field="*{hopearea.sido}">
                         <input type="hidden" id="siGunGuName" th:field="*{hopearea.siGunGu}">
                         <input type="hidden" id="eupMyeonDongName" th:field="*{hopearea.eupMyeonDong}">
 
-                        <label for="sido">시/도</label>
                         <select class="area-select" id="sido">
                             <option value="">시/도 선택</option>
                         </select>
 
-                        <label for="siGunGu">시/군/구</label>
                         <select class="area-select" id="siGunGu">
                             <option value="">시/군/구 선택</option>
                         </select>
 
-                        <label for="eupMyeonDong">읍/면/동</label>
                         <select class="area-select" id="eupMyeonDong">
                             <option value="">읍/면/동 선택</option>
                         </select>
