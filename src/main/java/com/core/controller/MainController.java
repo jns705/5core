@@ -44,6 +44,14 @@ public class MainController {
 		return "main";
 	}
 	
+	// 고객센터 페이지
+	@GetMapping("/support")
+	public String requestCustomerService() {
+		return "customer"; 
+	}
+
+
+	
 	
 	
 	/*

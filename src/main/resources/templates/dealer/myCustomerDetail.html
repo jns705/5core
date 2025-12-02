@@ -359,6 +359,11 @@
       background: #0d47a1;
       color: #ffffff;
     }
+	
+	.btn--danger {
+	  background: #f23535;
+	  color: #ffffff;
+	}
 
     .btn--ghost {
       background: #ffffff;
@@ -578,19 +583,20 @@
 	          <div class="detail-grid">
 	            <div class="detail-field">
 	              <label class="detail-label">이름</label>
-	              <input class="detail-input" type="text" th:field="*{counseling.customer.member.name}" readonly>
+	              <input class="detail-input" type="text" th:value="${counseling.customer.member.name}" readonly>
 	            </div>
 	            <div class="detail-field">
 	              <label class="detail-label">연락처</label>
-	              <input class="detail-input" type="text" th:field="*{counseling.customer.member.phone}" readonly>
+	              <input class="detail-input" type="text" th:value="${counseling.customer.member.phone}" readonly>
 	            </div>
 	            <div class="detail-field">
 	              <label class="detail-label">이메일</label>
-	              <input class="detail-input" type="text" th:field="*{counseling.customer.member.email}" readonly>
+	              <input class="detail-input" type="text" th:value="${counseling.customer.member.email}" readonly>
 	            </div>
 	            <div class="detail-field detail-field--full">
 	              <label class="detail-label">주소</label>
-	              <input class="detail-input" type="text" th:field="*{counseling.customer.member.address.basicAddress}" readonly>
+	              <input class="detail-input" type="text"
+				   th:value="|${counseling.customer.member.address.basicAddress} ${counseling.customer.member.address.detailAddress}|" readonly>
 	            </div>
 	          </div>
 	        </div>
@@ -601,23 +607,24 @@
 	          <div class="detail-grid">
 	            <div class="detail-field">
 	              <label class="detail-label">선택 차량</label>
-	              <input class="detail-input" type="text"  readonly>
+	              <input class="detail-input" type="text" th:value="${counseling.vehicleName}"  readonly>
 	            </div>
 	            <div class="detail-field">
 	              <label class="detail-label">차 엔진</label>
-	              <input class="detail-input" type="text"  readonly>
+	              <input class="detail-input" type="text" th:value="${counseling.engineType}" readonly>
 	            </div>
 	            <div class="detail-field">
 	              <label class="detail-label">차 유형</label>
-	              <input class="detail-input" type="text" readonly>
+	              <input class="detail-input" type="text" th:value="${counseling.vehicleType}" readonly>
 	            </div>
 	            <div class="detail-field detail-field--full">
 	              <label class="detail-label">구매 희망 지역</label>
-	              <input class="detail-input" type="text"  readonly>
+	              <input class="detail-input" type="text"
+				  th:value="|${counseling.hopearea.sido} ${counseling.hopearea.siGunGu} ${counseling.hopearea.eupMyeonDong}|"  readonly>
 	            </div>
 	            <div class="detail-field detail-field--full">
 	              <label class="detail-label">차량 구매 목적</label>
-	              <input class="detail-input" type="text"  readonly>
+	              <input class="detail-input" type="text" th:value="${counseling.purchasePurpose}" readonly>
 	            </div>
 	          </div>
 	        </div>
@@ -634,14 +641,9 @@
 	          </div>
 
 	          <div class="detail-actions">
-	            <button type="button"
-	                    class="btn btn--ghost detail-btn-complete">
-	              상담완료
-	            </button>
-	            <button type="button"
-	                    class="btn btn--primary detail-btn-buy">
-	              구매완료
-	            </button>
+				<button type="button" class="btn btn--danger cancel">상담취소</button>
+	            <button type="button" class="btn btn--ghost complete">상담완료</button>
+	            <button type="button" class="btn btn--primary buy">구매완료</button>
 	          </div>
 	        </div>
 	      </div>

@@ -307,6 +307,21 @@
       font-weight: 500;
     }
 
+	.badge--vip {
+	  background: #fef3c7;
+	  color: #92400e;
+	}
+
+	.badge--lead {
+	  background: #ecfdf3;
+	  color: #166534;
+	}
+
+	.badge--pending {
+	  background: #fef2f2;
+	  color: #b91c1c;
+	}
+
     .badge--care {
       background: #eff6ff;
       color: #1d4ed8;
@@ -515,7 +530,7 @@
                 <th>연락처</th>
                 <th>상담 예정일</th>
                 <th>신청 내용</th>
-                <th>딜러</th>
+                <th>상담 현황</th>
               </tr>
             </thead>
             <tbody>
@@ -534,13 +549,9 @@
 				
                 <td>
                   <div class="change-cell">
-					<input type="hidden" th:value="${counseling.id}" class="counselingId">
-                    <select class="status-select status" >
-                      <option value="상담진행중">상담진행중</option>
-					  <option value="상담취소">상담취소</option>
-					  <option value="상담완료">상담완료</option>
-                    </select>
-                    <a class="btn btn--primary btn-update btnCounseling">확인</a>
+					<span class="badge badge--lead" th:if="${counseling.status == '상담진행중'}">[[${counseling.status}]]</span>
+					<span class="badge badge--pending" th:if="${counseling.status == '상담취소'}">[[${counseling.status}]]</span>
+					<span class="badge badge--vip" th:if="${counseling.status == '상담완료'}">[[${counseling.status}]]</span>
                   </div>
                 </td>
 				
