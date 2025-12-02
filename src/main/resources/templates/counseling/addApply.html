@@ -7,7 +7,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <style>
     :root {
-      --primary: #0d47a1;
+      --primary: navy;
       --primary-soft: #e3eefc;
       --border-subtle: #e5e7eb;
       --text-main: #111827;
@@ -86,9 +86,9 @@
     }
 
     .step-badge {
-      font-size: 11px;
+      font-size: 15px;
       padding: 3px 8px;
-      border-radius: 999px;
+      border-radius: 9px;
       background: var(--primary-soft);
       color: var(--primary);
       font-weight: 600;
@@ -98,6 +98,7 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
+	  font-size: 1.05em;
     }
 
     .accordion-header-main {
@@ -107,7 +108,7 @@
     }
 
     .accordion-header-sub {
-      font-size: 11px;
+      font-size: 13px;
       color: var(--text-muted);
     }
 
@@ -116,6 +117,10 @@
       color: var(--primary);
     }
 
+	.step-right-text {
+		color: navy;
+	}
+	
     .accordion-arrow {
       transition: transform 0.3s ease;
       font-size: 18px;
@@ -138,9 +143,9 @@
     }
 
     .accordion-description {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-muted);
-      margin-bottom: 12px;
+      margin: 12px 20px;
       line-height: 1.5;
     }
 
@@ -181,11 +186,15 @@
     }
 
     .survey-section {
-      margin: 16px 0;
+      margin: 16px 0 16px 20px;
     }
 
+	.survey-section p {
+	  font-size: 1.2em;
+	}
+		
     .question-title {
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 600;
       margin-bottom: 6px;
     }
@@ -201,14 +210,14 @@
       align-items: center;
       margin-right: 20px;
       margin-bottom: 10px;
-      font-size: 14px;
+      font-size: 17px;
     }
 
     .input-group input[type="checkbox"],
     .input-group input[type="radio"] {
       margin-right: 8px;
       transform: scale(1.15);
-      accent-color: #002c5f;
+      accent-color: navy;
       cursor: pointer;
     }
 
@@ -219,10 +228,10 @@
 
     .other-input,
     input[type="text"][placeholder="원하시는 시간을 적어주세요."] {
+	  margin-left: 3px;
       padding: 8px 10px;
       border: 1px solid #d1d5db;
       border-radius: 6px;
-      margin-left: 10px;
       width: 250px;
       font-size: 14px;
       outline: none;
@@ -251,9 +260,9 @@
 	     font-weight: bold;
 	 }
 	 .tabs button.active {
-	     background-color: #007bff;
+	     background-color: navy;
 	     color: white;
-	     border-color: #007bff;
+	     border-color: navy;
 	 }
 	 .car-selection {
 	     display: grid;
@@ -275,12 +284,12 @@
 	     display: none;
 	 }
 	 .car-item:hover {
-	     border-color: #007bff;
-	     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+	     border-color: navy;
+	     box-shadow: 0 0 5px navy;
 	 }
 	 .car-item.selected {
 	     background-color: #e6f3ff; 
-	     border: 2px solid #007bff;
+	     border: 2px solid navy;
 	 }
 	 .car-item img {
 	     max-width: 80%; 
@@ -358,10 +367,10 @@
     }
 
     .btn {
-      min-width: 120px;
+      min-width: 160px;
       height: 40px;
       border-radius: 999px;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
       border: 1px solid transparent;
@@ -374,14 +383,15 @@
     }
 
     .btn-primary {
-      background-color: #0d47a1;
-      color: #ffffff;
-      border-color: #0d47a1;
+      color: #fff;
+	  background-color: navy;
+	  border-color: navy;
     }
 
     .btn-primary:hover {
-      background-color: #093272;
-      border-color: #093272;
+		color: navy;
+		background-color: #fff;
+		border-color: navy;
     }
 
     .btn-secondary {
@@ -391,8 +401,8 @@
     }
 
     .btn-secondary:hover {
-      background-color: #f9fafb;
-      border-color: #9ca3af;
+      background-color: #f8f8f8;
+      border-color: #555;
     }
 
     .btn-outline {
@@ -412,7 +422,7 @@
       padding: 12px 14px;
       border-radius: 10px;
       background: #f9fafb;
-      border: 1px dashed #d1d5db;
+      border: 1px solid #d1d5db;
       font-size: 13px;
       color: #374151;
       line-height: 1.5;
@@ -420,14 +430,21 @@
     }
 
     .info-block-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #111827;
+      font-weight: 700;
+      margin: 0 0 4px 10px;
+      color: navy;
+	  font-size: 1.3em;
     }
 
-    .info-block small {
-      color: var(--text-muted);
-    }
+	.info-block .summary-details {
+		margin-top: 10px;
+		margin-left: 10px;
+	    font-size: 1.05em;
+	    font-weight: bold;
+	    color: #666;
+	    padding-left: 10px;
+	    line-height: 1.8;
+	}
 
     hr.page-divider {
       border: none;
@@ -667,28 +684,20 @@
             <div class="btns">
               <input type="button" value="확인" id="btnComplete" class="btn btn-outline">
             </div>
-
-            <div class="info-block likeInfo">
-              <div class="info-block-title">선택한 Step3 요약</div>
-              <small>버튼을 눌러 현재 선택 내용을 확인하세요.</small> 
-            </div>			
-          </div>
-	  		  
+  		  
         </div>
       </div>
 	  
       <hr class="page-divider">
 	  
-      <div class="btns">
-        <input type="button" value="구매 신청 내용 확인" id="btnApply" class="btn btn-secondary">
-        <input type="submit" value="구매 신청 제출" class="btn btn-primary">
-        <input type="reset" value="취소" class="btn btn-secondary">
-      </div>
+				
+	  <form name="applyForm" th:action="@{/counseling/add}" method="post">
+	      <div class="btns">
+	          <input type="submit" value="구매 신청 제출" class="btn btn-primary">
+	          <input type="reset" value="취소" class="btn btn-secondary">
+	      </div>
+	  </form>
 
-      <div class="info-block result">
-        <div class="info-block-title">구매 신청 미리보기</div>
-        <small>“구매 신청 내용 확인” 버튼을 누르면 전체 입력 내용이 미리보기로 표시됩니다.</small>
-      </div>
     </form>
   </div>
 
@@ -697,372 +706,557 @@
       let items = document.querySelectorAll(".accordion-item");
 
       items.forEach((item) => {
-      let header = item.querySelector(".accordion-header");
-  	  let form = document.applyForm;
-        header.addEventListener("click", () => {
-	      let openContent = document.querySelector(".accordion-content.open");
-		  let sidoEl = document.querySelector("#sidoName");
-	      let siGunGuEl = document.querySelector("#siGunGuName");
-	      let eupMyeonDongEl = document.querySelector("#eupMyeonDongName");
-	      let sido = sidoEl.value;
-	      let siGunGu = siGunGuEl.value;
-	      let eupMyeonDong = eupMyeonDongEl.value;
-	  	  let stepText1 = document.querySelector(".stepText1");
-	  	  let stepText2 = document.querySelector(".stepText2");
-		  
-		  
-  		
-  		  // 열려 있는 패널이 있고, 그게 지금 클릭한 것이 아니라면 닫기
-          if (openContent && openContent !== item.querySelector(".accordion-content")) {
-            openContent.classList.remove("open");
-            
-            // Step 1 헤더 요약 텍스트 업데이트 (차종이 선택되었다면)
-            // *수정: 잘못된 변수(selectedVehicle) 대신 selectedCarDisplay의 텍스트를 사용*
-            let selectedVehicleName = document.getElementById('selectedCarDisplay').textContent;
-            stepText1.textContent = selectedVehicleName || "선택 안 함";
-
-            // Step 2 헤더 요약 텍스트 업데이트
-  		    // Step 2가 닫힐 때만 지역 정보를 업데이트
-            if (openContent.closest('.accordion-item').querySelector('.step-badge').textContent === 'STEP 2') {
-  			  let areaText = sido + '   ' +  siGunGu + '  ' +  eupMyeonDong;
-  			  stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
-  		    }
+          let header = item.querySelector(".accordion-header");
+          let form = document.applyForm;
+          header.addEventListener("click", () => {
+              let openContent = document.querySelector(".accordion-content.open");
+              let sidoEl = document.querySelector("#sidoName");
+              let siGunGuEl = document.querySelector("#siGunGuName");
+              let eupMyeonDongEl = document.querySelector("#eupMyeonDongName");
+              let sido = sidoEl.value;
+              let siGunGu = siGunGuEl.value;
+              let eupMyeonDong = eupMyeonDongEl.value;
+              let stepText1 = document.querySelector(".stepText1");
+              let stepText2 = document.querySelector(".stepText2");
 
 
-            let openArrow = openContent.previousElementSibling.querySelector(".accordion-arrow");
-            if (openArrow) openArrow.style.transform = "rotate(0deg)";
-          }
+              // 열려 있는 패널이 있고, 그게 지금 클릭한 것이 아니라면 닫기
+              if (openContent && openContent !== item.querySelector(".accordion-content")) {
+                  openContent.classList.remove("open");
 
-          // 현재 패널 open/close toggle
-          let content = item.querySelector(".accordion-content");
-          let arrow = item.querySelector(".accordion-arrow");
-          content.classList.toggle("open");
+                  // Step 1 헤더 요약 텍스트 업데이트 (차종이 선택되었다면)
+                  let selectedVehicleName = document.getElementById('selectedCarDisplay').textContent;
+                  stepText1.textContent = selectedVehicleName || "선택 안 함";
 
-          // 화살표 회전
-          if (content.classList.contains("open")) {
-            arrow.style.transform = "rotate(180deg)";
-          } else {
-            arrow.style.transform = "rotate(0deg)";
-          }
-        });
+                  // Step 2 헤더 요약 텍스트 업데이트
+                  if (openContent.closest('.accordion-item').querySelector('.step-badge').textContent === 'STEP 2') {
+                      let areaText = sido + '   ' + siGunGu + '  ' + eupMyeonDong;
+                      stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
+                  }
+
+                  // 닫히는 패널이 Step 3라면, 입력 필드를 다시 보여주기
+                  if (openContent.closest('.accordion-item').querySelector('.step-badge').textContent === 'STEP 3') {
+                      openContent.style.display = ''; // 입력 필드를 다시 보이게 함
+                      openContent.closest('.accordion-item').querySelector('.purchase-summary-table-container')?.remove(); // 요약 테이블 제거
+                      let stepText3 = openContent.closest('.accordion-item').querySelector(".stepText3");
+                      // 요약 텍스트 복구 (선택 안 함)
+                      if (stepText3 && stepText3.textContent === '') {
+                          stepText3.textContent = '선택 안 함';
+                      }
+                  }
+
+
+                  let openArrow = openContent.previousElementSibling.querySelector(".accordion-arrow");
+                  if (openArrow) openArrow.style.transform = "rotate(0deg)";
+              }
+
+              // 현재 패널 open/close toggle
+              let content = item.querySelector(".accordion-content");
+              let arrow = item.querySelector(".accordion-arrow");
+              content.classList.toggle("open");
+
+              // 화살표 회전
+              if (content.classList.contains("open")) {
+                  arrow.style.transform = "rotate(180deg)";
+                  // 현재 여는 패널이 Step 3라면, 숨겨진 입력 필드 다시 표시
+                  const isStep3 = item.querySelector('.step-badge').textContent === 'STEP 3';
+                  if (isStep3) {
+                      content.style.display = '';
+                      item.querySelector('.purchase-summary-table-container')?.remove();
+                      // 헤더 텍스트 복구 (선택 안 함)
+                      let stepText3 = item.querySelector(".stepText3");
+                      if (stepText3.textContent === '') {
+                          stepText3.textContent = '선택 안 함';
+                      }
+                  }
+              } else {
+                  arrow.style.transform = "rotate(0deg)";
+              }
+          });
       });
 
       document.addEventListener("DOMContentLoaded", () => {
-        let form = document.applyForm;
-        let likeInfo = document.querySelector(".likeInfo");
-        let result = document.querySelector(".result");
-  	    let likeTxt = null;
-        
-        let stepText1 = document.querySelector(".stepText1");
-        let stepText2 = document.querySelector(".stepText2");
+          let form = document.applyForm;
+          let likeInfo = document.querySelector(".likeInfo");
+          let result = document.querySelector(".result");
+          let btnComplete = document.querySelector("#btnComplete");
+
+          let stepText1 = document.querySelector(".stepText1");
+          let stepText2 = document.querySelector(".stepText2");
 
 
-        // --- ▼▼▼ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▼▼▼ ---
-  	    // 중복된 document.addEventListener('DOMContentLoaded', function() { ... }); 제거
-  	    let carItems = document.querySelectorAll('.car-item');
-  	    let tabButtons = document.querySelectorAll('.tab-button'); 
-  	    let selectedCarDisplay = document.getElementById('selectedCarDisplay');
-  	    let selectedVehicleIdInput = document.getElementById('selectedVehicleId');
+          // --- ▼▼▼ Step 3 요약 통합 함수: 데이터 수집 및 임시 헤더 업데이트 역할만 수행 ▼▼▼ ---
+          function updateStep3HeaderSummary() {
+              let form = document.applyForm;
+              let purchasePurposeList = [];
+              let engineTypeList = [];
+              let vehicleTypeList = [];
+              let otherInput = document.querySelector("#otherInput");
+              let otherInputVal = otherInput.value; 
 
-  	    // --- 1. 탭 이동 및 필터링 기능 (vehicleType 기준으로 필터링) ---
-  	    function filterVehicles(vehicleType) {
-  	        carItems.forEach(item => {
-  	            if (item.getAttribute('data-vehicletype') === vehicleType) {
-  	                item.classList.remove('hidden');
-  	            } else {
-  	                item.classList.add('hidden');
-  	            }
-  	        });
-  	    }
-  	      
-  	    tabButtons.forEach(button => {
-  	        button.addEventListener('click', function() {
-  	            document.querySelector('.tab-button.active')?.classList.remove('active');
-  	            this.classList.add('active');
-  	              
-  	            let vehicleType = this.getAttribute('data-vehicletype');
-  	            filterVehicles(vehicleType);
-  	        });
-  	    });
-  	      
-  	    // 초기 로딩 시에도 data-vehicletype을 사용해 필터링
-  	    let initialVehicleType = document.querySelector('.tab-button.active')?.getAttribute('data-vehicletype');
-  	    if (initialVehicleType) {
-  	        filterVehicles(initialVehicleType);
-  	    }
+              let purchasePurpose = document.querySelectorAll("[name=purchasePurpose]");
+              let engineType = document.querySelectorAll("[name=engineType]");
+              let vehicleType = document.querySelectorAll("[name=vehicleType]");
+              let purchasePeriod = form.purchasePeriod.value;
+              let counselingLikeTime = form.counselingLikeTime.value;
 
-  	    // --- 2. 차량 선택 기능 (Step 1 헤더 업데이트 로직 추가) ---
-  	    carItems.forEach(item => {
-  	        item.addEventListener('click', function() {
-  	            document.querySelector('.car-item.selected')?.classList.remove('selected');
-  	            this.classList.add('selected');
-  	              
-  	            let vehicleId = this.getAttribute('data-vehicle-id');
-  	            let vehicleName = this.getAttribute('data-vehicle-name'); 
+              // 1. 구매 목적 수집
+              purchasePurpose.forEach(v => {
+                  if (v.checked) {
+                      if (v.value != "기타") {
+                          purchasePurposeList.push(v.value);
+                      } else if (otherInput.checked && otherInputVal) { 
+                          purchasePurposeList.push(`기타(${otherInputVal})`);
+                      }
+                  }
+              });
 
-  	            selectedCarDisplay.textContent = vehicleName;
-  	            selectedVehicleIdInput.value = vehicleId;
-                    
-                // *수정: 차량 선택 시 Step 1 헤더 텍스트를 즉시 업데이트*
-                stepText1.textContent = vehicleName;  	              
-  	            console.log("선택된 차량 ID:", vehicleId);
-  	        });
-  	    });
+              // 2. 엔진 타입 수집
+              engineType.forEach(v => {
+                  if (v.checked) {
+                      engineTypeList.push(v.value);
+                  }
+              });
 
-  	    let initialId = selectedVehicleIdInput.value;
+              // 3. 차량 유형 수집
+              vehicleType.forEach(v => {
+                  if (v.checked) {
+                      vehicleTypeList.push(v.value);
+                  }
+              });
+
+			  let stepText3 = document.querySelector(".stepText3");
+			      stepText3.textContent = ''; 
+
+			      return {
+			          purchasePurposeList, 
+			          otherInputVal, 
+			          purchasePeriod, 
+			          vehicleTypeList, 
+			          engineTypeList, 
+			          counselingLikeTime
+			      };
+          }
+          // --- ▲▲▲ Step 3 요약 통합 함수 끝 ▲▲▲ ---
+
+
+          // --- ▼▼▼ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▼▼▼ ---
+          // 중복된 document.addEventListener('DOMContentLoaded', function() { ... }); 제거
+          let carItems = document.querySelectorAll('.car-item');
+          let tabButtons = document.querySelectorAll('.tab-button'); 
+          let selectedCarDisplay = document.getElementById('selectedCarDisplay');
+          let selectedVehicleIdInput = document.getElementById('selectedVehicleId');
+
+          // --- 1. 탭 이동 및 필터링 기능 (vehicleType 기준으로 필터링) ---
+          function filterVehicles(vehicleType) {
+              carItems.forEach(item => {
+                  if (item.getAttribute('data-vehicletype') === vehicleType) {
+                      item.classList.remove('hidden');
+                  } else {
+                      item.classList.add('hidden');
+                  }
+              });
+          }
+
+          tabButtons.forEach(button => {
+              button.addEventListener('click', function() {
+                  document.querySelector('.tab-button.active')?.classList.remove('active');
+                  this.classList.add('active');
+
+                  let vehicleType = this.getAttribute('data-vehicletype');
+                  filterVehicles(vehicleType);
+              });
+          });
+
+          // 초기 로딩 시에도 data-vehicletype을 사용해 필터링
+          let initialVehicleType = document.querySelector('.tab-button.active')?.getAttribute('data-vehicletype');
+          if (initialVehicleType) {
+              filterVehicles(initialVehicleType);
+          }
+
+          // --- 2. 차량 선택 기능 (Step 1 헤더 업데이트 로직 추가) ---
+          carItems.forEach(item => {
+              item.addEventListener('click', function() {
+                  document.querySelector('.car-item.selected')?.classList.remove('selected');
+                  this.classList.add('selected');
+
+                  let vehicleId = this.getAttribute('data-vehicle-id');
+                  let vehicleName = this.getAttribute('data-vehicle-name'); 
+
+                  selectedCarDisplay.textContent = vehicleName;
+                  selectedVehicleIdInput.value = vehicleId;
+
+                  // *수정: 차량 선택 시 Step 1 헤더 텍스트를 즉시 업데이트*
+                  stepText1.textContent = vehicleName;  	              
+                  console.log("선택된 차량 ID:", vehicleId);
+              });
+          });
+
+          let initialId = selectedVehicleIdInput.value;
           // 초기 vehicleName 설정 (페이지 로딩 시)
           if (initialId) {
-          	let initialSelectedItem = document.querySelector(`.car-item[data-vehicle-id="${initialId}"]`);
-                if (initialSelectedItem) {
-                    initialSelectedItem.classList.add('selected');
-                    let initialVehicleName = initialSelectedItem.getAttribute('data-vehicle-name');
-                    selectedCarDisplay.textContent = initialVehicleName;
-                    stepText1.textContent = initialVehicleName;
-                }
+              let initialSelectedItem = document.querySelector(`.car-item[data-vehicle-id="${initialId}"]`);
+              if (initialSelectedItem) {
+                  initialSelectedItem.classList.add('selected');
+                  let initialVehicleName = initialSelectedItem.getAttribute('data-vehicle-name');
+                  selectedCarDisplay.textContent = initialVehicleName;
+                  stepText1.textContent = initialVehicleName;
+              }
           }
-		  
-  	  // --- ▲▲▲ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▲▲▲ ---  		
-  	  // Step3 요약
-        btnComplete.addEventListener("click", () => {	
-          let purchasePurposeList = [];
-	  	  let engineTypeList = [];
-	      let vehicleTypeList = [];
-	  	  let otherInputVal = null; // Step 3 요약 버튼 클릭 시 초기화
-	  	  let purchasePurpose = document.querySelectorAll("[name=purchasePurpose]");
-	  	  let engineType = document.querySelectorAll("[name=engineType]");
-	  	  let vehicleType = document.querySelectorAll("[name=vehicleType]");
-	  	  let purchasePeriod = form.purchasePeriod.value;
-	  	  let counselingLikeTime = form.counselingLikeTime.value;
-	  	  purchasePurpose.forEach( v  => {
-	  		    if (v.checked) {
-	  				if (v.value != "기타") {
-	  					purchasePurposeList.push(v.value);
-	  				} else {
-	  					let otherInput = document.querySelector("#otherInput");
-	  					otherInputVal = otherInput.value;	
-	  					if (otherInputVal === null || otherInputVal === undefined || otherInputVal === "") {
-	  						alert("기타 선택시 반드시 입력란에 입력해주세요");
-	  						return;
-	  					}
-	  				}	       
-	  		    }
-	  	  });
-		  	
-          engineType.forEach((v) => {
-            if (v.checked) {
-              engineTypeList.push(v.value);
-            }
+
+          // --- ▲▲▲ Step 1 차종 선택 기능 JavaScript 통합 및 수정 ▲▲▲ ---  		
+          
+          // Step 3 입력 필드의 변경 시마다 헤더 요약 텍스트 업데이트 (실시간)
+          const step3Inputs = document.querySelectorAll(
+              "[name=purchasePurpose], [name=purchasePeriod], [name=vehicleType], [name=engineType], #counselingLikeTime, #otherInput"
+          );
+          step3Inputs.forEach(input => {
+               const eventType = (input.tagName === 'INPUT' && (input.type === 'text' || input.type === 'date')) ? 'input' : 'change';
+               input.addEventListener(eventType, updateStep3HeaderSummary);
+          });
+          updateStep3HeaderSummary(); // 초기값 설정
+
+          // --- Step 3 '확인' 버튼 리스너 (주요 수정 사항) ---
+          if (btnComplete) {
+              btnComplete.addEventListener("click", () => {	
+                  let summaryData = updateStep3HeaderSummary();
+                  
+                  // 1. 유효성 검사
+                  let otherCheckbox = document.querySelector("#other");
+                  if (otherCheckbox.checked && (!summaryData.otherInputVal)) {
+                      alert("기타 선택 시 반드시 입력란에 입력해주세요");
+                      return;
+                  }
+
+                  // 2. Step 3 헤더 요약 텍스트 제거 (초록박스 내용 지우기)
+                  let stepText3 = document.querySelector(".stepText3");
+                  stepText3.textContent = ''; 
+                  
+                  // 3. Step 3 항목 전체를 감싸는 컨테이너 (아코디언 내용) 찾기
+                  const step3Content = btnComplete.closest(".accordion-content");
+                  const step3Item = btnComplete.closest(".accordion-item");
+                  
+                  // 4. 표 형식 요약 HTML 생성
+				  let tableHtml = `
+				      <div class="purchase-summary-table-container">
+				          <style>
+				              .purchase-summary-table { 
+				                  width: 100%; 
+				                  border-collapse: collapse; 
+				                  border-top: 1px solid #c9c9c9;
+				                  margin-bottom: 20px;
+				              }
+				              .purchase-summary-table td {
+				                  padding: 18px 0; 
+				                  padding-left: 20px;
+				                  padding-right: 20px;
+				                  font-size: 15px;
+				                  line-height: 1.8;
+				              }
+				              
+				              .purchase-summary-table tr {
+				                  border-bottom: 1px solid #ededed; 
+				              }
+				              
+				              .purchase-summary-table tbody tr:last-child {
+				                  border-bottom: none;
+				              }
+
+				              .purchase-summary-table .label {
+				                  width: 40%; 
+				                  color: #333;
+								  font-weight: 700;
+				                  text-align: right;
+								  font-size: 17px;
+				              }
+				              
+				              .purchase-summary-table .value {
+				                  width: 60%; 
+				                  color: navy;
+				                  font-weight: 700;
+				                  text-align: right;
+								  font-size: 17px;
+				              }
+				          </style>
+				          <table class="purchase-summary-table">
+				          <tbody>
+				  `;
+
+                  // 헬퍼 함수: 요약 정보를 테이블 행으로 추가
+                  const addRow = (label, values, otherVal = null, checkOther = false) => {
+                      let displayValue = values.join(", ");
+                      
+                      if (checkOther && otherVal && document.querySelector("#other").checked) {
+                          displayValue += (displayValue ? ", " : "") + `${otherVal}`; 
+                      }
+                      
+                      if (displayValue) {
+                          tableHtml += `
+                              <tr>
+                                  <td class="label" style="border-bottom: none;">${label}</td>
+                                  <td class="value">${displayValue}</td>
+                              </tr>
+                          `;
+                      }
+                      return displayValue;
+                  };
+
+                  // 1. 차량 구매 목적
+                  const purposeDisplay = addRow("차량 구매 목적", summaryData.purchasePurposeList.filter(p => !p.startsWith('기타')), summaryData.otherInputVal, true);
+
+                  // 2. 희망 구매 시점
+                  const periodDisplay = addRow("희망 구매 시점", [summaryData.purchasePeriod]);
+
+                  // 3. 선호 차량 유형
+                  const vehicleDisplay = addRow("선호 차량 유형", summaryData.vehicleTypeList);
+
+                  // 4. 선호 엔진
+                  const engineDisplay = addRow("선호 엔진", summaryData.engineTypeList);
+                  
+                  // 5. 희망 연락 시간
+                  const timeDisplay = addRow("희망 연락 시간", [summaryData.counselingLikeTime]);
+
+                  tableHtml += `</tbody></table></div>`;
+                  
+                  // 5. 요약 테이블 삽입
+                  step3Item.querySelector('.purchase-summary-table-container')?.remove();
+
+                  if (step3Content) {
+                      step3Content.style.display = 'none'; // 입력 필드 숨기기
+                      
+                      // 요약 테이블을 숨겨진 입력 필드 바로 앞에 삽입
+                      step3Content.insertAdjacentHTML('beforebegin', tableHtml);
+                  }
+
+
+              });
+			  
+			  
+          }
+          // --- Step 3 '확인' 버튼 리스너 끝 ---
+
+			
+          let sidoEl = document.querySelector("#sidoName");
+          let siGunGuEl = document.querySelector("#siGunGuName");
+          let eupMyeonDongEl = document.querySelector("#eupMyeonDongName");
+          let sidoTxt = sidoEl.value;
+          let siGunGuTxt = siGunGuEl.value;
+          let eupMyeonDongTxt = eupMyeonDongEl.value;
+
+          // Step 2 지역 선택 드롭다운 변경 시 헤더 업데이트
+          document.querySelectorAll('#sidoName, #siGunGuName, #eupMyeonDongName').forEach(select => {
+              select.addEventListener('change', () => {
+                  let sidoSel = document.querySelector("#sidoName");
+                  let siGunGuSel = document.querySelector("#siGunGuName");
+                  let eupMyeonDongSel = document.querySelector("#eupMyeonDongName");
+                  console.log(sidoSel.value);
+
+                  // 선택된 옵션의 텍스트를 가져옵니다. "시/도 선택"과 같은 기본 옵션은 빈 문자열로 처리합니다.
+                  let sidoTxt = sidoSel.selectedIndex > 0 ? sidoSel.options[sidoSel.selectedIndex].textContent : '';
+                  let siGunGuTxt = siGunGuSel.selectedIndex > 0 ? siGunGuSel.options[siGunGuSel.selectedIndex].textContent : '';
+                  let eupMyeonDongTxt = eupMyeonDongSel.selectedIndex > 0 ? eupMyeonDongSel.options[eupMyeonDongSel.selectedIndex].textContent : '';
+
+                  let areaText = `${sidoSel.value} ${siGunGuSel.value} ${eupMyeonDongSel.value}`.trim();
+
+                  // Step 2 헤더 업데이트
+                  stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
+              });
+			  
+			  // --- ▼▼▼ 폼 제출 (submit) 이벤트 리스너 추가 (유효성 검사) ▼▼▼ ---
+			  let applyForm = document.applyForm;
+
+			  if (applyForm) {
+			      applyForm.addEventListener("submit", (e) => {
+			          // e.preventDefault();는 유효성 검사 실패 시에만 호출해야 합니다.
+			          
+			          // --- 1. 최종 필수 입력값 유효성 검사 ---
+			          
+			          // Step 1: 차량 선택
+			          let selectedCar = document.getElementById('selectedVehicleId').value;
+			          if (!selectedCar) {
+			              e.preventDefault(); // 제출 중단
+			              alert("STEP 1: 상담 차종을 선택해 주세요.");
+			              return;
+			          }
+
+			          // Step 2: 희망 지역 선택
+			          let sido = document.querySelector("#sidoName").value;
+			          if (!sido) {
+			              e.preventDefault(); // 제출 중단
+			              alert("STEP 2: 희망 지역 (시/도)를 선택해 주세요.");
+			              return;
+			          }
+
+			          // Step 3: 필수 항목 유효성 검사 (updateStep3HeaderSummary 함수 활용)
+			          // 이 함수를 한 번 호출하여 현재 선택된 데이터를 가져옵니다.
+			          let summaryData = updateStep3HeaderSummary(); 
+			          
+			          if (summaryData.purchasePurposeList.length === 0) {
+			              e.preventDefault(); // 제출 중단
+			              alert("STEP 3: 차량 구매 목적을 하나 이상 선택해 주세요.");
+			              return;
+			          }
+			          if (!summaryData.purchasePeriod) {
+			              e.preventDefault(); // 제출 중단
+			              alert("STEP 3: 희망 구매 시점을 선택해 주세요.");
+			              return;
+			          }
+			          
+			          // 기타 입력값 유효성 검사
+			          let otherCheckbox = document.querySelector("#other");
+			          if (otherCheckbox.checked && (!summaryData.otherInputVal)) {
+			              e.preventDefault(); // 제출 중단
+			              alert("STEP 3: '기타' 선택 시 사유를 입력해 주세요.");
+			              return;
+			          }
+			          
+			      });
+			  }
+			  // --- ▲▲▲ 폼 제출 (submit) 이벤트 리스너 추가 끝 ▲▲▲ ---
           });
 
-          vehicleType.forEach((v) => {
-            if (v.checked) {
-              vehicleTypeList.push(v.value);
-            }
+          // 기타(other) 입력 필드 활성화 로직 (jQuery 외부 로직과 통합)
+          $("#other").on("change", function () {
+              let otherInput = $("#otherInput");
+              if ($(this).is(":checked")) {
+                  otherInput.removeAttr("disabled");
+                  otherInput.focus();
+              } else {
+                  otherInput.attr("disabled", "disabled");
+                  otherInput.val("");
+              }
           });
-          
-          // Step 3 헤더 요약 텍스트 업데이트
-          let summaryText = [];
-          if (purchasePeriod) summaryText.push(purchasePeriod);
-          if (purchasePurposeList.length > 0) summaryText.push(`목적 ${purchasePurposeList.length}개`);
-          if (engineTypeList.length > 0) summaryText.push(`엔진 ${engineTypeList.length}개`);     
-          
-          // Step 3 헤더 요약 텍스트 업데이트
-          let stepText3 = document.querySelector(".stepText3");
-          likeTxt =
-            `차량 구매 목적: ${purchasePurposeList.join(", ") || "-"}<br>` +
-            `차량 구매 목적(기타): ${otherInputVal || "-"}<br>` +
-            `희망 구매 시점: ${purchasePeriod || "-"}<br>` +
-            `선호 차량: ${vehicleTypeList.join(", ") || "-"}<br>` +
-            `선호 엔진: ${engineTypeList.join(", ") || "-"}<br>` +
-  		    `희망 연락 시간: ${counselingLikeTime || "-"}`;
-
-          likeInfo.innerHTML = '<div class="info-block-title">선택한 Step3 요약</div>' + likeTxt;
-        });
-		
-		let sidoEl = document.querySelector("#sidoName");
-		let siGunGuEl = document.querySelector("#siGunGuName");
-		let eupMyeonDongEl = document.querySelector("#eupMyeonDongName");
-		let sidoTxt = sidoEl.value;
-		let siGunGuTxt = siGunGuEl.value;
-		let eupMyeonDongTxt = eupMyeonDongEl.value;
-		
-        // 전체 신청 미리보기
-        btnApply.addEventListener("click", () => {
-		  let sidoTxt = $("#sidoName").val();
-		  let siGunGuTxt = $("#siGunGuName").val();
-		  let eupMyeonDongTxt = $("#eupMyeonDongName").val();
-          // *수정: 잘못된 변수(selectedVehicle) 대신 selectedCarDisplay의 텍스트를 사용*
-          let selectedVehicleName = document.getElementById('selectedCarDisplay').textContent; 
-   
-          let allTxt =
-            `**선택된 상담 차종:** ${selectedVehicleName || '선택 안 함'}<br><br>` + 
-  		  (likeTxt || "Step 3 정보가 없습니다.<br>") + 
-  		  `<br>시/도: ${sidoTxt || "-"}<br>` +
-  		  `시/군/구: ${siGunGuTxt || "-"}<br>` +
-  		  `읍/면/동: ${eupMyeonDongTxt || "-"}<br>` ;
-          	result.innerHTML = '<div class="info-block-title">구매 신청 미리보기</div>' + allTxt;
-        });
-        
-		// Step 2 지역 선택 드롭다운 변경 시 헤더 업데이트
-        document.querySelectorAll('#sidoName, #siGunGuName, #eupMyeonDongName').forEach(select => {
-            select.addEventListener('change', () => {
-                let sidoSel = document.querySelector("#sidoName");
-                let siGunGuSel = document.querySelector("#siGunGuName");
-                let eupMyeonDongSel = document.querySelector("#eupMyeonDongName");
-				console.log(sidoSel.value);
-
-                // 선택된 옵션의 텍스트를 가져옵니다. "시/도 선택"과 같은 기본 옵션은 빈 문자열로 처리합니다.
-                let sidoTxt = sidoSel.selectedIndex > 0 ? sidoSel.options[sidoSel.selectedIndex].textContent : '';
-                let siGunGuTxt = siGunGuSel.selectedIndex > 0 ? siGunGuSel.options[siGunGuSel.selectedIndex].textContent : '';
-                let eupMyeonDongTxt = eupMyeonDongSel.selectedIndex > 0 ? eupMyeonDongSel.options[eupMyeonDongSel.selectedIndex].textContent : '';
-
-                let areaText = `${sidoSel.value} ${siGunGuSel.value} ${eupMyeonDongSel.value}`.trim();
-                
-                // Step 2 헤더 업데이트
-                stepText2.textContent = areaText.length > 0 ? areaText : "선택 안 함";
-            });
-        });
-        
-        // 기타(other) 입력 필드 활성화 로직 (jQuery 외부 로직과 통합)
-        $("#other").on("change", function () {
-          let otherInput = $("#otherInput");
-          if ($(this).is(":checked")) {
-            otherInput.removeAttr("disabled");
-            otherInput.focus();
-          } else {
-            otherInput.attr("disabled", "disabled");
-            otherInput.val("");
-          }
-        });
       });
-      
-	  document.addEventListener("DOMContentLoaded", () => {
-	  	  	
-  	  	/*
-  	  		도메인 변경 (25-11-13)
-  	  		sgis.lostat.go.kr -> sgis.mods.go.kr
-  	  	*/ 	  	
-  	  	// 토큰기간: ~ 2025-12-30일
-  	    let CONSUMER_KEY = "51d6b465af6e457f8f55";        // 🔹 SGIS 발급
-  	    let CONSUMER_SECRET = "ad81dbbb3fea4f0eaeb5";     // 🔹 SGIS 발급
 
-  	      // 1) AccessToken 발급
-  	    async function getToken() {
-  	      let url = `https://sgisapi.mods.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
-  	      let res = await fetch(url);
-  	      let json = await res.json();
-  	      return json.result.accessToken;
-  	  	}
+	  
+	  
+      document.addEventListener("DOMContentLoaded", () => {
 
-  	    // 2) 시/도 조회 (상위 단계)
-  	    async function loadSido(token) {
-		  let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}`;
-		  let res = await fetch(url);
-		  let json = await res.json();
+          /*
+              도메인 변경 (25-11-13)
+              sgis.lostat.go.kr -> sgis.mods.go.kr
+          */ 	  	
+          // 토큰기간: ~ 2025-12-30일
+          let CONSUMER_KEY = "51d6b465af6e457f8f55";        // 🔹 SGIS 발급
+          let CONSUMER_SECRET = "ad81dbbb3fea4f0eaeb5";     // 🔹 SGIS 발급
 
-		  let sidoSel = document.getElementById("sido");
+          // 1) AccessToken 발급
+          async function getToken() {
+              let url = `https://sgisapi.mods.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
+              let res = await fetch(url);
+              let json = await res.json();
+              return json.result.accessToken;
+          }
 
-		  json.result.forEach(item => {
-			let op = document.createElement("option");
-			op.value = item.cd;
-			op.textContent = item.addr_name;
-	        sidoSel.appendChild(op);
-  	    });
+          // 2) 시/도 조회 (상위 단계)
+          async function loadSido(token) {
+              let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}`;
+              let res = await fetch(url);
+              let json = await res.json();
 
-    	// 시도 변경 시 시군구 로드
-  	  	sidoSel.addEventListener("change", (e) => {
-    			let options = e.currentTarget.options;
-    			let idx = e.currentTarget.options.selectedIndex;
-    			console.log("시도값: "+ options[idx].textContent);
-				$("#sidoName").val(options[idx].textContent);
-    	        loadSigungu(token, sidoSel.value);
-    		});
-        }
-	  	  	
+              let sidoSel = document.getElementById("sido");
+
+              json.result.forEach(item => {
+                  let op = document.createElement("option");
+                  op.value = item.cd;
+                  op.textContent = item.addr_name;
+                  sidoSel.appendChild(op);
+              });
+
+              // 시도 변경 시 시군구 로드
+              sidoSel.addEventListener("change", (e) => {
+                  let options = e.currentTarget.options;
+                  let idx = e.currentTarget.options.selectedIndex;
+                  console.log("시도값: "+ options[idx].textContent);
+                  $("#sidoName").val(options[idx].textContent);
+                  loadSigungu(token, sidoSel.value);
+              });
+          }
+
           // 3) 시군구 조회
-  	    async function loadSigungu(token, sidoCode) {
-	  	    let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sidoCode}`;
-	  	    let res = await fetch(url);
-	  	    let json = await res.json();
+          async function loadSigungu(token, sidoCode) {
+              let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sidoCode}`;
+              let res = await fetch(url);
+              let json = await res.json();
 
-	  	    let sgSel = document.getElementById("siGunGu");
-	  	    sgSel.innerHTML = `<option value="">시/군/구 선택</option>`;
+              let sgSel = document.getElementById("siGunGu");
+              sgSel.innerHTML = `<option value="">시/군/구 선택</option>`;
 
-	  	    let emdSel = document.getElementById("eupMyeonDong");
-	  	    emdSel.innerHTML = `<option value="">읍/면/동 선택</option>`;
+              let emdSel = document.getElementById("eupMyeonDong");
+              emdSel.innerHTML = `<option value="">읍/면/동 선택</option>`;
 
-	  	    json.result.forEach(item => {
-	  		  let op = document.createElement("option");
-	  		  op.value = item.cd;
-	  		  op.textContent = item.addr_name;
-	  		  sgSel.appendChild(op);
-	  	    });
-  	    }
-	  	  	
-  	    // 4) 읍면동 조회
-  	    async function loadEmd(token, sigunguCode) {
-	  	    let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sigunguCode}`;
-	  	  	let res = await fetch(url);
-	  	  	let json = await res.json();
+              json.result.forEach(item => {
+                  let op = document.createElement("option");
+                  op.value = item.cd;
+                  op.textContent = item.addr_name;
+                  sgSel.appendChild(op);
+              });
+          }
 
-	  	  	let emdSel = document.getElementById("eupMyeonDong");
-	  	  	emdSel.innerHTML = `<option value="">읍/면/동 선택</option>`;
+          // 4) 읍면동 조회
+          async function loadEmd(token, sigunguCode) {
+              let url = `https://sgisapi.mods.go.kr/OpenAPI3/addr/stage.json?accessToken=${token}&cd=${sigunguCode}`;
+              let res = await fetch(url);
+              let json = await res.json();
 
-	  	  	json.result.forEach(item => {
-	  	  	  let op = document.createElement("option");
-	  	  	  op.value = item.cd;
-	  	  	  op.textContent = item.addr_name;
-	  	  	  emdSel.appendChild(op);
-	  	    });
-  	  	}
-	        
-        // 5) 시군구 변경 시 호출될 이벤트 리스너 함수
-        function changeSigungu(token) {
-            let sgSel = document.getElementById("siGunGu");
-            
-            sgSel.addEventListener("change", (e) => {
-                let options = e.currentTarget.options;
-                let idx = e.currentTarget.options.selectedIndex;
-                // 텍스트 출력
-                console.log("시군구값: "+ options[idx].textContent);
-				$("#siGunGuName").val(options[idx].textContent);
-                // 읍면동 로드
-                loadEmd(token, sgSel.value);
-            });
-        }
-	        
-        // 6) 읍면동 변경 시 호출될 이벤트 리스너 함수
-        function changeEmd() {
-            let emdSel = document.getElementById("eupMyeonDong");
-            
-            emdSel.addEventListener("change", (e) => {
-                let options = e.currentTarget.options;
-                let idx = e.currentTarget.options.selectedIndex;
-                // 텍스트 출력
-                console.log("읍면동값: "+ options[idx].textContent);
-				$("#eupMyeonDongName").val(options[idx].textContent);
-            });
-        }
-	  	  	
-	  	// 초기 실행
-	  	(async function() {
-	  	    let token = await getToken();   // 1) 토큰 발급
-	  	  	  loadSido(token);                // 2) 시도 로드
-	            changeSigungu(token);         // 5) 시군구 리스너 등록
-	            changeEmd();                  // 6) 읍면동 리스너 등록
-	  	  	})();	  	
-	    });
-		
-		window.onload = function() {
-	        let memberIdElement = document.getElementById('memberId');
-	
-	        if (!memberIdElement) {
-	            alert('로그인이 필요한 서비스입니다.');
-	        } else {
-	            let memberId = memberIdElement.value;
-	            console.log('로그인된 사용자 ID:', memberId);
-	        }
-		};
-    </script>
+              let emdSel = document.getElementById("eupMyeonDong");
+              emdSel.innerHTML = `<option value="">읍/면/동 선택</option>`;
+
+              json.result.forEach(item => {
+                  let op = document.createElement("option");
+                  op.value = item.cd;
+                  op.textContent = item.addr_name;
+                  emdSel.appendChild(op);
+              });
+          }
+
+          // 5) 시군구 변경 시 호출될 이벤트 리스너 함수
+          function changeSigungu(token) {
+              let sgSel = document.getElementById("siGunGu");
+
+              sgSel.addEventListener("change", (e) => {
+                  let options = e.currentTarget.options;
+                  let idx = e.currentTarget.options.selectedIndex;
+                  // 텍스트 출력
+                  console.log("시군구값: "+ options[idx].textContent);
+                  $("#siGunGuName").val(options[idx].textContent);
+                  // 읍면동 로드
+                  loadEmd(token, sgSel.value);
+              });
+          }
+
+          // 6) 읍면동 변경 시 호출될 이벤트 리스너 함수
+          function changeEmd() {
+              let emdSel = document.getElementById("eupMyeonDong");
+
+              emdSel.addEventListener("change", (e) => {
+                  let options = e.currentTarget.options;
+                  let idx = e.currentTarget.options.selectedIndex;
+                  // 텍스트 출력
+                  console.log("읍면동값: "+ options[idx].textContent);
+                  $("#eupMyeonDongName").val(options[idx].textContent);
+              });
+          }
+
+          // 초기 실행
+          (async function() {
+              let token = await getToken();   // 1) 토큰 발급
+              loadSido(token);                // 2) 시도 로드
+              changeSigungu(token);         // 5) 시군구 리스너 등록
+              changeEmd();                  // 6) 읍면동 리스너 등록
+          })();	  	
+      });
+
+      window.onload = function() {
+          let memberIdElement = document.getElementById('memberId');
+
+          if (!memberIdElement) {
+              alert('로그인이 필요한 서비스입니다.');
+          } else {
+              let memberId = memberIdElement.value;
+              console.log('로그인된 사용자 ID:', memberId);
+          }
+      };
+  </script>
 </body>
 </html>
