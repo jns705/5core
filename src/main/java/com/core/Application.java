@@ -1018,12 +1018,35 @@ public class Application {
 			m40.setAddress(a40);
 			Customer c40 = new Customer();
 			c40.setMember(m40);
-			c40.setPurchaseCount(0);
+			c40.setPurchaseCount(4);
 			c40.setSegment("일반");
 			memberService.saveMember(m40);
 			customerService.saveCustomer(c40, m40);
-
+			
 			Member m41 = new Member();
+			m41.setMemberId("faker");
+			m41.setPassword(new BCryptPasswordEncoder().encode("1234")); // 비밀번호 암호화
+			m41.setPassword2(m41.getPassword());
+			m41.setName("이상혁");
+			m41.setPhone("010-0344-1026");
+			m41.setEmail("faker@naver.com");
+			m41.setGender("남성");
+			m41.setJoinDate(LocalDateTime.now());
+			m41.setRole(Role.CUSTOMER);
+			Address a41 = new Address();
+			a41.setCountry("한국");
+			a41.setZipcode("06100");
+			a41.setBasicAddress("서울특별시 강남구 선릉로 627");
+			a41.setDetailAddress("신사아파트 313동 2012호");
+			m41.setAddress(a41);
+			Customer c41 = new Customer();
+			c40.setMember(m41);
+			c40.setPurchaseCount(0);
+			c40.setSegment("일반");
+			memberService.saveMember(m41);
+			customerService.saveCustomer(c41, m41);
+			
+			Member m42 = new Member();
 			m41.setMemberId("dealer");
 			m41.setPassword(new BCryptPasswordEncoder().encode("1234")); // 비밀번호 암호화
 			m41.setPassword2(m41.getPassword());
@@ -1033,15 +1056,17 @@ public class Application {
 			m41.setGender("남성");
 			m41.setJoinDate(LocalDateTime.now());
 			m41.setRole(Role.DEALER);
-			Address a41 = new Address();
+			Address a42 = new Address();
 			a41.setCountry("한국");
 			a41.setZipcode("06035");
 			a41.setBasicAddress("서울특별시 강남구 신사동 537-5");
 			a41.setDetailAddress("신사아파트 313동 2012호");
-			m41.setAddress(a41);
-			Dealer dd0 = new Dealer();
-			memberService.saveMember(m41);
-			dealerService.saveDealer(dd0, m41);
+			m41.setAddress(a42);
+			Dealer dd1 = new Dealer();
+			memberService.saveMember(m42);
+			dealerService.saveDealer(dd1, m42);
+			
+			
 			
 		};
 	}

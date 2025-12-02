@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.core.entity.Counseling;
+import com.core.entity.Dealer;
 import com.core.repository.CounselingRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -181,10 +182,10 @@ public class CounselingService {
 	
 	
 	/**
-	 * 상태별 리스트 조회
+	 * 딜러별 상담 조회
 	 */
-	public Page<Counseling> findByStatus(Pageable pageable, String status) {
-		return counselingRepository.findByStatus(status, pageable);
+	public Page<Counseling> findByDealerId(Long DealerId, Pageable pageable) {
+		return counselingRepository.findByDealerId(DealerId, pageable);
 	}
 	
 	

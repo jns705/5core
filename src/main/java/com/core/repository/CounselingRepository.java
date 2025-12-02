@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.core.entity.Counseling;
+import com.core.entity.Dealer;
 
 @Repository
 public interface CounselingRepository extends JpaRepository<Counseling, Long> {
@@ -26,5 +27,8 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long> {
 			Pageable pageable);
 	
 	List<Counseling> findByCustomerId(Long id);
+	
+	// 딜러별 상담 조회
+	Page<Counseling> findByDealerId(Long DealerId, Pageable pageable);
 }
 

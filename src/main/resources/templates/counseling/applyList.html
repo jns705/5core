@@ -7,11 +7,11 @@
   <title>고객용 구매신청 리스트</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet"/>
   <style>
-    body {
+    .main-con {
       background-color: rgb(255, 255, 255);
     }
     header h1 {
-      color: #0d6efd;
+      color: navy;
     }
     .table thead th {
       vertical-align: middle;
@@ -59,22 +59,50 @@
 	.status-cell .badge.bg-secondary {
 	  background-color: #6c757d !important;
 	}
+	/* 목록, 엑셀 다운 버튼 */
+	.li-btn {
+		color: white;
+		background-color: navy;
+	}
+	.li-btn:hover {
+		background-color: whitesmoke;
+		color: black;
+	}
+	
+	.ex-btn{
+		color: gray;
+		
+	}
+	
+	.ex-btn:hover {
+		background-color: green;
+		color: white;
+	}
+	
+	/*상담 진행중 수정,취소 버튼 비활성화*/
+	.disabled-link {
+	  pointer-events: none;  /* 클릭 막기 */
+	  opacity: 0.5;          /* 비활성화처럼 보이게 */
+	  cursor: not-allowed;
+	}
+
+	
 	
 	/* 테이블 셀 크기 조정 */
 	.table thead th:nth-child(1) { width: 4%; } /* 체크박스 */
 	.table thead th:nth-child(2) { width: 8%; } /* 고객ID */
-	.table thead th:nth-child(3) { width: 10%; } /* 연락처 */
+	.table thead th:nth-child(3) { width: 22%; } /* 담당딜러 */
 	.table thead th:nth-child(4) { width: 14%; } /* 예약시간 */
-	.table thead th:nth-child(5) { width: 18%; } /* 등록일 */
+	.table thead th:nth-child(5) { width: 15%; } /* 등록일 */
 	.table thead th:nth-child(6) { width: 15%; } /* 선택차량 (수정됨) */
-	.table thead th:nth-child(7) { width: 15%; } /* 상담내역 */
-	.table thead th:nth-child(8) { width: 12%; } /* 상담상태 */
-	.table thead th:nth-child(9) { width: 10%; } /* 버튼 그룹 */
+	.table thead th:nth-child(7) { width: 10%; } /* 희망구매시점 -- */
+	.table thead th:nth-child(8) { width: 4%; } /* 상담상태 */
+	.table thead th:nth-child(9) { width: 8%; } /* 버튼 그룹 */
 
   </style>
 </head>
 <body>
-  <main class="container py-4">
+  <div class="container py-4 main-con">
     <header class="mb-4 text-center">
       <h1 class="display-5 fw-bold">고객 구매신청 리스트</h1>
       <p class="text-muted mb-0">
@@ -98,12 +126,10 @@
           <option th:selected="${sortFilter == '등록일 오래된순'}">등록일 오래된순</option>
         </select>
       </div>
-
+	
+	  <!--검색 기능이었던것 .. 사용안함.-->
       <div class="d-flex gap-2 mt-2 mt-sm-0">
-        <input type="search" id="searchInput" class="form-control form-control-sm" placeholder="고객ID 또는 연락처 검색" aria-label="고객ID 또는 연락처 검색" th:value="${keyword}"/>
-        <!--<button id="searchBtn" class="btn btn-sm btn-primary" aria-label="검색 버튼">
-          검색
-        </button>-->
+        <input type="hidden" id="searchInput" class="form-control form-control-sm" placeholder="고객ID 또는 연락처 검색" aria-label="고객ID 또는 연락처 검색" th:value="${keyword}"/>
       </div>
     </section>
 
@@ -118,17 +144,21 @@
             <th class="text-center">담당딜러</th>
             <th class="text-center">예약시간</th>
             <th class="text-center">등록일</th>
-            <th class="text-center">선택차량</th> 
-		    <th class="text-center">상담내역</th>
-            <th class="text-center">상담상태</th>
+            <th class="text-center">선택차량</th>
+			<th class="text-center">희망구매시점</th>
+		    <th class="text-center">상담상태</th>
 			<th class="text-center">관리</th>
           </tr>
         </thead>
         <tbody id="tableBody">
 			<tr th:each="apply, loop : ${applyList}" 
-				th:data-id="${apply.id}" 
-				th:onclick="|location.href='@{/counseling/detail/{id}(id=${apply.id})}'|" 
-				style="cursor: pointer;">
+				th:data-id="${apply.id}">
+				
+			<!--<tr th:each="apply, loop : ${applyList}" 
+							th:data-id="${apply.id}" 
+							th:onclick="|location.href='@{/counseling/detail/{id}(id=${apply.id})}'|" 
+							style="cursor: pointer;">-->	
+				
 
 				<td class="text-center">
 					<input type="checkbox" class="form-check-input rowCheckbox"
@@ -136,7 +166,7 @@
 				</td>
 				<td class="text-center" th:text="${apply.customer.member.id}"></td>
 				<td class="text-center" th:if="${apply.dealer != null}" th:text="${apply.dealer.member.name} + ' (' + ${apply.dealer.member.phone} + ')'">미정</dd>
-				<td class="text-center" th:unless="${apply.dealer != null}">미정/배정 대기</td>
+				<td class="text-center" th:unless="${apply.dealer != null}">딜러/배정 대기</td>
 				<td class="text-center" th:text="${apply.counselingLikeTime}"></td>
 				<td class="text-center" th:text="${#temporals.format(apply.createDate, 'yyyy-MM-dd HH:mm')}"></td>
 				
@@ -150,29 +180,38 @@
 				    차량모델명
 				  </a>
 				</td>
-				<td>
+				
+				<!--<td>
 				  <div class="small text-truncate" 
                        title="차량 구매 목적: [[${apply.purchasePurpose}]]">
 				    <span th:text="${apply.purchasePurpose}"></span>
 				  </div>
+				</td>-->
+				
+				<td class="status-cell">
+					<span th:text="${apply.purchasePeriod}"></span>
 				</td>
+				
 				<td class="status-cell">
 				  <span th:classappend="${apply.status == '상담취소'} ? 'bg-secondary' : 
 				                           (apply.status == '구매완료' ? 'bg-success text-white' : 
 				                           (apply.status == '상담진행중' ? 'bg-info text-white' : 'bg-warning text-dark'))"
 				        class="badge status-badge" th:text="${apply.status}"></span>
 				</td>
+				
 				<td class="action-cell">
 				  <div class="btn-group" onclick="event.stopPropagation();">
 					<a th:href="@{/counseling/applyList/cencel/{id}(id=${apply.id})}"
 					   class="btn btn-sm btn-outline-danger btn-cancel"
 					   aria-label="상담 취소"
-					   onclick="event.stopPropagation();">
+					   onclick="event.stopPropagation();"
+					   th:classappend="${(apply.status == '상담진행중' || apply.status == '상담취소')} ? ' disabled-link'">
 					   취소
 					</a>					
 					<a th:href="@{/counseling/detail/{id}(id=${apply.id})}" 
 					   class="btn btn-sm btn-outline-primary btn-edit"
-					   aria-label="상담 수정">
+					   aria-label="상담 수정"
+					   th:classappend="${(apply.status == '상담진행중' || apply.status == '상담취소')} ? ' disabled-link'">
 					   수정
 					</a>
 				  </div>
@@ -185,14 +224,12 @@
       </table>
     </section>
 
-    <section
-      class="d-flex flex-wrap justify-content-between align-items-center mt-3"
-    >
+    <section class="d-flex flex-wrap justify-content-between align-items-center mt-3">
       <div class="mb-2 mb-sm-0">
-		<a th:href="@{/counseling/addApply}" class="btn btn-secondary">
+		<a th:href="@{/counseling/addApply}" class="btn btn-outline li-btn">
 		  상담신청목록
 		</a>
-        <button id="btnExcelDownload" class="btn btn-outline-secondary btn-sm" aria-label="엑셀 다운로드">
+        <button id="btnExcelDownload" class="btn btn-outline-secondary ex-btn" aria-label="엑셀 다운로드">
           엑셀 다운로드
         </button>
       </div>
@@ -233,7 +270,7 @@
         </ul>
       </nav>
       </section>
-  </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script>
@@ -417,7 +454,7 @@
 	  
 	  // **변경: 체크박스 선택 필수**
 	  if (checkedBoxes.length === 0) {
-	    alert('다운로드할 행을 선택해 주세요.');
+	    alert('다운로드할 상담리스트를 선택해 주세요.');
 	    return;
 	  }
 	  
