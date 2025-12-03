@@ -226,13 +226,13 @@
 	          </tr>
 	        </thead>
 	        <tbody id="tableBody">
-				<tr th:each="apply, loop : ${applyList}" 
-					th:data-id="${apply.id}">
-					
 				<!--<tr th:each="apply, loop : ${applyList}" 
+					th:data-id="${apply.id}">-->
+					
+				<tr th:each="apply, loop : ${applyList}" 
 								th:data-id="${apply.id}" 
 								th:onclick="|location.href='@{/counseling/detail/{id}(id=${apply.id})}'|" 
-								style="cursor: pointer;">-->	
+								style="cursor: pointer;">	
 					
 	
 					<td class="text-center">
