@@ -641,9 +641,9 @@
 	          </div>
 
 	          <div class="detail-actions">
-				<button type="button" class="btn btn--danger cancel">상담취소</button>
-	            <button type="button" class="btn btn--ghost complete">상담완료</button>
-	            <button type="button" class="btn btn--primary buy">구매완료</button>
+				<a th:href="@{|/applyList/cencel/${counseling.id}|}" class="btn btn--danger cancel">상담취소</a>
+	            <a class="btn btn--ghost complete">상담완료</a>
+	            <a class="btn btn--primary buy">구매완료</a>
 	          </div>
 	        </div>
 	      </div>

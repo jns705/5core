@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.core.entity.Admin;
 import com.core.entity.Customer;
 import com.core.entity.Dealer;
 import com.core.entity.Member;
 import com.core.entity.Role;
+import com.core.service.AdminService;
 import com.core.service.CustomerService;
 import com.core.service.DealerService;
 import com.core.service.MemberService;
@@ -32,6 +34,7 @@ public class MemberController {
 	private final MemberService memberService;
 	private final CustomerService customerService;
 	private final DealerService dealerService;
+	private final AdminService adminService;
 	
 	private final PasswordEncoder passwordEncoder;
 	
@@ -51,6 +54,7 @@ public class MemberController {
 			BindingResult bindingResult, 
 			@Valid @ModelAttribute Customer customer,
 			@Valid @ModelAttribute Dealer dealer,
+			@Valid @ModelAttribute Admin admin,
 			Model model) {
 		// 유효성 검사
 		if(bindingResult.hasErrors()) {
@@ -77,8 +81,9 @@ public class MemberController {
 				customerService.saveCustomer(customer, member);
 			} else if(member.getRoleCheck().equals("02")) {
 				dealerService.saveDealer(dealer, member);
-			}
-			
+			}  else if(member.getRoleCheck().equals("03")) {
+				adminService.saveAdmin(admin, member);
+			} 				
 		} catch(DataIntegrityViolationException e) {
 			// rejectValue(필드명, 오류코드, 메시지)
 			bindingResult.rejectValue("memberId", "duplecatedMemberId", "이미 존재하는 회원 ID입니다.");

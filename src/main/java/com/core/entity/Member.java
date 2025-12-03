@@ -87,6 +87,10 @@ public class Member {
 		member.password = passwordEncoder.encode(member.password);
 		if(roleCheck.equals("01")) member.role = Role.CUSTOMER;
 		else if(roleCheck.equals("02")) member.role = Role.DEALER;
+		else if(roleCheck.equals("03")) member.role = Role.ADMIN;
 		return member;
 	}
+	
+	@Column(columnDefinition = "varchar(20) default 'ACTIVE'")
+	private String status = "ACTIVE";
 }
