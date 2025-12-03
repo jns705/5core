@@ -166,6 +166,35 @@ public class MainController {
 	 * -------------------------------------------------------------------------------------------
 	 */
 	// 관리자(Role.ADMIN)	
+	
+	
+	
+	@GetMapping("/admin")
+	public String requestAdminMain() {
+		
+		return "redirect:/admin/profile";
+	}
+	
+	@GetMapping("/admin/profile")
+	public String requestAdminProfile(Principal principal,
+			@RequestParam(value="page", defaultValue="0") int page,
+			Model model) {
+		Member admin = memberService.findByMemberId(principal.getName());
+		
+		List<Member> customerList = memberService.findByRole(Role.CUSTOMER);
+		
+		Sort sortObj = Sort.by("createDate").ascending();
+		Pageable pageable = PageRequest.of(page, 10, sortObj);  
+		Page<Counseling> counselingList = counselingService.findCounselingsByFilter(ApplyStatus.COUNSELING_HODDING.getStatusName(), null, pageable);
+		
+		model.addAttribute("counselingList", counselingList);
+		model.addAttribute("customerList", customerList);
+		model.addAttribute("admin", admin);
+		
+		return "admin/profile";
+	}
+	
+	
 	@GetMapping("/admin/list")
 	public String list(
 			Model model,
