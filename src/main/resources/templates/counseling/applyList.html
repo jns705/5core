@@ -8,11 +8,33 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet"/>
   <style>
     .main-con {
-      background-color: rgb(255, 255, 255);
-    }
-    .applyListHeader h1 {
-      color: navy;
-    }
+		max-width: 100%; 
+	}
+
+	/* 상단 */
+	.applyListHeader {
+		margin-top: 100px;
+		margin-bottom: 50px;
+		padding: 20px;
+		text-align: center;
+		background-color: #f8f8f8;
+	}
+	.applyListHeader > h1 {
+		margin-top: 25px;
+		font-size: 40px;
+		font-weight: bold;
+	}
+	.applyListHeader > p {
+		margin: 50px 0 50px 0;
+		font-size: 0.9em;
+	}
+	
+	.contents {
+		max-width: 1500px;
+		margin: 0 auto;
+	}
+	
+	/* 표 */
     .table thead th {
       vertical-align: middle;
       text-align: center;
@@ -30,7 +52,7 @@
 	/* 상담 상태 + 버튼 정렬/스타일 */
 	.status-cell {
 	  white-space: nowrap;
-	  text-align: end; /* 상태 배지 오른쪽 정렬 */
+	  text-align: center;
 	}
 
 	.action-cell {
@@ -45,16 +67,44 @@
 	}
 
 	.status-cell .badge.status-badge {
-	  font-size: 0.78rem;
-	  padding: 0.25rem 0.5rem;
+	  width: 100px;
+	  height: 30px;
+	  font-size: 0.85rem;
+	  padding: 7px;
 	}
-
+	
 	.action-cell .btn-sm {
 	  padding: 0.18rem 0.55rem;
-	  font-size: 0.78rem;
+	  font-size: 0.82rem;
 	  line-height: 1.1;
+	  font-weight: bold;
+	  padding: 7px;
 	}
 
+	.btn-cancel {
+		height: 30px;
+		border: 1px solid red;
+		color: #555;
+	}
+	
+	.btn-cancel:hover {
+		border: 1px solid red;
+		background-color: red;
+		color: #fff;
+	}
+	
+	.btn-edit {
+		height: 30px;
+		border: 1px solid navy;
+		color: #555;
+	}
+	
+	.btn-edit:hover {
+		border: 1px solid navy;
+		background-color: navy;
+		color: #fff;
+	}
+	
 	/* 취소됨 상태일 때 배지 색상 */
 	.status-cell .badge.bg-secondary {
 	  background-color: #6c757d !important;
@@ -63,20 +113,26 @@
 	.li-btn {
 		color: white;
 		background-color: navy;
+		border: 1px solid dimgray;
+		font-weight: bold;
 	}
 	.li-btn:hover {
-		background-color: whitesmoke;
-		color: black;
+		background-color: white;
+		color: navy;
+		border: 1px solid dimgray;
 	}
 	
-	.ex-btn{
+	.ex-btn {
+		margin-left: 5px;
 		color: gray;
-		
+		border: 1px solid dimgray;
+		font-weight: bold;
 	}
 	
 	.ex-btn:hover {
 		background-color: green;
 		color: white;
+		border: 1px solid dimgray;
 	}
 	
 	/*상담 진행중 수정,취소 버튼 비활성화*/
@@ -84,9 +140,7 @@
 	  pointer-events: none;  /* 클릭 막기 */
 	  opacity: 0.5;          /* 비활성화처럼 보이게 */
 	  cursor: not-allowed;
-	}
-
-	
+	}	
 	
 	/* 테이블 셀 크기 조정 */
 	.table thead th:nth-child(1) { width: 4%; } /* 체크박스 */
@@ -99,177 +153,201 @@
 	.table thead th:nth-child(8) { width: 4%; } /* 상담상태 */
 	.table thead th:nth-child(9) { width: 8%; } /* 버튼 그룹 */
 
+	/* 페이지 버튼 */
+	.page-link {
+		font-weight: bold;
+	}
+	
+	.pagination .page-item .page-link {
+	    background-color: #f0f0f0; /* 연한 회색으로 변경 예시 */
+	    border-color: #777;        /* 테두리 색상도 변경 가능 */
+	    color: #333;               /* 텍스트 색상 (선택 사항) */
+	}
+	/* 활성화된 페이지 링크의 배경색 변경 */
+	.pagination .page-item.active .page-link {
+	    background-color: navy; /* 👈 진한 남색으로 변경 예시 */
+	    border-color: navy;     /* 테두리도 같은 색으로 */
+	    color: white;           /* 텍스트 색상을 흰색으로 유지 */
+	}
+	/* 마우스 오버 시 배경색 변경 */
+	.pagination .page-item .page-link:hover {
+	    background-color: lightsteelblue;
+		border-color: #111;
+	}
+	
   </style>
 </head>
 <body>
-  <div class="container py-4 main-con">
-    <header class="mb-4 text-center applyListHeader">
-      <h1 class="display-5 fw-bold">고객 구매신청 리스트</h1>
-      <p class="text-muted mb-0">
-        아래에서 신청 내역을 확인하고 상태별 필터나 키워드 검색이 가능합니다.
-      </p>
-    </header>
+  <div class="container main-con">
+	<div class="applyListHeader">
+      <h1>고객 구매신청 리스트</h1>
+      <p>아래에서 신청 내역을 확인하고 상태별 필터나 키워드 검색이 가능합니다.</p>
+    </div>
 
-    <section class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-      <div class="d-flex gap-2">
-        <select class="form-select form-select-sm" id="statusFilter"  aria-label="상담 상태 필터">
-          <option th:selected="${statusFilter == null or statusFilter == '전체 상태'}">전체 상태</option>
-          <option th:selected="${statusFilter == '상담대기'}">상담대기</option>
-          <option th:selected="${statusFilter == '상담진행중'}">상담진행중</option>
-          <option th:selected="${statusFilter == '상담취소'}">상담취소</option>
-          <option th:selected="${statusFilter == '상담완료'}">상담완료</option>
-		  <option th:selected="${statusFilter == '구매완료'}">구매완료</option>
-        </select>
-        <select
-          class="form-select form-select-sm" id="sortFilter" style="width: 140px" aria-label="정렬 기준 선택">
-          <option th:selected="${sortFilter == null or sortFilter == '등록일 최신순'}">등록일 최신순</option>
-          <option th:selected="${sortFilter == '등록일 오래된순'}">등록일 오래된순</option>
-        </select>
-      </div>
+	<div class="contents">
+	    <section class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+	      <div class="d-flex gap-2">
+	        <select class="form-select form-select-sm" id="statusFilter"  aria-label="상담 상태 필터">
+	          <option th:selected="${statusFilter == null or statusFilter == '전체 상태'}">전체 상태</option>
+	          <option th:selected="${statusFilter == '상담대기'}">상담대기</option>
+	          <option th:selected="${statusFilter == '상담진행중'}">상담진행중</option>
+	          <option th:selected="${statusFilter == '상담취소'}">상담취소</option>
+	          <option th:selected="${statusFilter == '상담완료'}">상담완료</option>
+			  <option th:selected="${statusFilter == '구매완료'}">구매완료</option>
+	        </select>
+	        <select
+	          class="form-select form-select-sm" id="sortFilter" style="width: 140px" aria-label="정렬 기준 선택">
+	          <option th:selected="${sortFilter == null or sortFilter == '등록일 최신순'}">등록일 최신순</option>
+	          <option th:selected="${sortFilter == '등록일 오래된순'}">등록일 오래된순</option>
+	        </select>
+	      </div>
+		
+		  <!--검색 기능이었던것 .. 사용안함.-->
+	      <div class="d-flex gap-2 mt-2 mt-sm-0">
+	        <input type="hidden" id="searchInput" class="form-control form-control-sm" placeholder="고객ID 또는 연락처 검색" aria-label="고객ID 또는 연락처 검색" th:value="${keyword}"/>
+	      </div>
+	    </section>
 	
-	  <!--검색 기능이었던것 .. 사용안함.-->
-      <div class="d-flex gap-2 mt-2 mt-sm-0">
-        <input type="hidden" id="searchInput" class="form-control form-control-sm" placeholder="고객ID 또는 연락처 검색" aria-label="고객ID 또는 연락처 검색" th:value="${keyword}"/>
-      </div>
-    </section>
-
-    <section class="table-responsive shadow-sm bg-white rounded">
-      <table class="table table-striped table-hover align-middle">
-        <thead class="table-light">
-          <tr>
-            <th class="text-center">
-              <input type="checkbox" id="selectAll" class="form-check-input" aria-label="전체 선택"/>
-            </th>
-            <th class="text-center">고객ID</th>
-            <th class="text-center">담당딜러</th>
-            <th class="text-center">예약시간</th>
-            <th class="text-center">등록일</th>
-            <th class="text-center">선택차량</th>
-			<th class="text-center">희망구매시점</th>
-		    <th class="text-center">상담상태</th>
-			<th class="text-center">관리</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-			<tr th:each="apply, loop : ${applyList}" 
-				th:data-id="${apply.id}">
-				
-			<!--<tr th:each="apply, loop : ${applyList}" 
-							th:data-id="${apply.id}" 
-							th:onclick="|location.href='@{/counseling/detail/{id}(id=${apply.id})}'|" 
-							style="cursor: pointer;">-->	
-				
-
-				<td class="text-center">
-					<input type="checkbox" class="form-check-input rowCheckbox"
-						   onclick="event.stopPropagation();" />
-				</td>
-				<td class="text-center" th:text="${apply.customer.member.id}"></td>
-				<td class="text-center" th:if="${apply.dealer != null}" th:text="${apply.dealer.member.name} + ' (' + ${apply.dealer.member.phone} + ')'">미정</dd>
-				<td class="text-center" th:unless="${apply.dealer != null}">딜러/배정 대기</td>
-				<td class="text-center" th:text="${apply.counselingLikeTime}"></td>
-				<td class="text-center" th:text="${#temporals.format(apply.createDate, 'yyyy-MM-dd HH:mm')}"></td>
-				
-				<td class="text-center">
-				  <a th:href="@{|/vehicles/vehicle/detail/${apply.vehicleId}|}" 
-				     th:text="${apply.vehicleName}" 
-				     class="fw-semibold text-primary" 
-				     style="text-decoration: none;"
-				     onclick="event.stopPropagation();"
-                     title="선택 모델 상세 보기">
-				    차량모델명
-				  </a>
-				</td>
-				
-				<!--<td>
-				  <div class="small text-truncate" 
-                       title="차량 구매 목적: [[${apply.purchasePurpose}]]">
-				    <span th:text="${apply.purchasePurpose}"></span>
-				  </div>
-				</td>-->
-				
-				<td class="status-cell">
-					<span th:text="${apply.purchasePeriod}"></span>
-				</td>
-				
-				<td class="status-cell">
-				  <span th:classappend="${apply.status == '상담취소'} ? 'bg-secondary' : 
-				                           (apply.status == '구매완료' ? 'bg-success text-white' : 
-				                           (apply.status == '상담진행중' ? 'bg-info text-white' : 'bg-warning text-dark'))"
-				        class="badge status-badge" th:text="${apply.status}"></span>
-				</td>
-				
-				<td class="action-cell">
-				  <div class="btn-group" onclick="event.stopPropagation();">
-					<a th:href="@{/counseling/applyList/cencel/{id}(id=${apply.id})}"
-					   class="btn btn-sm btn-outline-danger btn-cancel"
-					   aria-label="상담 취소"
-					   onclick="event.stopPropagation();"
-					   th:classappend="${(apply.status == '상담진행중' || apply.status == '상담취소')} ? ' disabled-link'">
-					   취소
-					</a>					
-					<a th:href="@{/counseling/detail/{id}(id=${apply.id})}" 
-					   class="btn btn-sm btn-outline-primary btn-edit"
-					   aria-label="상담 수정"
-					   th:classappend="${(apply.status == '상담진행중' || apply.status == '상담취소')} ? ' disabled-link'">
-					   수정
-					</a>
-				  </div>
-				</td>
-			</tr>
-			<tr th:if="${applyList == null or #lists.isEmpty(applyList)}">
-				<td colspan="9" class="text-center text-muted py-4">조회된 상담 내역이 없습니다.</td>
-			</tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section class="d-flex flex-wrap justify-content-between align-items-center mt-3">
-      <div class="mb-2 mb-sm-0">
-		<a th:href="@{/counseling/addApply}" class="btn btn-outline li-btn">
-		  상담신청목록
-		</a>
-        <button id="btnExcelDownload" class="btn btn-outline-secondary ex-btn" aria-label="엑셀 다운로드">
-          엑셀 다운로드
-        </button>
-      </div>
-
-      <nav th:if="${counselingPage.totalPages > 1}" aria-label="구매신청 페이지">
-        <ul class="pagination pagination-sm mb-0">
-          
-          <li class="page-item" th:classappend="${counselingPage.first} ? 'disabled'">
-            <a class="page-link"
-               th:href="@{/counseling/applyList(
-                   page=${counselingPage.number - 1}, 
-                   statusFilter=${statusFilter}, 
-                   sortFilter=${sortFilter}, 
-                   keyword=${keyword})}"
-               tabindex="-1"
-               aria-disabled="true">이전</a>
-          </li>
-
-		  <li th:each="i : ${#numbers.sequence(0, counselingPage.totalPages - 1)}"
-		      th:class="${i == counselingPage.number} ? 'page-item active' : 'page-item'">
-		    <a class="page-link"
-		       th:text="${i + 1}"
-		       th:href="@{/counseling/applyList(
-		           page=${i}, 
-		           statusFilter=${statusFilter}, 
-		           sortFilter=${sortFilter}, 
-		           keyword=${keyword})}"></a>
-		  </li>
-
-          <li class="page-item" th:classappend="${counselingPage.last} ? 'disabled'">
-            <a class="page-link"
-               th:href="@{/counseling/applyList(
-                   page=${counselingPage.number + 1}, 
-                   statusFilter=${statusFilter}, 
-                   sortFilter=${sortFilter}, 
-                   keyword=${keyword})}">다음</a>
-          </li>
-        </ul>
-      </nav>
-      </section>
+	    <section class="table-responsive shadow-sm bg-white rounded">
+	      <table class="table table-striped table-hover align-middle">
+	        <thead class="table-light">
+	          <tr>
+	            <th class="text-center">
+	              <input type="checkbox" id="selectAll" class="form-check-input" aria-label="전체 선택"/>
+	            </th>
+	            <th class="text-center">고객ID</th>
+	            <th class="text-center">담당딜러</th>
+	            <th class="text-center">예약시간</th>
+	            <th class="text-center">등록일</th>
+	            <th class="text-center">선택차량</th>
+				<th class="text-center">희망구매시점</th>
+			    <th class="text-center">상담상태</th>
+				<th class="text-center">관리</th>
+	          </tr>
+	        </thead>
+	        <tbody id="tableBody">
+				<tr th:each="apply, loop : ${applyList}" 
+					th:data-id="${apply.id}">
+					
+				<!--<tr th:each="apply, loop : ${applyList}" 
+								th:data-id="${apply.id}" 
+								th:onclick="|location.href='@{/counseling/detail/{id}(id=${apply.id})}'|" 
+								style="cursor: pointer;">-->	
+					
+	
+					<td class="text-center">
+						<input type="checkbox" class="form-check-input rowCheckbox"
+							   onclick="event.stopPropagation();" />
+					</td>
+					<td class="text-center" th:text="${apply.customer.member.id}"></td>
+					<td class="text-center" th:if="${apply.dealer != null}" th:text="${apply.dealer.member.name} + ' (' + ${apply.dealer.member.phone} + ')'">미정</dd>
+					<td class="text-center" th:unless="${apply.dealer != null}">딜러/배정 대기</td>
+					<td class="text-center" th:text="${apply.counselingLikeTime}"></td>
+					<td class="text-center" th:text="${#temporals.format(apply.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+					
+					<td class="text-center">
+					  <a th:href="@{|/vehicles/vehicle/detail/${apply.vehicleId}|}" 
+					     th:text="${apply.vehicleName}" 
+					     class="fw-semibold" 
+					     style="text-decoration: none; color: navy;"
+					     onclick="event.stopPropagation();"
+	                     title="선택 모델 상세 보기">
+					    차량모델명
+					  </a>
+					</td>
+					
+					<!--<td>
+					  <div class="small text-truncate" 
+	                       title="차량 구매 목적: [[${apply.purchasePurpose}]]">
+					    <span th:text="${apply.purchasePurpose}"></span>
+					  </div>
+					</td>-->
+					
+					<td class="status-cell">
+						<span th:text="${apply.purchasePeriod}"></span>
+					</td>
+					
+					<td class="status-cell">
+					  <span th:classappend="${apply.status == '상담취소'} ? 'bg-secondary' : 
+					                           (apply.status == '구매완료' ? 'bg-success text-white' : 
+					                           (apply.status == '상담진행중' ? 'bg-info text-white' : 'bg-warning text-dark'))"
+					        class="badge status-badge" th:text="${apply.status}"></span>
+					</td>
+					
+					<td class="action-cell">
+					  <div class="btn-group" onclick="event.stopPropagation();">
+						<a th:href="@{/counseling/applyList/cencel/{id}(id=${apply.id})}"
+						   class="btn btn-sm btn-cancel"
+						   aria-label="상담 취소"
+						   onclick="event.stopPropagation();"
+						   th:classappend="${(apply.status == '상담진행중' || apply.status == '상담취소')} ? ' disabled-link'">
+						   취소
+						</a>					
+						<a th:href="@{/counseling/detail/{id}(id=${apply.id})}" 
+						   class="btn btn-sm btn-edit"
+						   aria-label="상담 수정"
+						   th:classappend="${(apply.status == '상담진행중' || apply.status == '상담취소')} ? ' disabled-link'">
+						   수정
+						</a>
+					  </div>
+					</td>
+				</tr>
+				<tr th:if="${applyList == null or #lists.isEmpty(applyList)}">
+					<td colspan="9" class="text-center text-muted py-4">조회된 상담 내역이 없습니다.</td>
+				</tr>
+	        </tbody>
+	      </table>
+	    </section>
+	
+		<section class="d-flex justify-content-end align-items-center mt-3"> 
+		    <div class="mb-2 mb-sm-0">
+				<a th:href="@{/counseling/addApply}" class="btn btn-outline li-btn">
+				  상담신청목록
+				</a>
+		        <button id="btnExcelDownload" class="btn btn-outline-secondary ex-btn" aria-label="엑셀 다운로드">
+		          엑셀 다운로드
+		        </button>
+		    </div>
+		</section>
+	
+		<section class="d-flex justify-content-center mt-3 mb-5">
+		    <nav th:if="${counselingPage.totalPages > 1}" aria-label="구매신청 페이지">
+		        <ul class="pagination pagination-sm mb-0">
+		            
+		            <li class="page-item" th:classappend="${counselingPage.first} ? 'disabled'">
+		                <a class="page-link"
+		                   th:href="@{/counseling/applyList(
+		                       page=${counselingPage.number - 1}, 
+		                       statusFilter=${statusFilter}, 
+		                       sortFilter=${sortFilter}, 
+		                       keyword=${keyword})}"
+		                   tabindex="-1"
+		                   aria-disabled="true">이전</a>
+		            </li>
+	
+		            <li th:each="i : ${#numbers.sequence(0, counselingPage.totalPages - 1)}"
+		                th:class="${i == counselingPage.number} ? 'page-item active' : 'page-item'">
+		              <a class="page-link"
+		                 th:text="${i + 1}"
+		                 th:href="@{/counseling/applyList(
+		                     page=${i}, 
+		                     statusFilter=${statusFilter}, 
+		                     sortFilter=${sortFilter}, 
+		                     keyword=${keyword})}"></a>
+		            </li>
+	
+		            <li class="page-item" th:classappend="${counselingPage.last} ? 'disabled'">
+		              <a class="page-link"
+		                 th:href="@{/counseling/applyList(
+		                     page=${counselingPage.number + 1}, 
+		                     statusFilter=${statusFilter}, 
+		                     sortFilter=${sortFilter}, 
+		                     keyword=${keyword})}">다음</a>
+		            </li>
+		        </ul>
+		    </nav>
+		</section>
+	  </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
