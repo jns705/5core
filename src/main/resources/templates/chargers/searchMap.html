@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전기차 충전소 찾기</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f7f6; }
+        .container { max-width: 1200px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
+        h1 { color: #2c3e50; }
+        .content-wrapper { display: flex; gap: 20px; flex-wrap: wrap; }
+        .search-sidebar { flex: 1; min-width: 300px; padding: 15px; background-color: #ecf0f1; border-radius: 6px; }
+        .map-area { flex: 2; min-width: 500px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #34495e; }
+        select, button { width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
+        button { background-color: #4CAF50; color: white; cursor: pointer; transition: background-color 0.3s ease; }
+        button:hover { background-color: #45a049; }
+        #map-container { width: 100%; height: 600px; border: 1px solid #ddd; border-radius: 6px; }
+        #map { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <h1>⚡ 전기차 충전소 검색</h1>
+        </header>
+
+        <div class="content-wrapper">
+            
+            <section class="search-sidebar">
+                <h2>🔎 충전소 지점 검색</h2>
+                <form name="chargerSchForm" onsubmit="return false;">                    
+                    <div class="form-group">
+                        <label for="chargingStation">충전소 지점 선택:</label>
+                        <select  id="chargingStation" name="station" >
+                            <option value="">-- 충전소 지점을 선택하세요 --</option>
+							<option 
+							    th:each="charger : ${chargersList}" 
+							    th:value="${charger.statId}" th:text="${charger.statNm}"
+							    th:data-lat="${charger.lat}" th:data-lng="${charger.lng}">
+							</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" id="searchButton">선택 지점 검색 & 지도 이동</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="map-area">
+                <h2>🗺️ 선택된 지점 위치</h2>
+                <div id="map-container" >
+                    <div id="map"></div>
+                </div>
+				
+				<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&callback=initMap'}"></script>
+            </section>
+
+        </div>
+    </div>
+	
+	<script type="text/javascript">
+		
+        // 전역 변수로 지도 객체와 마커 객체를 선언
+        let map;
+        let currentMarker;
+        let infoWindow;
+        
+        // 1. Google Maps API 로드 완료 후 자동으로 호출되는 함수
+        function initMap() {
+            const mapContainer = document.getElementById('map');
+            const initialPos = { lat: 37.5665, lng: 126.9780 }; // 기본 위치 (서울 시청)
+            const stationSelect = document.getElementById('chargingStation');
+
+            map = new google.maps.Map(mapContainer, {
+                center: initialPos,
+                zoom: 12, // 초기 확대 레벨
+            });
+            
+            infoWindow = new google.maps.InfoWindow();
+
+            // ⭐ 2. 초기 로드 시 충전소 리스트의 첫 번째 지점으로 지도 이동
+            // Selectbox의 옵션에서 직접 데이터를 읽어옵니다.
+            if (stationSelect.options.length > 1) {
+                // 두 번째 옵션 (인덱스 1)이 첫 번째 실제 충전소 데이터입니다.
+                const firstChargerOption = stationSelect.options[1]; 
+                
+                const firstLat = parseFloat(firstChargerOption.dataset.lat);
+                const firstLng = parseFloat(firstChargerOption.dataset.lng);
+                const firstStatNm = firstChargerOption.textContent;
+
+                // 유효한 좌표인 경우에만 지도 이동
+                if (!isNaN(firstLat) && !isNaN(firstLng)) {
+                    moveAndMarkMap(firstLat, firstLng, firstStatNm);
+                }
+            }
+        }
+        
+        // 3. 지도 이동 및 마커 표시 함수
+        function moveAndMarkMap(lat, lng, stationName) {
+            if (!map) return;
+
+            const position = { lat: lat, lng: lng };
+
+            // 지도의 중심을 이동
+            map.setCenter(position);
+
+            // 기존 마커 제거
+            if (currentMarker) {
+                currentMarker.setMap(null);
+            }
+
+            // 새로운 마커 생성 및 표시
+            currentMarker = new google.maps.Marker({
+                map: map,
+                position: position,
+                title: stationName 
+            });
+            
+            // 인포윈도우 표시
+            const content = `<div style="font-weight: bold; padding: 5px;">${stationName}</div>`;
+            infoWindow.setContent(content);
+            infoWindow.open(map, currentMarker);
+            
+            // 줌 레벨을 확대하여 상세 위치를 더 잘 보이게 함
+            map.setZoom(15); 
+        }
+
+        // 4. Selectbox 선택 및 검색 버튼 클릭 이벤트 핸들러
+		document.addEventListener('DOMContentLoaded', function() {
+            const stationSelect = document.getElementById('chargingStation');
+            const searchForm = document.querySelector('form[name="chargerSchForm"]');
+            
+            // 폼 제출(버튼 클릭) 이벤트 리스너
+            searchForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // 폼 제출 막기
+                
+                const selectedOption = stationSelect.options[stationSelect.selectedIndex];
+                
+                // 선택된 옵션이 유효한 값인지 확인
+                if (selectedOption.value) {
+                    // ⭐ data 속성에서 위도/경도 값을 읽어와 숫자로 변환
+                    const lat = parseFloat(selectedOption.dataset.lat); 
+                    const lng = parseFloat(selectedOption.dataset.lng);
+                    const stationName = selectedOption.textContent;
+
+                    // 유효성 검사
+                    if (isNaN(lat) || isNaN(lng)) {
+                        console.error("선택된 충전소의 위도/경도 값이 유효하지 않습니다.");
+                        alert("선택된 지점의 위치 정보가 올바르지 않습니다. 데이터를 확인해 주세요.");
+                        return;
+                    }
+                    
+                    // 지도 이동 및 마커 표시 함수 호출
+                    moveAndMarkMap(lat, lng, stationName);
+                } else {
+                    alert('충전소 지점을 선택해 주세요.');
+                }
+            });
+        });
+		
+	</script>	
+</body>
+</html>
