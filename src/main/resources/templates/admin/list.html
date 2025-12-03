@@ -9,29 +9,166 @@
         body { background-color: #f3f5f9; }
         .container { max-width: 1600px; }
         .sidebar { background-color: #343a40; min-height: 100vh; padding-top: 20px; }
-        .sidebar a { color: #adb5bd; padding: 10px 15px; display: block; text-decoration: none; transition: all 0.2s; }
-        .sidebar a:hover, .sidebar .active { color: #fff; background-color: #495057; border-radius: 5px; }
-        .content { padding: 30px; }
+        .sidebar a { color: #adb5bd; padding: 10px 15px; display: block; text-decoration: none; transition: all 0.2s; font-weight: bold; }
+        .sidebar a:hover, .sidebar .active { color: navy; background-color: #eee; border-radius: 5px; }
+        .content { padding: 30px;}
+		.search-btns { margin-right: 40px;}
+		#searchBtn { width: 80px; height: 30px; font-weight: bold;}
         .table thead th { background-color: #e9ecef; font-size: 0.95rem; text-align: center; }
         .table tbody td { font-size: 0.88rem; vertical-align: middle; }
+		.member-role { width: 200px; padding-left: 10px; margin-left: 20px; cursor: pointer;}
+		.btn-update { width: 60px; height: 30px; font-weight: bold; background-color: seagreen; color: #fff; border: 1px solid #777;}
+		.btn-update:hover { color: seagreen; background-color: #fff; border: 1px solid #777;}
         .form-select-sm, .form-control-sm { height: calc(1.8rem + 2px); }
+		/* 페이지 버튼 */
+		.page-link { font-weight: bold; background-color: #f0f0f0; border-color: #777; color: #333;}
+		/* 활성화된 페이지 링크의 배경색 변경 */
+		.pagination .page-item.active .page-link { background-color: navy; border-color: navy; color: white;}
+		/* 마우스 오버 시 배경색 변경 */
+		.pagination .page-item .page-link:hover { background-color: lightsteelblue; border-color: #111;}
+
+        /* ===== HYUNDAI CRM 스타일 사이드바 추가 ===== */
+        :root {
+            --primary: #0d47a1;
+            --primary-soft: #e3eefc;
+            --bg-elevated: #ffffff;
+            --border-subtle: #e2e8f0;
+            --text-muted: #6b7280;
+        }
+
+        .sidebar {
+            width: 248px;
+            background: linear-gradient(180deg, #0d47a1 0%, #093272 100%);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .sidebar__logo {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            margin-bottom: 16px;
+        }
+
+        .sidebar__logo-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .sidebar__section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: 0.75;
+            padding: 0 24px;
+            margin-bottom: 6px;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0 8px;
+        }
+
+		.menu-item {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 10px 16px;
+			margin: 2px 8px;
+			border-radius: 8px;
+			font-size: 14px;
+			cursor: pointer;
+			transition: background 0.18s ease, transform 0.12s ease;
+			color: #eef3ff;
+			opacity: 0.9;
+		}
+
+		.menu-item:hover {
+		    background: #e5e7eb;
+		    color: #0d47a1;
+		    font-weight: 600;
+		    transform: translateY(-1px);
+		    opacity: 1;
+		}
+
+        .menu-item--active {
+            background: #ffffff;
+            color: #0d47a1;
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        .menu-item__bullet {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        /*.menu-item--active .menu-item__bullet {
+            background: #0d47a1;
+        }*/
+
+        .sidebar__bottom {
+            margin-top: auto;
+            padding: 12px 24px 8px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        /* ===== HYUNDAI CRM 사이드바 끝 ===== */
     </style>
 </head>
 <body>
     <div class="d-flex">
-        <div class="sidebar text-white p-3">
-            <h4 class="text-white mb-4">관리자 메뉴</h4>
-            <a th:href="@{/main}">🏠 메인 대시보드</a> 
-            
-            <hr class="text-light opacity-25">
-            <a th:href="@{/admin/list}" class="active">👥 멤버 관리</a>
-            <a th:href="@{/admin/profile}">✏️ 프로필 수정</a>
-            <a th:href="@{/admin/statistics}">📊 통계 현황</a>
-            <a th:href="@{/admin/factory}">🏭 현지 공장/재고</a>
-        </div>
+        <!-- 여기부터: list.html의 파란 관리자 메뉴 사이드바 사용 -->
+        <div class="sidebar">
+            <div class="sidebar__logo">
+                <div class="sidebar__logo-title">관리 메뉴</div>
+            </div>
 
+            <div class="sidebar__section-title">Navigation</div>
+            <ul class="menu-list">
+                <li>
+                    <a th:href="@{/main}" class="menu-item">
+                        <span class="menu-item__bullet"></span>
+                        <span>메인 대시보드</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/list}" class="menu-item menu-item--active">
+                        <span class="menu-item__bullet"></span>
+                        <span>멤버 관리</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/profile}" class="menu-item">
+                        <span class="menu-item__bullet"></span>
+                        <span>프로필 수정</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/statistics}" class="menu-item">
+                        <span class="menu-item__bullet"></span>
+                        <span>통계 현황</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/factory}" class="menu-item">
+                        <span class="menu-item__bullet"></span>
+                        <span>현지 공장/재고</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar__bottom">
+                HYUNDAI CRM · Admin Console
+            </div>
+        </div>
+        <!-- 여기까지가 “관리자메뉴 왼쪽 파란부분 코딩” -->
+
+        <!-- 아래부터는 1111list.html 원본 내용 그대로 (본문/테이블/스크립트 등 수정 안 함) -->
         <div class="content flex-grow-1">
-            <h2 class="mb-4 fw-bold text-primary">👥 멤버 관리</h2>
+            <h2 class="mb-4 fw-bold" style="color: navy;">멤버 관리</h2>
             <p class="text-muted">시스템에 등록된 ADMIN, DEALER 및 CUSTOMER의 정보를 검색하고 **권한**을 수정합니다.</p>
 
             <form id="searchForm" th:action="@{/admin/list}" method="get">
@@ -56,12 +193,13 @@
 						</select>
                     </div>
 
-                    <div class="d-flex gap-2 mt-2 mt-sm-0">
+                    <div class="d-flex gap-2 mt-2 mt-sm-0 search-btns">
                         <input type="search" id="searchInput" class="form-control form-control-sm" placeholder="로그인 ID, 이름, 이메일 검색" name="keyword" th:value="${currentKeyword}"/>
-                        <button type="button" id="searchBtn" class="btn btn-sm btn-primary">검색</button>
+                        <button type="button" id="searchBtn" class="btn btn-sm" style="background-color: navy; color: #fff;">검색</button>
                     </div>
                 </section>
             </form>
+
             <section class="table-responsive shadow bg-white rounded-3">
                 <table class="table table-striped table-hover align-middle mb-0">
                     <thead class="table-light">
@@ -80,9 +218,9 @@
                         <tr th:each="member : ${memberPage.content}" th:data-member-id="${member.id}"> 
                             <td class="text-center" th:text="${member.id}"></td>
                             <td class="text-center fw-bold" th:text="${member.memberId}"></td>
-                            <td th:text="${member.name}"></td>
-                            <td th:text="${member.phone}"></td>
-                            <td th:text="${member.email}"></td>
+                            <td class="text-center" th:text="${member.name}"></td>
+                            <td class="text-center" th:text="${member.phone}"></td>
+                            <td class="text-center" th:text="${member.email}"></td>
                             <td class="text-center" th:text="${#temporals.format(member.joinDate, 'yyyy-MM-dd')}"></td>                            
                             <td class="text-center">
                                 <select class="form-select form-select-sm member-role" th:data-id="${member.id}">
@@ -94,7 +232,7 @@
                             </td>
                             
                             <td class="text-center">
-                                <button type="button" class="btn btn-sm btn-success btn-update" th:data-id="${member.id}">수정</button>
+                                <button type="button" class="btn btn-sm btn-update" th:data-id="${member.id}">수정</button>
                             </td>
                         </tr>
                     </tbody>
