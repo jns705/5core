@@ -221,6 +221,13 @@ public class MainController {
 
 		return "admin/list";
 	}
+	
+	@GetMapping("/admin/report")
+	public String requestAdminReport() {
+		
+		return "admin/report";
+	}
+	
 
 	/**
 	 * 멤버 정보 수정 (AJAX POST /admin/{id}/update)
