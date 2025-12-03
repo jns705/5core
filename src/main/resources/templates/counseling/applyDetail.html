@@ -224,20 +224,27 @@
         <div class="col-lg-4">
           <div class="card shadow-sm h-100">
             <div class="card-header bg-secondary text-white">
-              <h5 class="mb-0">고객/딜러 정보</h5>
+              <h5 class="mb-0">딜러 정보</h5>
             </div>
            <div class="card-body">
               <dl class="row mb-0">
-                <dt class="col-4">고객 ID</dt>
-                <dd class="col-8" th:text="${counseling.dealer.member.id}"></dd>
+				
+                <!--<dt class="col-4">고객 ID</dt>
+                <dd class="col-8" th:text="${counseling.customer.member.name}"></dd>
 				<dt class="col-4">딜러명</dt>
-				<dd class="col-8" th:text="${counseling.dealer.member.name}"></dd>                
+				<dd class="col-8" th:text="${counseling.customer.member.name}"></dd>                
                 <dt class="col-4">딜러 연락처</dt>
-                <dd class="col-8" th:text="${counseling.dealer.member.phone}"></dd>
+                <dd class="col-8" th:text="${counseling.customer.member.phone}"></dd>-->
 
-                <dt class="col-4">담당 딜러</dt>
+                <!--<dt class="col-4">담당 딜러</dt>
                 <dd class="col-8" th:if="${counseling.dealer != null}" th:text="${counseling.dealer.member.name} + ' (' + ${counseling.dealer.member.phone} + ')'">미정</dd>
-                <dd class="col-8 text-muted" th:unless="${counseling.dealer != null}">미정/배정 대기</dd>
+                <dd class="col-8 text-muted" th:unless="${counseling.dealer != null}">미정/배정 대기</dd>-->
+				<img th:src="@{/img/30-male.png}" style="width: 150px;">
+				
+				<dt>담당 딜러:</dt>
+				<dd th:if="${status == 상담진행중}" th:text="${counseling.dealer.member.name} + ' (' + ${counseling.dealer.member.phone} + ')'"></dd>
+				
+				
               </dl>
             </div>
           </div>

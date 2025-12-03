@@ -145,10 +145,12 @@ public class CounselingController {
 	    Optional<Counseling> counselingOpt = counselingService.getCounselingById(id);
 	    
 	    if (counselingOpt.isPresent()) {
-		    // 수정 화면에 필요한 차량 목록 등을 추가합니다.
-		    	List<Vehicle> getVehicleList = vehicleService.getVehicleList();
-		    	model.addAttribute("vehicleList", getVehicleList);
-	        model.addAttribute("counseling", counselingOpt.get());
+	    	Counseling counseling = counselingOpt.get();
+		    List<Vehicle> getVehicleList = vehicleService.getVehicleList();
+		    
+		    model.addAttribute("vehicleList", getVehicleList);
+	        model.addAttribute("counseling", counseling);
+	        
 	        return "counseling/applyDetail"; 
 	    } else {
 	        return "redirect:/counseling/applyList";
