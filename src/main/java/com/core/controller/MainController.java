@@ -165,10 +165,7 @@ public class MainController {
 	 * ADMIN
 	 * -------------------------------------------------------------------------------------------
 	 */
-	// 관리자(Role.ADMIN)	
-	
-	
-	
+	// 관리자(Role.ADMIN)		
 	@GetMapping("/admin")
 	public String requestAdminMain() {
 		
@@ -193,7 +190,6 @@ public class MainController {
 		
 		return "admin/profile";
 	}
-	
 	
 	@GetMapping("/admin/list")
 	public String list(
