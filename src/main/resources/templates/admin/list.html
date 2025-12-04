@@ -233,7 +233,7 @@
 					        <td class="text-center" th:text="${#temporals.format(member.joinDate, 'yyyy-MM-dd')}"></td>                            
 					        
 					        <td class="text-center">
-								<select class="form-select form-select-sm member-role" disabled style="width: 100px; margin-right: 10px;">
+								<select class="form-select form-select-sm member-role" disabled style="width: 200px; margin-right: 10px;">
 					                <option th:each="role : ${roles}" 
 					                        th:value="${role}" 
 					                        th:text="${role.toString()}" 
@@ -243,7 +243,7 @@
 					        
                             <form th:action="@{/admin/update-status}" method="post">
                                 <input type="hidden" name="id" th:value="${member.id}" /> <td class="text-center">
-									<select class="form-select form-select-sm" name="status" style="width: 100px; margin: auto;">
+									<select class="form-select form-select-sm" name="status" style="width: 200px; margin: auto;">
 										<option value="ACTIVE" th:selected="${member.status == 'ACTIVE'}">활동 중</option>
 										<option value="INACTIVE" th:selected="${member.status == 'INACTIVE'}">비활동</option>
 										<option value="PENDING" th:selected="${member.status == 'PENDING'}">승인 대기</option>
