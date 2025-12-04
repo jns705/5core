@@ -479,6 +479,15 @@
         <h2 class="apply-title">상담 신청</h2>
         <p class="apply-subtitle">희망 차종과 구매 계획을 알려주시면, 최적의 딜러와 연결해 드립니다.</p>
       </header>
+	  <div>
+	    <p class="field-error text-danger" th:errors="*{hopearea.sido}"></p>
+	    <p class="field-error text-danger" th:errors="*{hopearea.siGunGu}"></p>
+	    <p class="field-error text-danger" th:errors="*{hopearea.eupMyeonDong}"></p>
+	    <p class="field-error text-danger" th:errors="*{vehicleId}"></p>
+	    <p class="field-error text-danger" th:errors="*{purchasePurpose}"></p>
+	    <p class="field-error text-danger" th:errors="*{otherInput}"></p>
+	    <p class="field-error text-danger" th:errors="*{purchasePeriod}"></p>
+	  </div>		  
       <div class="apply-content">
         <div class="accordion-item">
           <div class="accordion-header">
@@ -605,7 +614,6 @@
                 <input type="text" id="otherInput" name="otherInput" class="other-input"
                        placeholder="기타 사유를 입력하세요" disabled>
               </div>
-              <p class="field-error text-danger" th:errors="*{purchasePurpose}"></p>
             </div>
 
             <div class="survey-section">
@@ -1067,29 +1075,6 @@
                     if (!selectedCar) {
                         e.preventDefault(); // 제출 중단
                         alert("STEP 1: 상담 차종을 선택해 주세요.");
-                        return;
-                    }
-
-                    // Step 2: 희망 지역 선택
-                    let sido = document.querySelector("#sidoName").value;
-                    if (!sido) {
-                        e.preventDefault(); // 제출 중단
-                        alert("STEP 2: 희망 지역 (시/도)를 선택해 주세요.");
-                        return;
-                    }
-
-                    // Step 3: 필수 항목 유효성 검사 (updateStep3HeaderSummary 함수 활용)
-                    // 이 함수를 한 번 호출하여 현재 선택된 데이터를 가져옵니다.
-                    let summaryData = updateStep3HeaderSummary();
-
-                    if (summaryData.purchasePurposeList.length === 0) {
-                        e.preventDefault(); // 제출 중단
-                        alert("STEP 3: 차량 구매 목적을 하나 이상 선택해 주세요.");
-                        return;
-                    }
-                    if (!summaryData.purchasePeriod) {
-                        e.preventDefault(); // 제출 중단
-                        alert("STEP 3: 희망 구매 시점을 선택해 주세요.");
                         return;
                     }
 
