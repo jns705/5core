@@ -211,10 +211,22 @@ public class CounselingService {
 	
 	
 	/**
-	 * 딜러별 상담 조회
+	 * 딜러별 상담 조회 (구매완료 제외)
 	 */
-	public Page<Counseling> findByDealerId(Long DealerId, Pageable pageable) {
-		return counselingRepository.findByDealerId(DealerId, pageable);
+	public Page<Counseling> findByDealerIdAndStatusNot(Long DealerId, String status, Pageable pageable, String keyword) {
+		
+		System.out.println("=====================================");
+		System.out.println(keyword);
+		System.out.println("=====================================");
+		if(keyword.equals("all")) {
+			return counselingRepository.findByDealerIdAndStatusNot(DealerId, status, pageable);
+		}
+		
+		return counselingRepository.findByDealerIdAndStatus(DealerId, keyword, pageable);
+		
+		
+		
+		
 	}
 	
 	

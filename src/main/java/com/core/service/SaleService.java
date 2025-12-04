@@ -2,9 +2,12 @@ package com.core.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.core.entity.Dealer;
 import com.core.entity.Sale;
 import com.core.repository.CounselingRepository;
 import com.core.repository.SaleRepository;
@@ -30,4 +33,14 @@ public class SaleService {
     public Sale saveSale(Sale sale) {
         return saleRepository.save(sale);
     }
+    
+    
+    // 딜러 판매내역 조회
+    public Page<Sale> findByDealer(Pageable pageable, Dealer dealer) {
+    	return saleRepository.findByDealer(pageable, dealer);
+    }
+    
+    
+    
+    
 }
