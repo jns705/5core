@@ -1047,21 +1047,21 @@ public class Application {
 			customerService.saveCustomer(c41, m41);
 			
 			Member m42 = new Member();
-			m41.setMemberId("dealer");
-			m41.setPassword(new BCryptPasswordEncoder().encode("1234")); // 비밀번호 암호화
-			m41.setPassword2(m41.getPassword());
-			m41.setName("딜러");
-			m41.setPhone("010-0002-0021");
-			m41.setEmail("dealer@naver.com");
-			m41.setGender("남성");
-			m41.setJoinDate(LocalDateTime.now());
-			m41.setRole(Role.DEALER);
+			m42.setMemberId("dealer");
+			m42.setPassword(new BCryptPasswordEncoder().encode("1234")); // 비밀번호 암호화
+			m42.setPassword2(m42.getPassword());
+			m42.setName("딜러");
+			m42.setPhone("010-0002-0021");
+			m42.setEmail("dealer@naver.com");
+			m42.setGender("남성");
+			m42.setJoinDate(LocalDateTime.now());
+			m42.setRole(Role.DEALER);
 			Address a42 = new Address();
-			a41.setCountry("한국");
-			a41.setZipcode("06035");
-			a41.setBasicAddress("서울특별시 강남구 신사동 537-5");
-			a41.setDetailAddress("신사아파트 313동 2012호");
-			m41.setAddress(a42);
+			a42.setCountry("한국");
+			a42.setZipcode("06035");
+			a42.setBasicAddress("서울특별시 강남구 신사동 537-5");
+			a42.setDetailAddress("신사아파트 313동 2012호");
+			m42.setAddress(a42);
 			Dealer dd1 = new Dealer();
 			memberService.saveMember(m42);
 			dealerService.saveDealer(dd1, m42);

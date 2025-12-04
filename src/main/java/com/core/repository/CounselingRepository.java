@@ -14,6 +14,7 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long> {
 
 	// 상태별 필터링을 위한 메서드 추가
 	Page<Counseling> findByStatus(String status, Pageable pageable);
+	Page<Counseling> findByStatusAndCustomerId(String status, Pageable pageable, Long CustomerId);
 
 	// 고객 ID나 연락처를 포함하는 검색을 위한 메서드 추가 (JPA Query Method)
 	// Customer 엔티티를 조인하여 Member의 id 또는 phone을 검색
@@ -24,6 +25,8 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long> {
 			String status1, String customerIdKeyword, 
 			String status2, String phoneKeyword, 
 			Pageable pageable);
+	
+	Page<Counseling> findByCustomerId(Pageable pageable, Long CustomerId);
 	
 	List<Counseling> findByCustomerId(Long id);
 	

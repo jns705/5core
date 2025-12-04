@@ -6,17 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.core.entity.Sale;
+import com.core.repository.CounselingRepository;
 import com.core.repository.SaleRepository;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
 public class SaleService {
 
     private final SaleRepository saleRepository;
-
-    public SaleService(SaleRepository saleRepository) {
-        this.saleRepository = saleRepository;
-    }
 
     public List<Sale> findAll() {
         return saleRepository.findAll();
@@ -28,7 +27,7 @@ public class SaleService {
     }
 
     @Transactional
-    public Sale save(Sale sale) {
+    public Sale saveSale(Sale sale) {
         return saleRepository.save(sale);
     }
 }

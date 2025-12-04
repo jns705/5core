@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <th:block th:replace="~{/top.html}"></th:block>
-  <title>구매 리스트</title>
+  <title>구매 목록</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <style>
     .main-con { max-width: 100%; }
@@ -149,7 +149,7 @@
 <body>
   <div class="container main-con">
     <div class="applyListHeader">
-      <h1>구매 리스트</h1>
+      <h1>구매 목록</h1>
     </div>
 
     <div class="contents">
@@ -178,13 +178,13 @@
           </thead>
           <tbody id="tableBody">
 			<tr th:each="s : ${saleList}">
-				<td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox" onclick="event.stopPropagation();"/></td>
+				<td class="text-center"></td>
 				<td th:text="${s.id}"></td>
-				<td th:text="${s.customer.id}"></td>
-				<td th:text="${s.dealer.id}"></td>
-				<td th:text="${s.vehicle.id}"></td>
-				<td th:text="${s.price}"></td>
-				<td th:text="${#temporals.format(s.saleDate, 'yyyy-MM-dd HH:mm')}"></td>
+				<td >[[${s.customer.member.memberId}]]</td>
+				<td >[[${s.dealer.member.name}]]</td>
+				<td >[[${s.vehicle.id}]]</td>
+				<td >[[${s.price}]]</td>
+				<td >[[${s.saleDate}]]</td>
 			</tr>
           </tbody>
         </table>

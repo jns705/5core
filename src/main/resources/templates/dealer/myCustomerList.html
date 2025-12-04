@@ -311,6 +311,11 @@
 	  background: #fef3c7;
 	  color: #92400e;
 	}
+	
+	.badge--buy {
+		background: #000;
+	  	color: #fff;
+	}
 
 	.badge--lead {
 	  background: #ecfdf3;
@@ -445,6 +450,12 @@
     </div>
     <div class="sidebar__section-title">Navigation</div>
     <ul class="menu-list">
+	  <li>
+	    <a th:href="@{/main}" class="menu-item">
+	      <span class="menu-item__bullet"></span>
+	      <span>메인 대시보드</span>
+	    </a>
+	  </li>
       <li>
         <a th:href="@{/dealer}" class="menu-item">
           <span class="menu-item__bullet"></span>
@@ -460,7 +471,7 @@
       <li>
         <a th:href="@{/dealer/myCustomer}" class="menu-item menu-item--active">
           <span class="menu-item__bullet"></span>
-          <span>고객 관리</span>
+          <span>상담 관리</span>
         </a>
       </li>
       <li>
@@ -552,6 +563,7 @@
 					<span class="badge badge--lead" th:if="${counseling.status == '상담진행중'}">[[${counseling.status}]]</span>
 					<span class="badge badge--pending" th:if="${counseling.status == '상담취소'}">[[${counseling.status}]]</span>
 					<span class="badge badge--vip" th:if="${counseling.status == '상담완료'}">[[${counseling.status}]]</span>
+					<span class="badge badge--buy" th:if="${counseling.status == '구매완료'}">[[${counseling.status}]]</span>
                   </div>
                 </td>
 				

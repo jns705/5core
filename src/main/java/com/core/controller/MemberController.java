@@ -136,11 +136,6 @@ public class MemberController {
 		return "redirect:/member/update/" + member.getMemberId();
 	}
 	
-    @GetMapping("/sale")
-    public String saleMember(Model model) {
-        // 현재 로그인 회원 정보 전달
-        return "member/sale";
-    }
 	
 	// 회원삭제(탈퇴)
 	@GetMapping("/delete/{memberId}")

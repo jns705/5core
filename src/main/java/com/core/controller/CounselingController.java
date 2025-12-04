@@ -63,8 +63,8 @@ public class CounselingController {
 	}
 	
 	// [수정: 페이징, 필터, 검색 기능 통합]
-	@GetMapping("/applyList")
-	public String counselingApplyList(
+	@GetMapping("/applyList/{memberId}")
+	public String counselingApplyList(@PathVariable("memberId") String memberId,
 	    @RequestParam(value="page", defaultValue="0") int page,
 	    @RequestParam(value="statusFilter", required=false, defaultValue="전체 상태") String status,
 	    @RequestParam(value="sortFilter", required=false, defaultValue="등록일 최신순") String sort,
@@ -80,8 +80,11 @@ public class CounselingController {
 			sortObj = Sort.by("createDate").descending();
 		}
 		
+		Member member = memberService.findByMemberId(memberId);
+		Customer customer = customerService.findByMember(member);
+		
 	    Pageable pageable = PageRequest.of(page, 10, sortObj);  
-	    Page<Counseling> counselingPage = counselingService.findCounselingsByFilter(status, keyword, pageable); 
+	    Page<Counseling> counselingPage = counselingService.findCounselingsByFilter(status, keyword, pageable, customer.getId()); 
 
 	    model.addAttribute("applyList", counselingPage.getContent());
 	    model.addAttribute("counselingPage", counselingPage); // 페이징 정보 전달
@@ -136,14 +139,15 @@ public class CounselingController {
 					
 		counselingService.createCounseling(counseling);	
 		
-		return "redirect:/counseling/applyList";
+		return "redirect:/counseling/applyList/"+member.getMemberId();
 	}
 	
 	// 상세 조회 -> 상세/수정 화면
 	@GetMapping("/detail/{id}")
 	public String counselingApplyDetail(@PathVariable("id") Long id, Model model) {
 	    Optional<Counseling> counselingOpt = counselingService.getCounselingById(id);
-	    
+	    Optional<Customer> customer = customerService.findById(counselingOpt.get().getCustomer().getId());
+		Member member = memberService.findByMemberId(customer.get().getMember().getMemberId());
 	    if (counselingOpt.isPresent()) {
 		    // 수정 화면에 필요한 차량 목록 등을 추가합니다.
 		    	List<Vehicle> getVehicleList = vehicleService.getVehicleList();
@@ -189,16 +193,34 @@ public class CounselingController {
 		    RedirectAttributes redirectAttributes,
 		    Model model) {
 		
+		Counseling counseling = counselingService.findById(id);
+		Optional<Customer> customer = customerService.findById(counseling.getCustomer().getId());
+		Member member = memberService.findByMemberId(customer.get().getMember().getMemberId());
+		
 		try {
 		    counselingService.updateCounselingStatus(id, ApplyStatus.COUNSELING_CENCEL.getStatusName());
 		    redirectAttributes.addFlashAttribute("message", "상담신청이 취소되었습니다.");
 		    
 		} catch (IllegalArgumentException e) {
 			redirectAttributes.addFlashAttribute("error", "상담 ID를 찾을 수 없습니다.");
-		    return "redirect:/counseling/applyList";
+		    return "redirect:/counseling/applyList/"+ member.getMemberId();
 		}
 
-		return counselingApplyList(0, null, "전체상태", null, model); 
+		return counselingApplyList(member.getMemberId(), 0, null, "전체상태", null, model); 
+	}
+	
+	/*
+	 * 상담 상태만 수정
+	 */
+	@GetMapping("/update/{id}/{status}")
+	public String updateStatus(@PathVariable("id") Long id, 
+			@PathVariable("status") String status) {
+		
+		Counseling counseling = counselingService.findById(id);
+		counseling.setStatus(status);
+		counselingService.createCounseling(counseling);
+		
+		return "redirect:/dealer/myCustomer";
 	}
 	
 }

@@ -142,4 +142,9 @@ public class VehicleService {
 	public void addVehicle(Vehicle vehicle) {
 		vehicleRepository.save(vehicle);
 	}
+	
+	
+	public Optional<Vehicle> findById(Long id) {
+		return vehicleRepository.findById(id);
+	}
 }
