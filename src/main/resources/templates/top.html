@@ -46,7 +46,8 @@
         </svg>
       </a>
 
-      <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/add}" class="nav-link">관리자</a>
+      <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/list}" class="nav-link">관리자</a>
+	  <a sec:authorize="hasRole('ROLE_DEALER')" th:href="@{/dealer/profile}" class="nav-link">딜러</a>
     </div>
   </div>
 </header>
