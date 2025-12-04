@@ -139,14 +139,15 @@ public class CounselingController {
 					
 		counselingService.createCounseling(counseling);	
 		
-		return "redirect:/counseling/applyList";
+		return "redirect:/counseling/applyList/"+member.getMemberId();
 	}
 	
 	// 상세 조회 -> 상세/수정 화면
 	@GetMapping("/detail/{id}")
 	public String counselingApplyDetail(@PathVariable("id") Long id, Model model) {
 	    Optional<Counseling> counselingOpt = counselingService.getCounselingById(id);
-	    
+	    Optional<Customer> customer = customerService.findById(counselingOpt.get().getCustomer().getId());
+		Member member = memberService.findByMemberId(customer.get().getMember().getMemberId());
 	    if (counselingOpt.isPresent()) {
 		    // 수정 화면에 필요한 차량 목록 등을 추가합니다.
 		    	List<Vehicle> getVehicleList = vehicleService.getVehicleList();
@@ -202,7 +203,7 @@ public class CounselingController {
 		    
 		} catch (IllegalArgumentException e) {
 			redirectAttributes.addFlashAttribute("error", "상담 ID를 찾을 수 없습니다.");
-		    return "redirect:/counseling/applyList";
+		    return "redirect:/counseling/applyList/"+ member.getMemberId();
 		}
 
 		return counselingApplyList(member.getMemberId(), 0, null, "전체상태", null, model); 
