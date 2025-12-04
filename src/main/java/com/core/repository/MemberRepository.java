@@ -55,5 +55,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             Pageable pageable);
             
     Optional<Member> findById(Long id);
+
+	public final String UPDATE_MEMBER_STATUS = "update member set status = :status where id = :id";
+	@Transactional
+	@Modifying
+	@Query(value = UPDATE_MEMBER_STATUS, nativeQuery = true)
+    int queryUpdateStatus(@Param("id") Long id, @Param("status") String status);
 	
 }
