@@ -22,10 +22,12 @@ import com.core.entity.Counseling;
 import com.core.entity.Dealer;
 import com.core.entity.Member;
 import com.core.entity.Role;
+import com.core.entity.Sale;
 import com.core.service.CounselingService;
 import com.core.service.CustomerService;
 import com.core.service.DealerService;
 import com.core.service.MemberService;
+import com.core.service.SaleService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +41,7 @@ public class MainController {
 	private final CustomerService customerService;
 	private final DealerService dealerService;
 	private final CounselingService counselingService;
+	private final SaleService saleService;
 
 
 	@GetMapping("/main")
@@ -132,23 +135,25 @@ public class MainController {
 	// 딜러의 상담고객
 	@GetMapping("/dealer/myCustomer")
 	public String requestMyCustomer(@RequestParam(value="page", defaultValue="0") int page,
+			@RequestParam(value="keyword", required=false, defaultValue="all") String keyword,
 			Principal principal,
 			Model model) {
 
-		Sort sortObj = Sort.by("createDate").ascending();
+		Sort sortObj = Sort.by("status").ascending();
 		Pageable pageable = PageRequest.of(page, 10, sortObj);  
 
 
 		Member member = memberService.findByMemberId(principal.getName());
 		Dealer dealer = dealerService.findByMember(member);
-		Page<Counseling> counselingList = counselingService.findByDealerId(dealer.getId(), pageable);
+		Page<Counseling> counselingList = counselingService.findByDealerIdAndStatusNot(dealer.getId(), "구매완료", pageable, keyword);
 
 		model.addAttribute("counselingList", counselingList);
+		model.addAttribute("keyword", keyword);  // 버튼 상태용
 
 		return "dealer/myCustomerList";
 	}
 
-	// 딜러의 상담고객
+	// 딜러의 상세 상담고객
 	@GetMapping("/dealer/myCustomer/{id}")
 	public String requestMyCustomerDetail(@PathVariable("id") Long id,
 			Model model) {
@@ -158,6 +163,24 @@ public class MainController {
 		model.addAttribute("counseling", counseling);
 
 		return "dealer/myCustomerDetail";
+	}
+	
+	// 딜러 판매리스트
+	@GetMapping("/dealer/sale")
+	public String requestSaleList(Principal principal,
+			@RequestParam(value="page", defaultValue="0") int page,
+			Model model) {
+
+		Member member = memberService.findByMemberId(principal.getName());
+		Dealer dealer = dealerService.findByMember(member);
+		
+		Sort sortObj = Sort.by("id").descending();
+		Pageable pageable = PageRequest.of(page, 10, sortObj);  
+		Page<Sale> paging = saleService.findByDealer(pageable, dealer);
+
+		model.addAttribute("saleList", paging);
+
+		return "dealer/saleList";
 	}
 
 	/*

@@ -1,6 +1,6 @@
 package com.core.controller;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +71,7 @@ public class SaleController {
     	sale.setVehicle(vehicle.get());
     	
     	sale.setPrice(price);
-    	sale.setSaleDate(LocalDate.now().toString());
+    	sale.setSaleDate(LocalDateTime.now());
     	
     	saleService.saveSale(sale);
     	

@@ -31,6 +31,8 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long> {
 	List<Counseling> findByCustomerId(Long id);
 	
 	// 딜러별 상담 조회
-	Page<Counseling> findByDealerId(Long DealerId, Pageable pageable);
+	Page<Counseling> findByDealerIdAndStatusNot(Long DealerId, String status, Pageable pageable);
+	
+	Page<Counseling> findByDealerIdAndStatus(Long DealerId, String status, Pageable pageable);
 }
 

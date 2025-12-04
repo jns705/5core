@@ -1,5 +1,7 @@
 package com.core.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -19,7 +21,7 @@ public class Sale {
 
     // 판매 일자 
     @Column(columnDefinition = "datetime default now()")
-    private String saleDate;
+    private LocalDateTime saleDate;
 
     // 최종 판매 가격 
     private int price;
