@@ -28,6 +28,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			
 			if(authority.getAuthority().equals("ROLE_DEALER")) { // 딜러 권한
 				redirectUrl = "/dealer";
+			} else if(authority.getAuthority().equals("ROLE_ADMIN")) { // 딜러 권한
+				redirectUrl = "/admin/list";
 			} else { // 고객 권한
 				redirectUrl = "/main";
 			}
