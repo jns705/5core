@@ -1,7 +1,6 @@
 package com.core.controller;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +44,7 @@ public class SaleController {
     public String saleList(Model model) {
         List<Sale> saleList = saleService.findAll();
         model.addAttribute("saleList", saleList);
-        return "member/sale"; 
+        return "member/saleList";
     }
     
     // 딜러 상담 후 구매확정
