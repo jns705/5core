@@ -35,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 //@RequestMapping("/main")
 public class MainController {
 	
+	
 	private final MemberService memberService;
 	private final CustomerService customerService;
 	private final DealerService dealerService;
@@ -220,12 +221,6 @@ public class MainController {
 		model.addAttribute("currentSort", String.format("%s,%s", sortProperty, sortDirection));
 
 		return "admin/list";
-	}
-	
-	@GetMapping("/admin/report")
-	public String requestAdminReport() {
-		
-		return "admin/report";
 	}
 	
 
