@@ -160,9 +160,7 @@
 		}
 		
     </style>
-
 </head>
-
 <body>
 
 <!-- ================= Header ================= -->
@@ -171,20 +169,15 @@
     <p>전국의 충전소 지점을 검색하고, 지도에서 위치를 확인하세요.</p>
 </div>
 
-
 <!-- ================= Main Layout ================= -->
 <div class="content-wrapper">
-
     <!-- LEFT: Search Sidebar -->
     <section class="search-sidebar">
-
         <div class="sidebar-title">
             <img th:src="@{/icons/map.png}" class="map-icon">
             <h2>충전소 지점 검색</h2>
         </div>
-
         <form name="chargerSchForm" onsubmit="return false;">
-
 			<div class="form-group">
 			    <select id="chargingStation" name="station" class="form-select" >
 			        <option value="">-- 충전소 지점을 선택하세요 --</option>
@@ -195,27 +188,21 @@
 			            th:data-lat="${charger.lat}"
 			            th:data-lng="${charger.lng}"
 			            th:data-addr="${charger.addr}"> </option>
-			    </select>
-			    
+			    </select>			    
 			    <input type="text" id="chargerAddress" readonly="readonly" placeholder="선택한 충전소 주소" class="form-add">
 			</div>
 
             <div class="form-group">
                <button type="submit" class="form-btn">선택 지점 검색 & 지도 이동</button>
             </div>
-
         </form>
-
     </section>
-
 
     <!-- RIGHT: Map -->
     <section class="map-area">
-
         <div id="map-loader" class="map-loader">
             <div class="spinner"></div>
         </div>
-
         <div id="map"></div>
 
         <!-- google js -->
@@ -259,7 +246,6 @@
                 moveAndMarkMap(firstLat, firstLng, firstStatNm);
             }
         }
-
         // 로딩 제거 + 지도 표시
         document.getElementById("map-loader").style.display = "none";
         document.getElementById("map").style.display = "block";
@@ -270,9 +256,7 @@
         if (!map) return;
 
         let position = { lat: lat, lng: lng };
-
         map.setCenter(position);
-
         if (currentMarker) {
             currentMarker.setMap(null);
         }
@@ -290,10 +274,8 @@
         map.setZoom(15);
     }
 
-
     // 버튼 클릭 이벤트
     document.addEventListener('DOMContentLoaded', function() {
-
         let stationSelect = document.getElementById('chargingStation');
         let searchForm = document.querySelector('form[name="chargerSchForm"]');
 
@@ -301,15 +283,14 @@
             event.preventDefault();
 
             let selectedOption = stationSelect.options[stationSelect.selectedIndex];
-
             if (!selectedOption.value) {
                 alert('충전소 지점을 선택해 주세요.');
                 return;
             }
 
-            const lat = parseFloat(selectedOption.dataset.lat);
-            const lng = parseFloat(selectedOption.dataset.lng);
-            const stationName = selectedOption.textContent;
+            let lat = parseFloat(selectedOption.dataset.lat);
+            let lng = parseFloat(selectedOption.dataset.lng);
+            let stationName = selectedOption.textContent;
 
             if (isNaN(lat) || isNaN(lng)) {
                 alert("위치 정보가 올바르지 않습니다.");
@@ -318,10 +299,8 @@
 
             moveAndMarkMap(lat, lng, stationName);
         });
-
     });
 
-	// 문서 로드 후 실행
     document.addEventListener('DOMContentLoaded', function() {
         let selectBox = document.getElementById('chargingStation');
         let addressInput = document.getElementById('chargerAddress');
