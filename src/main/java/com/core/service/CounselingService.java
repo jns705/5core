@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.core.entity.Counseling;
-import com.core.entity.Dealer;
 import com.core.repository.CounselingRepository;
 
 import lombok.RequiredArgsConstructor;

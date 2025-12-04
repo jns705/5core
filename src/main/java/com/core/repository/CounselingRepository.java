@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.core.entity.Counseling;
-import com.core.entity.Dealer;
 
 @Repository
 public interface CounselingRepository extends JpaRepository<Counseling, Long> {
