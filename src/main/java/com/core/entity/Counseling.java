@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.Valid;
@@ -89,6 +90,25 @@ public class Counseling {
 	
 	// 수정 날짜와 시간
 	private LocalDateTime modifyDate;
+	
+	
+	/*
+	- AI 추천 저장
+	- json형식으로 넘어오는 내용을 문자열로 바로 저장 
+	*/
+	@Column(columnDefinition = "TEXT")
+	private String aiRecommendJson;    // 추천 후보
+	
+	@Column(columnDefinition = "TEXT")
+	private String finalRecommendJson; // 최종 추천
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }
