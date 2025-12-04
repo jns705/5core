@@ -1,5 +1,7 @@
 package com.core.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.core.entity.Dealer;
@@ -21,5 +23,9 @@ public class DealerService {
 	
 	public Dealer findByMember(Member member) {
 		return dealerRepository.findByMember(member).get();
+	}
+	
+	public Optional<Dealer> findById(Long id) {
+		return dealerRepository.findById(id);
 	}
 }

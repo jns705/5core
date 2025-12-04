@@ -488,18 +488,23 @@
 </head>
 <script>
 	document.addEventListener("DOMContentLoaded", () => {
-		let status = document.querySelectorAll(".status");
-		let btnCounseling = document.querySelectorAll(".btnCounseling");
-		let counselingId = document.querySelectorAll(".counselingId");
-		let counselingLikeTime = document.querySelectorAll(".counselingLikeTime");
-		
-		for(let i=0; i<btnCounseling.length; i++) {
-			btnCounseling[i].addEventListener("click", function() {
-				if(status[i].value == "상담대기") alert("상담진행중으로 변경해주세요");
-				location.href = "/5core/care/choice/" + counselingId[i].value + "/" + status[i].value + "/" + counselingLikeTime[i].value;
-			});
-		}
+		let price = document.querySelector("#price");
 	});
+	
+	//상담상태 수정
+	function updateStatus(id, status) { 
+		location.href = "/5core/counseling/update/" + id + "/" + status;
+	}
+	
+	// 구매
+	function createSale(id) {
+		if(price.value <= 0 || price.value == null) {
+			alert("가격 입력 오류");
+			return;
+		}
+		location.href = "/5core/sale/create/" + id + "/" + price.value;
+	}
+
 </script>
 <body>
 
@@ -635,15 +640,15 @@
 	          <div class="detail-grid">
 	            <div class="detail-field detail-field--full">
 	              <label class="detail-label">제안 가격 (원)</label>
-	              <input class="detail-input" type="number" min="0"
+	              <input class="detail-input" id="price" type="number" min="0"
 	                     placeholder="제안할 차량 가격을 입력하세요">
 	            </div>
 	          </div>
 
 	          <div class="detail-actions">
-				<a class="btn btn--danger btnStatus">상담취소</a>
-	            <a class="btn btn--ghost btnStatus">상담완료</a>
-	            <a class="btn btn--primary buy">구매완료</a>
+				<a th:href="|javascript:updateStatus('${id}', '상담취소')|" class="btn btn--danger">상담취소</a>
+	            <a th:href="|javascript:updateStatus('${id}', '상담완료')|" class="btn btn--ghost">상담완료</a>
+	            <a th:href="|javascript:createSale('${id}')|" class="btn btn--primary">구매완료</a>
 	          </div>
 	        </div>
 	      </div>

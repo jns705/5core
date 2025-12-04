@@ -178,13 +178,13 @@
           </thead>
           <tbody id="tableBody">
 			<tr th:each="s : ${saleList}">
-				<td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox" onclick="event.stopPropagation();"/></td>
+				<td class="text-center"></td>
 				<td th:text="${s.id}"></td>
-				<td th:text="${s.customer.id}"></td>
-				<td th:text="${s.dealer.id}"></td>
-				<td th:text="${s.vehicle.id}"></td>
-				<td th:text="${s.price}"></td>
-				<td th:text="${#temporals.format(s.saleDate, 'yyyy-MM-dd HH:mm')}"></td>
+				<td >[[${s.customer.member.memberId}]]</td>
+				<td >[[${s.dealer.member.name}]]</td>
+				<td >[[${s.vehicle.id}]]</td>
+				<td >[[${s.price}]]</td>
+				<td >[[${s.saleDate}]]</td>
 			</tr>
           </tbody>
         </table>

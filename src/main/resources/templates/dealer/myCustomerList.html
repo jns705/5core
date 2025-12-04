@@ -311,6 +311,11 @@
 	  background: #fef3c7;
 	  color: #92400e;
 	}
+	
+	.badge--buy {
+		background: #000;
+	  	color: #fff;
+	}
 
 	.badge--lead {
 	  background: #ecfdf3;
@@ -552,6 +557,7 @@
 					<span class="badge badge--lead" th:if="${counseling.status == '상담진행중'}">[[${counseling.status}]]</span>
 					<span class="badge badge--pending" th:if="${counseling.status == '상담취소'}">[[${counseling.status}]]</span>
 					<span class="badge badge--vip" th:if="${counseling.status == '상담완료'}">[[${counseling.status}]]</span>
+					<span class="badge badge--buy" th:if="${counseling.status == '구매완료'}">[[${counseling.status}]]</span>
                   </div>
                 </td>
 				

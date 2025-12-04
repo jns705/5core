@@ -12,4 +12,6 @@ import com.core.entity.Member;
 public interface CustomerRepository extends JpaRepository<Customer, Long>{
 
 	Optional<Customer> findByMember(Member member);
+	
+	
 }

@@ -201,4 +201,18 @@ public class CounselingController {
 		return counselingApplyList(0, null, "전체상태", null, model); 
 	}
 	
+	/*
+	 * 상담 상태만 수정
+	 */
+	@GetMapping("/update/{id}/{status}")
+	public String updateStatus(@PathVariable("id") Long id, 
+			@PathVariable("status") String status) {
+		
+		Counseling counseling = counselingService.findById(id);
+		counseling.setStatus(status);
+		counselingService.createCounseling(counseling);
+		
+		return "redirect:/dealer/myCustomer";
+	}
+	
 }
