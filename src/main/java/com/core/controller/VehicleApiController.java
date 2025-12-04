@@ -36,6 +36,7 @@ public class VehicleApiController {
             item.put("name", v.getName());
             item.put("vehicleType", v.getVehicleType());
             item.put("fuelType", v.getFuelType());
+            item.put("fileName", v.getFileName());
             item.put("finalPrice", v.getFinalPrice());
 
             result.add(item);

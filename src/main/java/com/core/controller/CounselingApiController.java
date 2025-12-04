@@ -29,8 +29,7 @@ public class CounselingApiController {
     @GetMapping("/{counselingId}")
     public Map<String, Object> getCounseling(@PathVariable("counselingId") Long counselingId) {
 
-        Counseling c = counselingRepository.findById(counselingId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Counseling c = counselingRepository.findById(counselingId).get();
 
         Map<String, Object> result = new HashMap<>();
 
@@ -65,14 +64,22 @@ public class CounselingApiController {
 	// - json을 문자열로 받아서 바로 저장
 	@PostMapping("/{counselingId}/ai-recommendations")
 	public void saveAiRecommend(@PathVariable("counselingId") Long counselingId, @RequestBody String json) {
-		Counseling counseling = counselingRepository.findById(counselingId).get();
+		Counseling c = counselingRepository.findById(counselingId).get();
 		
-		counseling.setAiRecommendJson(json);
-		counselingRepository.save(counseling);
+		c.setAiRecommendJson(json);
+		counselingRepository.save(c);
 	}
 	
 	
-	
+	// 딜러가 선택한 최종 추천 차량 저장
+	// - json을 문자열로 받아서 바로 저장
+	@PostMapping("/{counselingId}/final-recommendations")
+	public void saveFinalRecommend(@PathVariable("counselingId") Long counselingId, @RequestBody String json) {
+		Counseling c = counselingRepository.findById(counselingId).get();
+		
+		c.setFinalRecommendJson(json);
+		counselingRepository.save(c);
+	}
 	
 	
 	
