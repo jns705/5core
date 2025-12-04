@@ -13,7 +13,7 @@
       <li><a th:href="@{/vehicles}" class="hyu-nav-link">모델</a></li>
       <li><a href="#" class="hyu-nav-link">구매</a></li>
       <li><a th:href="@{/bluemembers}" class="hyu-nav-link">블루멤버스</a></li>
-      <li><a href="#" class="hyu-nav-link">보조금 · 충전소 안내</a></li>
+      <li><a th:href="@{/chargers/searchMap}" class="hyu-nav-link">보조금 · 충전소 안내</a></li>
       <li><a th:href="@{/support}" class="hyu-nav-link">고객센터</a></li>
       <li><a th:href="@{/event}" class="hyu-nav-link">이벤트</a></li>
     </ul>
@@ -57,8 +57,8 @@
     height: 80px;
     display: flex;
     align-items: center;
-    justify-content: center;    /* ✅ 전체를 가운데로 모으기 */
-    column-gap: 200px;           /* ✅ 세 덩어리 사이 간격 */
+    justify-content: center;
+    column-gap: 200px; 
   }
 
   /* 왼쪽 로고 */
@@ -78,7 +78,7 @@
     gap: 32px;
     margin: 0;
     padding: 0;
-    flex: 0 0 auto;            /* ✅ 더 이상 넓게 퍼지지 않게 */
+    flex: 0 0 auto; 
   }
 
   .hyu-nav-link {
@@ -108,7 +108,7 @@
     align-items: center;
     gap: 16px;
     flex: 0 0 auto;
-    margin-left: 0;      /* ✅ 양 끝으로 밀지 않기 */
+    margin-left: 0;
     margin-right: 0;
   }
 
