@@ -95,6 +95,36 @@ public class CounselingService {
 	    return counselingRepository.findAll(pageable);
 	}
 	
+	public Page<Counseling> findCounselingsByFilter(String status, String keyword, Pageable pageable, Long customerId) {
+	    // 1. 상태 필터만 적용 (검색어 없음)
+	    if ((keyword == null || keyword.trim().isEmpty()) && (status != null && !status.equals("전체 상태"))) {
+	        return counselingRepository.findByStatusAndCustomerId(status, pageable, customerId);
+	    }
+	    
+	    // 2. 검색어만 적용 (전체 상태)
+	    if (status == null || status.equals("전체 상태")) {
+	        if (keyword != null && !keyword.trim().isEmpty()) {
+	            String searchKeyword = keyword.trim();
+	            return counselingRepository.findByCustomer_Member_IdContainingOrCustomer_Member_PhoneContaining(
+	                    searchKeyword, searchKeyword, pageable);
+	        }
+	        // 3. 필터/검색어 모두 없음 (전체 조회)
+	        return counselingRepository.findByCustomerId(pageable, customerId);
+	    }
+	    
+	    // 4. 상태 필터와 검색어 모두 적용
+	    if (status != null && !status.equals("전체 상태") && keyword != null && !keyword.trim().isEmpty()) {
+	        String searchKeyword = keyword.trim();
+	        return counselingRepository.findByStatusAndCustomer_Member_IdContainingOrStatusAndCustomer_Member_PhoneContaining(
+	                status, searchKeyword, 
+	                status, searchKeyword, 
+	                pageable);
+	    }
+	    
+	    // 5. 기본: 전체 조회
+	    return counselingRepository.findByCustomerId(pageable, customerId);
+	}
+	
 	
 	@Transactional
 	public Counseling createCounseling(Counseling counseling) {

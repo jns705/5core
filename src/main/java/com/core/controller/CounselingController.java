@@ -63,8 +63,8 @@ public class CounselingController {
 	}
 	
 	// [수정: 페이징, 필터, 검색 기능 통합]
-	@GetMapping("/applyList")
-	public String counselingApplyList(
+	@GetMapping("/applyList/{memberId}")
+	public String counselingApplyList(@PathVariable("memberId") String memberId,
 	    @RequestParam(value="page", defaultValue="0") int page,
 	    @RequestParam(value="statusFilter", required=false, defaultValue="전체 상태") String status,
 	    @RequestParam(value="sortFilter", required=false, defaultValue="등록일 최신순") String sort,
@@ -80,8 +80,11 @@ public class CounselingController {
 			sortObj = Sort.by("createDate").descending();
 		}
 		
+		Member member = memberService.findByMemberId(memberId);
+		Customer customer = customerService.findByMember(member);
+		
 	    Pageable pageable = PageRequest.of(page, 10, sortObj);  
-	    Page<Counseling> counselingPage = counselingService.findCounselingsByFilter(status, keyword, pageable); 
+	    Page<Counseling> counselingPage = counselingService.findCounselingsByFilter(status, keyword, pageable, customer.getId()); 
 
 	    model.addAttribute("applyList", counselingPage.getContent());
 	    model.addAttribute("counselingPage", counselingPage); // 페이징 정보 전달
@@ -189,6 +192,10 @@ public class CounselingController {
 		    RedirectAttributes redirectAttributes,
 		    Model model) {
 		
+		Counseling counseling = counselingService.findById(id);
+		Optional<Customer> customer = customerService.findById(counseling.getCustomer().getId());
+		Member member = memberService.findByMemberId(customer.get().getMember().getMemberId());
+		
 		try {
 		    counselingService.updateCounselingStatus(id, ApplyStatus.COUNSELING_CENCEL.getStatusName());
 		    redirectAttributes.addFlashAttribute("message", "상담신청이 취소되었습니다.");
@@ -198,7 +205,7 @@ public class CounselingController {
 		    return "redirect:/counseling/applyList";
 		}
 
-		return counselingApplyList(0, null, "전체상태", null, model); 
+		return counselingApplyList(member.getMemberId(), 0, null, "전체상태", null, model); 
 	}
 	
 	/*
