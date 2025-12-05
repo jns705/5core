@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>상담 신청 명단</title>
+  <title>판매 내역</title>
 
   <style>
     * {
@@ -392,6 +392,13 @@
       gap: 8px;
     }
 
+	.price-group{
+		margin-right: 15px;
+		color: #000;
+		font-size: 1.2em;
+		font-weight: 700;
+	}
+	
     @media (max-width: 960px) {
       body {
         flex-direction: column;
@@ -429,7 +436,12 @@
 </head>
 <script>
 	document.addEventListener("DOMContentLoaded", () => {
+		let price = document.querySelectorAll(".price");
+		let totalPrice = document.querySelector(".totalPrice");
+		let total = 0;
 		
+		price.forEach(i => total+=parseInt(i.value));
+		totalPrice.textContent = total.toLocaleString('ko-KR');
 		
 	});
 </script>
@@ -499,33 +511,18 @@
     <div class="content">
       <div class="page-header-row">
         <div>
-          <h1 class="page-title">상담 관리</h1>
-          <p class="page-subtitle">상담 고객 명단</p>
+          <h1 class="page-title">판매 내역</h1>
+          <p class="page-subtitle">구매 고객 명단</p>
         </div>
-        <div class="filter-group">
-          <span>보기:</span>
-		  <button type="button" 
-		          th:class="${keyword == 'all'} ? 'changeStatus filter-pill filter-pill--active' : 'changeStatus filter-pill'" 
-		          data-keyword="all">전체</button>
-
-		  <button type="button" 
-		          th:class="${keyword == '상담진행중'} ? 'changeStatus filter-pill filter-pill--active' : 'changeStatus filter-pill'" 
-		          data-keyword="상담진행중">상담진행중</button>
-
-		  <button type="button" 
-		          th:class="${keyword == '상담취소'} ? 'changeStatus filter-pill filter-pill--active' : 'changeStatus filter-pill'" 
-		          data-keyword="상담취소">상담취소</button>
-
-		  <button type="button" 
-		          th:class="${keyword == '상담완료'} ? 'changeStatus filter-pill filter-pill--active' : 'changeStatus filter-pill'" 
-		          data-keyword="상담완료">상담완료</button>
+        <div class="filter-group price-group">
+          <span>총 판매금액 : <sapn class="totalPrice"></sapn> 원</span>
         </div>
       </div>
 
       <section class="card">
         <div class="card__header">
           <div>
-            <h2 class="card__title">상담 리스트</h2>
+            <h2 class="card__title">구매 리스트</h2>
             <p class="card__subtitle">
               총: [[${#lists.size(saleList.content)}]]건
             </p>
@@ -548,7 +545,7 @@
             </thead>
             <tbody>
               <tr th:each="sale, saleStat : ${saleList}" class="care-row">
-				
+				<input type="hidden" th:value="${sale.price}" class="price">
                 <td >[[${saleStat.count}]]</td>
                 <td >[[|${#temporals.format(sale.saleDate, 'yyyy-MM-dd')}|]]</td>
                 <td >[[${sale.customer.member.name}]]</td>
