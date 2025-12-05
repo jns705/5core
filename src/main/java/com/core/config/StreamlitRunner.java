@@ -39,6 +39,11 @@ public class StreamlitRunner implements ApplicationRunner {
 			return;
 		}
 		
+		if(!Files.exists(aiServerDir.resolve("applyDetail.py"))) {
+			System.err.println("applyDetail.py가 존재하지 않음");
+			return;
+		}
+		
 		// Streamlit run app.py --server.baseUrlPath=5core --server.port=8501 커맨드 실행
 		ProcessBuilder builder = new ProcessBuilder(
                 pythonPath.toString(),
@@ -47,12 +52,37 @@ public class StreamlitRunner implements ApplicationRunner {
                 "--server.baseUrlPath=5core",
                 "--server.port=8501"
         );
+		
+        // applyDetailRecommend: 상담 상세 차량 추천 (8502)
+		ProcessBuilder applyDetailRecommend = new ProcessBuilder(
+                pythonPath.toString(),
+                "-m", "streamlit", "run",
+                "applyDetail.py",
+                "--server.baseUrlPath=5core",
+                "--server.port=8502"
+        );
+		
+        // dealerSaleGraph: 판매 실적 그래프 (8503)
+		ProcessBuilder dealerSaleGraph = new ProcessBuilder(
+		    pythonPath.toString(), "-m", "streamlit", "run",
+		    "sales_graph.py",
+		    "--server.baseUrlPath=5core",
+		    "--server.port=8503"
+		);
+		
 		// 실행 디렉토리
 		builder.directory(aiServerDir.toFile());
+		applyDetailRecommend.directory(aiServerDir.toFile());
+		dealerSaleGraph.directory(aiServerDir.toFile());
+		
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸
 		builder.start();
+		applyDetailRecommend.start();
+		dealerSaleGraph.start();
 		System.out.println("Streamlit이 실행됨");
+		System.out.println("판매 실적 그래프(딜러) 실행됨");
 	}
+	
 
 }
