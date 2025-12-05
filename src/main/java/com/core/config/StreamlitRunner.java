@@ -34,8 +34,8 @@ public class StreamlitRunner implements ApplicationRunner {
 			return;
 		}
 		
-		if(!Files.exists(aiServerDir.resolve("app.py"))) {
-			System.err.println("app.py가 존재하지 않음");
+		if(!Files.exists(aiServerDir.resolve("ai_for_dealer.py"))) {
+			System.err.println("ai_for_dealer.py가 존재하지 않음");
 			return;
 		}
 		
@@ -44,11 +44,11 @@ public class StreamlitRunner implements ApplicationRunner {
 			return;
 		}
 		
-		// Streamlit run app.py --server.baseUrlPath=5core --server.port=8501 커맨드 실행
+		// Streamlit run ai_for_delaer.py --server.baseUrlPath=5core --server.port=8501 커맨드 실행
 		ProcessBuilder builder = new ProcessBuilder(
                 pythonPath.toString(),
                 "-m", "streamlit", "run",
-                "app.py",
+                "ai_for_dealer.py",
                 "--server.baseUrlPath=5core",
                 "--server.port=8501"
         );
