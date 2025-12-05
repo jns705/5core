@@ -172,7 +172,7 @@
         </table>
       </section>
 
-<!--      <section class="d-flex justify-content-end align-items-center mt-3"> 
+     <section class="d-flex justify-content-end align-items-center mt-3"> 
         <div class="mb-2 mb-sm-0">
           <a th:href="@{|/member/update/${#authentication.getPrincipal().getUsername()}|}" class="btn btn-outline li-btn">
             회원정보 페이지
@@ -181,125 +181,86 @@
             엑셀 다운로드
           </button>
         </div>
-      </section>-->
-
-<!--      <section class="d-flex justify-content-center mt-3 mb-5">
-        <nav th:if="${salePage.totalPages > 1}" aria-label="구매신청 페이지">
-          <ul class="pagination pagination-sm mb-0">
-            <li class="page-item" th:classappend="${salePage.first} ? 'disabled'">
-              <a class="page-link"
-                 th:href="@{/member/sale(page=${salePage.number - 1}, keyword=${keyword})}"
-                 tabindex="-1"
-                 aria-disabled="true">이전</a>
-            </li>
-            <li th:each="i : ${#numbers.sequence(0, salePage.totalPages - 1)}"
-                th:class="${i == salePage.number} ? 'page-item active' : 'page-item'">
-              <a class="page-link"
-                 th:text="${i + 1}"
-                 th:href="@{/member/sale(page=${i}, keyword=${keyword})}"></a>
-            </li>
-            <li class="page-item" th:classappend="${salePage.last} ? 'disabled'">
-              <a class="page-link"
-                 th:href="@{/member/sale(page=${salePage.number + 1}, keyword=${keyword})}">다음</a>
-            </li>
-          </ul>
-        </nav>
-      </section>-->
+      </section>
     </div>
   </div>
 
-<!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    /* ====== 요소 선택 ====== */
-    let selectAllCheckbox = document.getElementById('selectAll');
-    let rowCheckboxes = () => document.querySelectorAll('input.rowCheckbox');
-    let searchInput = document.getElementById('searchInput');
-    let tableBody = document.getElementById('tableBody');
-    let btnExcelDownload = document.getElementById('btnExcelDownload');
 
-    /* ====== 서버 요청 유틸 함수 (🔧 필터 파라미터 완전 제거) ====== */
-    function buildQueryString(page = 0) {
-      let keyword = searchInput.value.trim();
-      
-      let params = new URLSearchParams();
-      params.append('page', page);
-      if (keyword !== '') params.append('keyword', keyword);
-      
-      return params.toString();
-    }
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      /* ====== 요소 선택 ====== */
+      let selectAllCheckbox = document.getElementById('selectAll');
+      let rowCheckboxes = () => document.querySelectorAll('input.rowCheckbox');
+      let tableBody = document.getElementById('tableBody');
+      let btnExcelDownload = document.getElementById('btnExcelDownload');
 
-    function applyFiltersAndSorting() {
-      window.location.href = `/5core/member/sale?${buildQueryString(0)}`;
-    }
-
-    /* ====== 체크박스 기능 ====== */
-    function handleSelectAllChange() {
-      let checked = selectAllCheckbox.checked;
-      rowCheckboxes().forEach((cb) => {
-        cb.checked = checked;
-      });
-    }
-
-    /* ====== 엑셀 다운로드 ====== */
-    function tableToCSVWithSelection() {
-      let rows = [];
-      let headers = [];
-      document.querySelectorAll('table thead th').forEach((th, idx) => {
-        if (idx === 0 || idx === document.querySelectorAll('table thead th').length - 1) return;
-        let text = th.textContent.trim();
-        if (text !== '') headers.push(`"${text}"`);
-      });
-      rows.push(headers.join(','));
-
-      let checkedBoxes = Array.from(rowCheckboxes()).filter((cb) => cb.checked);
-      checkedBoxes.forEach((cb) => {
-        let tr = cb.closest('tr');
-        if (!tr) return;
-        let data = [];
-        tr.querySelectorAll('td').forEach((td, idx) => {
-          if (idx === 0 || idx === tr.querySelectorAll('td').length - 1) return;
-          let text = td.textContent.trim().replace(/"/g, '""');
-          data.push(`"${text}"`);
+      /* ====== 체크박스 기능 ====== */
+      function handleSelectAllChange() {
+        let checked = selectAllCheckbox.checked;
+        rowCheckboxes().forEach((cb) => {
+          cb.checked = checked;
         });
-        if (data.length) rows.push(data.join(','));
-      });
-      return rows.join('\n');
-    }
-
-    function downloadCSV(csv, filename) {
-      let BOM = '\uFEFF';
-      let blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
-      let url = URL.createObjectURL(blob);
-      let link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
-
-    function handleExcelDownload() {
-      let checkedBoxes = Array.from(rowCheckboxes()).filter((cb) => cb.checked);
-      if (checkedBoxes.length === 0) {
-        alert('다운로드할 상담리스트를 선택해 주세요.');
-        return;
       }
-      if (!confirm(`선택된 ${checkedBoxes.length}건의 데이터를 CSV(엑셀)로 다운로드하시겠습니까?`)) return;
-      let csvData = tableToCSVWithSelection();
-      let dateStr = new Date().toISOString().slice(0, 10);
-      downloadCSV(csvData, `구매신청리스트_${dateStr}.csv`);
-    }
 
-    /* ====== 이벤트 연결 (🔧 필터 이벤트 완전 제거) ====== */
-    selectAllCheckbox.addEventListener('change', handleSelectAllChange);
-    searchInput.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') applyFiltersAndSorting();
-    });
-    btnExcelDownload.addEventListener('click', handleExcelDownload);
-    tableBody.addEventListener('click', handleActionClick);
-  </script>-->
+      /* ====== 엑셀 다운로드 ====== */
+      function tableToCSVWithSelection() {
+        let rows = [];
+        let headers = [];
+
+        document.querySelectorAll('table thead th').forEach((th, idx) => {
+          if (idx === 0) return; // 체크박스 열 제외
+
+          let text = th.textContent.trim();
+          if (text !== '') headers.push(`"${text}"`);
+        });
+        rows.push(headers.join(','));
+
+        let checkedBoxes = Array.from(rowCheckboxes()).filter((cb) => cb.checked);
+        checkedBoxes.forEach((cb) => {
+          let tr = cb.closest('tr');
+          if (!tr) return;
+          let data = [];
+          tr.querySelectorAll('td').forEach((td, idx) => {
+            if (idx === 0) return; // 체크박스 열 제외
+
+            let text = td.textContent.trim().replace(/"/g, '""');
+            data.push(`"${text}"`);
+          });
+          if (data.length) rows.push(data.join(','));
+        });
+        return rows.join('\n');
+      }
+
+      function downloadCSV(csv, filename) {
+        let BOM = '\uFEFF';
+        let blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+
+      function handleExcelDownload() {
+        let checkedBoxes = Array.from(rowCheckboxes()).filter((cb) => cb.checked);
+        if (checkedBoxes.length === 0) {
+          alert('다운로드할 구매목록을 선택해 주세요.');
+          return;
+        }
+        if (!confirm(`선택된 ${checkedBoxes.length}건의 데이터를 CSV(엑셀)로 다운로드하시겠습니까?`)) return;
+        let csvData = tableToCSVWithSelection();
+        let dateStr = new Date().toISOString().slice(0, 10);
+        downloadCSV(csvData, `구매신청리스트_${dateStr}.csv`);
+      }
+
+      /* ====== 이벤트 연결 ====== */
+      selectAllCheckbox.addEventListener('change', handleSelectAllChange);
+      btnExcelDownload.addEventListener('click', handleExcelDownload);
+    </script>
   <th:block th:replace="~{/bottom.html}"></th:block>
 </body>
 </html>
