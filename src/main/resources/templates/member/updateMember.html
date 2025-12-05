@@ -401,9 +401,9 @@
       <aside class="sidebar" aria-label="마이페이지 메뉴">
         <div class="sidebar__section-title">마이페이지</div>
         <ul class="sidebar__menu">
-          <li class="sidebar__item">
-            <a href="#" class="sidebar__link">상담 목록</a>
-          </li>
+		  <li class="sidebar__item">
+		    <a th:href="@{|/counseling/applyList/${#authentication.getPrincipal().getUsername()}|}" class="sidebar__link">상담 목록</a>
+		  </li>
           <li class="sidebar__item">
             <a th:href="@{|/member/update/${#authentication.getPrincipal().getUsername()}|}" class="sidebar__link sidebar__link--active">회원수정</a>
           </li>
