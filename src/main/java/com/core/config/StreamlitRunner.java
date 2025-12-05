@@ -60,14 +60,27 @@ public class StreamlitRunner implements ApplicationRunner {
                 "--server.baseUrlPath=5core",
                 "--server.port=8502"
         );
+		
+        // builder2: 판매 실적 그래프 (8502)
+		ProcessBuilder dealerSaleGraph = new ProcessBuilder(
+		    pythonPath.toString(), "-m", "streamlit", "run",
+		    "sales_graph.py",
+		    "--server.baseUrlPath=5core",
+		    "--server.port=8502"
+		);
+		
 		// 실행 디렉토리
 		builder.directory(aiServerDir.toFile());
 		builder2.directory(aiServerDir.toFile());
+		dealerSaleGraph.directory(aiServerDir.toFile());
+		
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸
 		builder.start();
 		builder2.start();
 		System.out.println("Streamlit이 실행됨");
+		dealerSaleGraph.start();
+		System.out.println("판매 실적 그래프(딜러) 실행됨");
 	}
 	
 
