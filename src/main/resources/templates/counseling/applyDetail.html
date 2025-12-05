@@ -588,14 +588,14 @@
             </button>
           </div>
         </div>
-
-        <div class="row mb-4 mt-4">
-          <div class="col-12 text-center">
-            <button type="button" class="btn btn-lg btn-info" id="showAiRecommendationBtn" data-bs-toggle="modal" data-bs-target="#aiRecommendationModal">
-              🚗 차량 추천 정보 보기
-            </button>
-          </div>
-        </div>
+	
+		<div class="row mb-4 mt-4" th:if="*{status != '상담대기'}">
+		  <div class="col-12 text-center">
+		    <button type="button" class="btn btn-lg btn-info" id="showAiRecommendationBtn" data-bs-toggle="modal" data-bs-target="#aiRecommendationModal">
+		      🚗 차량 추천 정보 보기
+		    </button>
+		  </div>
+		</div>
       </div>
     </form>
     

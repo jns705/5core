@@ -100,47 +100,70 @@ public class CounselingController {
 	/*
 	 * 상담신청 등록
 	 */
+	// CounselingController.java
+
+	// ... (생략)
+
+	/*
+	 * 상담신청 등록
+	 */
 	@PostMapping("/add")
 	@PreAuthorize("isAuthenticated()")
 	public String addCounselingApply(@Valid @ModelAttribute Counseling counseling, BindingResult bindingResult, Principal principal, Model model) {
 
-		List<Vehicle> getVehicleList = vehicleService.getVehicleList();
-		Long vehicleId =  Long.parseLong(counseling.getVehicleId());
-		for (Vehicle v: getVehicleList) {
-			if (v.getId().equals(vehicleId)) {
-				System.out.println(v.getId());
-				System.out.println(counseling.getVehicleId());
-				counseling.setVehicleName(v.getName());
-				break;
-			}
-		}
-				
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("vehicleList", getVehicleList);			
-			return "counseling/addApply";
-		}
-		
-		counseling.setStatus(ApplyStatus.COUNSELING_HODDING.getStatusName()); 
-		
-		Member member = memberService.findByMemberId(principal.getName());
-		Customer customer = customerService.findByMember(member);
-		
-		counseling.setCustomer(customer);
-		counseling.setCreateDate(LocalDateTime.now());
-		
-		List<Counseling> getCounselingList =  counselingService.findByCustomerId(member.getId());
-				
-		for (Counseling  getCounseling : getCounselingList) {
-			if (getCounseling.getVehicleId().equals(counseling.getVehicleId())) {
-				bindingResult.rejectValue("vehicleId", "duplecatedVehicleId", "이미 존재하는 상품입니다.");
-				model.addAttribute("vehicleList", getVehicleList);
-				return "counseling/addApply";
-			}
-		}
-					
-		counselingService.createCounseling(counseling);	
-		
-		return "redirect:/counseling/applyList/"+member.getMemberId();
+	    List<Vehicle> getVehicleList = vehicleService.getVehicleList();
+	    Long vehicleId = counseling.getVehicleId();
+	    String vehicleName = null;
+
+	    // 1. 유효성 검사 (vehicleId의 @NotNull 체크 포함)
+	    if (bindingResult.hasErrors()) {
+	        model.addAttribute("vehicleList", getVehicleList);
+	        // vehicleId가 null이 아니라면, vehicleName을 찾아 모델에 다시 넣어줌
+	        if (vehicleId != null) {
+	            Optional<Vehicle> selectedVehicle = getVehicleList.stream()
+	                .filter(v -> v.getId().equals(vehicleId))
+	                .findFirst();
+	            if (selectedVehicle.isPresent()) {
+	                model.addAttribute("selectedVehicleName", selectedVehicle.get().getName());
+	            }
+	        }
+	        return "counseling/addApply";
+	    }
+
+	    // 2. vehicleId를 사용하여 vehicleName 설정
+	    for (Vehicle v : getVehicleList) {
+	        if (v.getId().equals(vehicleId)) {
+	            vehicleName = v.getName();
+	            counseling.setVehicleName(vehicleName);
+	            break;
+	        }
+	    }
+
+	    // 3. 중복 신청 검사
+	    Member member = memberService.findByMemberId(principal.getName());
+	    List<Counseling> getCounselingList = counselingService.findByCustomerId(member.getId());
+
+	    for (Counseling getCounseling : getCounselingList) {
+	        // 이미 해당 차량 ID로 신청한 내역이 있는지 확인
+	        if (getCounseling.getVehicleId().equals(counseling.getVehicleId())) {
+	            bindingResult.rejectValue("vehicleId", "duplecatedVehicleId", "이미 존재하는 상품입니다.");
+	            
+	            // 중복 에러 발생 시 vehicleList와 selectedVehicleName을 다시 모델에 추가하여 선택 정보 유지
+	            model.addAttribute("vehicleList", getVehicleList);
+	            model.addAttribute("selectedVehicleName", vehicleName); 
+	            return "counseling/addApply";
+	        }
+	    }
+
+	    // 4. 나머지 처리 및 저장
+	    counseling.setStatus(ApplyStatus.COUNSELING_HODDING.getStatusName());
+	    Customer customer = customerService.findByMember(member);
+	    counseling.setCustomer(customer);
+	    counseling.setCreateDate(LocalDateTime.now());
+
+	    counselingService.createCounseling(counseling);
+
+	    return "redirect:/counseling/applyList/" + member.getMemberId();
 	}
 	
 	// 상세 조회 -> 상세/수정 화면

@@ -11,11 +11,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -30,9 +30,9 @@ public class Counseling {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank(message = "차량 선택은 필수 사항입니다.")
+	@NotNull(message = "차량명는 필수 입력 사항입니다.")
 	@Column(columnDefinition = "varchar(30)")
-	private String vehicleId;
+	private Long vehicleId;
 	
 	@Column(columnDefinition = "varchar(30)")
 	private String vehicleName;

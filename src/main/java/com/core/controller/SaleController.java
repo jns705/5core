@@ -67,7 +67,7 @@ public class SaleController {
     	customerService.saveCustomer(customer.get(), memberService.findByMemberId(customer.get().getMember().getMemberId()));
     	sale.setCustomer(customer.get());
     	
-    	Optional<Vehicle> vehicle = vehicleService.findById(Long.parseLong(counseling.getVehicleId()));
+    	Optional<Vehicle> vehicle = vehicleService.findById(counseling.getVehicleId());
     	sale.setVehicle(vehicle.get());
     	
     	sale.setPrice(price);
