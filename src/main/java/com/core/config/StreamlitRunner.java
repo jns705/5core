@@ -39,6 +39,11 @@ public class StreamlitRunner implements ApplicationRunner {
 			return;
 		}
 		
+		if(!Files.exists(aiServerDir.resolve("applyDetail.py"))) {
+			System.err.println("applyDetail.py가 존재하지 않음");
+			return;
+		}
+		
 		// Streamlit run app.py --server.baseUrlPath=5core --server.port=8501 커맨드 실행
 		ProcessBuilder builder = new ProcessBuilder(
                 pythonPath.toString(),
@@ -47,12 +52,23 @@ public class StreamlitRunner implements ApplicationRunner {
                 "--server.baseUrlPath=5core",
                 "--server.port=8501"
         );
+		
+		ProcessBuilder builder2 = new ProcessBuilder(
+                pythonPath.toString(),
+                "-m", "streamlit", "run",
+                "applyDetail.py",
+                "--server.baseUrlPath=5core",
+                "--server.port=8502"
+        );
 		// 실행 디렉토리
 		builder.directory(aiServerDir.toFile());
+		builder2.directory(aiServerDir.toFile());
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸
 		builder.start();
+		builder2.start();
 		System.out.println("Streamlit이 실행됨");
 	}
+	
 
 }
