@@ -11,23 +11,20 @@
 
   <style>
       :root {
-        --hyu-navy: #002c5f;
-        --hyu-navy-dark: #001a3d;
+		--hyu-navy: #002c5f;
+		--hyu-navy-dark: #001a3d;
         --bg-gray: #f3f4f6;
         --border-subtle: #e5e7eb;
       }
 
       /* 페이지 전체 폭 & 가운데 카드 느낌 */
-      main.container {
-        max-width: 1400px;
-        background-color: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
-        margin-top: 40px;
-        margin-bottom: 40px;
-        padding-top: 32px !important;
-        padding-bottom: 32px !important;
-      }
+	  .a-container {
+		  max-width: 1400px; 
+		  width: 95%; /* 뷰포트 크기에 따라 유연하게 */
+		  margin: 0 auto;
+		  padding-left: 15px; /* 부트스트랩 기본 컨테이너 패딩 */
+		  padding-right: 15px; /* 부트스트랩 기본 컨테이너 패딩 */
+	  }
 
       /* 상단 영역 */
       .detail-top {
@@ -199,7 +196,7 @@
 	  .register-cell {
 		margin-left: 1px;
 		font-size: 16px;
-	  }
+	  } 
     </style>
 </head>
 <body>
@@ -210,7 +207,7 @@
     <p>상담 내용을 수정하고 상태를 확인할 수 있습니다.</p>
   </div>
 
-  <main class="container py-5">
+  <div class="a-container py-5">
     <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
         <span th:text="${message}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -446,35 +443,61 @@
 		      </div>
 		    </div>
 		  </div>
-		</div>		
-      </div>
-      
-      <!-- 하단 버튼 -->
-      <div class="d-flex justify-content-end gap-2 mt-4 btn-sales">
-        <a th:href="@{|/counseling/applyList/${#authentication.getPrincipal().getUsername()}|}" class="btn btn-navy">
-          구매상담리스트
-        </a>
-        
-        <button type="submit" class="btn btn-navy">
-          상담 내용 저장
-        </button>
+		</div>
+		
+		<!-- 하단 버튼 -->
+		<div class="d-flex justify-content-end gap-2 mt-4 btn-sales">
+		  <a th:href="@{|/counseling/applyList/${#authentication.getPrincipal().getUsername()}|}" class="btn btn-navy">
+		    구매상담리스트
+		  </a>
+		  
+		  <button type="submit" class="btn btn-navy">
+		    상담 내용 저장
+		  </button>
+		</div>
+		
+		<div class="row mb-4 mt-1">
+		    <div class="col-12 text-center">
+		        <button type="button" class="btn btn-lg btn-info" id="showAiRecommendationBtn" data-bs-toggle="modal" data-bs-target="#aiRecommendationModal">
+		            🚗 차량 추천 정보 보기
+		        </button>
+		    </div>
+		</div>				
       </div>
     </form>
     
     <form id="formUpdateStatus" method="post" style="display:none;"></form>
-
-  </main>
+	<div class="modal fade" id="aiRecommendationModal" tabindex="-1" aria-labelledby="aiRecommendationModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-xl modal-dialog-centered">
+	        <div class="modal-content">
+	            <div class="modal-header bg-navy text-white">
+	                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+	            </div>	            
+	            <div class="modal-body p-0">
+	                <iframe
+	                    th:src="@{|http://localhost:8502/5core?counselingId=${counseling.id}|}"
+	                    style="width: 100%; height: 80vh; min-height: 500px; max-height: 900px; border: none; border-radius: 0; display: block; overflow: auto;">
+	                </iframe>
+	            </div>
+	            
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	            </div>
+	        </div>
+	    </div>
+  	</div>
+  </div>
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   
   <script>
       // 기타(other) 입력 필드 활성화 + 지역 API
       $(document).ready(function() {
-          const $otherCheckbox = $("#other");
-          const $otherInputText = $("#otherInputText");
-          const initialSidoName = $("#sidoName").val();
-          const initialSiGunGuName = $("#siGunGuName").val();
-          const initialEupMyeonDongName = $("#eupMyeonDongName").val();
+          let $otherCheckbox = $("#other");
+          let $otherInputText = $("#otherInputText");
+          let initialSidoName = $("#sidoName").val();
+          let initialSiGunGuName = $("#siGunGuName").val();
+          let initialEupMyeonDongName = $("#eupMyeonDongName").val();
           let apiToken = null;
 
           // 기타 입력 필드 초기 상태
