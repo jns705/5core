@@ -30,7 +30,7 @@
       }
 
       /* 상단 영역 */
-      .Detail-top {
+      .detail-top {
         margin-top: 100px;
         padding: 20px;
         text-align: center;
@@ -38,13 +38,13 @@
         background-color: #f8f8f8;
       }
 
-      .Detail-top h1 {
+      .detail-top h1 {
 		margin-top: 25px;
 		font-size: 40px;
 		font-weight: bold;
       }
 
-      .Detail-top p {
+      .detail-top p {
 		margin: 50px 0 50px 0;
 		font-size: 0.9em;
       }
@@ -205,13 +205,12 @@
 <body>
 
   <!-- 상단 타이틀 영역 -->
-  <div class="Detail-top">
+  <div class="detail-top">
     <h1>상담 신청 상세 및 수정</h1>
     <p>상담 내용을 수정하고 상태를 확인할 수 있습니다.</p>
   </div>
 
   <main class="container py-5">
-
     <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
         <span th:text="${message}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -236,7 +235,7 @@
                   <input type="text" class="form-control-plaintext" th:value="*{id}" readonly>
                 </div>
               </div>
-              
+			  <!-- 상담 상태 영역 -->
 			  <div class="row mb-3">
 			    <label class="col-sm-3 col-form-label">상담 상태</label>
 			    <div class="col-sm-9">
@@ -247,28 +246,24 @@
                           th:text="*{status}">
                       상담대기
                     </span>
-
                     <!-- 상담진행중 -->
                     <span th:case="'상담진행중'"
                           class="status-badge status-progress"
                           th:text="*{status}">
                       상담진행중
                     </span>
-
                     <!-- 상담완료 -->
                     <span th:case="'상담완료'"
                           class="status-badge status-done"
                           th:text="*{status}">
                       상담완료
                     </span>
-
                     <!-- 상담취소 -->
                     <span th:case="'상담취소'"
                           class="status-badge status-cancel"
                           th:text="*{status}">
                       상담취소
                     </span>
-
                     <!-- 그 외 상태 (예외) -->
                     <span th:case="*"
                           th:text="*{status}">
@@ -276,14 +271,14 @@
                   </div>
 			    </div>
 			  </div>
-
+			  <!-- 선호 차량 유형 영역 -->
 			  <div class="row mb-3">
 			    <label class="col-sm-3 col-form-label">선호 차량 유형</label>
 			    <div class="col-sm-9">
 			      <p class="form-control-plaintext" th:text="*{vehicleType}"></p>
 			    </div>
 			  </div>
-			  
+			  <!-- 선택 차량 영역 -->			  
               <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">선택 차량</label>
                 <div class="col-sm-9">
@@ -299,7 +294,7 @@
                     <input type="hidden" th:field="*{vehicleId}" /> 
                 </div>
               </div>
-              
+			  <!-- 구매 희망 지역 영역 -->            
               <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">구매 희망 지역</label>
                 <div class="col-sm-9">
@@ -322,7 +317,7 @@
                     </div>
                 </div>
               </div>
-
+			  <!-- 구매 희망 시점 영역 -->
               <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">구매 희망 시점</label>
                 <div class="col-sm-9">
@@ -344,7 +339,7 @@
                   </div>
                 </div>
               </div>
-              
+			  <!-- 차량 구매 목적 영역 -->
               <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">차량 구매 목적</label>
                 <div class="col-sm-9">
@@ -378,28 +373,25 @@
                     </div>
                 </div>
               </div>
-
+			  <!-- 예약 희망 시간 영역 -->
 			  <div class="row mb-3">
 			    <label for="counselingLikeTime" class="col-sm-3 col-form-label">예약 희망 시간</label>
 			    <div class="col-sm-9">
 			      <input type="date" id="counselingLikeTime" th:field="*{counselingLikeTime}" class="form-control">
 			    </div>
-
 				<div class="row mb-0 border-top pt-3 mt-3 register-cell">
 				  <label class="col-sm-3 col-form-label small text-muted">등록일</label>
 				  <div class="col-sm-9">
-				    <p class="form-control-plaintext small text-muted" th:text="${#temporals.format(counseling.createDate, 'yyyy-MM-dd HH:mm')}"></p>
+				    <p class="form-control-plaintext" th:text="${#temporals.format(counseling.createDate, 'yyyy-MM-dd HH:mm')}"></p>
 				  </div>
 				  <th:block th:if="*{modifyDate != null}">
 				      <label class="col-sm-3 col-form-label small text-muted">최종 수정일</label>
 				      <div class="col-sm-9">
-				          <p class="form-control-plaintext small text-muted" th:text="${#temporals.format(counseling.modifyDate, 'yyyy-MM-dd HH:mm')}"></p>
+				          <p class="form-control-plaintext" th:text="${#temporals.format(counseling.modifyDate, 'yyyy-MM-dd HH:mm')}"></p>
 				      </div>
 				  </th:block>
 				</div>			
 			  </div>              
-
-
             </div>
           </div>
         </div>
@@ -454,13 +446,12 @@
 		      </div>
 		    </div>
 		  </div>
-		</div>
-		
+		</div>		
       </div>
       
       <!-- 하단 버튼 -->
       <div class="d-flex justify-content-end gap-2 mt-4 btn-sales">
-        <a th:href="@{/counseling/applyList}" class="btn btn-navy">
+        <a th:href="@{|/counseling/applyList/${#authentication.getPrincipal().getUsername()}|}" class="btn btn-navy">
           구매상담리스트
         </a>
         
@@ -534,7 +525,7 @@
             });
 
             $(sidoSel).on("change", function(e) {
-                const selectedText = $(this).find('option:selected').text();
+                let selectedText = $(this).find('option:selected').text();
                 $("#sidoName").val(selectedText !== '시/도 선택' ? selectedText : '');
                 loadSigungu(token, this.value, '', '');
             });
@@ -566,7 +557,7 @@
             }
 
             $(sgSel).off('change').on("change", function(e) {
-                const selectedText = $(this).find('option:selected').text();
+                let selectedText = $(this).find('option:selected').text();
                 $("#siGunGuName").val(selectedText !== '시/군/구 선택' ? selectedText : '');
                 loadEmd(token, this.value, '');
             });
@@ -594,7 +585,7 @@
             }
 
             $(emdSel).off('change').on("change", function(e) {
-                const selectedText = $(this).find('option:selected').text();
+                let selectedText = $(this).find('option:selected').text();
                 $("#eupMyeonDongName").val(selectedText !== '읍/면/동 선택' ? selectedText : '');
             });
           }
