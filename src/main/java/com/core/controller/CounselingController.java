@@ -66,14 +66,14 @@ public class CounselingController {
 	@GetMapping("/applyList/{memberId}")
 	public String counselingApplyList(@PathVariable("memberId") String memberId,
 	    @RequestParam(value="page", defaultValue="0") int page,
-	    @RequestParam(value="statusFilter", required=false, defaultValue="전체 상태") String status,
+	    @RequestParam(value="statusFilter", required=false, defaultValue="전체 상태") String status, // [수정] status 파라미터의 defaultValue를 "전체 상태"로 명확히
 	    @RequestParam(value="sortFilter", required=false, defaultValue="등록일 최신순") String sort,
 	    @RequestParam(value="keyword", required=false, defaultValue="") String keyword,
 	    Model model) {
 	    
 		// 정렬 기준 설정
-		// '예산' 필드가 없으므로 '등록일' 기준으로만 정렬 로직을 작성합니다.
 		Sort sortObj;
+		// 등록일 기준으로만 정렬 로직을 작성합니다.
 		if (sort.equals("등록일 오래된순")) {
 			sortObj = Sort.by("createDate").ascending();
 		} else { // 기본: "등록일 최신순" 또는 그 외
@@ -84,6 +84,7 @@ public class CounselingController {
 		Customer customer = customerService.findByMember(member);
 		
 	    Pageable pageable = PageRequest.of(page, 10, sortObj);  
+	    // findCounselingsByFilter 메서드는 status, keyword, pageable, customerId를 모두 사용해야 합니다.
 	    Page<Counseling> counselingPage = counselingService.findCounselingsByFilter(status, keyword, pageable, customer.getId()); 
 
 	    model.addAttribute("applyList", counselingPage.getContent());

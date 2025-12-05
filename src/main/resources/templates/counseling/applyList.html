@@ -189,6 +189,7 @@
 	<div class="contents">
 	    <section class="d-flex flex-wrap justify-content-between align-items-center mb-3">
 	      <div class="d-flex gap-2">
+			<input type="hidden" id="memberId" th:value="${#authentication.getPrincipal().getUsername()}">
 	        <select class="form-select form-select-sm" id="statusFilter"  aria-label="상담 상태 필터">
 	          <option th:selected="${statusFilter == null or statusFilter == '전체 상태'}">전체 상태</option>
 	          <option th:selected="${statusFilter == '상담대기'}">상담대기</option>
@@ -319,6 +320,7 @@
 		            <li class="page-item" th:classappend="${counselingPage.first} ? 'disabled'">
 		                <a class="page-link"
 		                   th:href="@{/counseling/applyList(
+							memberId=${#authentication.getPrincipal().getUsername()},
 		                       page=${counselingPage.number - 1}, 
 		                       statusFilter=${statusFilter}, 
 		                       sortFilter=${sortFilter}, 
@@ -327,11 +329,12 @@
 		                   aria-disabled="true">이전</a>
 		            </li>
 	
-		            <li th:each="i : ${#numbers.sequence(0, counselingPage.totalPages - 1)}"
+					<li th:each="i : ${#numbers.sequence(0, counselingPage.totalPages - 1)}"
 		                th:class="${i == counselingPage.number} ? 'page-item active' : 'page-item'">
 		              <a class="page-link"
 		                 th:text="${i + 1}"
-		                 th:href="@{/counseling/applyList(
+		                 th:href="@{/counseling/applyList/{memberId}(
+		                     memberId=${#authentication.getPrincipal().getUsername()},
 		                     page=${i}, 
 		                     statusFilter=${statusFilter}, 
 		                     sortFilter=${sortFilter}, 
@@ -341,6 +344,7 @@
 		            <li class="page-item" th:classappend="${counselingPage.last} ? 'disabled'">
 		              <a class="page-link"
 		                 th:href="@{/counseling/applyList(
+							 memberId=${#authentication.getPrincipal().getUsername()},
 		                     page=${counselingPage.number + 1}, 
 		                     statusFilter=${statusFilter}, 
 		                     sortFilter=${sortFilter}, 
@@ -373,16 +377,20 @@
 		let params = new URLSearchParams();
         params.append('page', page);
         // [수정된 부분] Controller에서 기대하는 파라미터 이름 'statusFilter'를 사용
-        if (status !== '전체 상태') params.append('statusFilter', status); 
-        if (sort !== '등록일 최신순') params.append('sortFilter', sort);
-        if (keyword !== '') params.append('keyword', keyword);
+        // '전체 상태'일 때는 파라미터를 아예 보내지 않거나, 보내도 서버가 처리하도록 해야 합니다. 
+        // Controller에서 defaultValue="전체 상태"로 설정했으므로, 값을 보내도록 유지합니다.
+        params.append('statusFilter', status); 
+        // [수정된 부분] Controller에서 기대하는 파라미터 이름 'sortFilter'를 사용
+        params.append('sortFilter', sort);
+        if (keyword !== '') params.append('keyword', keyword);		
         
         return params.toString();
     }
 	
 	function applyFiltersAndSorting() {
-		    // 필터, 정렬, 검색 시 항상 첫 페이지(0)로 이동합니다.
-		    window.location.href = `/5core/counseling/applyList?${buildQueryString(0)}`;
+		let memberId = document.getElementById("memberId").value;
+		// [수정] URL 경로 순서 조정: /5core/counseling/applyList/{memberId}
+		window.location.href = `/5core/counseling/applyList/${memberId}?${buildQueryString(0)}`;
 	}
 	
 	statusFilter.addEventListener('change', applyFiltersAndSorting);
