@@ -115,54 +115,127 @@
             font-size: 12px;
             opacity: 0.7;
         }
+		
+		.main {
+		  flex: 1;
+		  display: flex;
+		  flex-direction: column;
+		  min-width: 0;
+		}
+
+		.header {
+		  height: 64px;
+		  background: #ffffff;
+		  display: flex;
+		  align-items: center;
+		  justify-content: space-between;
+		  padding: 0 24px;
+		  border-bottom: 1px solid #e5e7eb;
+		}
+
+		.header__left {
+		  display: flex;
+		  align-items: center;
+		  gap: 12px;
+		}
+
+		.logo {
+		  font-size: 18px;
+		  font-weight: 700;
+		  color: #0d47a1;
+		}
+
+		.header__chip {
+		  padding: 4px 10px;
+		  border-radius: 999px;
+		  background: #e3eefc;
+		  font-size: 11px;
+		  color: #1f3e7a;
+		}
+
+		.user-info {
+		  font-size: 14px;
+		  color: #374151;
+		  display: flex;
+		  align-items: center;
+		  gap: 10px;
+		}
+
+		.user-info__role {
+		  font-size: 11px;
+		  padding: 3px 8px;
+		  border-radius: 999px;
+		  background: #f3f4f6;
+		  color: #6b7280;
+		}
+
+		.user-info span.logout {
+		  color: #0d47a1;
+		  cursor: pointer;
+		  font-weight: 600;
+		}		
         /* ===== HYUNDAI CRM 사이드바 끝 ===== */
     </style>
 </head>
 <body>
     <div class="d-flex">
-        <div class="sidebar">
-            <div class="sidebar__logo">
-                <div class="sidebar__logo-title">관리 메뉴</div>
-            </div>
+		<div class="sidebar">
+		     <div class="sidebar__logo">
+		         <div class="sidebar__logo-title">관리 메뉴</div>
+		     </div>
 
-            <div class="sidebar__section-title">Navigation</div>
-            <ul class="menu-list">
-                <li>
-                    <a th:href="@{/main}" class="menu-item">
-                        <span class="menu-item__bullet"></span>
-                        <span>메인 대시보드</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/admin/list}" class="menu-item menu-item--active">
-                        <span class="menu-item__bullet"></span>
-                        <span>멤버 관리</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/admin/profile}" class="menu-item">
-                        <span class="menu-item__bullet"></span>
-                        <span>프로필 수정</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/admin/statistics}" class="menu-item">
-                        <span class="menu-item__bullet"></span>
-                        <span>통계 현황</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/admin/factory}" class="menu-item">
-                        <span class="menu-item__bullet"></span>
-                        <span>현지 공장/재고</span>
-                    </a>
-                </li>
-            </ul>
+		     <div class="sidebar__section-title">Navigation</div>
+		     <ul class="menu-list">
+		         <li>
+		             <a th:href="@{/main}" class="menu-item">
+		                 <span class="menu-item__bullet"></span>
+		                 <span>메인 대시보드</span>
+		             </a>
+		         </li>
+		         <li>
+		             <a th:href="@{/admin/list}" class="menu-item menu-item--active">
+		                 <span class="menu-item__bullet"></span>
+		                 <span>멤버 관리</span>
+		             </a>
+		         </li>
+		         <li>
+		             <a th:href="@{/admin/profile}" class="menu-item">
+		                 <span class="menu-item__bullet"></span>
+		                 <span>프로필 수정</span>
+		             </a>
+		         </li>
+		         <li>
+		             <a th:href="@{/admin/statistics}" class="menu-item">
+		                 <span class="menu-item__bullet"></span>
+		                 <span>통계 현황</span>
+		             </a>
+		         </li>
+		         <li>
+		             <a th:href="@{/admin/factory}" class="menu-item">
+		                 <span class="menu-item__bullet"></span>
+		                 <span>현지 공장/재고</span>
+		             </a>
+		         </li>
+		     </ul>
 
-            <div class="sidebar__bottom">
-                HYUNDAI CRM · Admin Console
-            </div>
-        </div>
+		     <div class="sidebar__bottom">
+		         HYUNDAI CRM · Admin Console
+		     </div>
+		 </div>
+
+      <div class="main">
+		<div class="header">
+		  <div class="header__left">
+		    <div class="logo">HYUNDAI CRM</div>
+		    <div class="header__chip">Admin Dashboard</div>
+		  </div>
+		  <div class="user-info">
+		    <span class="user-info__role">관리자</span>
+		    <span>[[${#authentication.getPrincipal().getUsername()}]] 님</span>
+		    <span class="logout"><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="nav-link">로그아웃</a></span>
+		  </div>
+		</div>		
+		
         <div class="content flex-grow-1">
 			<h2 class="mb-4 fw-bold" style="color: navy;">멤버 관리</h2>
             <p class="text-muted">시스템에 등록된 ADMIN, DEALER 및 CUSTOMER의 정보를 검색하고 **권한**을 수정합니다.</p>
@@ -286,8 +359,6 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jq"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/">
     <script>
         $(document).ready(function() {
             

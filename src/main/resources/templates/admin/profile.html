@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>자동차 딜러 CRM</title>
+  <title>자동차 관리자 CRM</title>
 
   <style>
     * {
@@ -223,7 +223,7 @@
     }
 
     /* 딜러 영역 */
-    .dealer-panel {
+    .admin-panel {
       width: 32%;
       min-width: 280px;
       display: flex;
@@ -232,19 +232,19 @@
       margin-top: 8px;
     }
 
-    .dealer-profile {
+    .admin-profile {
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
-    .dealer-profile__top {
+    .admin-profile__top {
       display: flex;
       align-items: center;
       gap: 16px;
     }
 
-    .dealer-avatar {
+    .admin-avatar {
       width: 70px;
       height: 70px;
       border-radius: 999px;
@@ -257,51 +257,51 @@
       font-size: 20px;
     }
 
-    .dealer-profile__name {
+    .admin-profile__name {
       font-size: 18px;
       color: #0d47a1;
       margin-bottom: 4px;
       font-weight: 700;
     }
 
-    .dealer-profile__meta {
+    .admin-profile__meta {
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
     }
 
-    .dealer-profile__meta strong {
+    .admin-profile__meta strong {
       color: #4b5563;
       font-weight: 600;
     }
 
-    .dealer-profile__divider {
+    .admin-profile__divider {
       height: 1px;
       background: #e5e7eb;
       margin: 2px 0 8px;
     }
 
-    .dealer-contact {
+    .admin-contact {
       font-size: 13px;
       color: #374151;
       display: grid;
       row-gap: 4px;
     }
 
-    .dealer-contact__label {
+    .admin-contact__label {
       color: var(--text-muted);
       width: 46px;
       display: inline-block;
     }
 
-    .dealer-status-row {
+    .admin-status-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-top: 4px;
     }
 
-    .dealer-status-tag {
+    .admin-status-tag {
       font-size: 11px;
       padding: 3px 8px;
       border-radius: 999px;
@@ -310,7 +310,7 @@
       border: 1px solid rgba(16, 185, 129, 0.2);
     }
 
-    .dealer-status-text {
+    .admin-status-text {
       font-size: 11px;
       color: var(--text-muted);
     }
@@ -633,7 +633,7 @@
       .content__row {
         flex-direction: column;
       }
-      .dealer-panel {
+      .admin-panel {
         width: 100%;
         flex-direction: row;
       }
@@ -641,57 +641,57 @@
   </style>
 </head>
 <body>
+	<div class="sidebar">
+	   <div class="sidebar__logo">
+	       <div class="sidebar__logo-title">관리 메뉴</div>
+	   </div>
 
-  <div class="sidebar">
-    <div class="sidebar__logo">
-      <div class="sidebar__logo-title">관리 메뉴</div>
-    </div>
-    <div class="sidebar__section-title">Navigation</div>
-    <ul class="menu-list">
-      <li>
-        <a th:href="@{/dealer}" class="menu-item menu-item--active">
-          <span class="menu-item__bullet"></span>
-          <span>딜러 프로필</span>
-        </a>
-      </li>
-      <li>
-        <a th:href="@{/dealer/care}" class="menu-item">
-          <span class="menu-item__bullet"></span>
-          <span>상담 신청 명단</span>
-        </a>
-      </li>
-      <li>
-        <a th:href="@{/dealer/myCustomer}" class="menu-item">
-          <span class="menu-item__bullet"></span>
-          <span>고객 관리</span>
-        </a>
-      </li>
-      <li>
-        <a class="menu-item">
-          <span class="menu-item__bullet"></span>
-          <span>구매 관리</span>
-        </a>
-      </li>
-      <li>
-        <a th:href="@{/admin/report}" class="menu-item">
-          <span class="menu-item__bullet"></span>
-          <span>보고서 / 분석</span>
-        </a>
-      </li>
-    </ul>
-    <div class="sidebar__bottom">
-      HYUNDAI CRM · Dealer Console
-    </div>
+	   <div class="sidebar__section-title">Navigation</div>
+	   <ul class="menu-list">
+	     <li>
+		   <a th:href="@{/main}" class="menu-item">
+		     <span class="menu-item__bullet"></span>
+		     <span>메인 대시보드</span>
+		   </a>
+		 </li>
+		 <li>
+		   <a th:href="@{/admin/list}" class="menu-item">
+		     <span class="menu-item__bullet"></span>
+		     <span>멤버 관리</span>
+		   </a>
+		 </li>
+		 <li>
+		   <a th:href="@{/admin/profile}" class="menu-item menu-item--active">
+		     <span class="menu-item__bullet"></span>
+		     <span>프로필 수정</span>
+		   </a>
+		   </li>
+		 <li>
+		   <a th:href="@{/admin/statistics}" class="menu-item">
+		     <span class="menu-item__bullet"></span>
+		     <span>통계 현황</span>
+		   </a>
+		 </li>
+		 <li>
+	       <a th:href="@{/admin/factory}" class="menu-item">
+		     <span class="menu-item__bullet"></span>
+		     <span>현지 공장/재고</span>
+		   </a>
+		 </li>
+	  </ul>
+	  <div class="sidebar__bottom">
+	       HYUNDAI CRM · Admin Console
+	 </div>
   </div>
 
   <div class="main">
     <div class="header">
       <div class="header__left">
         <div class="logo">HYUNDAI CRM</div>
-        <div class="header__chip">Dealer Dashboard</div>
+        <div class="header__chip">Admin Dashboard</div>
       </div>
       <div class="user-info">
-        <span class="user-info__role">담당 딜러</span>
+        <span class="user-info__role">관리자</span>
         <span>[[${#authentication.getPrincipal().getUsername()}]] 님</span>
         <span class="logout"><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="nav-link">로그아웃</a></span>
       </div>
@@ -700,46 +700,46 @@
     <div class="content">
       <div class="content__row">
 
-        <!-- 딜러 패널 -->
-        <aside class="dealer-panel">
-          <section class="card dealer-profile">
+        <!-- 관리자 패널 -->
+        <aside class="admin-panel">
+          <section class="card admin-profile">
             <div class="card__header">
               <div>
-                <h3 class="card__title">딜러 정보</h3>
+                <h3 class="card__title">관리자 정보</h3>
                 <p class="card__subtitle">기본 프로필 및 연락처</p>
               </div>
               <span class="card__chip">실시간 동기화</span>
             </div>
 
-            <div class="dealer-profile__top">
-              <div class="dealer-avatar">
-                <span>[[${strings.substring(dealer.name,0,1)}]]</span>
+            <div class="admin-profile__top">
+              <div class="admin-avatar">
+                <span>[[${strings.substring(admin.name,0,1)}]]</span>
               </div>
               <div>
-                <div class="dealer-profile__name">[[${dealer.name}]]</div>
-                <p class="dealer-profile__meta">
-                  <strong>직급</strong> [[${dealer.role}]]<br />
+                <div class="admin-profile__name">[[${admin.name}]]</div>
+                <p class="admin-profile__meta">
+                  <strong>직급</strong> [[${admin.role}]]<br />
                   <strong>근무지</strong> 현대자동차 서울지점
                 </p>
               </div>
             </div>
 
-            <div class="dealer-profile__divider"></div>
+            <div class="admin-profile__divider"></div>
 
-            <div class="dealer-contact">
+            <div class="admin-contact">
               <div>
-                <span class="dealer-contact__label">전화</span>
-                <span>[[${dealer.phone}]]</span>
+                <span class="admin-contact__label">전화</span>
+                <span>[[${admin.phone}]]</span>
               </div>
               <div>
-                <span class="dealer-contact__label">이메일</span>
-                <span>[[${dealer.email}]]</span>
+                <span class="admin-contact__label">이메일</span>
+                <span>[[${admin.email}]]</span>
               </div>
             </div>
 
-            <div class="dealer-status-row">
-              <span class="dealer-status-tag">온라인 • 상담 가능</span>
-              <span class="dealer-status-text">최근 활동: 5분 전</span>
+            <div class="admin-status-row">
+              <span class="admin-status-tag">온라인 • 상담 가능</span>
+              <span class="admin-status-text">최근 활동: 5분 전</span>
             </div>
           </section>
 
@@ -772,7 +772,7 @@
               <h3 class="card__title">월별 실적 그래프</h3>
               <span class="card__subtitle">상담 대비 구매 전환률</span>
             </div>
-            <canvas id="dealerPerformance" height="150"></canvas>
+            <canvas id="adminPerformance" height="150"></canvas>
           </section>
         </aside>
 

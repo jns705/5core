@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes; // RedirectAttributes import 추가
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.core.entity.ApplyStatus;
 import com.core.entity.Counseling;
 import com.core.entity.Customer;
@@ -40,10 +38,10 @@ import lombok.extern.java.Log;
 @Controller
 @RequestMapping("/counseling")
 public class CounselingController {
-	
+
 	private final CounselingService counselingService;
 	private final MemberService memberService;
-	private final VehicleService vehicleService; // VehicleService 의존성 주입
+	private final VehicleService vehicleService; 
 	private final CustomerService customerService;
 
 	// 상담 글 단건 조회
@@ -54,145 +52,125 @@ public class CounselingController {
 
 	@GetMapping("/addApply")
 	public String counselingApplyAdd(Model model) {
-			
+
 		List<Vehicle> getVehicleList = vehicleService.getVehicleList();
-		
+
 		model.addAttribute("vehicleList", getVehicleList);
 		model.addAttribute("counseling", new Counseling());
 		return "counseling/addApply";
 	}
-	
-	// [수정: 페이징, 필터, 검색 기능 통합]
+
+	// 구매상담 리스트:페이징
 	@GetMapping("/applyList/{memberId}")
 	public String counselingApplyList(@PathVariable("memberId") String memberId,
-	    @RequestParam(value="page", defaultValue="0") int page,
-	    @RequestParam(value="statusFilter", required=false, defaultValue="전체 상태") String status, // [수정] status 파라미터의 defaultValue를 "전체 상태"로 명확히
-	    @RequestParam(value="sortFilter", required=false, defaultValue="등록일 최신순") String sort,
-	    @RequestParam(value="keyword", required=false, defaultValue="") String keyword,
-	    Model model) {
-	    
-		// 정렬 기준 설정
+			@RequestParam(value="page", defaultValue="0") int page,
+			@RequestParam(value="statusFilter", required=false, defaultValue="전체 상태") String status,
+			@RequestParam(value="sortFilter", required=false, defaultValue="등록일 최신순") String sort,
+			@RequestParam(value="keyword", required=false, defaultValue="") String keyword,
+			Model model) {
+
 		Sort sortObj;
-		// 등록일 기준으로만 정렬 로직을 작성합니다.
 		if (sort.equals("등록일 오래된순")) {
 			sortObj = Sort.by("createDate").ascending();
-		} else { // 기본: "등록일 최신순" 또는 그 외
+		} else {
 			sortObj = Sort.by("createDate").descending();
 		}
-		
+
 		Member member = memberService.findByMemberId(memberId);
 		Customer customer = customerService.findByMember(member);
-		
-	    Pageable pageable = PageRequest.of(page, 10, sortObj);  
-	    // findCounselingsByFilter 메서드는 status, keyword, pageable, customerId를 모두 사용해야 합니다.
-	    Page<Counseling> counselingPage = counselingService.findCounselingsByFilter(status, keyword, pageable, customer.getId()); 
 
-	    model.addAttribute("applyList", counselingPage.getContent());
-	    model.addAttribute("counselingPage", counselingPage); // 페이징 정보 전달
-	    model.addAttribute("currentPage", page);
-	    model.addAttribute("statusFilter", status); // 현재 필터 상태를 뷰에 전달
-	    model.addAttribute("sortFilter", sort);     // 현재 정렬 상태를 뷰에 전달
-	    model.addAttribute("keyword", keyword);     // 현재 검색 키워드를 뷰에 전달
-	    
-	    return "counseling/applyList";
+		Pageable pageable = PageRequest.of(page, 10, sortObj);  
+		Page<Counseling> counselingPage = counselingService.findCounselingsByFilter(status, keyword, pageable, customer.getId()); 
+
+		model.addAttribute("applyList", counselingPage.getContent());
+		model.addAttribute("counselingPage", counselingPage);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("statusFilter", status);
+		model.addAttribute("sortFilter", sort);
+		model.addAttribute("keyword", keyword);
+
+		return "counseling/applyList";
 	}
-	
-	/*
-	 * 상담신청 등록
-	 */
-	// CounselingController.java
 
-	// ... (생략)
-
-	/*
-	 * 상담신청 등록
-	 */
+	// 상담신청 등록
 	@PostMapping("/add")
 	@PreAuthorize("isAuthenticated()")
 	public String addCounselingApply(@Valid @ModelAttribute Counseling counseling, BindingResult bindingResult, Principal principal, Model model) {
 
-	    List<Vehicle> getVehicleList = vehicleService.getVehicleList();
-	    Long vehicleId = counseling.getVehicleId();
-	    String vehicleName = null;
+		List<Vehicle> getVehicleList = vehicleService.getVehicleList();
+		Long vehicleId = counseling.getVehicleId();
+		String vehicleName = null;
 
-	    // 1. 유효성 검사 (vehicleId의 @NotNull 체크 포함)
-	    if (bindingResult.hasErrors()) {
-	        model.addAttribute("vehicleList", getVehicleList);
-	        // vehicleId가 null이 아니라면, vehicleName을 찾아 모델에 다시 넣어줌
-	        if (vehicleId != null) {
-	            Optional<Vehicle> selectedVehicle = getVehicleList.stream()
-	                .filter(v -> v.getId().equals(vehicleId))
-	                .findFirst();
-	            if (selectedVehicle.isPresent()) {
-	                model.addAttribute("selectedVehicleName", selectedVehicle.get().getName());
-	            }
-	        }
-	        return "counseling/addApply";
-	    }
+		// 1. 유효성 검사 (vehicleId의 @NotNull 체크 포함)
+		if (bindingResult.hasErrors()) {	        
+			// vehicleId가 null이 아니라면, vehicleName을 찾아 모델에 다시 넣어줌
+			if (vehicleId != null) {
+				Optional<Vehicle> selectedVehicle = getVehicleList.stream()
+						.filter(v -> v.getId().equals(vehicleId))
+						.findFirst();
+				if (selectedVehicle.isPresent()) {
+					model.addAttribute("selectedVehicleName", selectedVehicle.get().getName());
+				}
+			}
+			model.addAttribute("vehicleList", getVehicleList);
+			return "counseling/addApply";
+		}
 
-	    // 2. vehicleId를 사용하여 vehicleName 설정
-	    for (Vehicle v : getVehicleList) {
-	        if (v.getId().equals(vehicleId)) {
-	            vehicleName = v.getName();
-	            counseling.setVehicleName(vehicleName);
-	            break;
-	        }
-	    }
+		// 2. vehicleId를 사용하여 vehicleName 설정
+		for (Vehicle v : getVehicleList) {
+			if (v.getId().equals(vehicleId)) {
+				vehicleName = v.getName();
+				counseling.setVehicleName(vehicleName);
+				break;
+			}
+		}
 
-	    // 3. 중복 신청 검사
-	    Member member = memberService.findByMemberId(principal.getName());
-	    List<Counseling> getCounselingList = counselingService.findByCustomerId(member.getId());
+		// 3. 중복 신청 검사
+		Member member = memberService.findByMemberId(principal.getName());
+		List<Counseling> getCounselingList = counselingService.findByCustomerId(member.getId());
 
-	    for (Counseling getCounseling : getCounselingList) {
-	        // 이미 해당 차량 ID로 신청한 내역이 있는지 확인
-	        if (getCounseling.getVehicleId().equals(counseling.getVehicleId())) {
-	            bindingResult.rejectValue("vehicleId", "duplecatedVehicleId", "이미 존재하는 상품입니다.");
-	            
-	            // 중복 에러 발생 시 vehicleList와 selectedVehicleName을 다시 모델에 추가하여 선택 정보 유지
-	            model.addAttribute("vehicleList", getVehicleList);
-	            model.addAttribute("selectedVehicleName", vehicleName); 
-	            return "counseling/addApply";
-	        }
-	    }
+		for (Counseling getCounseling : getCounselingList) {
+			// 이미 해당 차량 ID로 신청한 내역이 있는지 확인
+			if (getCounseling.getVehicleId().equals(counseling.getVehicleId())) {
+				bindingResult.rejectValue("vehicleId", "duplecatedVehicleId", "이미 존재하는 상품입니다.");	            
+				model.addAttribute("vehicleList", getVehicleList);
+				model.addAttribute("selectedVehicleName", vehicleName); 
+				return "counseling/addApply";
+			}
+		}
 
-	    // 4. 나머지 처리 및 저장
-	    counseling.setStatus(ApplyStatus.COUNSELING_HODDING.getStatusName());
-	    Customer customer = customerService.findByMember(member);
-	    counseling.setCustomer(customer);
-	    counseling.setCreateDate(LocalDateTime.now());
+		counseling.setStatus(ApplyStatus.COUNSELING_HODDING.getStatusName());
+		Customer customer = customerService.findByMember(member);
+		counseling.setCustomer(customer);
+		counseling.setCreateDate(LocalDateTime.now());
+		counselingService.createCounseling(counseling);
 
-	    counselingService.createCounseling(counseling);
-
-	    return "redirect:/counseling/applyList/" + member.getMemberId();
+		return "redirect:/counseling/applyList/" + member.getMemberId();
 	}
-	
+
 	// 상세 조회 -> 상세/수정 화면
 	@GetMapping("/detail/{id}")
 	public String counselingApplyDetail(@PathVariable("id") Long id, Model model) {
-	    Optional<Counseling> counselingOpt = counselingService.getCounselingById(id);
-	    Optional<Customer> customer = customerService.findById(counselingOpt.get().getCustomer().getId());
-		Member member = memberService.findByMemberId(customer.get().getMember().getMemberId());
-	    if (counselingOpt.isPresent()) {
-		    // 수정 화면에 필요한 차량 목록 등을 추가합니다.
-		    	List<Vehicle> getVehicleList = vehicleService.getVehicleList();
-		    	model.addAttribute("vehicleList", getVehicleList);
-	        model.addAttribute("counseling", counselingOpt.get());
-	        return "counseling/applyDetail"; 
-	    } else {
-	        return "redirect:/counseling/applyList";
-	    }
+		Optional<Counseling> counselingOpt = counselingService.getCounselingById(id);
+		if (counselingOpt.isPresent()) {
+			// 수정 화면에 필요한 차량 목록 등을 추가합니다.
+			List<Vehicle> getVehicleList = vehicleService.getVehicleList();
+			model.addAttribute("vehicleList", getVehicleList);
+			model.addAttribute("counseling", counselingOpt.get());
+			return "counseling/applyDetail"; 
+		} else {
+			return "redirect:/counseling/applyList";
+		}
 	}
 
-	/*
-	 * 상담 수정 처리
-	 */
+	// 상담 수정 처리
 	@PostMapping("/update/{id}")
 	public String updateCounseling(
-	    @PathVariable("id") Long id, 
-	    @Valid @ModelAttribute Counseling counseling, 
-	    BindingResult bindingResult,
-	    RedirectAttributes redirectAttributes,
-	    Model model) {
+			@PathVariable("id") Long id, 
+			@Valid @ModelAttribute Counseling counseling, 
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			Model model) {
 
 		// 유효성 검사
 		if (bindingResult.hasErrors()) {
@@ -202,49 +180,43 @@ public class CounselingController {
 		}
 
 		try {
-		    counselingService.updateCounseling(id, counseling);
-		    redirectAttributes.addFlashAttribute("message", "상담 내용이 성공적으로 수정되었습니다.");
-		    
+			counselingService.updateCounseling(id, counseling);
+			redirectAttributes.addFlashAttribute("message", "상담 내용이 성공적으로 수정되었습니다.");
+
 		} catch (IllegalArgumentException e) {
 			redirectAttributes.addFlashAttribute("error", "상담 ID를 찾을 수 없습니다.");
-		    return "redirect:/counseling/applyList";
+			return "redirect:/counseling/applyList";
 		}
-	    return "redirect:/counseling/detail/" + id; 
+		return "redirect:/counseling/detail/" + id; 
 	}
-	
+
+	// 상담 취소 처리
 	@GetMapping("/applyList/cencel/{id}")
 	public String updateCounselingStatus(@PathVariable("id") Long id, 
-		    RedirectAttributes redirectAttributes,
-		    Model model) {
-		
+			RedirectAttributes redirectAttributes,
+			Model model) {
+
 		Counseling counseling = counselingService.findById(id);
 		Optional<Customer> customer = customerService.findById(counseling.getCustomer().getId());
 		Member member = memberService.findByMemberId(customer.get().getMember().getMemberId());
-		
+
 		try {
-		    counselingService.updateCounselingStatus(id, ApplyStatus.COUNSELING_CENCEL.getStatusName());
-		    redirectAttributes.addFlashAttribute("message", "상담신청이 취소되었습니다.");
-		    
+			counselingService.updateCounselingStatus(id, ApplyStatus.COUNSELING_CENCEL.getStatusName());
+			redirectAttributes.addFlashAttribute("message", "상담신청이 취소되었습니다.");		    
 		} catch (IllegalArgumentException e) {
 			redirectAttributes.addFlashAttribute("error", "상담 ID를 찾을 수 없습니다.");
-		    return "redirect:/counseling/applyList/"+ member.getMemberId();
+			return "redirect:/counseling/applyList/"+ member.getMemberId();
 		}
-
 		return counselingApplyList(member.getMemberId(), 0, null, "전체상태", null, model); 
 	}
-	
-	/*
-	 * 상담 상태만 수정
-	 */
+
+	// 상담 상태 수정
 	@GetMapping("/update/{id}/{status}")
 	public String updateStatus(@PathVariable("id") Long id, 
-			@PathVariable("status") String status) {
-		
+			@PathVariable("status") String status) {		
 		Counseling counseling = counselingService.findById(id);
 		counseling.setStatus(status);
-		counselingService.createCounseling(counseling);
-		
+		counselingService.createCounseling(counseling);		
 		return "redirect:/dealer/myCustomer";
 	}
-	
 }
