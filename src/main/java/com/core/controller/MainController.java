@@ -11,7 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,14 +23,17 @@ import com.core.entity.ApplyStatus;
 import com.core.entity.Counseling;
 import com.core.entity.Dealer;
 import com.core.entity.Member;
+import com.core.entity.Notice;
 import com.core.entity.Role;
 import com.core.entity.Sale;
 import com.core.service.CounselingService;
 import com.core.service.CustomerService;
 import com.core.service.DealerService;
 import com.core.service.MemberService;
+import com.core.service.NoticeService;
 import com.core.service.SaleService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -42,6 +47,7 @@ public class MainController {
 	private final DealerService dealerService;
 	private final CounselingService counselingService;
 	private final SaleService saleService;
+	private final NoticeService noticeService;
 
 
 	@GetMapping("/main")
@@ -195,25 +201,33 @@ public class MainController {
 		return "redirect:/admin/profile";
 	}
 
+	// 관리자 프로필
 	@GetMapping("/admin/profile")
 	public String requestAdminProfile(Principal principal,
 			@RequestParam(value="page", defaultValue="0") int page,
+			@RequestParam(value = "size", defaultValue = "5") int size,
 			Model model) {
-		Member admin = memberService.findByMemberId(principal.getName());
 
+		if (!model.containsAttribute("notice")) {
+            model.addAttribute("notice", new Notice());
+        }
+		Member admin = memberService.findByMemberId(principal.getName());
 		List<Member> customerList = memberService.findByRole(Role.ADMIN);
 
 		Sort sortObj = Sort.by("createDate").ascending();
 		Pageable pageable = PageRequest.of(page, 10, sortObj);  
-		Page<Counseling> counselingList = counselingService.findCounselingsByFilter(ApplyStatus.COUNSELING_HODDING.getStatusName(), null, pageable);
+        Page<Notice> noticePage = noticeService.findAllNotices(pageable);
 
-		model.addAttribute("counselingList", counselingList);
+        model.addAttribute("noticePage", noticePage);
+        model.addAttribute("notices", noticePage.getContent());
+        model.addAttribute("currentPage", page);
 		model.addAttribute("customerList", customerList);
 		model.addAttribute("admin", admin);
 
 		return "admin/profile";
 	}
 
+	// 관리자 멤버리스트
 	@GetMapping("/admin/list")
 	public String list(
 			Model model,
@@ -264,5 +278,38 @@ public class MainController {
 			redirectAttributes.addFlashAttribute("errorMessage", "알 수 없는 오류: 업데이트 중 치명적인 오류가 발생했습니다.");
 		}
 		return "redirect:/admin/list";
+	}
+	
+	//전체 알림/공지 등록
+	@PostMapping("/admin/notice/add")
+	public String registerNotice(
+			@Valid @ModelAttribute Notice notice,
+			BindingResult bindingResult, 
+			RedirectAttributes rt
+			) {
+		// 1. 유효성 검사 실패 (필수 값 누락 시)
+		if (bindingResult.hasErrors()) {
+			rt.addFlashAttribute("org.springframework.validation.BindingResult.notice", bindingResult);
+			rt.addFlashAttribute("notice", notice);
+			return "redirect:/admin/profile";
+		}
+
+		try {
+			Notice savedNotice = noticeService.registerNewNotice(
+					notice.getTitle(), 
+					notice.getContent(), 
+					notice.getTarget(), 
+					Role.ADMIN.toString() // 등록자는 Role.ADMIN으로 고정
+					);
+
+			// 3. 성공 메시지 전송
+			rt.addFlashAttribute("successMessage", "공지사항이 성공적으로 등록되었습니다: " + savedNotice.getTitle());
+
+		} catch (Exception e) {
+			// 4. 시스템 오류 처리
+			System.err.println("공지 등록 중 시스템 오류 발생: " + e.getMessage());
+			rt.addFlashAttribute("errorMessage", "공지 등록 중 시스템 오류가 발생했습니다.");
+		}
+		return "redirect:/admin/profile"; 
 	}
 }
