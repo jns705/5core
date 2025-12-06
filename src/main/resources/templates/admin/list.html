@@ -36,85 +36,144 @@
             --text-muted: #6b7280;
         }
 
-        .sidebar {
-            width: 248px;
-            background: linear-gradient(180deg, #0d47a1 0%, #093272 100%);
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 0;
-        }
+		/* 레이아웃 */
+		.sidebar {
+		  width: 248px;
+		  background: linear-gradient(180deg, #0d47a1 0%, #093272 100%);
+		  color: #ffffff;
+		  display: flex;
+		  flex-direction: column;
+		  padding: 20px 0;
+		}
 
-        .sidebar__logo {
-            padding: 0 24px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-            margin-bottom: 16px;
-        }
+		.sidebar__logo {
+		  padding: 0 24px 20px;
+		  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+		  margin-bottom: 16px;
+		}
 
-        .sidebar__logo-title {
-            font-size: 20px;
-            font-weight: 700;
-        }
+		.sidebar__logo-title {
+		  font-size: 20px;
+		  font-weight: 700;
+		  letter-spacing: 0.02em;
+		}
 
-        .sidebar__section-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            opacity: 0.75;
-            padding: 0 24px;
-            margin-bottom: 6px;
-        }
+		.sidebar__section-title {
+		  font-size: 12px;
+		  text-transform: uppercase;
+		  opacity: 0.75;
+		  padding: 0 24px;
+		  margin-bottom: 6px;
+		}
 
-        .menu-list {
-            list-style: none;
-            padding: 0 8px;
-        }
+		.menu-list {
+		  list-style: none;
+		  padding: 0 8px;
+		}
 
 		.menu-item {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			padding: 10px 16px;
-			margin: 2px 8px;
-			border-radius: 8px;
-			font-size: 14px;
-			cursor: pointer;
-			transition: background 0.18s ease, transform 0.12s ease;
-			color: #eef3ff;
-			opacity: 0.9;
+		  display: flex;
+		  align-items: center;
+		  gap: 10px;
+		  padding: 10px 16px;
+		  margin: 2px 8px;
+		  border-radius: 8px;
+		  font-size: 14px;
+		  cursor: pointer;
+		  transition: background 0.18s ease, transform 0.12s ease;
+		  color: #eef3ff;
+		  opacity: 0.9;
 		}
 
 		.menu-item:hover {
-		    background: #e5e7eb;
-		    color: #0d47a1;
-		    font-weight: 600;
-		    transform: translateY(-1px);
-		    opacity: 1;
+		  background: rgba(255, 255, 255, 0.15);
+		  transform: translateY(-1px);
+		  opacity: 1;
 		}
 
-        .menu-item--active {
-            background: #ffffff;
-            color: #0d47a1;
-            opacity: 1;
-            font-weight: 600;
-        }
+		.menu-item--active {
+		  background: #ffffff;
+		  color: #0d47a1;
+		  opacity: 1;
+		  font-weight: 600;
+		}
 
-        .menu-item__bullet {
-            width: 6px;
-            height: 6px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.6);
-        }
+		.menu-item__bullet {
+		  width: 6px;
+		  height: 6px;
+		  border-radius: 999px;
+		  background: rgba(255, 255, 255, 0.6);
+		}
 
-        /*.menu-item--active .menu-item__bullet {
-            background: #0d47a1;
-        }*/
+		.menu-item--active .menu-item__bullet {
+		  background: #0d47a1;
+		}
 
-        .sidebar__bottom {
-            margin-top: auto;
-            padding: 12px 24px 8px;
-            font-size: 12px;
-            opacity: 0.7;
-        }
+		.sidebar__bottom {
+		  margin-top: auto;
+		  padding: 12px 24px 8px;
+		  font-size: 12px;
+		  opacity: 0.7;
+		}
+
+		.main {
+		  flex: 1;
+		  display: flex;
+		  flex-direction: column;
+		  min-width: 0;
+		}
+
+		.header {
+		  height: 64px;
+		  background: #ffffff;
+		  display: flex;
+		  align-items: center;
+		  justify-content: space-between;
+		  padding: 0 24px;
+		  border-bottom: 1px solid #e5e7eb;
+		}
+
+		.header__left {
+		  display: flex;
+		  align-items: center;
+		  gap: 12px;
+		}
+
+		.logo {
+		  font-size: 18px;
+		  font-weight: 700;
+		  color: #0d47a1;
+		}
+
+		.header__chip {
+		  padding: 4px 10px;
+		  border-radius: 999px;
+		  background: #e3eefc;
+		  font-size: 11px;
+		  color: #1f3e7a;
+		}
+
+		.user-info {
+		  font-size: 14px;
+		  color: #374151;
+		  display: flex;
+		  align-items: center;
+		  gap: 10px;
+		}
+
+		.user-info__role {
+		  font-size: 11px;
+		  padding: 3px 8px;
+		  border-radius: 999px;
+		  background: #f3f4f6;
+		  color: #6b7280;
+		}
+
+		.user-info span.logout {
+		  color: #0d47a1;
+		  cursor: pointer;
+		  font-weight: 600;
+		}
 		
 		
         /* ===== HYUNDAI CRM 사이드바 끝 ===== */
