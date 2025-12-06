@@ -68,18 +68,27 @@ public class StreamlitRunner implements ApplicationRunner {
 		    "sales_graph.py",
 		    "--server.baseUrlPath=5core",
 		    "--server.port=8503"
-		);
+		);		
+		
+        // chatbot: 판매 실적 그래프 (8504)
+		ProcessBuilder chatbot = new ProcessBuilder(
+		    pythonPath.toString(), "-m", "streamlit", "run",
+		    "chatbot_streamlit.py",
+		    "--server.baseUrlPath=5core",
+		    "--server.port=8504"
+		);		
 		
 		// 실행 디렉토리
 		builder.directory(aiServerDir.toFile());
 		applyDetailRecommend.directory(aiServerDir.toFile());
-		dealerSaleGraph.directory(aiServerDir.toFile());
+		//dealerSaleGraph.directory(aiServerDir.toFile());
 		
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸
 		builder.start();
 		applyDetailRecommend.start();
 		dealerSaleGraph.start();
+		chatbot.start();
 		System.out.println("Streamlit이 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");
 	}
