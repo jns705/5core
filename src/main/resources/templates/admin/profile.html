@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -222,10 +222,10 @@
       color: #6b7280;
     }
 
-    /* 딜러 영역 */
+    /* 딜러 영역 (관리자 패널) */
     .admin-panel {
-      width: 32%;
-      min-width: 280px;
+      width: 35%; /* 32%에서 35%로 증가 */
+      min-width: 300px; /* 280px에서 300px로 증가 */
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -236,17 +236,18 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      background: var(--bg-elevated); /* 프로필 카드 배경색 유지 */
     }
 
     .admin-profile__top {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 20px; /* 16px에서 20px로 간격 증가 */
     }
 
     .admin-avatar {
-      width: 70px;
-      height: 70px;
+      width: 78px; /* 70px에서 78px로 증가 */
+      height: 78px; /* 70px에서 78px로 증가 */
       border-radius: 999px;
       background: linear-gradient(135deg, #1e40af, #0ea5e9);
       display: flex;
@@ -254,20 +255,21 @@
       justify-content: center;
       color: #ffffff;
       font-weight: 700;
-      font-size: 20px;
+      font-size: 24px; /* 20px에서 24px로 증가 */
+      box-shadow: 0 4px 10px rgba(13, 71, 161, 0.2); /* 은은한 그림자 추가 */
     }
 
     .admin-profile__name {
-      font-size: 18px;
+      font-size: 20px; /* 18px에서 20px로 증가 */
       color: #0d47a1;
       margin-bottom: 4px;
-      font-weight: 700;
+      font-weight: 800; /* 700에서 800으로 굵게 */
     }
 
     .admin-profile__meta {
-      font-size: 13px;
+      font-size: 14px; /* 13px에서 14px로 증가 */
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.6; /* 줄 간격 증가 */
     }
 
     .admin-profile__meta strong {
@@ -282,86 +284,123 @@
     }
 
     .admin-contact {
-      font-size: 13px;
+      font-size: 14px; /* 13px에서 14px로 증가 */
       color: #374151;
       display: grid;
-      row-gap: 4px;
+      row-gap: 8px; /* 4px에서 8px로 간격 증가 */
+      padding: 8px 0; /* 상하 패딩 추가 */
     }
 
     .admin-contact__label {
       color: var(--text-muted);
-      width: 46px;
+      width: 50px; /* 46px에서 50px로 증가 */
       display: inline-block;
+      font-weight: 500;
     }
 
     .admin-status-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 4px;
+      margin-top: 12px; /* 4px에서 12px로 증가 */
+      padding-top: 12px;
+      border-top: 1px dashed #f3f4f6; /* 구분선 추가 */
     }
 
     .admin-status-tag {
-      font-size: 11px;
-      padding: 3px 8px;
+      font-size: 12px; /* 11px에서 12px로 증가 */
+      padding: 4px 10px; /* 패딩 증가 */
       border-radius: 999px;
-      background: #ecfdf3;
-      color: var(--success);
-      border: 1px solid rgba(16, 185, 129, 0.2);
+      background: var(--success); /* 초록색으로 변경 */
+      color: #ffffff; /* 글자색 흰색으로 변경 */
+      border: none;
+      font-weight: 600;
     }
 
     .admin-status-text {
-      font-size: 11px;
+      font-size: 12px; /* 11px에서 12px로 증가 */
       color: var(--text-muted);
     }
 
-    /* KPI */
-    .kpi-box {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 6px;
+    /* --- 스케줄 카드 스타일 (추가) --- */
+    .schedule-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-top: 4px;
     }
 
-    .kpi-item {
-      background: var(--primary-soft);
-      padding: 10px 10px;
-      border-radius: 10px;
-      text-align: left;
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 14px;
+    .schedule-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: #fcfcfc;
+        border-left: 4px solid #e5e7eb;
+        transition: background 0.2s ease;
     }
 
-    .kpi-item__label {
-      font-size: 11px;
-      font-weight: 500;
-      opacity: 0.8;
-      margin-bottom: 4px;
+    .schedule-item:hover {
+        background: #f3f5f9;
     }
 
-    .kpi-item__value {
-      font-size: 16px;
+    .schedule-item--active {
+        border-left-color: var(--primary); /* 활성 스케줄 강조 */
     }
 
-    .kpi-item__trend {
-      font-size: 11px;
-      margin-top: 2px;
-      color: var(--success);
+    .schedule-item--pending {
+        border-left-color: var(--warning); /* 보류/마감 임박 스케줄 강조 */
     }
 
-    .kpi-item__trend--down {
-      color: var(--danger);
+    .schedule-item__dot {
+        width: 10px;
+        height: 10px;
+        min-width: 10px;
+        border-radius: 999px;
+        background: #d1d5db;
     }
 
-    /* 차트 카드 */
-    .chart-card {
-      margin-top: 6px;
+    .schedule-item--active .schedule-item__dot {
+        background: var(--primary);
     }
 
-    .chart-card canvas {
-      width: 100%;
-      max-width: 100%;
+    .schedule-item--pending .schedule-item__dot {
+        background: var(--warning);
+    }
+
+    .schedule-item__content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .schedule-item__title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .schedule-item__meta {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 2px;
+    }
+
+    .schedule-item__priority {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--danger);
+        background: #fef2f2;
+        padding: 3px 8px;
+        border-radius: 999px;
+        border: 1px solid #fca5a5;
+        min-width: 40px;
+        text-align: center;
     }
 
     /* 오른쪽 메인 영역 */
@@ -373,216 +412,158 @@
       gap: 16px;
     }
 
-    .main-panel__header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-    }
-
-    .page-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #111827;
-    }
-
-    .page-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .filter-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .filter-pill {
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      cursor: pointer;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-    }
-
-    .filter-pill--active {
-      background: #0d47a1;
-      color: #ffffff;
-      border-color: #0d47a1;
-      font-weight: 500;
-    }
-
-    /* 고객 리스트 */
-    .customer-section {
+    /* 메신저 & 알림 폼 (통합 및 개선) */
+    .messaging-section, .alert-form-section {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .customer-list-wrapper {
-      max-height: 280px;
+    /* 폼 요소 기본 스타일 통일 및 개선 */
+    .message-input-group input, 
+    .message-input-group button, 
+    .alert-form-section input, 
+    .alert-form-section textarea,
+    .form-group select { /* select 포함하여 스타일 통일 */
+      padding: 10px 12px; /* 패딩 증가 */
+      border-radius: 10px; /* 모서리 약간 둥글게 */
+      border: 1px solid var(--border-subtle); /* 옅은 테두리 */
+      font-size: 14px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* 포커스 시 강조 */
+    .alert-form-section input:focus, 
+    .alert-form-section textarea:focus,
+    .form-group select:focus,
+    .message-input-group input:focus {
+        outline: none;
+        border-color: var(--primary); /* 포커스 시 기본 색상으로 변경 */
+        box-shadow: 0 0 0 3px var(--primary-soft); /* 은은한 포커스 효과 */
+    }
+
+    /* 라벨 스타일 강조 */
+    .form-group label {
+      font-size: 14px; /* 크기 약간 증가 */
+      font-weight: 600; /* 굵게 */
+      color: #1f2937; /* 진한 글자색 */
+      margin-bottom: 4px;
+    }
+
+    .message-list {
+      max-height: 300px; /* 최대 높이 증가 */
       overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .customer-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    .customer-table thead {
-      position: sticky;
-      top: 0;
-      background: #f9fafb;
-      z-index: 1;
-    }
-
-    .customer-table th,
-    .customer-table td {
-      padding: 8px 10px;
-      text-align: left;
-      border-bottom: 1px solid #edf2f7;
-      white-space: nowrap;
-    }
-
-    .customer-table th {
-      font-size: 12px;
-      color: #6b7280;
-      font-weight: 600;
-    }
-
-    .customer-row {
-      transition: background 0.12s ease;
-      cursor: pointer;
-    }
-
-    .customer-row:hover {
-      background: #f3f4ff;
-    }
-
-    .customer-name-cell {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .customer-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: #4b5563;
-      font-weight: 600;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 500;
-    }
-
-    .badge--vip {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .badge--lead {
-      background: #ecfdf3;
-      color: #166534;
-    }
-
-    .badge--pending {
-      background: #fef2f2;
-      color: #b91c1c;
-    }
-
-    .customer-tag {
-      font-size: 11px;
-      color: #6b7280;
-    }
-
-    /* 업무 요약 카드 */
-    .summary-list {
-      display: grid;
-      row-gap: 4px;
-      margin-top: 2px;
-    }
-
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      color: #374151;
-    }
-
-    .summary-item__label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .summary-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #0d47a1;
-    }
-
-    .summary-dot--warning {
-      background: var(--warning);
-    }
-
-    .summary-dot--danger {
-      background: var(--danger);
-    }
-
-    .summary-item__value {
-      font-weight: 600;
-    }
-
-    /* 월간 판매 차트 */
-    .monthly-card {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px; /* 간격 증가 */
+      padding: 0 4px;
     }
 
-    .monthly-card__meta {
-      font-size: 11px;
-      color: var(--text-muted);
+    .message-bubble {
+      max-width: 75%; /* 너비 약간 줄임 */
+      padding: 10px 14px; /* 패딩 증가 */
+      border-radius: 14px; /* 모서리 더욱 둥글게 */
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .message-bubble--admin {
+      background: var(--primary);
+      color: #ffffff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px; /* 뾰족한 부분 디자인 유지/강화 */
+    }
+
+    .message-bubble--dealer {
+      background: #e3eefc; /* 딜러 메시지 배경색을 밝은 파란색으로 변경 */
+      color: #1f3e7a;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .message-meta {
+      font-size: 11px; /* 크기 약간 증가 */
+      color: #9ca3af; /* 색상 약간 밝게 */
+      margin-top: 6px; /* 마진 증가 */
+    }
+
+    .message-input-group {
       display: flex;
-      justify-content: space-between;
-    }
-
-    .legend {
-      display: flex;
-      align-items: center;
       gap: 8px;
-      font-size: 11px;
+      padding-top: 12px; /* 상단 패딩 증가 */
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 8px;
     }
 
-    .legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: #0d47a1;
+    .message-input-group input {
+      flex: 1;
     }
 
-    .legend-dot--secondary {
-      background: #22c55e;
+    .message-input-group button {
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      padding: 0 16px; /* 높이는 input과 맞추고 좌우 패딩만 설정 */
+      height: 40px; /* input과 동일한 높이 */
     }
+
+    .message-input-group button:hover {
+      background: #1e40af;
+    }
+
+    /* 알림 폼 */
+    .alert-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px; /* 12px에서 16px로 간격 증가 */
+      margin-top: 8px; /* 상단 마진 증가 */
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px; /* 최소 높이 증가 */
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding-top: 10px; /* 상단 패딩 추가 */
+      border-top: 1px solid #f3f4f6; /* 구분선 추가 */
+      margin-top: 12px;
+    }
+
+    .form-actions button {
+      padding: 10px 20px; /* 버튼 크기 키우기 */
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease, box-shadow 0.2s ease;
+      border: none; /* 기본 테두리 제거 */
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 3px 6px rgba(13, 71, 161, 0.2); /* 그림자 추가 */
+    }
+
+    .btn-submit:hover {
+      background: #1e40af;
+    }
+
+    .btn-cancel {
+      background: #e5e7eb; /* 약간 더 진한 회색 */
+      color: #4b5563;
+      border: 1px solid #d1d5db; /* 취소 버튼에 테두리 추가 */
+    }
+
+    .btn-cancel:hover {
+      background: #d1d5db;
+    }
+
 
     /* 스크롤바 커스터마이징 (옵션) */
     ::-webkit-scrollbar {
@@ -635,7 +616,9 @@
       }
       .admin-panel {
         width: 100%;
-        flex-direction: row;
+        flex-direction: row; /* 모바일에서 프로필과 스케줄 카드를 가로로 정렬 */
+        flex-wrap: wrap;
+        min-width: unset;
       }
     }
   </style>
@@ -655,18 +638,17 @@
 		   </a>
 		 </li>
 		 <li>
+		   <a th:href="@{/admin/profile}" class="menu-item menu-item--active">
+		     <span class="menu-item__bullet"></span>
+		     <span>프로필</span>
+		   </a>
+		 </li>		 
+		 <li>
 		   <a th:href="@{/admin/list}" class="menu-item">
 		     <span class="menu-item__bullet"></span>
 		     <span>멤버 관리</span>
 		   </a>
 		 </li>
-		 <li>
-		   <a th:href="@{/admin/profile}" class="menu-item menu-item--active">
-		     <span class="menu-item__bullet"></span>
-		     <span>프로필 수정</span>
-		   </a>
-		   </li>
-		 <li>
 		   <a th:href="@{/admin/statistics}" class="menu-item">
 		     <span class="menu-item__bullet"></span>
 		     <span>통계 현황</span>
@@ -700,7 +682,6 @@
     <div class="content">
       <div class="content__row">
 
-        <!-- 관리자 패널 -->
         <aside class="admin-panel">
           <section class="card admin-profile">
             <div class="card__header">
@@ -713,7 +694,7 @@
 
             <div class="admin-profile__top">
               <div class="admin-avatar">
-                <span>[[${strings.substring(admin.name,0,1)}]]</span>
+                <span>[[${#strings.substring(admin.name,0,1)}]]</span>
               </div>
               <div>
                 <div class="admin-profile__name">[[${admin.name}]]</div>
@@ -743,152 +724,107 @@
             </div>
           </section>
 
-          <section class="card">
+          <section class="card admin-schedule">
             <div class="card__header">
-              <h3 class="card__title">오늘의 KPI</h3>
-              <span class="card__subtitle">09:00 ~ 현재 기준</span>
-            </div>
-            <div class="kpi-box">
-              <div class="kpi-item">
-                <div class="kpi-item__label">상담 진행</div>
-                <div class="kpi-item__value">42건</div>
-                <div class="kpi-item__trend">+5 오늘</div>
+              <div>
+                <h3 class="card__title">주요 업무 스케줄</h3>
+                <p class="card__subtitle">금주 마감일정 및 알림</p>
               </div>
-			  <div class="kpi-item">
-			    <div class="kpi-item__label">상담 완료</div>
-			    <div class="kpi-item__value">1건</div>
-			    <div class="kpi-item__trend kpi-item__trend--down"></div>
-			  </div>
-              <div class="kpi-item">
-                <div class="kpi-item__label">판매 완료</div>
-                <div class="kpi-item__value">12대</div>
-                <div class="kpi-item__trend">+2 이번 주</div>
-              </div>
+              <span class="card__chip" style="background: var(--warning); color: #854d0e;">D-3</span>
             </div>
-          </section>
-
-          <section class="card chart-card">
-            <div class="card__header">
-              <h3 class="card__title">월별 실적 그래프</h3>
-              <span class="card__subtitle">상담 대비 구매 전환률</span>
+            
+            <div class="schedule-list">
+                <div class="schedule-item schedule-item--pending">
+                    <div class="schedule-item__dot"></div>
+                    <div class="schedule-item__content">
+                        <span class="schedule-item__title">분기 실적 보고서 제출</span>
+                        <span class="schedule-item__meta">마감: 12월 23일 17:00</span>
+                    </div>
+                    <span class="schedule-item__priority">긴급</span>
+                </div>
+                <div class="schedule-item schedule-item--active">
+                    <div class="schedule-item__dot"></div>
+                    <div class="schedule-item__content">
+                        <span class="schedule-item__title">신규 딜러 교육 세션 준비</span>
+                        <span class="schedule-item__meta">일정: 12월 21일 10:00</span>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-item__dot"></div>
+                    <div class="schedule-item__content">
+                        <span class="schedule-item__title">차세대 모델 프로모션 검토</span>
+                        <span class="schedule-item__meta">참조: 마케팅팀 문서</span>
+                    </div>
+                </div>
             </div>
-            <canvas id="adminPerformance" height="150"></canvas>
           </section>
         </aside>
 
-        <!-- 메인 패널 -->
+
         <section class="main-panel">
-          <div class="main-panel__header-row">
-            <div>
-              <h2 class="page-title">고객 명단</h2>
-              <p class="page-subtitle">실시간 리드 현황 및 VIP 고객 관리</p>
-            </div>
-            <div class="filter-group">
-              <span>보기:</span>
-              <button type="button" class="filter-pill filter-pill--active">전체</button>
-              <button type="button" class="filter-pill">신규 리드</button>
-              <button type="button" class="filter-pill">시승 예약</button>
-              <button type="button" class="filter-pill">구매 완료</button>
-            </div>
-          </div>
-
-          <!-- 고객 리스트 -->
-          <section class="card customer-section">
-            <div class="card__header">
-              <h3 class="card__title">고객 리스트</h3>
-              <div class="card__subtitle"></div>
-            </div>
-            <div class="customer-list-wrapper">
-              <table class="customer-table">
-                <thead>
-                  <tr>
-                    <th>고객</th>
-                    <th>전화번호</th>
-                    <th>이메일</th>
-                    <th>등급</th>
-                    <th>상태</th>
-                    <th>구매 횟수</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr th:each="customer, customerStat : ${counselingList}" class="customer-row">
-                    <td>
-                      <div class="customer-name-cell">
-                        <div class="customer-avatar">
-                          <span th:text="${#strings.substring(customer.customer.member.name,0,1)}"></span>
-                        </div>
-                        <span th:text="${customer.customer.member.name}"></span>
+          <div class="content__row" style="gap:16px; align-items:stretch; margin-top: 16px;">
+              <section class="card messaging-section" style="flex:1;">
+                  <div class="card__header">
+                      <h3 class="card__title">딜러 소통방 (메신저)</h3>
+                      <span class="card__subtitle">딜러들과 실시간으로 소통하세요</span>
+                  </div>
+                  
+                  <div class="message-list">
+                      <div class="message-bubble message-bubble--dealer">
+                          관리자님, 신형 '아이오닉 9' 관련 판매 자료 업데이트 부탁드립니다.
+                          <div class="message-meta">홍길동 딜러 · 10:20 AM</div>
                       </div>
-                    </td>
-                    <td th:text="${customer.customer.member.phone}"></td>
-                    <td th:text="${customer.customer.member.email}"></td>
-                    <td>
-                      <span th:if="${customer.customer.segment == 'vip'}" class="badge badge--vip">VIP</span>
-                      <span th:if="${customer.customer.segment == '일반'}" class="badge badge--lead">일반</span>
-                    </td>
-                    <td>
-                      <span class="badge badge--pending" >[[${customer.status}]]</span>
-                      <!--<span class="badge badge--lead" >시승 예약</span>
-                      <span class="badge badge--vip" >구매 완료</span>-->
-                    </td>
-                    <td>
-                      <span class="customer-tag" >[[${customer.customer.purchaseCount}]]</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+                      <div class="message-bubble message-bubble--admin">
+                          네, 곧바로 자료실에 업로드하겠습니다. 확인 후 다시 안내드리겠습니다.
+                          <div class="message-meta">관리자 · 10:25 AM</div>
+                      </div>
+                      <div class="message-bubble message-bubble--dealer">
+                          감사합니다!
+                          <div class="message-meta">홍길동 딜러 · 10:27 AM</div>
+                      </div>
+                  </div>
 
-          <!-- 오늘의 업무 요약 + 월간 판매 -->
-          <div class="content__row" style="gap:16px; align-items:stretch;">
-            <section class="card" style="flex:0.9;">
-              <div class="card__header">
-                <h3 class="card__title">오늘의 업무 요약</h3>
-                <span class="card__subtitle">딜러 기준 주요 액션</span>
-              </div>
-              <div class="summary-list">
-                <div class="summary-item">
-                  <div class="summary-item__label">
-                    <span class="summary-dot"></span>
-                    <span>신규 상담 요청</span>
+                  <div class="message-input-group">
+                      <input type="text" placeholder="메시지를 입력하세요..." />
+                      <button type="button">보내기</button>
                   </div>
-                  <span class="summary-item__value">5건</span>
-                </div>
-                <div class="summary-item">
-                  <div class="summary-item__label">
-                    <span class="summary-dot summary-dot--warning"></span>
-                    <span>예약된 시승 일정</span>
-                  </div>
-                  <span class="summary-item__value">3건</span>
-                </div>
-                <div class="summary-item">
-                  <div class="summary-item__label">
-                    <span class="summary-dot summary-dot--danger"></span>
-                    <span>미확인 알림</span>
-                  </div>
-                  <span class="summary-item__value">2건</span>
-                </div>
-              </div>
-            </section>
+              </section>
 
-            <section class="card monthly-card" style="flex:1.2;">
-              <div class="card__header">
-                <h3 class="card__title">월간 판매량</h3>
-                <span class="card__subtitle">차종별 판매 추이</span>
-              </div>
-              <div class="monthly-card__meta">
-                <div class="legend">
-                  <span class="legend-dot"></span>
-                  <span>총 판매</span>
-                  <span class="legend-dot legend-dot--secondary"></span>
-                  <span>EV 판매</span>
-                </div>
-                <span>단위: 대수</span>
-              </div>
-              <canvas id="monthlySalesChart" height="160"></canvas>
-            </section>
+              <section class="card alert-form-section" style="flex:1;">
+                  <div class="card__header">
+                      <h3 class="card__title">전체 알림/공지 등록 폼</h3>
+                      <span class="card__subtitle">딜러들에게 공지사항을 전파합니다.</span>
+                  </div>
+                  
+                  <form class="alert-form">
+                      <div class="form-group">
+                          <label for="alertTarget">전송 대상</label>
+                          <select id="alertTarget">
+                              <option value="all">전체 딜러</option>
+                              <option value="seoul">서울 지점 딜러</option>
+                              <option value="busan">부산 지점 딜러</option>
+                              <option value="vip">VIP 전담 딜러</option>
+                          </select>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="alertTitle">공지 제목</label>
+                          <input type="text" id="alertTitle" placeholder="제목을 입력하세요" />
+                      </div>
+
+                      <div class="form-group">
+                          <label for="alertContent">내용</label>
+                          <textarea id="alertContent" placeholder="공지 내용을 입력하세요. (최대 500자)"></textarea>
+                      </div>
+
+                      <div class="form-actions">
+                          <button type="reset" class="btn-cancel">취소</button>
+                          <button type="submit" class="btn-submit">공지 등록</button>
+                      </div>
+                  </form>
+              </section>
           </div>
+          
         </section>
       </div>
     </div>

@@ -201,7 +201,7 @@ public class MainController {
 			Model model) {
 		Member admin = memberService.findByMemberId(principal.getName());
 
-		List<Member> customerList = memberService.findByRole(Role.CUSTOMER);
+		List<Member> customerList = memberService.findByRole(Role.ADMIN);
 
 		Sort sortObj = Sort.by("createDate").ascending();
 		Pageable pageable = PageRequest.of(page, 10, sortObj);  
