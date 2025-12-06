@@ -189,6 +189,7 @@
 
     /* 카드 공통 */
     .card {
+	  height: 500px;
       background: var(--bg-elevated);
       padding: 18px 18px 16px;
       border-radius: 14px;
@@ -378,7 +379,7 @@
 
     .schedule-item__title {
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 60        0;
         color: #374151;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -412,21 +413,19 @@
       gap: 16px; /* 모든 내부 content__row 사이의 수직 간격 통일 */
     }
 
-    /* 메신저 & 알림 폼 */
-    .messaging-section, .alert-form-section, .ai-consult-form-section { /* AI 폼 섹션 추가 */
+    /* 메신저 & 알림 폼 & AI 챗봇 뷰 */
+    .messaging-section, .alert-form-section, .ai-consult-form-section, .alert-list-section { 
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
-
+    
     /* 폼 요소 기본 스타일 통일 및 개선 */
     .message-input-group input, 
     .message-input-group button, 
     .alert-form-section input, 
     .alert-form-section textarea,
-    .form-group select,
-    .ai-consult-form-section textarea, /* AI 폼 요소 추가 */
-    .ai-consult-form-section input {
+    .form-group select {
       padding: 10px 12px; 
       border-radius: 10px; 
       border: 1px solid var(--border-subtle); 
@@ -439,9 +438,7 @@
     .alert-form-section input:focus, 
     .alert-form-section textarea:focus,
     .form-group select:focus,
-    .message-input-group input:focus,
-    .ai-consult-form-section textarea:focus, /* AI 폼 포커스 추가 */
-    .ai-consult-form-section input:focus {
+    .message-input-group input:focus {
         outline: none;
         border-color: var(--primary); 
         box-shadow: 0 0 0 3px var(--primary-soft); 
@@ -457,7 +454,7 @@
     }
 
     .message-list {
-      max-height: 300px; 
+      max-height: 250px; /* 리스트 높이 조정 */
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -571,49 +568,87 @@
       background: #d1d5db;
     }
 
-    /* --- AI 상담 폼 섹션 스타일 (NEW) --- */
+    /* --- AI 상담 폼 섹션 스타일 --- */
     .ai-consult-form-section {
         flex: 1;
         min-width: 0;
     }
-    
-    .ai-settings-group {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        margin-top: 4px;
-    }
 
-    .ai-test-area {
-        display: flex;
-        gap: 8px;
-        padding-top: 10px;
-        border-top: 1px dashed #f3f4f6;
-        margin-top: 10px;
-        align-items: flex-end;
+    .chatbot-live-view {
+        flex: 1;
     }
     
-    .ai-test-area input {
-        flex-grow: 1;
-    }
-
-    .btn-ai-test {
-        background: var(--success);
-        color: #ffffff;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.15s ease;
-        padding: 10px 16px;
-        border-radius: 10px;
-        border: none;
-        height: 40px; 
-        box-shadow: 0 2px 4px rgba(26, 163, 111, 0.3);
-    }
-    
-    .btn-ai-test:hover {
-        background: #158057;
+    .chatbot-live-view iframe {
+        width: 100%; 
+        height: 100%;
+        border: none; 
+        border-radius: 8px; 
+        overflow: hidden;
+        min-height: 400px; /* 챗봇 뷰의 최소 높이 설정 */
     }
     /* --- AI 상담 폼 섹션 스타일 끝 --- */
+
+    /* --- 공지사항 리스트 섹션 스타일 (NEW) --- */
+    .alert-list-section {
+        flex: 1; /* 메신저와 같은 너비를 갖도록 설정 */
+    }
+
+    .alert-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 300px; /* 리스트 높이 제한 */
+        overflow-y: auto;
+    }
+    
+    .alert-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 8px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        transition: background 0.2s ease;
+        cursor: pointer;
+    }
+
+    .alert-item:hover {
+        background: #e3eefc;
+    }
+
+    .alert-item__content {
+        flex-grow: 1;
+        min-width: 0;
+        padding-right: 15px;
+    }
+
+    .alert-item__title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1f2937;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .alert-item__meta {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 2px;
+    }
+
+    .alert-item__target {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        min-width: 60px;
+        text-align: center;
+    }
+    /* --- 공지사항 리스트 섹션 스타일 끝 --- */
 
 
     /* 스크롤바 커스터마이징 (옵션) */
@@ -814,34 +849,8 @@
 
         <section class="main-panel">
           
-          <div class="content__row" style="gap:16px; align-items:stretch;">
-              <section class="card messaging-section" style="flex:1;">
-                  <div class="card__header">
-                      <h3 class="card__title">딜러 소통방 (메신저)</h3>
-                      <span class="card__subtitle">딜러들과 실시간으로 소통하세요</span>
-                  </div>
-                  
-                  <div class="message-list">
-                      <div class="message-bubble message-bubble--dealer">
-                          관리자님, 신형 '아이오닉 9' 관련 판매 자료 업데이트 부탁드립니다.
-                          <div class="message-meta">홍길동 딜러 · 10:20 AM</div>
-                      </div>
-                      <div class="message-bubble message-bubble--admin">
-                          네, 곧바로 자료실에 업로드하겠습니다. 확인 후 다시 안내드리겠습니다.
-                          <div class="message-meta">관리자 · 10:25 AM</div>
-                      </div>
-                      <div class="message-bubble message-bubble--dealer">
-                          감사합니다!
-                          <div class="message-meta">홍길동 딜러 · 10:27 AM</div>
-                      </div>
-                  </div>
-
-                  <div class="message-input-group">
-                      <input type="text" placeholder="메시지를 입력하세요..." />
-                      <button type="button">보내기</button>
-                  </div>
-              </section>
-
+          <div class="content__row" style="gap:16px; align-items:stretch; flex: 1;">
+              
               <section class="card alert-form-section" style="flex:1;">
                   <div class="card__header">
                       <h3 class="card__title">전체 알림/공지 등록 폼</h3>
@@ -875,34 +884,86 @@
                       </div>
                   </form>
               </section>
-          </div>
-
-          <div class="content__row" style="gap:16px; align-items:stretch;">
-              <section class="card ai-consult-form-section" style="flex: 1;"> <div class="card__header">
-                      <h3 class="card__title">AI 실시간 상담 봇 설정</h3>
-                      <span class="card__subtitle">딜러/고객 문의 대응을 위한 AI 봇 역할을 정의합니다.</span>
+              
+              <section class="card ai-consult-form-section" style="flex: 1;"> 
+                  <div class="card__header">
+                      <h3 class="card__title">AI 챗봇 라이브 뷰</h3>
+                      <span class="card__subtitle">딜러/고객 상담용 챗봇의 실시간 화면입니다.</span>
                   </div>
                   
-                  <form class="ai-settings-group">
-                      <div class="form-group">
-                          <label for="aiRole">AI 봇 역할 (System Prompt)</label>
-                          <textarea id="aiRole" placeholder="AI 봇이 응답해야 할 역할을 구체적으로 정의하세요. 예: '현대자동차의 전문 상담 딜러로서, 고객의 질문에 친절하고 정확하게 답변하고, 항상 긍정적인 구매 경험을 유도해야 합니다.'"></textarea>
-                      </div>
+                  <div class="chatbot-live-view" style="flex:1;">
+                      <iframe
+                          th:src="@{|http://localhost:8504|}"
+                          style="width: 100%; height: 100%; border: none; border-radius: 8px; overflow: hidden;">
+                      </iframe>
+                  </div>
+              </section>
+          </div>
 
-                      <div class="form-group">
-                          <label for="aiKnowledge">참조 지식 (Knowledge Base URL)</label>
-                          <input type="url" id="aiKnowledge" placeholder="AI가 참조할 수 있는 최신 제품/가격 정보 URL을 입력하세요." />
+          <div class="content__row" style="gap:16px; align-items:stretch; flex: 1;">
+              
+              <section class="card messaging-section" style="flex:1;">
+                  <div class="card__header">
+                      <h3 class="card__title">딜러 소통방 (메신저)</h3>
+                      <span class="card__subtitle">딜러들과 실시간으로 소통하세요</span>
+                  </div>
+                  
+                  <div class="message-list">
+                      <div class="message-bubble message-bubble--dealer">
+                          관리자님, 신형 '아이오닉 9' 관련 판매 자료 업데이트 부탁드립니다.
+                          <div class="message-meta">홍길동 딜러 · 10:20 AM</div>
                       </div>
-                      
-                      <div class="form-actions" style="margin-top:0; padding-top:0; border:none;">
-                          <button type="reset" class="btn-cancel">설정 초기화</button>
-                          <button type="submit" class="btn-submit">설정 저장</button>
+                      <div class="message-bubble message-bubble--admin">
+                          네, 곧바로 자료실에 업로드하겠습니다. 확인 후 다시 안내드리겠습니다.
+                          <div class="message-meta">관리자 · 10:25 AM</div>
                       </div>
-                  </form>
+                      <div class="message-bubble message-bubble--dealer">
+                          감사합니다!
+                          <div class="message-meta">홍길동 딜러 · 10:27 AM</div>
+                      </div>
+                  </div>
 
-                  <div class="ai-test-area">
-                      <input type="text" placeholder="AI 응답을 테스트할 질문을 입력하세요..." />
-                      <button type="button" class="btn-ai-test">응답 테스트</button>
+                  <div class="message-input-group">
+                      <input type="text" placeholder="메시지를 입력하세요..." />
+                      <button type="button">보내기</button>
+                  </div>
+              </section>
+
+              <section class="card alert-list-section" style="flex:1;">
+                  <div class="card__header">
+                      <h3 class="card__title">공지사항 목록</h3>
+                      <span class="card__subtitle">최근 5건의 공지/알림 내역입니다.</span>
+                  </div>
+                  
+                  <div class="alert-list">
+                      <div class="alert-item">
+                          <div class="alert-item__content">
+                              <span class="alert-item__title">차량 가격 정책 변경 안내 (24년 Q1)</span>
+                              <span class="alert-item__meta">등록일: 2025.12.05 | 등록자: 관리자</span>
+                          </div>
+                          <span class="alert-item__target">전체 딜러</span>
+                      </div>
+                       <div class="alert-item" style="border-left: 4px solid var(--warning);">
+                          <div class="alert-item__content">
+                              <span class="alert-item__title">중요: 연말 재고 실사 일정 및 협조 요청</span>
+                              <span class="alert-item__meta">등록일: 2025.12.01 | 등록자: 재고팀</span>
+                          </div>
+                          <span class="alert-item__target" style="background: #fef3c7; color: #b45309;">VIP 전담</span>
+                      </div>
+                      <div class="alert-item">
+                          <div class="alert-item__content">
+                              <span class="alert-item__title">신형 G90 계약 시스템 사용법 교육</span>
+                              <span class="alert-item__meta">등록일: 2025.11.28 | 등록자: 관리자</span>
+                          </div>
+                          <span class="alert-item__target">서울 지점</span>
+                      </div>
+                      <div class="alert-item">
+                          <div class="alert-item__content">
+                              <span class="alert-item__title">11월 프로모션 결과 보고 및 인센티브 지급</span>
+                              <span class="alert-item__meta">등록일: 2025.11.25 | 등록자: 인사팀</span>
+                          </div>
+                          <span class="alert-item__target">전체 딜러</span>
+                      </div>
                   </div>
               </section>
           </div>
