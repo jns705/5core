@@ -44,6 +44,16 @@ public class StreamlitRunner implements ApplicationRunner {
 			return;
 		}
 		
+		if(!Files.exists(aiServerDir.resolve("sales_graph.py"))) {
+			System.err.println("sales_graph.py가 존재하지 않음");
+			return;
+		}
+		
+		if(!Files.exists(aiServerDir.resolve("model_sales_dashboard.py"))) {
+			System.err.println("model_sales_dashboard.py가 존재하지 않음");
+			return;
+		}
+		
 		// Streamlit run ai_for_delaer.py --server.baseUrlPath=5core --server.port=8501 커맨드 실행
 		ProcessBuilder builder = new ProcessBuilder(
                 pythonPath.toString(),
@@ -76,13 +86,23 @@ public class StreamlitRunner implements ApplicationRunner {
 		    "chatbot_streamlit.py",
 		    "--server.baseUrlPath=5core",
 		    "--server.port=8504"
-		);		
+		);
+		
+		// builder3: 차량별 판매량 대시보드 (8505)
+		ProcessBuilder modelSaleDashboard = new ProcessBuilder(
+		    pythonPath.toString(), "-m", "streamlit", "run",
+		    "model_sales_dashboard.py",
+		    "--server.baseUrlPath=5core",
+		    "--server.port=8505"
+		);
+
 		
 		// 실행 디렉토리
 		builder.directory(aiServerDir.toFile());
 		applyDetailRecommend.directory(aiServerDir.toFile());
 		dealerSaleGraph.directory(aiServerDir.toFile());
 		chatbot.directory(aiServerDir.toFile());  
+		modelSaleDashboard.directory(aiServerDir.toFile());
 		
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸
@@ -90,8 +110,12 @@ public class StreamlitRunner implements ApplicationRunner {
 		applyDetailRecommend.start();
 		dealerSaleGraph.start();
 		chatbot.start();
+		modelSaleDashboard.start();
+		
 		System.out.println("Streamlit이 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");
+		System.out.println("판매 대시보드 실행됨");
+		
 	}
 	
 

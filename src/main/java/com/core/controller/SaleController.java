@@ -62,8 +62,16 @@ public class SaleController {
     	sale.setDealer(dealer.get());
     	
     	Optional<Customer> customer = customerService.findById(counseling.getCustomer().getId());
+
+    	
     	int idx = customer.get().getPurchaseCount();
-    	customer.get().setPurchaseCount(idx++);
+    	System.out.println("===================");
+    	System.out.println("idx: "+idx);
+    	System.out.println("===================");
+    	customer.get().setPurchaseCount(++idx);
+    	System.out.println("===================");
+    	System.out.println("수정후: "+customer.get().getPurchaseCount());
+    	System.out.println("===================");
     	customerService.saveCustomer(customer.get(), memberService.findByMemberId(customer.get().getMember().getMemberId()));
     	sale.setCustomer(customer.get());
     	
