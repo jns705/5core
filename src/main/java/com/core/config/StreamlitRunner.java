@@ -78,11 +78,30 @@ public class StreamlitRunner implements ApplicationRunner {
 		    "--server.port=8504"
 		);		
 		
+		// modelSaleDashboard: 차량별 판매량 대시보드 (8505)
+		ProcessBuilder modelSaleDashboard = new ProcessBuilder(
+		    pythonPath.toString(), "-m", "streamlit", "run",
+		    "model_sales_dashboard.py",
+		    "--server.baseUrlPath=5core",
+		    "--server.port=8505"
+		);
+		
+		// monthlySalesGraph: 딜러 월별 판매 그래프 (8506)
+		ProcessBuilder monthlySalesGraph = new ProcessBuilder(
+		    pythonPath.toString(), "-m", "streamlit", "run",
+		    "monthly_sales_graph.py",
+		    "--server.baseUrlPath=5core",
+		    "--server.port=8506",
+		    "--server.headless=true"
+		);
+		
 		// 실행 디렉토리
 		builder.directory(aiServerDir.toFile());
 		applyDetailRecommend.directory(aiServerDir.toFile());
 		dealerSaleGraph.directory(aiServerDir.toFile());
 		chatbot.directory(aiServerDir.toFile());  
+		modelSaleDashboard.directory(aiServerDir.toFile()); 
+		monthlySalesGraph.directory(aiServerDir.toFile()); 
 		
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸
@@ -90,8 +109,14 @@ public class StreamlitRunner implements ApplicationRunner {
 		applyDetailRecommend.start();
 		dealerSaleGraph.start();
 		chatbot.start();
+		modelSaleDashboard.start();
+		monthlySalesGraph.start();
 		System.out.println("Streamlit이 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");
+		System.out.println("판매 실적 그래프(딜러) 실행됨");
+		System.out.println("차량별 판매량 대시보드 실행됨");
+		System.out.println("딜러 월별 판매 그래프 실행됨");
+		
 	}
 	
 

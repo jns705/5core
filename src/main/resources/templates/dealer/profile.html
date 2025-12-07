@@ -601,7 +601,7 @@
 	
 	/* 달력 스타일 추가 */
 	   .calendar-container {
-	     height: 400px;
+	     height: 600px;
 	     overflow-y: auto;
 	     padding: 12px;
 	     background: #fafbfc;
@@ -934,13 +934,20 @@
             </div>
           </section>
 
-          <section class="card chart-card">
-            <div class="card__header">
-              <h3 class="card__title">월별 실적 그래프</h3>
-              <span class="card__subtitle">상담 대비 구매 전환률</span>
-            </div>
-            <canvas id="dealerPerformance" height="150"></canvas>
-          </section>
+		  <section class="card monthly-card" style="flex:1.2;">
+		    <div class="card__header">
+		      <h3 class="card__title">월간 판매량</h3>
+		      <span class="card__subtitle">실시간 딜러별 월별 실적 (목표 대비)</span>
+		    </div>
+		    
+			<div style="height: 580px; overflow: hidden; background: #fafbfc; border-radius: 8px;">
+				<iframe
+				  src="http://localhost:8506/5core?dealerId=[[${dealer.id}]]"
+				  style="width:100%;height:580px;border:none;"
+				  scrolling="no">
+				</iframe>
+			</div>
+		  
         </aside>
 
         <!-- 메인 패널 -->
@@ -1033,7 +1040,7 @@
 			  </div>
 			  
 			  <!-- KPI+파이 완벽 fit -->
-			  <div style="height: 400px; overflow: hidden; background: #fafbfc; border-radius: 8px; padding: 8px;">
+			  <div style="height: 600px; overflow: hidden; background: #fafbfc; border-radius: 8px; padding: 8px;">
 			    <iframe
 			        src="http://localhost:8503/5core"
 			        style="width: 100%; height: 100%; border: none;"
