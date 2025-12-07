@@ -1,6 +1,12 @@
 package com.core.controller;
 
 import java.security.Principal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.core.dto.CounselingScheduleDTO;
 import com.core.entity.ApplyStatus;
 import com.core.entity.Counseling;
 import com.core.entity.Dealer;
@@ -81,17 +88,32 @@ public class MainController {
 	public String requestDealerProfile(Principal principal,
 			@RequestParam(value="page", defaultValue="0") int page,
 			Model model) {
-		Member dealer = memberService.findByMemberId(principal.getName());
+		Member member = memberService.findByMemberId(principal.getName());
+		Dealer dealer = dealerService.findByMember(member);
+		
+		Sort sortObj = Sort.by("createDate").ascending();
+		Pageable pageable = PageRequest.of(page, 10, sortObj); 
 
 		List<Member> customerList = memberService.findByRole(Role.CUSTOMER);
 
-		Sort sortObj = Sort.by("createDate").ascending();
-		Pageable pageable = PageRequest.of(page, 10, sortObj);  
 		Page<Counseling> counselingList = counselingService.findCounselingsByFilter(ApplyStatus.COUNSELING_HODDING.getStatusName(), null, pageable);
 
+	    // 전체 상담 일정
+	    List<CounselingScheduleDTO> counselingSchedule =
+	            counselingService.findAllCounselingsForCalendar(dealer, List.of("상담진행중", "상담완료"));
+	    
+	    long progressCnt = counselingService.countByDealerAndStatus(dealer, "상담진행중");
+	    long completCnt   = counselingService.countByDealerAndStatus(dealer, "상담완료");
+	    long saleCnt        = counselingService.countByDealerAndStatus(dealer, "구매완료");
+	    
+	    model.addAttribute("progressCnt", progressCnt);
+	    model.addAttribute("completCnt", completCnt);
+	    model.addAttribute("saleCnt", saleCnt);
+	    
 		model.addAttribute("counselingList", counselingList);
 		model.addAttribute("customerList", customerList);
-		model.addAttribute("dealer", dealer);
+		model.addAttribute("dealer", member);
+		model.addAttribute("counselingSchedule", counselingSchedule != null ? counselingSchedule : List.of());
 
 		return "dealer/profile";
 	}

@@ -1,15 +1,19 @@
 package com.core.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.core.dto.CounselingScheduleDTO;
 import com.core.entity.Counseling;
+import com.core.entity.Dealer;
 import com.core.repository.CounselingRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -206,33 +210,33 @@ public class CounselingService {
 	    counseling.setModifyDate(LocalDateTime.now());
 	    counselingRepository.save(counseling); 
 	}
-
-	
-	
 	
 	/**
 	 * 딜러별 상담 조회 (구매완료 제외)
 	 */
 	public Page<Counseling> findByDealerIdAndStatusNot(Long DealerId, String status, Pageable pageable, String keyword) {
 		
-		System.out.println("=====================================");
-		System.out.println(keyword);
-		System.out.println("=====================================");
 		if(keyword.equals("all")) {
 			return counselingRepository.findByDealerIdAndStatusNot(DealerId, status, pageable);
 		}
 		
 		return counselingRepository.findByDealerIdAndStatus(DealerId, keyword, pageable);
 		
-		
-		
-		
 	}
 	
+	// 딜러별 상담진행중, 상담완료 조회
+	public List<CounselingScheduleDTO> findAllCounselingsForCalendar(Dealer dealer, List<String> status) {
+
+	    List<Counseling> counselings = counselingRepository.findByDealerAndStatus(dealer, status);
+
+	    return counselings.stream().map(CounselingScheduleDTO::new).toList();
+	    
+	}
 	
-	
-	
-	
+	// 딜러별 상담별 개수 조회
+    public long countByDealerAndStatus(Dealer dealer, String status) {
+        return counselingRepository.countByDealerAndStatus(dealer, status);
+    }
 	
 	
 }

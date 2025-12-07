@@ -81,7 +81,8 @@ public class StreamlitRunner implements ApplicationRunner {
 		// 실행 디렉토리
 		builder.directory(aiServerDir.toFile());
 		applyDetailRecommend.directory(aiServerDir.toFile());
-		//dealerSaleGraph.directory(aiServerDir.toFile());
+		dealerSaleGraph.directory(aiServerDir.toFile());
+		chatbot.directory(aiServerDir.toFile());  
 		
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸

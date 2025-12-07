@@ -399,6 +399,79 @@
 		font-weight: 700;
 	}
 	
+	/* 페이징 스타일 */
+	.pagination-section {
+	  padding: 20px 0;
+	  border-top: 1px solid var(--border-subtle);
+	  background: var(--bg-elevated);
+	  margin-top: 0;
+	}
+
+	.pagination-info {
+	  text-align: center;
+	  color: var(--text-muted);
+	  font-size: 13px;
+	  margin-bottom: 16px;
+	  padding: 0 18px;
+	}
+
+	.pagination-container {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  gap: 8px;
+	  flex-wrap: wrap;
+	}
+
+	.pagination-btn {
+	  width: 40px;
+	  height: 40px;
+	  border: 1px solid var(--border-subtle);
+	  background: #ffffff;
+	  color: #374151;
+	  border-radius: 8px;
+	  font-size: 14px;
+	  font-weight: 500;
+	  cursor: pointer;
+	  transition: all 0.15s ease;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	}
+
+	.pagination-btn:hover:not(.disabled) {
+	  background: var(--primary-soft);
+	  border-color: var(--primary);
+	  color: var(--primary);
+	  transform: translateY(-1px);
+	  box-shadow: 0 2px 8px rgba(13, 71, 161, 0.15);
+	}
+
+	.pagination-btn.active {
+	  background: var(--primary);
+	  color: #ffffff;
+	  border-color: var(--primary);
+	  box-shadow: 0 2px 8px rgba(13, 71, 161, 0.25);
+	}
+
+	.pagination-btn.disabled {
+	  opacity: 0.4;
+	  cursor: not-allowed;
+	  color: var(--text-muted);
+	}
+
+	.pagination-ellipsis {
+	  padding: 0 12px;
+	  color: var(--text-muted);
+	  font-size: 16px;
+	}
+
+	.page-size-info {
+	  font-size: 12px;
+	  color: var(--text-muted);
+	  margin-left: 16px;
+	}
+	
     @media (max-width: 960px) {
       body {
         flex-direction: column;
@@ -573,6 +646,60 @@
             </tbody>
           </table>
         </div>
+		
+		<!-- 페이징 섹션 -->
+		<div class="pagination-section">
+
+		  
+		  <div class="pagination-container">
+		    <!-- 첫페이지 -->
+		    <a th:href="@{/dealer/sale(page=0)}" 
+		       th:classappend="${saleList.first ? 'pagination-btn disabled' : 'pagination-btn'}"
+		       class="pagination-btn">
+		      <span>«</span>
+		    </a>
+		    
+		    <!-- 이전페이지 -->
+		    <a th:if="${saleList.hasPrevious()}" 
+		       th:href="@{/dealer/sale(page=${saleList.number - 1})}"
+		       class="pagination-btn">
+		      이전
+		    </a>
+		    <span th:unless="${saleList.hasPrevious()}" class="pagination-btn disabled">이전</span>
+		    
+		    <!-- 페이지 번호들 -->
+		    <span th:each="i : ${#numbers.sequence(saleList.number - 2, saleList.number + 2)}" 
+		          th:if="${i >= 0 and i < saleList.totalPages}">
+		      <a th:href="@{/dealer/sale(page=${i})}" 
+		         th:classappend="${saleList.number == i ? 'pagination-btn active' : 'pagination-btn'}"
+		         th:text="${i + 1}">1</a>
+		    </span>
+		    
+		    <!-- 현재 페이지 생략 -->
+		    <span th:if="${saleList.number > 2}" class="pagination-ellipsis">…</span>
+		    
+		    <!-- 다음페이지 -->
+		    <a th:if="${saleList.hasNext()}" 
+		       th:href="@{/dealer/sale(page=${saleList.number + 1})}"
+		       class="pagination-btn">
+		      다음
+		    </a>
+		    <span th:unless="${saleList.hasNext()}" class="pagination-btn disabled">다음</span>
+		    
+		    <!-- 마지막페이지 -->
+		    <a th:href="@{/dealer/sale(page=${saleList.totalPages - 1})}" 
+		       th:classappend="${saleList.last ? 'pagination-btn disabled' : 'pagination-btn'}"
+		       class="pagination-btn">
+		      <span>»</span>
+		    </a>
+		  </div>
+		  
+		  <div class="page-size-info">
+		    페이지당 10건 | 총 [[${saleList.totalPages}]]페이지
+		  </div>
+		</div>
+		
+		
       </section>
     </div>
   </div>

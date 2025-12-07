@@ -1,13 +1,18 @@
 package com.core.repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.core.entity.Counseling;
+import com.core.entity.Dealer;
 
 @Repository
 public interface CounselingRepository extends JpaRepository<Counseling, Long> {
@@ -34,5 +39,16 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long> {
 	Page<Counseling> findByDealerIdAndStatusNot(Long DealerId, String status, Pageable pageable);
 	
 	Page<Counseling> findByDealerIdAndStatus(Long DealerId, String status, Pageable pageable);
+	
+	// 딜러별 상담진행중, 상담완료만 조회
+	@Query("SELECT c FROM Counseling c " +
+		       "WHERE c.dealer = :dealer " +
+		       "AND c.status IN :status " +
+		       "ORDER BY c.counselingLikeTime ASC")
+	List<Counseling> findByDealerAndStatus(@Param("dealer") Dealer dealer, @Param("status") List<String> status);
+
+	// 딜러별로 상담별 개수 구하기
+	long countByDealerAndStatus(Dealer dealer, String status);
+    
 }
 

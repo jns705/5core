@@ -598,6 +598,155 @@
     ::-webkit-scrollbar-track {
       background: transparent;
     }
+	
+	/* 달력 스타일 추가 */
+	   .calendar-container {
+	     height: 400px;
+	     overflow-y: auto;
+	     padding: 12px;
+	     background: #fafbfc;
+	     border-radius: 8px;
+	   }
+
+	   .calendar-header {
+	     display: flex;
+	     justify-content: space-between;
+	     align-items: center;
+	     margin-bottom: 16px;
+	     padding-bottom: 12px;
+	     border-bottom: 1px solid #e5e7eb;
+	   }
+
+	   .calendar-title {
+	     font-size: 15px;
+	     font-weight: 600;
+	     color: #1f2937;
+	   }
+
+	   .calendar-nav {
+	     display: flex;
+	     gap: 8px;
+	   }
+
+	   .calendar-nav-btn {
+	     width: 32px;
+	     height: 32px;
+	     border: 1px solid #d1d5db;
+	     background: #ffffff;
+	     border-radius: 6px;
+	     cursor: pointer;
+	     display: flex;
+	     align-items: center;
+	     justify-content: center;
+	     font-size: 14px;
+	     color: #374151;
+	     transition: all 0.15s ease;
+	   }
+
+	   .calendar-nav-btn:hover {
+	     background: #f3f4f6;
+	     border-color: #0d47a1;
+	     color: #0d47a1;
+	   }
+
+	   .calendar-nav-btn.disabled {
+	     opacity: 0.4;
+	     cursor: not-allowed;
+	   }
+
+	   .calendar-grid {
+	     display: grid;
+	     grid-template-columns: repeat(7, 1fr);
+	     gap: 4px;
+	     font-size: 12px;
+	   }
+
+	   .calendar-day-header {
+	     text-align: center;
+	     font-weight: 600;
+	     color: #6b7280;
+	     padding: 8px 4px;
+	     background: #f8fafc;
+	     border-radius: 6px;
+	   }
+
+	   .calendar-day {
+	     aspect-ratio: 1;
+	     display: flex;
+	     flex-direction: column;
+	     padding: 6px 4px;
+	     border-radius: 6px;
+	     cursor: pointer;
+	     transition: all 0.15s ease;
+	     border: 1px solid transparent;
+	     position: relative;
+	     min-height: 60px;
+	   }
+
+	   .calendar-day:hover {
+	     background: #f3f4ff;
+	     border-color: #cbd5e1;
+	   }
+
+	   .calendar-day.today {
+	     background: linear-gradient(135deg, #0d47a1, #1e40af);
+	     color: white;
+	   }
+
+	   .calendar-day.other-month {
+	     color: #d1d5db;
+	     background: transparent;
+	   }
+
+	   .calendar-day-number {
+	     font-weight: 600;
+	     font-size: 13px;
+	     margin-bottom: 4px;
+	   }
+
+	   .calendar-day.today .calendar-day-number {
+	     color: white;
+	   }
+
+	   .calendar-events {
+	     display: flex;
+	     flex-direction: column;
+	     gap: 2px;
+	     flex: 1;
+	     min-height: 0;
+	   }
+
+	   .calendar-event {
+	     font-size: 10px;
+	     padding: 2px 4px;
+	     border-radius: 4px;
+	     overflow: hidden;
+	     text-overflow: ellipsis;
+	     white-space: nowrap;
+	     font-weight: 500;
+	   }
+
+	   .calendar-event.progress {
+		background: #bbf7d0;
+		color: #166534;
+	   }
+
+	   .calendar-event.completed {
+		background: #fef3c7;
+		  color: #92400e;
+	   }
+
+	   .calendar-event.empty {
+	     color: #9ca3af;
+	     font-style: italic;
+	   }
+
+	   .no-events {
+	     color: #9ca3af;
+	     font-size: 11px;
+	     text-align: center;
+	     padding-top: 8px;
+	   }
 
     @media (max-width: 960px) {
       body {
@@ -637,6 +786,18 @@
         width: 100%;
         flex-direction: row;
       }
+	  .calendar-day {
+	    min-height: 48px;
+	    padding: 4px 2px;
+	  }
+
+	  .calendar-day-number {
+	    font-size: 12px;
+	  }
+
+	  .calendar-event {
+	    font-size: 9px;
+	  }
     }
   </style>
 </head>
@@ -751,24 +912,24 @@
 
           <section class="card">
             <div class="card__header">
-              <h3 class="card__title">오늘의 KPI</h3>
-              <span class="card__subtitle">09:00 ~ 현재 기준</span>
+              <h3 class="card__title">나의 KPI</h3>
+              <span class="card__subtitle"></span>
             </div>
             <div class="kpi-box">
               <div class="kpi-item">
                 <div class="kpi-item__label">상담 진행</div>
-                <div class="kpi-item__value">42건</div>
-                <div class="kpi-item__trend">+5 오늘</div>
+                <div class="kpi-item__value">[[${progressCnt}]]건</div>
+                <div class="kpi-item__trend"></div>
               </div>
 			  <div class="kpi-item">
 			    <div class="kpi-item__label">상담 완료</div>
-			    <div class="kpi-item__value">1건</div>
+			    <div class="kpi-item__value">[[${completCnt}]]건</div>
 			    <div class="kpi-item__trend kpi-item__trend--down"></div>
 			  </div>
               <div class="kpi-item">
                 <div class="kpi-item__label">판매 완료</div>
-                <div class="kpi-item__value">12대</div>
-                <div class="kpi-item__trend">+2 이번 주</div>
+                <div class="kpi-item__value">[[${saleCnt}]]대</div>
+                <div class="kpi-item__trend"></div>
               </div>
             </div>
           </section>
@@ -787,14 +948,7 @@
           <div class="main-panel__header-row">
             <div>
               <h2 class="page-title">고객 명단</h2>
-              <p class="page-subtitle">실시간 리드 현황 및 VIP 고객 관리</p>
-            </div>
-            <div class="filter-group">
-              <span>보기:</span>
-              <button type="button" class="filter-pill filter-pill--active">전체</button>
-              <button type="button" class="filter-pill">신규 리드</button>
-              <button type="button" class="filter-pill">시승 예약</button>
-              <button type="button" class="filter-pill">구매 완료</button>
+              <p class="page-subtitle">실시간 상담신청 현황 및 VIP 고객 관리</p>
             </div>
           </div>
 
@@ -848,35 +1002,29 @@
 
           <!-- 오늘의 업무 요약 + 월간 판매 -->
           <div class="content__row" style="gap:16px; align-items:stretch;">
-            <section class="card" style="flex:0.9;">
-              <div class="card__header">
-                <h3 class="card__title">오늘의 업무 요약</h3>
-                <span class="card__subtitle">딜러 기준 주요 액션</span>
-              </div>
-              <div class="summary-list">
-                <div class="summary-item">
-                  <div class="summary-item__label">
-                    <span class="summary-dot"></span>
-                    <span>신규 상담 요청</span>
-                  </div>
-                  <span class="summary-item__value">5건</span>
-                </div>
-                <div class="summary-item">
-                  <div class="summary-item__label">
-                    <span class="summary-dot summary-dot--warning"></span>
-                    <span>예약된 시승 일정</span>
-                  </div>
-                  <span class="summary-item__value">3건</span>
-                </div>
-                <div class="summary-item">
-                  <div class="summary-item__label">
-                    <span class="summary-dot summary-dot--danger"></span>
-                    <span>미확인 알림</span>
-                  </div>
-                  <span class="summary-item__value">2건</span>
-                </div>
-              </div>
-            </section>
+			
+			<!-- 달력 -->
+			<section class="card" style="flex:1.5;">
+			  <div class="card__header">
+			    <h3 class="card__title">상담 일정</h3>
+			    <span class="card__subtitle">상담진행중 • 상담완료 고객</span>
+			  </div>
+			  
+			  <div class="calendar-container">
+			    <div class="calendar-header">
+			      <div class="calendar-title" id="calendarTitle">2025년 12월</div>
+			      <div class="calendar-nav">
+			        <button class="calendar-nav-btn" id="prevMonth">‹</button>
+			        <button class="calendar-nav-btn" id="todayBtn">오늘</button>
+			        <button class="calendar-nav-btn" id="nextMonth">›</button>
+			      </div>
+			    </div>
+			    
+			    <div class="calendar-grid" id="calendarGrid">
+			      <!-- 동적으로 생성 -->
+			    </div>
+			  </div>
+			</section>
 
 			<section class="card monthly-card" style="flex:1.2;">
 			  <div class="card__header">
@@ -885,7 +1033,7 @@
 			  </div>
 			  
 			  <!-- KPI+파이 완벽 fit -->
-			  <div style="height: 340px; overflow: hidden; background: #fafbfc; border-radius: 8px; padding: 8px;">
+			  <div style="height: 400px; overflow: hidden; background: #fafbfc; border-radius: 8px; padding: 8px;">
 			    <iframe
 			        src="http://localhost:8503/5core"
 			        style="width: 100%; height: 100%; border: none;"
@@ -894,10 +1042,6 @@
 			    </iframe>
 			  </div>
 			</section>
-
-
-
-
 			
 			
           </div>
@@ -905,7 +1049,186 @@
       </div>
     </div>
   </div>
+  
+  <script th:inline="javascript">
+      window.counselingScheduleData = /*[[${counselingSchedule}]]*/ [];
+  </script>
+
+  <script>
+  class Calendar {
+      constructor(data) {
+          this.data = data || [];
+          this.currentYear = new Date().getFullYear();
+          this.currentMonth = new Date().getMonth();
+          this.init();
+      }
+	  
+	  dateToYMD(date) {
+	      const d = new Date(date.getFullYear(), date.getMonth(), date.getDate()); // 시분초 0으로
+	      const y = d.getFullYear();
+	      const m = (d.getMonth() + 1).toString().padStart(2, '0');
+	      const day = d.getDate().toString().padStart(2, '0');
+	      return `${y}-${m}-${day}`;  // "yyyy-MM-dd"
+	  }
+
+      init() {
+          this.renderHeader();
+          this.renderCalendar();
+          this.attachEvents();
+      }
+
+      renderHeader() {
+          const title = document.getElementById('calendarTitle');
+          if (title) {
+              const monthText = (this.currentMonth + 1).toString().padStart(2, '0');
+              title.textContent = `${this.currentYear}년 ${monthText}월`;
+          }
+      }
+
+      renderCalendar() {
+          const grid = document.getElementById('calendarGrid');
+          if (!grid) return;
+          grid.innerHTML = '';
+
+          // 1. 요일 헤더
+          ['일', '월', '화', '수', '목', '금', '토'].forEach(day => {
+              const header = document.createElement('div');
+              header.className = 'calendar-day-header';
+              header.textContent = day;
+              grid.appendChild(header);
+          });
+
+          // 2. 현재 년/월 기준으로 캘린더 시작일 계산 (해당 월 1일이 포함된 주의 일요일)
+          const firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1);
+          const startDate = new Date(firstDayOfMonth);
+          startDate.setDate(firstDayOfMonth.getDate() - firstDayOfMonth.getDay());
+
+          // 3. 6주(42칸) 채우기
+          for (let i = 0; i < 42; i++) {
+              const date = new Date(startDate);
+              date.setDate(startDate.getDate() + i);
+
+              const dayCell = document.createElement('div');
+              dayCell.className = 'calendar-day';
+
+              // 다른 달 날짜는 연한 회색
+              if (date.getMonth() !== this.currentMonth) {
+                  dayCell.classList.add('other-month');
+              }
+
+              // 오늘 날짜 파란색
+              if (this.isToday(date)) {
+                  dayCell.classList.add('today');
+              }
+
+              dayCell.innerHTML = `
+                  <div class="calendar-day-number">${date.getDate()}</div>
+                  <div class="calendar-events">${this.getDayEvents(date)}</div>
+              `;
+
+              dayCell.onclick = () => this.showDayDetail(date);
+              grid.appendChild(dayCell);
+          }
+      }
+
+	  getDayEvents(date) {
+	      const dayStr = this.dateToYMD(date);
+	      const events = this.data.filter(item =>
+	          item.counselingDate === dayStr &&
+	          (item.status === '상담진행중' || item.status === '상담완료')
+	      );
+
+	      if (events.length === 0) {
+	          return '<div class="calendar-event empty">상담없음</div>';
+	      }
+
+	      return events
+	          .slice(0, 2)
+	          .map(event => `
+	              <div class="calendar-event ${event.status === '상담완료' ? 'completed' : 'progress'}">
+	                  ${event.customerName}
+	              </div>
+	          `).join('') +
+	          (events.length > 2 ? `<div class="calendar-event">+${events.length - 2}</div>` : '');
+	  }
+
+      isToday(date) {
+          const today = new Date();
+          return date.toDateString() === today.toDateString();
+      }
+
+	  showDayDetail(date) {
+	      const dayStr = this.dateToYMD(date);
+	      const events = this.data.filter(item =>
+	          item.counselingDate === dayStr &&
+	          (item.status === '상담진행중' || item.status === '상담완료')
+	      );
+
+	      if (events.length === 0) {
+	          alert(`${date.toLocaleDateString('ko-KR')} 상담없음`);
+	          return;
+	      }
+
+	      const details = events.map(e =>
+	          `👤 ${e.customerName} (${e.phone})\n상태: ${e.status}`
+	      ).join('\n\n');
+	      alert(`📅 ${date.toLocaleDateString('ko-KR')} (${events.length}건)\n\n${details}`);
+	  }
+
+      prevMonth() {
+          this.currentMonth--;
+          if (this.currentMonth < 0) {
+              this.currentMonth = 11;
+              this.currentYear--;
+          }
+          this.render();
+      }
+
+      nextMonth() {
+          this.currentMonth++;
+          if (this.currentMonth > 11) {
+              this.currentMonth = 0;
+              this.currentYear++;
+          }
+          this.render();
+      }
+
+      goToday() {
+          const today = new Date();
+          this.currentYear = today.getFullYear();
+          this.currentMonth = today.getMonth();
+          this.render();
+      }
+
+      render() {
+          this.renderHeader();
+          this.renderCalendar();
+      }
+
+      attachEvents() {
+          const prevBtn = document.getElementById('prevMonth');
+          const nextBtn = document.getElementById('nextMonth');
+          const todayBtn = document.getElementById('todayBtn');
+
+          if (prevBtn) prevBtn.onclick = () => this.prevMonth();
+          if (nextBtn) nextBtn.onclick = () => this.nextMonth();
+          if (todayBtn) todayBtn.onclick = () => this.goToday();
+      }
+  }
+
+  // 초기화
+  document.addEventListener('DOMContentLoaded', function() {
+      let data = window.counselingScheduleData || [];
+      data = data.filter(item =>
+          item && item.counselingDate &&
+          (item.status === '상담진행중' || item.status === '상담완료')
+      );
+      new Calendar(data);
+  });
+  </script>
+
 
 
 </body>
+
 </html>
