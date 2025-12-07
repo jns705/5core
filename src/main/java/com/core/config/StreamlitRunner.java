@@ -44,13 +44,13 @@ public class StreamlitRunner implements ApplicationRunner {
 			return;
 		}
 		
-		// Streamlit run ai_for_delaer.py --server.baseUrlPath=5core --server.port=8501 커맨드 실행
+		// Streamlit run ai_for_delaer.py --server.baseUrlPath=5core --server.port=8509 커맨드 실행
 		ProcessBuilder builder = new ProcessBuilder(
                 pythonPath.toString(),
                 "-m", "streamlit", "run",
                 "ai_for_dealer.py",
                 "--server.baseUrlPath=5core",
-                "--server.port=8501"
+                "--server.port=8509"
         );
 		
         // applyDetailRecommend: 상담 상세 차량 추천 (8502)
