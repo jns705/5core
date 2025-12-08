@@ -329,4 +329,19 @@ public class MainController {
 		}
 		return "redirect:/admin/profile"; 
 	}
+	
+	// 관리자 글로벌 판매 실적	
+	@GetMapping("/admin/globalSales")
+	public String requestGlobalSales() {
+		return "admin/globalSales";
+	}
+	
+	// 관리자 차량별 판매 실적	
+	@GetMapping("/admin/modelSales")
+	public String requestModelSales() {
+		return "admin/modelSales";
+	}
+	
+	
+	
 }
