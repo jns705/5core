@@ -1,12 +1,6 @@
 package com.core.controller;
 
 import java.security.Principal;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
@@ -227,7 +221,7 @@ public class MainController {
 	@GetMapping("/admin/profile")
 	public String requestAdminProfile(Principal principal,
 			@RequestParam(value="page", defaultValue="0") int page,
-			@RequestParam(value = "size", defaultValue = "5") int size,
+			@RequestParam(value = "size", defaultValue = "8") int size, 
 			Model model) {
 
 		if (!model.containsAttribute("notice")) {
@@ -237,9 +231,10 @@ public class MainController {
 		List<Member> customerList = memberService.findByRole(Role.ADMIN);
 
 		Sort sortObj = Sort.by("createDate").ascending();
-		Pageable pageable = PageRequest.of(page, 10, sortObj);  
+		// size가 8로 설정
+		Pageable pageable = PageRequest.of(page, 8, sortObj);  
         Page<Notice> noticePage = noticeService.findAllNotices(pageable);
-
+        
         model.addAttribute("noticePage", noticePage);
         model.addAttribute("notices", noticePage.getContent());
         model.addAttribute("currentPage", page);
