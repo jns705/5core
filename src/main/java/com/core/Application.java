@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.core.entity.Address;
+import com.core.entity.Admin;
 import com.core.entity.Customer;
 import com.core.entity.Dealer;
 import com.core.entity.Member;
 import com.core.entity.Role;
+import com.core.service.AdminService;
 import com.core.service.CustomerService;
 import com.core.service.DealerService;
 import com.core.service.MemberService;
@@ -26,7 +28,7 @@ public class Application {
 	
 	
 	//@Bean
-	public CommandLineRunner run (MemberService memberService, CustomerService customerService, DealerService dealerService) throws Exception {
+	public CommandLineRunner run (MemberService memberService, CustomerService customerService, DealerService dealerService, AdminService adminService) throws Exception {
 		return (String[] args) -> {
 			
 			/*
@@ -72,6 +74,25 @@ public class Application {
 			memberService.saveMember(dealer1);
 			dealerService.saveDealer(d1, dealer1);
 			
+			// 관리자
+			Member admin = new Member();
+			admin.setMemberId("admin");
+			admin.setPassword(new BCryptPasswordEncoder().encode("1234")); // 비밀번호 암호화
+			admin.setPassword2(dealer1.getPassword());
+			admin.setName("유상윤");
+			admin.setPhone("010-5353-2424");
+			admin.setEmail("yusanyun@naver.com");
+			admin.setGender("남성");
+			admin.setJoinDate(LocalDateTime.of(2024, 7, 20, 0, 0));
+			admin.setRole(Role.ADMIN);
+			Address add2 = new Address();
+			add2.setCountry("한국");
+			add2.setZipcode("06313");
+			add2.setBasicAddress("서울 강남구 논현로 16");
+			add2.setDetailAddress("성동아파트 111호");	
+			Admin ad1 = new Admin();
+			memberService.saveMember(admin);
+			adminService.saveAdmin(ad1, admin);
 			
 			/*
 			 * 고객

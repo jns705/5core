@@ -66,6 +66,10 @@
 	}
 	
 	/* 표 */
+	.table-responsive {
+		height: 525px;	
+	}
+	
     .table thead th {
       vertical-align: middle;
       text-align: center;
@@ -364,39 +368,46 @@
 			    <nav th:if="${counselingPage.totalPages > 1}" aria-label="구매신청 페이지">
 			        <ul class="pagination pagination-sm mb-0">
 			            
-			            <li class="page-item" th:classappend="${counselingPage.first} ? 'disabled'">
-			                <a class="page-link"
-			                   th:href="@{/counseling/applyList(
-								memberId=${#authentication.getPrincipal().getUsername()},
-			                       page=${counselingPage.number - 1}, 
-			                       statusFilter=${statusFilter}, 
-			                       sortFilter=${sortFilter}, 
-			                       keyword=${keyword})}"
-			                   tabindex="-1"
-			                   aria-disabled="true">이전</a>
-			            </li>
-		
+						<!-- 이전 버튼 -->
+						<li class="page-item" th:classappend="${counselingPage.first} ? 'disabled'">
+						    <a class="page-link"
+						       th:href="${counselingPage.first} ? '#' : 
+						                @{/counseling/applyList/{memberId}(
+						                    memberId=${#authentication.getPrincipal().getUsername()},
+						                    page=${counselingPage.number - 1},
+						                    statusFilter=${statusFilter},
+						                    sortFilter=${sortFilter},
+						                    keyword=${keyword})}"
+						       tabindex="-1"
+						       aria-disabled="${counselingPage.first}">이전</a>
+						</li>
+
+						<!-- 페이지 번호 -->
 						<li th:each="i : ${#numbers.sequence(0, counselingPage.totalPages - 1)}"
-			                th:class="${i == counselingPage.number} ? 'page-item active' : 'page-item'">
-			              <a class="page-link"
-			                 th:text="${i + 1}"
-			                 th:href="@{/counseling/applyList/{memberId}(
-			                     memberId=${#authentication.getPrincipal().getUsername()},
-			                     page=${i}, 
-			                     statusFilter=${statusFilter}, 
-			                     sortFilter=${sortFilter}, 
-			                     keyword=${keyword})}"></a>
-			            </li>
-		
-			            <li class="page-item" th:classappend="${counselingPage.last} ? 'disabled'">
-			              <a class="page-link"
-			                 th:href="@{/counseling/applyList(
-								 memberId=${#authentication.getPrincipal().getUsername()},
-			                     page=${counselingPage.number + 1}, 
-			                     statusFilter=${statusFilter}, 
-			                     sortFilter=${sortFilter}, 
-			                     keyword=${keyword})}">다음</a>
-			            </li>
+						    th:class="${i == counselingPage.number} ? 'page-item active' : 'page-item'">
+						    <a class="page-link"
+						       th:text="${i + 1}"
+						       th:href="@{/counseling/applyList/{memberId}(
+						            memberId=${#authentication.getPrincipal().getUsername()},
+						            page=${i},
+						            statusFilter=${statusFilter},
+						            sortFilter=${sortFilter},
+						            keyword=${keyword})}"></a>
+						</li>
+
+						<!-- 다음 버튼 -->
+						<li class="page-item" th:classappend="${counselingPage.last} ? 'disabled'">
+						    <a class="page-link"
+						       th:href="${counselingPage.last} ? '#' : 
+						                @{/counseling/applyList/{memberId}(
+						                    memberId=${#authentication.getPrincipal().getUsername()},
+						                    page=${counselingPage.number + 1},
+						                    statusFilter=${statusFilter},
+						                    sortFilter=${sortFilter},
+						                    keyword=${keyword})}"
+						       aria-disabled="${counselingPage.last}">다음</a>
+						</li>
+						
 			        </ul>
 			    </nav>
 			</section>			

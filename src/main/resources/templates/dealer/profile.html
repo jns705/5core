@@ -942,7 +942,7 @@
 		    
 			<div style="height: 580px; overflow: hidden; background: #fafbfc; border-radius: 8px;">
 				<iframe
-				  src="http://localhost:8506/5core?dealerId=[[${dealer.id}]]"
+				  th:src="@{|http://localhost:8506/5core?dealerId=${dealerId}|}"
 				  style="width:100%;height:580px;border:none;"
 				  scrolling="no">
 				</iframe>
@@ -1042,7 +1042,7 @@
 			  <!-- KPI+파이 완벽 fit -->
 			  <div style="height: 600px; overflow: hidden; background: #fafbfc; border-radius: 8px; padding: 8px;">
 			    <iframe
-			        src="http://localhost:8503/5core"
+			        th:src="@{|http://localhost:8503/5core?dealerId=${dealerId}|}"
 			        style="width: 100%; height: 100%; border: none;"
 			        scrolling="no"
 			        frameborder="0">

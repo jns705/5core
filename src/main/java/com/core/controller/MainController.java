@@ -36,7 +36,9 @@ import com.core.service.SaleService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
+@Log
 @RequiredArgsConstructor
 @Controller
 //@RequestMapping("/main")
@@ -103,6 +105,8 @@ public class MainController {
 	    model.addAttribute("progressCnt", progressCnt);
 	    model.addAttribute("completCnt", completCnt);
 	    model.addAttribute("saleCnt", saleCnt);
+	    // 스트림잇이 읽을 dealerId를 저장
+	    model.addAttribute("dealerId", dealer.getId());
 	    
 		model.addAttribute("counselingList", counselingList);
 		model.addAttribute("customerList", customerList);
