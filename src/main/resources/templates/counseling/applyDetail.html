@@ -10,7 +10,7 @@
 
   <style>
     :root {
-      --hyu-navy: #002c5f;
+      --hyu-navy: navy;
       --hyu-navy-dark: #001a3d;
       --hyu-navy-soft: #e3eefc;
       --bg-gray: #f3f5f9;
@@ -28,7 +28,6 @@
     }
 
     body {
-      background-color: var(--bg-gray);
       color: var(--text-main);
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       line-height: 1.6;
@@ -43,31 +42,22 @@
     }
 
     /* 상단 히어로 영역 */
-    .detail-top {
-      margin-top: 40px;
-      padding: 40px 32px;
-      text-align: center;
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border-subtle);
-      margin-bottom: 32px;
-    }
-
-    .detail-top h1 {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--hyu-navy);
-      margin: 0 0 12px 0;
-    }
-
-    .detail-top p {
-      font-size: 15px;
-      color: var(--text-muted);
-      margin: 0;
-      font-weight: 400;
-    }
-
+	.detail-top {
+		margin-top: -40px;
+		padding: 20px;
+		text-align: center;
+		background-color: #f8f8f8;
+	}
+	.detail-top > h1 {
+		margin-top: 30px;
+		font-size: 40px;
+		font-weight: bold;
+	}
+	.detail-top p {
+		margin: 50px 0 50px 0;
+		font-size: 0.9em;
+	}
+	
     /* 카드 기본 스타일 */
     .card {
       border: 1px solid var(--border-subtle);
@@ -84,13 +74,13 @@
     /* 네이비 헤더 */
     .line-co {
       background: linear-gradient(135deg, var(--hyu-navy) 0%, var(--hyu-navy-dark) 100%);
-      padding: 20px 24px;
+      padding: 13px 24px;
     }
 
     .line-co h5 {
       color: #ffffff;
       font-weight: 600;
-      font-size: 18px;
+      font-size: 17px;
       margin: 0;
     }
 
@@ -121,11 +111,10 @@
       padding-top: 4px;
     }
 
-    /* 폼 컨트롤 */
+    /* 폼 컨트롤 - 등록일 내용 */
     .form-control-plaintext {
       font-weight: 500;
-      color: var(--text-main);
-      padding: 8px 0;
+      color: #333;
       font-size: 15px;
     }
 
@@ -217,7 +206,7 @@
 
     .status-progress {
       background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-      color: #1d4ed8;
+      color: navy;
     }
 
     .status-done {
@@ -232,26 +221,45 @@
 
     /* 등록 셀 */
     .register-cell {
-      background: linear-gradient(90deg, transparent, rgba(0, 44, 95, 0.03));
       border-top: 1px solid var(--border-subtle);
       padding: 20px 0;
       margin-top: 20px;
       border-radius: 0 0 var(--border-radius) var(--border-radius);
     }
 
-    .register-cell .col-form-label {
-      color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 500;
-    }
-
+	.register-cell .col-form-label {
+	    color: var(--hyu-navy);
+	    font-size: 15px;
+	    font-weight: 600;
+		margin-left: 10px;
+		
+	}
+	
+	.form-check-input:checked {
+	    background-color: var(--hyu-navy) !important;
+	    border-color: var(--hyu-navy) !important;
+	}
+	
+	/* 딜러 칸 */
+	.dealer-message {
+		padding: 10px;
+		background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+		border-radius: 5px;
+	}
+	.dealer-message-content {
+		color: navy;
+		font-weight: 500;
+	}
+	
+	
     /* 네이비 버튼 */
     .btn-navy {
+	  margin-top: -30px;
       background: linear-gradient(135deg, var(--hyu-navy), var(--hyu-navy-dark));
       border: 1px solid var(--hyu-navy);
       color: #ffffff;
       font-weight: 600;
-      padding: 12px 24px;
+      padding: 10px 20px;
       border-radius: 10px;
       transition: all 0.2s ease;
       box-shadow: 0 4px 12px rgba(0, 44, 95, 0.2);
@@ -289,13 +297,14 @@
 
     /* AI 버튼 */
     #showAiRecommendationBtn {
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      background: linear-gradient(35deg, rgb(6, 96, 217), rgb(2, 41, 96));
       border: none;
       border-radius: 12px;
       font-weight: 600;
       font-size: 16px;
       padding: 14px 28px;
       box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+	  color: #fff;
     }
 
     #showAiRecommendationBtn:hover {
@@ -314,13 +323,6 @@
       background: linear-gradient(135deg, var(--hyu-navy), var(--hyu-navy-dark));
       border-radius: var(--border-radius) var(--border-radius) 0 0;
       border-bottom: none;
-    }
-
-    /* 알림 */
-    .alert {
-      border-radius: 10px;
-      border: none;
-      box-shadow: var(--shadow-sm);
     }
 
     /* 반응형 */
@@ -514,14 +516,14 @@
                 <div class="col-sm-9">
                   <input type="date" id="counselingLikeTime" th:field="*{counselingLikeTime}" class="form-control">
                 </div>
-                <div class="row mb-0 border-top pt-3 mt-3 register-cell">
-                  <label class="col-sm-3 col-form-label small text-muted">등록일</label>
-                  <div class="col-sm-9">
+                <div class="row mb-0 pt-3 mt-3 register-cell">
+                  <label class="col-sm-3 col-form-label">등록일</label>
+                  <div class="col-sm-7">
                     <p class="form-control-plaintext" th:text="${#temporals.format(counseling.createDate, 'yyyy-MM-dd HH:mm')}"></p>
                   </div>
                   <th:block th:if="*{modifyDate != null}">
-                    <label class="col-sm-3 col-form-label small text-muted">최종 수정일</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-3 col-form-label">최종 수정일</label>
+                    <div class="col-sm-7">
                       <p class="form-control-plaintext" th:text="${#temporals.format(counseling.modifyDate, 'yyyy-MM-dd HH:mm')}"></p>
                     </div>
                   </th:block>
@@ -561,9 +563,9 @@
                   </div>
                 </div>
                 <hr class="my-3">
-                <div class="alert alert-info py-3 mb-0 border-0 bg-info bg-opacity-10">
+                <div class="dealer-message">
                   <i class="bi bi-info-circle-fill me-2 text-primary"></i>
-                  <span th:text="|고객님의 의견을 반영하여 딜러가 상담을 진행중입니다. 곧 연락드리겠습니다.|"></span>
+                  <span class="dealer-message-content" th:text="|고객님의 의견을 반영하여 딜러가 상담을 진행중입니다. 곧 연락드리겠습니다.|"></span>
                 </div>
               </div>
               <div th:if="${counseling.status == '상담대기' and counseling.dealer == null}">
@@ -591,8 +593,8 @@
 	
 		<div class="row mb-4 mt-4" th:if="*{status != '상담대기'}">
 		  <div class="col-12 text-center">
-		    <button type="button" class="btn btn-lg btn-info" id="showAiRecommendationBtn" data-bs-toggle="modal" data-bs-target="#aiRecommendationModal">
-		      🚗 차량 추천 정보 보기
+		    <button type="button" class="btn btn-lg" id="showAiRecommendationBtn" data-bs-toggle="modal" data-bs-target="#aiRecommendationModal">
+		      차량 추천 정보 보기
 		    </button>
 		  </div>
 		</div>
