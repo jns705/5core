@@ -79,6 +79,7 @@ public class StreamlitRunner implements ApplicationRunner {
 		);		
 		
 		// modelSaleDashboard: 차량별 판매량 대시보드 (8505)
+		// pip install openpyxl -가상환경에서 설치해야 함 
 		ProcessBuilder modelSaleDashboard = new ProcessBuilder(
 		    pythonPath.toString(), "-m", "streamlit", "run",
 		    "model_sales_dashboard.py",
