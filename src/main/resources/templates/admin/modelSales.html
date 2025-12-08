@@ -665,6 +665,19 @@
     ::-webkit-scrollbar-track {
       background: transparent;
     }
+	
+	.frame-wrapper {
+	  width: 100vw;
+	  height: 100vh;
+	  padding: 0;
+	  box-sizing: border-box;
+	}
+	iframe {
+	  width: 100%;
+	  height: 100%;
+	  border: none;
+	  background: #111827;
+	}
 
     @media (max-width: 960px) {
       body {
@@ -724,7 +737,7 @@
 		   </a>
 		 </li>
 		 <li>
-		   <a th:href="@{/admin/profile}" class="menu-item menu-item--active">
+		   <a th:href="@{/admin/profile}" class="menu-item">
 		     <span class="menu-item__bullet"></span>
 		     <span>프로필</span>
 		   </a>
@@ -734,9 +747,8 @@
 		     <span class="menu-item__bullet"></span>
 		     <span>멤버 관리</span>
 		   </a>
-		 </li>
 		 <li>
-		   <a th:href="@{/admin/globalSales}" class="menu-item">
+		   <a th:href="@{/admin/globalSales}" class="menu-item  menu-item--active">
 		     <span class="menu-item__bullet"></span>
 		     <span>글로벌 판매 실적</span>
 		   </a>
@@ -768,246 +780,14 @@
 
     <div class="content">
       <div class="content__row">
-
-        <aside class="admin-panel">
-          <section class="card admin-profile">
-            <div class="card__header">
-              <div>
-                <h3 class="card__title">관리자 정보</h3>
-                <p class="card__subtitle">기본 프로필 및 연락처</p>
-              </div>
-              <span class="card__chip">실시간 동기화</span>
-            </div>
-
-            <div class="admin-profile__top">
-              <div class="admin-avatar">
-                <span>[[${#strings.substring(admin.name,0,1)}]]</span>
-              </div>
-              <div>
-                <div class="admin-profile__name">[[${admin.name}]]</div>
-                <p class="admin-profile__meta">
-                  <strong>직급</strong> [[${admin.role}]]<br />
-                  <strong>근무지</strong> 현대자동차 서울지점
-                </p>
-              </div>
-            </div>
-
-            <div class="admin-profile__divider"></div>
-
-            <div class="admin-contact">
-              <div>
-                <span class="admin-contact__label">전화</span>
-                <span>[[${admin.phone}]]</span>
-              </div>
-              <div>
-                <span class="admin-contact__label">이메일</span>
-                <span>[[${admin.email}]]</span>
-              </div>
-            </div>
-
-            <div class="admin-status-row">
-              <span class="admin-status-tag">온라인 • 상담 가능</span>
-              <span class="admin-status-text">최근 활동: 5분 전</span>
-            </div>
-          </section>
-
-          <section class="card admin-schedule">
-            <div class="card__header">
-              <div>
-                <h3 class="card__title">주요 업무 스케줄</h3>
-                <p class="card__subtitle">금주 마감일정 및 알림</p>
-              </div>
-              <span class="card__chip" style="background: var(--warning); color: #854d0e;">D-3</span>
-            </div>
-            
-            <div class="schedule-list">
-	          <div class="schedule-item schedule-item--pending">
-	            <div class="schedule-item__dot"></div>
-	            <div class="schedule-item__content">
-	              <span class="schedule-item__title">분기 실적 보고서 제출</span>
-	              <span class="schedule-item__meta">마감: 12월 23일 17:00</span>
-	            </div>
-	            <span class="schedule-item__priority">긴급</span>
-	         </div>
-             <div class="schedule-item schedule-item--active">
-               <div class="schedule-item__dot"></div>
-                 <div class="schedule-item__content">
-                   <span class="schedule-item__title">신규 딜러 교육 세션 준비</span>
-                   <span class="schedule-item__meta">일정: 12월 21일 10:00</span>
-                </div>
-             </div>
-             <div class="schedule-item">
-               <div class="schedule-item__dot"></div>
-                 <div class="schedule-item__content">
-                   <span class="schedule-item__title">차세대 모델 프로모션 검토</span>
-                   <span class="schedule-item__meta">참조: 마케팅팀 문서</span>
-                 </div>
-              </div>
-            </div>
-          </section>
-        </aside>
-
-        <section class="main-panel">          
-          <div class="content__row" style="gap:16px; align-items:stretch; flex: 1;">              
-            <section class="card notice-form-section" style="flex:1;">
-              <div class="card__header">
-                <h3 class="card__title">전체 알림/공지 등록 폼</h3>
-                <span class="card__subtitle">딜러들에게 공지사항을 전파합니다.</span>
-              </div>
-                  
-			  <form th:object="${notice}" class="notice-form" th:action="@{/admin/notice/add}" method="POST"> 
-			    <div>
-					<div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}" 
-					     style="background: #e6ffed; border-left: 5px solid #00a04c; padding: 10px; margin-bottom: 15px; color: #00a04c; border-radius: 4px;">
-					    성공 메시지
-					</div>
-					<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"
-					     style="background: #ffe6e6; border-left: 5px solid #d32f2f; padding: 10px; margin-bottom: 15px; color: #d32f2f; border-radius: 4px;">
-					    실패 메시지
-					</div>	
-			   </div>
-			   <div class="form-group">
-			     <label for="noticeTarget">전송 대상</label>
-			       <select id="noticeTarget" name="target" class="form-control">
-			         <option value="전체 딜러">전체 딜러</option>
-			         <option value="VIP 전담">VIP 전담</option>
-			         <option value="서울 지점">서울 지점</option>
-			      </select>
-			  </div>
-			  <div class="col-sm-2">
-			    <p class="text-danger" th:errors="*{title}"></p>
-			  </div>
-				    <div class="form-group">
-				       <label for="noticeTitle">공지 제목</label>
-				       <input type="text" id="noticeTitle" name="title" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요"  maxlength="500"/>
-				    </div>
-
-
-				    <div class="form-group">
-				      <label for="noticeContent">내용</label>
-				      <textarea id="noticeContent" name="content" th:field="*{content}" class="form-control" placeholder="공지 내용을 입력하세요. (최대 500자)"  maxlength="500"></textarea>
-				    </div>
-					<div class="col-sm-4">
-					  <p class="text-danger" th:errors="*{content}"></p>
-					</div>
-				    <div class="form-actions">
-				      <button type="reset" class="btn-cancel">취소</button>
-				      <button type="submit" class="btn-submit">공지 등록</button>
-				    </div>
-				 </form>
-              </section>			  
-             
-              <section class="card ai-consult-form-section" style="flex: 1;"> 
-                  <div class="card__header">
-                      <h3 class="card__title">AI 챗봇 라이브 뷰</h3>
-                      <span class="card__subtitle"> 온라인 상담 쳇봇 화면입니다.</span>
-                  </div>
-                  
-                  <div class="chatbot-live-view" style="flex:1;">
-                      <iframe
-                          th:src="@{|http://localhost:8504/5core|}"
-                          style="width: 100%; height: 100%; border: none; border-radius: 8px; overflow: hidden;">
-                      </iframe>
-                  </div>
-              </section>
-          </div>
-
-          <div class="content__row" style="gap:16px; align-items:stretch; flex: 1;">             
-            <section class="card messaging-section" style="flex:1;">
-              <div class="card__header">
-                <h3 class="card__title">딜러 소통방 (메신저)</h3>
-                  <span class="card__subtitle">딜러들과 실시간으로 소통하세요</span>
-              </div>
-                  
-              <div class="message-list">
-	            <div class="message-bubble message-bubble--dealer">
-	               관리자님, 신형 '아이오닉 9' 관련 판매 자료 업데이트 부탁드립니다.
-	              <div class="message-meta">홍길동 딜러 · 10:20 AM</div>
-	            </div>
-	            <div class="message-bubble message-bubble--admin">
-	                네, 곧바로 자료실에 업로드하겠습니다. 확인 후 다시 안내드리겠습니다.
-	               <div class="message-meta">관리자 · 10:25 AM</div>
-	            </div>
-	            <div class="message-bubble message-bubble--dealer">
-	               감사합니다!
-	               <div class="message-meta">홍길동 딜러 · 10:27 AM</div>
-	            </div>
-             </div>
-
-             <div class="message-input-group">
-               <input type="text" placeholder="메시지를 입력하세요..." />
-               <button type="button">보내기</button>
-             </div>
-           </section>
-
-			  <section class="card notice-list-section" style="flex:1;">
-		        <div class="card__header">
-		          <h3 class="card__title">공지사항 목록</h3>
-		          <span class="card__subtitle">총 [[${noticePage.totalElements}]]건의 공지/알림 내역입니다.</span>
-		        </div>
-			      
-			    <div class="notice-list">
-			      <div th:each="notice : ${notices}" class="notice-item" 
-			        th:classappend="${notice.isImportant ? 'important-notice-item' : ''}"
-			        th:style="${notice.isImportant ? 'border-left: 4px solid var(--warning);' : ''}"
-			        >
-			        <div class="notice-item__content">
-			          <span class="notice-item__title" th:text="${notice.isImportant ? '⭐ ' + notice.title : notice.title}">공지사항 제목</span>
-			          <span class="notice-item__meta">
-			            등록일: <span th:text="${notice.createDate}"></span> 
-			            | 등록자: <span th:text="${notice.createName}">관리자</span>
-			          </span>
-			        </div>
-			        <span class="notice-item__target" 
-			          th:text="${notice.target}"
-			          th:style="${notice.isImportant ? 'background: #fef3c7; color: #b45309;' : ''}"
-			          >전체 딜러</span>
-			      </div>
-			      <div th:if="${notices.isEmpty()}" style="text-align: center; color: var(--text-muted); padding: 20px;">
-			         등록된 공지사항이 없습니다.
-			      </div>
-			    </div>
-			      
-			    <div th:if="${!noticePage.isEmpty()}" class="pagination-container" style="display: flex; justify-content: center; margin-top: 15px;">
-			      <nav aria-label="Page navigation">
-			        <ul class="pagination" style="list-style: none; display: flex; gap: 5px; padding: 0;">			                  
-						<li th:class="${noticePage.first ? 'disabled' : ''}" style="display: inline-block;">
-	                    <a th:if="${!noticePage.first}" th:href="@{/admin/profile(page=${noticePage.number - 1})}" class="page-link" 
-	                        style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #0d47a1; text-decoration: none; font-size: 13px;">
-	                         이전
-	                    </a>
-	                    <span th:if="${noticePage.first}" class="page-link disabled"
-	                        style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #6c757d; text-decoration: none; font-size: 13px; cursor: not-allowed;">
-	                         이전
-	                    </span>
-	                  </li>	                  
-	                  <li th:each="i : ${#numbers.sequence(0, noticePage.totalPages - 1)}" 
-	                    th:class="${i == currentPage ? 'active' : ''}"
-	                    style="display: inline-block;">
-	                    <a th:if="${i == currentPage}" class="page-link active" 
-	                       style="padding: 6px 10px; border: 1px solid #0d47a1; border-radius: 5px; background: #0d47a1; color: #fff; text-decoration: none; font-size: 13px; font-weight: bold;"
-	                       th:text="${i + 1}"></a>
-	                    <a th:unless="${i == currentPage}" th:href="@{/admin/profile(page=${i})}" class="page-link" 
-	                       style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #0d47a1; text-decoration: none; font-size: 13px;"
-	                       th:text="${i + 1}"></a>
-	                  </li>
-	                  
-					  <li th:class="${noticePage.last ? 'disabled' : ''}" style="display: inline-block;">
-	                      <a th:if="${!noticePage.last}" th:href="@{/admin/profile(page=${noticePage.number + 1})}" class="page-link"
-	                        style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #0d47a1; text-decoration: none; font-size: 13px;">
-	                          다음
-	                      </a>
-	                      <span th:if="${noticePage.last}" class="page-link disabled"
-	                        style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #6c757d; text-decoration: none; font-size: 13px; cursor: not-allowed;">
-	                          다음
-	                      </span>
-	                   </li>
-			       </ul>
-	            </nav>
-			  </div>
-		  </section>
-      </div>
-	  
+		<div class="frame-wrapper">
+		  <iframe
+		    src="http://localhost:8508/5core"
+		    title="현대차 글로벌 판매 대시보드"
+		    loading="lazy"
+		    allowfullscreen>
+		  </iframe>
+	  	</div>
     </div>
   </div>
 
