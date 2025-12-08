@@ -13,7 +13,7 @@
 
 	/* 상단 */
 	.applyListHeader {
-		margin-top: 100px;
+		margin-top: -40px;
 		margin-bottom: 50px;
 		padding: 20px;
 		text-align: center;
@@ -43,13 +43,13 @@
 	}
 	
 	.list-area {
-		flex: 0 0 65%; /* 리스트 영역: 65% 너비 고정 */
-		max-width: 65%;
+		flex: 0 0 70%; /* 리스트 영역: 65% 너비 고정 */
+		max-width: 70%;
 	}
 	
 	.chatbot-area {
-		flex: 0 0 35%; /* 챗봇 영역: 35% 너비 고정 */
-		max-width: 35%;
+		flex: 0 0 30%; /* 챗봇 영역: 35% 너비 고정 */
+		max-width: 30%;
 		/* 챗봇 섹션은 목록 섹션과 동일한 높이로 시작하도록 마진 조정 */
 		margin-top: 0; 
 	}
@@ -71,9 +71,11 @@
       text-align: center;
 	  background-color: navy;
 	  color: #fff;
+	  font-size: 0.89em;
     }
     .table tbody td {
       vertical-align: middle;
+	  font-size: 0.89em;
     }
     .table tbody tr:hover {
       background-color: #e9f0ff;
@@ -95,20 +97,20 @@
 	
 	.action-cell .btn-group {
 	  display: flex;
-	  gap: 0.25rem; /* 버튼 사이 간격 */
+	  gap: 0.5rem; /* 버튼 사이 간격 */
 	  justify-content: center;
 	}
 
 	.status-cell .badge.status-badge {
 	  width: 100px;
 	  height: 30px;
-	  font-size: 0.85rem;
+	  font-size: 0.8rem;
 	  padding: 7px;
 	}
 	
 	.action-cell .btn-sm {
 	  padding: 0.18rem 0.55rem;
-	  font-size: 0.82rem;
+	  font-size: 0.8rem;
 	  line-height: 1.1;
 	  font-weight: bold;
 	  padding: 7px;
@@ -148,6 +150,7 @@
 		background-color: navy;
 		border: 1px solid dimgray;
 		font-weight: bold;
+		font-size: 0.89em;
 	}
 	.li-btn:hover {
 		background-color: white;
@@ -160,6 +163,7 @@
 		color: gray;
 		border: 1px solid dimgray;
 		font-weight: bold;
+		font-size: 0.89em;
 	}
 	
 	.ex-btn:hover {
@@ -177,15 +181,15 @@
 	
 	/* 테이블 셀 크기 조정 */
 	/* 챗봇이 옆에 있을 때는 리스트 너비가 좁아지므로 너비 비율 조정 */
-	.list-area .table thead th:nth-child(1) { width: 5%; } /* 체크박스 */
-	.list-area .table thead th:nth-child(2) { width: 8%; } /* 고객ID */
-	.list-area .table thead th:nth-child(3) { width: 20%; } /* 담당딜러 */
-	.list-area .table thead th:nth-child(4) { width: 15%; } /* 예약시간 */
+	.list-area .table thead th:nth-child(1) { width: 2%; } /* 체크박스 */
+	.list-area .table thead th:nth-child(2) { width: 3%; } /* 고객ID */
+	.list-area .table thead th:nth-child(3) { width: 16%; } /* 담당딜러 */
+	.list-area .table thead th:nth-child(4) { width: 10%; } /* 예약시간 */
 	.list-area .table thead th:nth-child(5) { width: 14%; } /* 등록일 */
-	.list-area .table thead th:nth-child(6) { width: 15%; } /* 선택차량 */
-	.list-area .table thead th:nth-child(7) { width: 10%; } /* 희망구매시점 */
-	.list-area .table thead th:nth-child(8) { width: 7%; } /* 상담상태 */
-	.list-area .table thead th:nth-child(9) { width: 6%; } /* 버튼 그룹 */
+	.list-area .table thead th:nth-child(6) { width: 17%; } /* 선택차량 */
+	.list-area .table thead th:nth-child(7) { width: 12%; } /* 희망구매시점 */
+	.list-area .table thead th:nth-child(8) { width: 10%; } /* 상담상태 */
+	.list-area .table thead th:nth-child(9) { width: 8%; } /* 버튼 그룹 */
 
 	/* 페이지 버튼 */
 	.page-link {
@@ -207,6 +211,23 @@
 	.pagination .page-item .page-link:hover {
 	    background-color: lightsteelblue;
 		border-color: #111;
+	}
+	
+	/*AI 실시간 상담 챗봇 */
+	.card {
+		margin-top: 45px;
+	}
+	.card-header {
+		background-color: navy;
+		height: 37px;
+	}
+	.ai-title {
+		font-size: 0.9em; 
+		font-weight: bold;
+		color: #fff;
+	}
+	.card-body {
+		height: 490px;
 	}
 	
   </style>
@@ -254,7 +275,7 @@
 		            <th class="text-center">
 		              <input type="checkbox" id="selectAll" class="form-check-input" aria-label="전체 선택"/>
 		            </th>
-		            <th class="text-center">고객ID</th>
+		            <th class="text-center">ID</th>
 		            <th class="text-center">담당딜러</th>
 		            <th class="text-center">예약시간</th>
 		            <th class="text-center">등록일</th>
@@ -382,13 +403,13 @@
 		</div> 
 		<div class="chatbot-area">
 			<div class="card shadow-sm mb-5">
-				<div class="card-header bg-white">
-					<h5 class="mb-0">AI 실시간 상담 챗봇</h5>
+				<div class="card-header">
+					<h5 class="mb-0 ai-title">AI 실시간 상담 챗봇</h5>
 				</div>
 				<div class="card-body p-0">
 					<iframe
 						th:src="@{|http://localhost:8504/5core|}"
-						style="width: 100%; height: 800px; border: none; border-radius: 0 0 8px 8px; overflow: hidden;">
+						style="width: 100%; height: 490px; border: none; border-radius: 0 0 8px 8px; overflow: hidden;">
 					</iframe>
 				</div>
 			</div>
