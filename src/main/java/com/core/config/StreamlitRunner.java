@@ -112,7 +112,7 @@ public class StreamlitRunner implements ApplicationRunner {
 		chatbot.start();
 		modelSaleDashboard.start();
 		monthlySalesGraph.start();
-		System.out.println("Streamlit이 실행됨");
+		System.out.println("AI 차량 추천(Streamlit) 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");
 		System.out.println("차량별 판매량 대시보드 실행됨");
