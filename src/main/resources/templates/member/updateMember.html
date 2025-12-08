@@ -15,7 +15,6 @@
     }
 
     body {
-      background: #f3f5f9;
       color: #111827;
       min-height: 100vh;
       display: flex;
@@ -50,12 +49,12 @@
       flex: 1;
       display: flex;
       justify-content: center;
-      padding: 24px 16px;
+	  margin: 30px 0;
     }
 
     .shell {
       width: 100%;
-      max-width: 980px;
+      max-width: 1200px;
       background: #ffffff;
       border-radius: 14px;
       box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
@@ -66,7 +65,7 @@
 
     /* 좌측 메뉴 */
     .sidebar {
-      width: 220px;
+      width: 250px;
       background: linear-gradient(180deg, #0d47a1 0%, #093272 100%);
       color: #eef3ff;
       padding: 24px 18px;
@@ -257,9 +256,10 @@
     .gender-group {
       display: flex;
       gap: 12px;
-      font-size: 13px;
+      font-size: 9px;
       color: #374151;
       margin-top: 3px;
+	  padding: 4px 0;
     }
 
     .gender-option input {
@@ -340,9 +340,10 @@
 	}
 	.radio_check {
 	    font-size: 1.5em; cursor: pointer; text-align: center;
+		padding: 2px 0;
 	}
 	input[name=gender]:checked + label, input[name=foreigner]:checked + label {
-	    color: #fff; border: 1px solid #90cbfb; background-color: #90cbfb;
+	    color: #fff; border: 1px solid #0d47a1; background-color: #0d47a1;
 	}
 
     /* 반응형 */
