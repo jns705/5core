@@ -386,14 +386,13 @@
       .address-row {
         grid-template-columns: 1fr;
       }
+	  
     }
   </style>
 </head>
 <body>
-  <!-- 검정 헤더 (링크 include 예정 영역) -->
-  <header class="page-header">
-    <div class="page-header__title">HYUNDAI CRM · 회원수정</div>
-  </header>
+	<!-- 헤더 -->
+	<th:block th:replace="~{/top.html}"></th:block>
 
   <div class="layout">
     <div class="shell">
@@ -520,8 +519,8 @@
     </div>
   </div>
 
-  <!-- 검정 푸터 (링크 include 예정 영역) -->
-  <footer class="page-footer"></footer>
+  <!--푸터 -->
+  <th:block th:replace="~{/bottom.html}"></th:block>
   
 </body>
 </html>
