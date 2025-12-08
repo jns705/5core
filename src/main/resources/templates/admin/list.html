@@ -8,9 +8,6 @@
     <style>
         body { background-color: #f3f5f9; }
         .container { max-width: 1600px; }
-        .sidebar { background-color: #343a40; min-height: 100vh; padding-top: 20px; }
-        .sidebar a { color: #adb5bd; padding: 10px 15px; display: block; text-decoration: none; transition: all 0.2s; font-weight: bold; }
-        .sidebar a:hover, .sidebar .active { color: navy; background-color: #eee; border-radius: 5px; }
         .content { padding: 30px;}
 		.search-btns { margin-right: 40px;}
 		#searchBtn { width: 80px; height: 30px; font-weight: bold;}
@@ -37,84 +34,85 @@
         }
 
 		/* 레이아웃 */
-		.sidebar {
-		  width: 248px;
-		  background: linear-gradient(180deg, #0d47a1 0%, #093272 100%);
-		  color: #ffffff;
-		  display: flex;
-		  flex-direction: column;
-		  padding: 20px 0;
-		}
+		    .sidebar {
+		      width: 248px;
+		      background: linear-gradient(180deg, #0d47a1 0%, #093272 100%);
+		      color: #ffffff;
+		      display: flex;
+		      flex-direction: column;
+		      padding: 20px 0;
+		    }
 
-		.sidebar__logo {
-		  padding: 0 24px 20px;
-		  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-		  margin-bottom: 16px;
-		}
+		    .sidebar__logo {
+		      padding: 0 24px 20px;
+		      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+		      margin-bottom: 16px;
+		    }
 
-		.sidebar__logo-title {
-		  font-size: 20px;
-		  font-weight: 700;
-		  letter-spacing: 0.02em;
-		}
+		    .sidebar__logo-title {
+		      font-size: 20px;
+		      font-weight: 700;
+		      letter-spacing: 0.02em;
+		    }
 
-		.sidebar__section-title {
-		  font-size: 12px;
-		  text-transform: uppercase;
-		  opacity: 0.75;
-		  padding: 0 24px;
-		  margin-bottom: 6px;
-		}
+		    .sidebar__section-title {
+		      font-size: 12px;
+		      text-transform: uppercase;
+		      opacity: 0.75;
+		      padding: 0 24px;
+		      margin-bottom: 6px;
+		    }
 
-		.menu-list {
-		  list-style: none;
-		  padding: 0 8px;
-		}
+		    .menu-list {
+		      list-style: none;
+		      padding: 0 8px;
+		    }
 
-		.menu-item {
-		  display: flex;
-		  align-items: center;
-		  gap: 10px;
-		  padding: 10px 16px;
-		  margin: 2px 8px;
-		  border-radius: 8px;
-		  font-size: 14px;
-		  cursor: pointer;
-		  transition: background 0.18s ease, transform 0.12s ease;
-		  color: #eef3ff;
-		  opacity: 0.9;
-		}
+		    .menu-item {
+		      display: flex;
+		      align-items: center;
+		      gap: 10px;
+		      padding: 10px 16px;
+		      margin: 2px 8px;
+		      border-radius: 8px;
+		      font-size: 14px;
+		      cursor: pointer;
+		      transition: background 0.18s ease, transform 0.12s ease;
+		      color: #eef3ff;
+		      opacity: 0.9;
+			  text-decoration: none;
+		    }
 
-		.menu-item:hover {
-		  background: rgba(255, 255, 255, 0.15);
-		  transform: translateY(-1px);
-		  opacity: 1;
-		}
+		    .menu-item:hover {
+		      background: rgba(255, 255, 255, 0.15);
+		      transform: translateY(-1px);
+		      opacity: 1;
+		    }
 
-		.menu-item--active {
-		  background: #ffffff;
-		  color: #0d47a1;
-		  opacity: 1;
-		  font-weight: 600;
-		}
+		    .menu-item--active {
+		      background: #ffffff;
+		      color: #0d47a1;
+		      opacity: 1;
+		      font-weight: 600;
+		    }
 
-		.menu-item__bullet {
-		  width: 6px;
-		  height: 6px;
-		  border-radius: 999px;
-		  background: rgba(255, 255, 255, 0.6);
-		}
+		    .menu-item__bullet {
+		      width: 6px;
+		      height: 6px;
+		      border-radius: 999px;
+		      background: rgba(255, 255, 255, 0.6);
+		    }
 
-		.menu-item--active .menu-item__bullet {
-		  background: #0d47a1;
-		}
+		    .menu-item--active .menu-item__bullet {
+		      background: #0d47a1;
+		    }
 
-		.sidebar__bottom {
-		  margin-top: auto;
-		  padding: 12px 24px 8px;
-		  font-size: 12px;
-		  opacity: 0.7;
-		}
+		    .sidebar__bottom {
+		      margin-top: auto;
+		      padding: 12px 24px 8px;
+		      font-size: 12px;
+		      opacity: 0.7;
+		    }
 
 		.main {
 		  flex: 1;
@@ -175,8 +173,6 @@
 		  font-weight: 600;
 		}
 		
-		
-        /* ===== HYUNDAI CRM 사이드바 끝 ===== */
     </style>
 </head>
 <body>
@@ -341,13 +337,13 @@
                                aria-label="Previous">«</a>
                         </li>
 
-                        <li class="page-item" 
-                            th:each="i : ${#numbers.sequence(startPage, endPage)}" 
-                            th:classappend="${i == memberPage.number} ? 'active'">
-                            <a class="page-link" 
-                               th:href="@{/admin/list(page=${i}, role=${currentRole}, sort=${currentSort}, keyword=${currentKeyword})}"
-                               th:text="${i + 1}">1</a>
-                        </li>
+						<li class="page-item"
+						    th:each="i : ${#numbers.sequence(0, memberPage.totalPages - 1)}"
+						    th:classappend="${i == memberPage.number} ? 'active'">
+						    <a class="page-link"
+						       th:href="@{/admin/list(page=${i}, role=${currentRole}, sort=${currentSort}, keyword=${currentKeyword})}"
+						       th:text="${i + 1}"></a>
+						</li>
 
                         <li class="page-item" th:classappend="${!memberPage.hasNext} ? 'disabled'">
                             <a class="page-link" 
