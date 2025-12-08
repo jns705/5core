@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,8 @@ import com.core.repository.DealerRepository;
 import com.core.repository.MemberRepository;
 import com.core.repository.SaleRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -35,34 +38,63 @@ public class SaleApiController {
     /*
      * 딜러별 sale 판매 원형 그래프
      */
-    @GetMapping(value = "/vehicle-sales/me", produces = MediaType.APPLICATION_JSON_VALUE)  // JSON 강제
+    @GetMapping(value = "/vehicle-sales/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Map<String, Object>> getMyVehicleSales(
-            Principal principal,
-            @RequestParam(value = "memberId", required = false) Long memberId) {
+            HttpServletRequest request,  // Authentication → HttpServletRequest로 변경
+            @RequestParam(value = "dealerId", required = false) Long dealerId) {
         
-        Member member = null;
-        if (memberId != null) {
-            Optional<Member> optMember = memberRepository.findById(memberId);
-            if (optMember.isPresent()) member = optMember.get();
+        Long targetDealerId = null;
+        
+        // 1. dealerId 파라미터 우선 (Streamlit에서 전달)
+        if (dealerId != null) {
+            targetDealerId = dealerId;
+            System.out.println("✅ dealerId 파라미터=" + dealerId);
+        } 
+        // 2. 세션/헤더에서 딜러ID 추출 (Spring Security 세션)
+        else {
+            // 방법1: 세션에서 memberId 가져오기
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                String memberId = (String) session.getAttribute("memberId");
+                if (memberId != null) {
+                    Optional<Member> mOpt = memberRepository.findByMemberId(memberId);
+                    if (mOpt.isPresent()) {
+                        Optional<Dealer> dOpt = dealerRepository.findByMember(mOpt.get());
+                        if (dOpt.isPresent()) {
+                            targetDealerId = dOpt.get().getId();
+                            System.out.println("✅ 세션 memberId=" + memberId + " → dealerId=" + targetDealerId);
+                        }
+                    }
+                }
+            }
+            
+            // 방법2: Authorization 헤더 (JWT Bearer)
+            if (targetDealerId == null) {
+                String authHeader = request.getHeader("Authorization");
+                if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                    // JWT 토큰 파싱 로직 (간단히 username 추출)
+                    System.out.println("JWT 토큰 발견: " + authHeader.substring(0, 50) + "...");
+                    // 실제 JWT 파싱은 별도 구현 필요
+                }
+            }
         }
         
-        if (member == null && principal != null) {
-            Optional<Member> optMember = memberRepository.findByMemberId(principal.getName());
-            if (optMember.isPresent()) member = optMember.get();
+        if (targetDealerId == null) {
+            System.out.println("❌ 딜러 식별 실패 → 빈 데이터 반환");
+            return new ArrayList<>();
         }
         
-        if (member == null) {
-            throw new IllegalArgumentException("memberId 또는 로그인 필요");
+        // 기존 로직 그대로
+        Dealer dealer = dealerRepository.findById(targetDealerId).orElse(null);
+        if (dealer == null) {
+            System.out.println("❌ 딜러 없음: " + targetDealerId);
+            return new ArrayList<>();
         }
-        
-        Optional<Dealer> optDealer = dealerRepository.findByMember(member);
-        if (optDealer.isEmpty()) {
-            throw new IllegalArgumentException("딜러 없음: " + member.getMemberId());
-        }
-        Dealer dealer = optDealer.get();
         
         List<Sale> sales = saleRepository.findByDealer(dealer);
+        System.out.println("📊 판매 데이터 수: " + sales.size() + " (딜러=" + targetDealerId + ")");
         
+        // vehicleStats 집계 로직 (기존 그대로)
         Map<Long, Map<String, Object>> vehicleStats = new HashMap<>();
         for (Sale sale : sales) {
             Long vid = sale.getVehicle().getId();
@@ -70,29 +102,45 @@ public class SaleApiController {
                 ? sale.getVehicle().getName() 
                 : "차량_" + vid;
                 
-            if (!vehicleStats.containsKey(vid)) {
-                Map<String, Object> stat = new HashMap<>();
-                stat.put("vehicleId", vid);
-                stat.put("vehicleName", vehicleName);
-                stat.put("salesCount", 0L);
-                stat.put("totalPrice", 0L);
-                vehicleStats.put(vid, stat);
-            }
+            Map<String, Object> stat = vehicleStats.computeIfAbsent(vid, k -> {
+                Map<String, Object> newStat = new HashMap<>();
+                newStat.put("vehicleId", k);
+                newStat.put("vehicleName", vehicleName);
+                newStat.put("salesCount", 0L);
+                newStat.put("totalPrice", 0L);
+                return newStat;
+            });
             
-            Map<String, Object> stat = vehicleStats.get(vid);
-            stat.put("salesCount", (Long)stat.get("salesCount") + 1);
-            stat.put("totalPrice", (Long)stat.get("totalPrice") + (sale.getPrice() != 0 ? sale.getPrice() : 0));
+            Long currentCount = (Long) stat.get("salesCount");
+            stat.put("salesCount", currentCount != null ? currentCount + 1 : 1L);
+            
+            Long price = sale.getPrice() != 0L ? (long) sale.getPrice() : 0L;
+            Long currentPrice = (Long) stat.get("totalPrice");
+            stat.put("totalPrice", currentPrice != null ? currentPrice + price : price);
         }
         
-        return new ArrayList<>(vehicleStats.values());
+        List<Map<String, Object>> result = new ArrayList<>(vehicleStats.values());
+        System.out.println("✅ 최종 반환: " + result.size() + "종 차량 (딜러=" + targetDealerId + ")");
+        return result;
     }
+
+
+
+
+
+
+
+
+
+
+
+
     
     
     
     // 딜러별 월매출 그래프
     @GetMapping(value = "/monthly-sales", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Map<String, Object>> getMonthlySales(
-            Principal principal,
+    public List<Map<String, Object>> getMonthlySales(Principal principal,
             @RequestParam(value = "dealerId", required = false) Long dealerId,
             @RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "year", defaultValue = "2025") int year) {
@@ -100,10 +148,10 @@ public class SaleApiController {
         try {
             // 1) dealerId 직접 들어오면 그걸 우선 사용
             if (dealerId != null) {
-                System.out.println("🔍 dealerId 파라미터=" + dealerId);
+                System.out.println("dealerId 파라미터=" + dealerId);
             } else if (memberId != null) {
                 // 2) memberId → Dealer
-                System.out.println("🔍 memberId=" + memberId + " → 딜러 조회");
+                System.out.println("memberId=" + memberId + " → 딜러 조회");
                 Member m = memberRepository.findById(memberId).orElse(null);
                 if (m != null) {
                     Dealer d = dealerRepository.findByMember(m).orElse(null);
@@ -111,7 +159,7 @@ public class SaleApiController {
                 }
             } else if (principal != null) {
                 // 3) 로그인 사용자 → Dealer
-                System.out.println("🔍 principal=" + principal.getName() + " → 딜러 조회");
+                System.out.println("principal=" + principal.getName() + " → 딜러 조회");
                 Member m = memberRepository.findByMemberId(principal.getName()).orElse(null);
                 if (m != null) {
                     Dealer d = dealerRepository.findByMember(m).orElse(null);
@@ -121,11 +169,11 @@ public class SaleApiController {
 
             // 딜러 못 찾으면 0 리턴
             if (dealerId == null) {
-                System.out.println("⚠️ 딜러 식별 실패 → 빈 데이터");
+                System.out.println("딜러 식별 실패 → 빈 데이터");
                 return createEmptyMonthlyData();
             }
 
-            System.out.println("📊 월별실적 조회: dealerId=" + dealerId + ", year=" + year);
+            System.out.println("월별실적 조회: dealerId=" + dealerId + ", year=" + year);
             List<Object[]> rows = saleRepository.findMonthlySalesByDealer(year, dealerId);
 
             String[] months = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
@@ -135,11 +183,13 @@ public class SaleApiController {
                 Map<String,Object> rowMap = new HashMap<>();
                 rowMap.put("month", m);
                 rowMap.put("salesCount", 0L);
+                rowMap.put("totalPrice", 0L);
 
                 for (Object[] r : rows) {
                     String dbMonth = r[0].toString().trim();
                     if (dbMonth.equals(m)) {
                         rowMap.put("salesCount", ((Number) r[1]).longValue());
+                        rowMap.put("totalPrice", ((Number) r[2]).longValue());
                         break;
                     }
                 }
@@ -157,6 +207,7 @@ public class SaleApiController {
             return result;
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("최종 dealerId: dealerId=" + dealerId);
             return createEmptyMonthlyData();
         }
     }
@@ -168,6 +219,7 @@ public class SaleApiController {
             Map<String, Object> data = new HashMap<>();
             data.put("month", month);
             data.put("salesCount", 0L);
+            data.put("totalPrice", 0L);
             emptyData.add(data);
         }
         return emptyData;

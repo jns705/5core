@@ -23,16 +23,15 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 	
 	
 	// 딜러별 월판매 그래프
-	@Query(value = """
-		    SELECT DATE_FORMAT(s.sale_date, '%b') AS month_name,
-		           COUNT(s.id) AS sales_count
-		    FROM sale s
-		    WHERE YEAR(s.sale_date) = ?1
-		      AND s.dealer_id = ?2
-		    GROUP BY MONTH(s.sale_date)
-		    ORDER BY MONTH(s.sale_date)
-		    """, nativeQuery = true)
-		List<Object[]> findMonthlySalesByDealer(int year, Long dealerId);
+	@Query(value = "SELECT " +
+	       "DATE_FORMAT(s.sale_date, '%b') as monthName, " +
+	       "COUNT(s.id) as salesCount, " +
+	       "SUM(s.price) as totalPrice " +
+	       "FROM sale s " +
+	       "WHERE YEAR(s.sale_date) = :year AND s.dealer_id = :dealerId " +
+	       "GROUP BY MONTH(s.sale_date) " +
+	       "ORDER BY MONTH(s.sale_date)", nativeQuery = true)
+	List<Object[]> findMonthlySalesByDealer(@Param("year") int year, @Param("dealerId") Long dealerId);
 
 	
 }
