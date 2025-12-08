@@ -42,7 +42,7 @@ else:
 # 데이터 로드
 df = load_data(dealer_id if dealer_id != "None" else None)
 
-# 1. 맨 위: 원 그래프
+# 1. 원 그래프
 if not df.empty:
     fig = px.pie(df.nlargest(10, "salesCount"), 
                  values="salesCount", names="vehicleName", 
@@ -66,7 +66,7 @@ if not df.empty:
     display_df = df[["vehicleName", "salesCount"]].sort_values("salesCount", ascending=False)
     st.dataframe(display_df, hide_index=True, use_container_width=True)
     
-    # 4. 맨 아래: 딜러ID 표시
+    # 4. 딜러ID 표시
     st.markdown("---")
     st.caption(f"딜러ID: {dealer_id}")
     

@@ -31,7 +31,7 @@ def load_monthly_data(dealer_id_str, year=2025):
         data = resp.json()
         df = pd.DataFrame(data)
         df["salesCount"] = pd.to_numeric(df["salesCount"]).fillna(0)
-        df["totalPrice"] = pd.to_numeric(df["totalPrice"]).fillna(0)  # ✅ 매출 컬럼
+        df["totalPrice"] = pd.to_numeric(df["totalPrice"]).fillna(0)
         return df.sort_values("month")
     except Exception:
         return pd.DataFrame({
@@ -42,7 +42,7 @@ def load_monthly_data(dealer_id_str, year=2025):
 
 df = load_monthly_data(dealer_id)
 
-# 1. 그래프 (맨 위)
+# 1. 그래프
 fig = px.line(
     df, x="month", y="salesCount",
     markers=True, line_shape="spline",
@@ -62,7 +62,7 @@ st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
 # 2. KPI (실제 DB 매출)
 total_count = int(df["salesCount"].sum())
-total_amount = int(df["totalPrice"].sum())  # ✅ DB 실제 매출 합계
+total_amount = int(df["totalPrice"].sum())
 avg_monthly = int(df["salesCount"].mean())
 
 col1, col2, col3, col4 = st.columns(4)
