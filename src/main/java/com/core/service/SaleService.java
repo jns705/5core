@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.core.entity.Dealer;
+import com.core.entity.Member;
 import com.core.entity.Sale;
-import com.core.repository.CounselingRepository;
 import com.core.repository.SaleRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +38,11 @@ public class SaleService {
     // 딜러 판매내역 조회
     public Page<Sale> findByDealer(Pageable pageable, Dealer dealer) {
     	return saleRepository.findByDealer(pageable, dealer);
+    }
+    
+    // 회원별 구매내역 조회
+    public Page<Sale> findByMemberId(Pageable pagealbe, String memberId) {
+    	return saleRepository.findByMemberId(pagealbe, memberId);
     }
     
     

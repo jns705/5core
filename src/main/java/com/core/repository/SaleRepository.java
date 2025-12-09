@@ -17,6 +17,17 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 	
 	List<Sale> findAll();
 	
+	// 회원 별 구매내역 조회
+	@Query("""
+		       SELECT s
+		       FROM Sale s
+		       JOIN s.customer c
+		       JOIN c.member m
+		       WHERE m.member_id = :memberId
+		       """)
+	Page<Sale> findByMemberId(Pageable pageable, @Param("memberId") String memberId);
+	
+	
 	List<Sale> findByDealer(Dealer dealer);
 	// dealer엔터티에 해당하는 sale 찾기
 	Page<Sale> findByDealer(Pageable pageable, Dealer dealer);

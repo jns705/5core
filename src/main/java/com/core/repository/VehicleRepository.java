@@ -43,7 +43,9 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 			AND (:type IS NULL OR v.vehicleType = :type)
 			AND (:fuel IS NULL OR v.fuelType = :fuel)
 			""")
-	Page<Vehicle> searchVehicle(@Param("keyword") String keyword, @Param("type") String type, @Param("fuel") String fuel, Pageable pageable);
+	Page<Vehicle> searchVehicle(@Param("keyword") String keyword, 
+								@Param("type") String type, 
+								@Param("fuel") String fuel, Pageable pageable);
 	
 	// 상세보기에서 트림 선택 시 DB의 차량 트림과 가격을 변경
 	@Transactional

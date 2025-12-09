@@ -51,12 +51,11 @@ public class VehicleController {
 	                direction = Sort.Direction.ASC
 	        ) Pageable pageable,
 	        Model model) {
-		// ALL 버튼용 처리
+		// ALL 버튼용 처리: 빈 문자열은 null로 변환
 		if(keyword != null && keyword.isBlank()) keyword = null;
 		if(type != null && type.isBlank()) type = null;
 		if(fuel != null && fuel.isBlank()) fuel = null;
 		
-
 	    Page<Vehicle> paging = vehicleService.getVehiclePage(keyword, type, fuel, pageable);
 
 	    model.addAttribute("keyword", keyword);
@@ -76,15 +75,12 @@ public class VehicleController {
 			Model model) {
 		// 모델 코드로 차량 정보 획득
 		Vehicle vehicle = vehicleService.getVehicleByModelCode(modelCode);
-		
 		// 트림 정보가 없다면 DB에서 획득
 		if(trim == null || trim.isBlank()) {
             trim = vehicle.getTrim();
-        }
-		
+        }		
 		// 차량의 옵션 리스트를 획득
 		List<VehicleOptionView> optionList = vehicleService.getOptionList(vehicle, trim);
-		System.out.println("[컨트롤러] trim = " + trim);
 		
 		model.addAttribute("optionList", optionList);
 		model.addAttribute("trim", trim);

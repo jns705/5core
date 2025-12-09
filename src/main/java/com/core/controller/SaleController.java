@@ -1,5 +1,6 @@
 package com.core.controller;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.core.entity.Counseling;
 import com.core.entity.Customer;
 import com.core.entity.Dealer;
+import com.core.entity.Member;
 import com.core.entity.Sale;
 import com.core.entity.Vehicle;
 import com.core.service.CounselingService;
@@ -41,8 +43,9 @@ public class SaleController {
 
     // 구매 리스트 페이지
     @GetMapping("/list")
-    public String saleList(Model model) {
-        List<Sale> saleList = saleService.findAll();
+    public String saleList(Model model, Principal principal) {
+    	Member m = memberService.findByMemberId(principal.getName());
+        List<Sale> saleList = saleService.findByMemberId(m.getMemberId());
         model.addAttribute("saleList", saleList);
         return "member/saleList";
     }
