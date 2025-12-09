@@ -1,6 +1,7 @@
 package com.core.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.core.dto.CounselingScheduleDTO;
+import com.core.entity.AdminSchedule;
 import com.core.entity.ApplyStatus;
 import com.core.entity.Counseling;
 import com.core.entity.Dealer;
@@ -27,6 +30,7 @@ import com.core.entity.Member;
 import com.core.entity.Notice;
 import com.core.entity.Role;
 import com.core.entity.Sale;
+import com.core.service.AdminScheduleService;
 import com.core.service.CounselingService;
 import com.core.service.CustomerService;
 import com.core.service.DealerService;
@@ -51,6 +55,7 @@ public class MainController {
 	private final CounselingService counselingService;
 	private final SaleService saleService;
 	private final NoticeService noticeService;
+	private final AdminScheduleService adminScheduleService;
 
 
 	@GetMapping("/main")
@@ -247,10 +252,14 @@ public class MainController {
 		List<Member> customerList = memberService.findByRole(Role.ADMIN);
 
 		Sort sortObj = Sort.by("createDate").ascending();
-		// size가 8로 설정
+		// 한페이지에 8건씩
 		Pageable pageable = PageRequest.of(page, 8, sortObj);  
         Page<Notice> noticePage = noticeService.findAllNotices(pageable);
         
+        // 스케줄 목록 조회
+        List<AdminSchedule> schedules = adminScheduleService.findAllSchedules();
+        
+        model.addAttribute("schedules", schedules);
         model.addAttribute("noticePage", noticePage);
         model.addAttribute("notices", noticePage.getContent());
         model.addAttribute("currentPage", page);
@@ -358,6 +367,39 @@ public class MainController {
 		return "admin/modelSales";
 	}
 	
+	// 관리자 스케쥴 등록
+	@PostMapping("/admin/schedule/add")
+	public String registerSchedule(
+	    @RequestParam("scheduleText") String content, // 메모 내용
+	    @RequestParam(value = "scheduleDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDate, // 마감일 (선택 사항)
+	    RedirectAttributes rt
+	) {
+	    try {
+	        adminScheduleService.registerSchedule(content, dueDate);
+	        rt.addFlashAttribute("successMessage", "새로운 업무 스케줄이 등록되었습니다.");
+	    } catch (IllegalArgumentException e) {
+	        rt.addFlashAttribute("errorMessage", e.getMessage());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        rt.addFlashAttribute("errorMessage", "스케줄 등록 중 오류가 발생했습니다.");
+	    }	    
+	    return "redirect:/admin/profile";
+	}	
 	
-	
+	// 관리자 스케쥴 삭제
+	@PostMapping("/admin/schedule/delete/{id}")
+	public String deleteSchedule(
+	    @PathVariable("id") Long scheduleId,
+	    RedirectAttributes rt
+	) {
+	    try {
+	        adminScheduleService.deleteSchedule(scheduleId);
+	        rt.addFlashAttribute("successMessage", "스케줄이 성공적으로 삭제되었습니다.");
+	    } catch (IllegalArgumentException e) {
+	        rt.addFlashAttribute("errorMessage", e.getMessage());
+	    } catch (Exception e) {
+	        rt.addFlashAttribute("errorMessage", "스케줄 삭제 중 오류가 발생했습니다.");
+	    }
+	    return "redirect:/admin/profile";
+	}	
 }
