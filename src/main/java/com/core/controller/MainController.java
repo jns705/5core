@@ -102,9 +102,11 @@ public class MainController {
 	    long completCnt   = counselingService.countByDealerAndStatus(dealer, "상담완료");
 	    long saleCnt        = counselingService.countByDealerAndStatus(dealer, "구매완료");
 	    
+	    // 상담진행중, 상담완료, 구매완료 카운트
 	    model.addAttribute("progressCnt", progressCnt);
 	    model.addAttribute("completCnt", completCnt);
 	    model.addAttribute("saleCnt", saleCnt);
+	    
 	    // 스트림잇이 읽을 dealerId를 저장
 	    model.addAttribute("dealerId", dealer.getId());
 	    
@@ -112,6 +114,16 @@ public class MainController {
 		model.addAttribute("customerList", customerList);
 		model.addAttribute("dealer", member);
 		model.addAttribute("counselingSchedule", counselingSchedule != null ? counselingSchedule : List.of());
+		
+		model.addAttribute("currentPage", page);
+		
+		// 공지사항, size가 8로 설정
+		Pageable pageableNotice = PageRequest.of(page, 8, sortObj);  
+        Page<Notice> noticePage = noticeService.findAllNotices(pageableNotice);
+        
+        model.addAttribute("noticePage", noticePage);
+        model.addAttribute("notices", noticePage.getContent());
+        
 
 		return "dealer/profile";
 	}

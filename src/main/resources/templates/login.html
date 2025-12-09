@@ -34,6 +34,7 @@
 		    flex-shrink: 0; 
 		}
 
+		#container { margin: 100px 0;}
 	    /* 제목 (H1) */
 	    .login-container h1 {
 	        font-size: 2rem;
@@ -204,6 +205,8 @@
 	</script>	
 </head>
 <body>
+<th:block th:replace="~{/top.html}"></th:block>
+	
 <div id="container">
     <div class="login-container">
         <div th:if="${error}" class="alert-error">
@@ -243,6 +246,6 @@
         </div>
     </div>
 </div>
-
+<th:block th:replace="~{/bottom.html}"></th:block>
 </body>
 </html>
