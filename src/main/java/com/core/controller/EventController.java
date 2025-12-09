@@ -14,4 +14,9 @@ public class EventController {
     public String eventPage() {
         return "event/event"; 
     }
+	
+    @GetMapping("/eventDetail")
+    public String eventDetail() {
+        return "event/eventDetail"; // eventDetail.html로 이동
+    }
 }
