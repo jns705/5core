@@ -26,7 +26,7 @@ public class SecurityConfig {
 	@Autowired
 	private CustomLoginSuccessHandler customLoginSuccessHandler;
 	
-	// 1. ADMIN 역할을 가진 사용자만 /admin로 접근, MANAGER 역할을 가진 사용자만 /manager로 접근 가능
+	// 1. ADMIN 역할을 가진 사용자만 /admin로 접근, DEALER 역할을 가진 사용자만 /dealer로 접근 가능
 	// 2. 로그인 기본 경로, 성공했을 때의 경로, 실패했을 때의 경로, 로그인 처리에 사용되는 파라미터명(name으로 전달되는 이름) 설정 
 	// 3. 로그아웃 기본 경로, 성공했을 때의 경로
 	@Bean
