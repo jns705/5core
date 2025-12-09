@@ -105,7 +105,7 @@ public class StreamlitRunner implements ApplicationRunner {
 		    "--server.headless=true"
 		);
 		
-		// globalSales: 딜러 월별 판매 그래프 (8507)
+		// modelSales: 딜러 월별 판매 그래프 (8508)
 		ProcessBuilder modelSales = new ProcessBuilder(
 		    pythonPath.toString(), "-m", "streamlit", "run",
 		    "model_sales_dashboard.py",
@@ -113,7 +113,16 @@ public class StreamlitRunner implements ApplicationRunner {
 		    "--server.port=8508",
 		    "--server.headless=true"
 		);
-				
+		
+		// chatbotAdmin: 관리자용 쳇봇 (8510)
+		// pip install streamlit google-genai python-dotenv실행
+		ProcessBuilder chatbotAdmin = new ProcessBuilder(
+		    pythonPath.toString(), "-m", "streamlit", "run",
+		    "chatbot_admin_streamlit.py",
+		    "--server.baseUrlPath=5core",
+		    "--server.port=8510",
+		    "--server.headless=true"
+		);		
 		
 		// 실행 디렉토리
 		builder.directory(aiServerDir.toFile());
@@ -124,6 +133,7 @@ public class StreamlitRunner implements ApplicationRunner {
 		monthlySalesGraph.directory(aiServerDir.toFile()); 
 		globalSales.directory(aiServerDir.toFile()); 
 		modelSales.directory(aiServerDir.toFile()); 
+		chatbotAdmin.directory(aiServerDir.toFile()); 
 		
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸
@@ -135,6 +145,7 @@ public class StreamlitRunner implements ApplicationRunner {
 		monthlySalesGraph.start();
 		globalSales.start();
 		modelSales.start();
+		chatbotAdmin.start();
 		System.out.println("Streamlit이 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");

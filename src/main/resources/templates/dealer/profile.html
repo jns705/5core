@@ -747,6 +747,105 @@
 	     text-align: center;
 	     padding-top: 8px;
 	   }
+	   /* 메신저 & 알림 폼 & AI 챗봇 뷰 */
+	   .messaging-section, .notice-form-section, .ai-consult-form-section, .notice-list-section { 
+	     display: flex;
+	     flex-direction: column;
+	     gap: 10px;
+	   }
+
+	   /* 폼 요소 기본 스타일 통일 및 개선 */
+	   .message-input-group input, 
+	   .message-input-group button, 
+	   .notice-form-section input, 
+	   .notice-form-section textarea,
+	   .form-group select {
+	     padding: 10px 12px; 
+	     border-radius: 10px; 
+	     border: 1px solid var(--border-subtle); 
+	     font-size: 14px;
+	     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	     width: 100%; /* 너비 100%로 설정하여 폼 그룹 내에서 가득 차도록 함 */
+	   }
+
+	   /* 포커스 시 강조 */
+	   .notice-form-section input:focus, 
+	   .notice-form-section textarea:focus,
+	   .form-group select:focus,
+	   .message-input-group input:focus {
+	       outline: none;
+	       border-color: var(--primary); 
+	       box-shadow: 0 0 0 3px var(--primary-soft); 
+	   }
+	   
+	   /* 알림 폼 */
+	   .notice-form {
+	     display: flex;
+	     flex-direction: column;
+	     gap: 16px; 
+	     margin-top: 8px; 
+	   }
+	   
+	   /* --- 공지사항 리스트 섹션 스타일 (NEW) --- */
+	   .notice-list-section {
+	       flex: 1; /* 메신저와 같은 너비를 갖도록 설정 */
+	   }
+	   
+	   .notice-list {
+	       display: flex;
+	       flex-direction: column;
+	       gap: 10px;
+	       max-height: 300px; /* 리스트 높이 제한 */
+	       overflow-y: auto;
+	   }
+
+	   .notice-item {
+	       display: flex;
+	       justify-content: space-between;
+	       align-items: center;
+	       padding: 10px 14px;
+	       border-radius: 8px;
+	       background: #f8f9fa;
+	       border: 1px solid #e9ecef;
+	       transition: background 0.2s ease;
+	       cursor: pointer;
+	   }
+
+	   .notice-item:hover {
+	       background: #e3eefc;
+	   }
+
+	   .notice-item__content {
+	       flex-grow: 1;
+	       min-width: 0;
+	       padding-right: 15px;
+	   }
+
+	   .notice-item__title {
+	       font-size: 14px;
+	       font-weight: 600;
+	       color: #1f2937;
+	       white-space: nowrap;
+	       overflow: hidden;
+	       text-overflow: ellipsis;
+	   }
+
+	   .notice-item__meta {
+	       font-size: 11px;
+	       color: var(--text-muted);
+	       margin-top: 2px;
+	   }
+
+	   .notice-item__target {
+	       font-size: 11px;
+	       font-weight: 600;
+	       padding: 3px 8px;
+	       border-radius: 999px;
+	       background: var(--primary-soft);
+	       color: var(--primary);
+	       min-width: 60px;
+	       text-align: center;
+	   }
 
     @media (max-width: 960px) {
       body {
@@ -909,6 +1008,73 @@
               <span class="dealer-status-text">최근 활동: 5분 전</span>
             </div>
           </section>
+		  
+		    <section class="card notice-list-section" style="flex:1;">
+		        <div class="card__header">
+		          <h3 class="card__title">공지사항 목록</h3>
+		          <span class="card__subtitle">총 [[${noticePage.totalElements}]]건의 공지/알림 내역입니다.</span>
+		        </div>
+		        
+		      <div class="notice-list">
+		        <div th:each="notice : ${notices}" class="notice-item" 
+		          th:classappend="${notice.isImportant ? 'important-notice-item' : ''}"
+		          th:style="${notice.isImportant ? 'border-left: 4px solid var(--warning);' : ''}"
+		          >
+		          <div class="notice-item__content">
+		            <span class="notice-item__title" th:text="${notice.isImportant ? '⭐ ' + notice.title : notice.title}">공지사항 제목</span>
+		            <span class="notice-item__meta">
+		              등록일: <span th:text="${notice.createDate}"></span> 
+		              | 등록자: <span th:text="${notice.createName}">관리자</span>
+		            </span>
+		          </div>
+		          <span class="notice-item__target" 
+		            th:text="${notice.target}"
+		            th:style="${notice.isImportant ? 'background: #fef3c7; color: #b45309;' : ''}"
+		            >전체 딜러</span>
+		        </div>
+		        <div th:if="${notices.isEmpty()}" style="text-align: center; color: var(--text-muted); padding: 20px;">
+		           등록된 공지사항이 없습니다.
+		        </div>
+		      </div>
+		        
+		      <div th:if="${!noticePage.isEmpty()}" class="pagination-container" style="display: flex; justify-content: center; margin-top: 15px;">
+		        <nav aria-label="Page navigation">
+		          <ul class="pagination" style="list-style: none; display: flex; gap: 5px; padding: 0;">			                  
+		  			<li th:class="${noticePage.first ? 'disabled' : ''}" style="display: inline-block;">
+		                <a th:if="${!noticePage.first}" th:href="@{/admin/profile(page=${noticePage.number - 1})}" class="page-link" 
+		                    style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #0d47a1; text-decoration: none; font-size: 13px;">
+		                     이전
+		                </a>
+		                <span th:if="${noticePage.first}" class="page-link disabled"
+		                    style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #6c757d; text-decoration: none; font-size: 13px; cursor: not-allowed;">
+		                     이전
+		                </span>
+		              </li>	                  
+		              <li th:each="i : ${#numbers.sequence(0, noticePage.totalPages - 1)}" 
+		                th:class="${i == currentPage ? 'active' : ''}"
+		                style="display: inline-block;">
+		                <a th:if="${i == currentPage}" class="page-link active" 
+		                   style="padding: 6px 10px; border: 1px solid #0d47a1; border-radius: 5px; background: #0d47a1; color: #fff; text-decoration: none; font-size: 13px; font-weight: bold;"
+		                   th:text="${i + 1}"></a>
+		                <a th:unless="${i == currentPage}" th:href="@{/admin/profile(page=${i})}" class="page-link" 
+		                   style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #0d47a1; text-decoration: none; font-size: 13px;"
+		                   th:text="${i + 1}"></a>
+		              </li>
+		              
+		  		  <li th:class="${noticePage.last ? 'disabled' : ''}" style="display: inline-block;">
+		                  <a th:if="${!noticePage.last}" th:href="@{/admin/profile(page=${noticePage.number + 1})}" class="page-link"
+		                    style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #0d47a1; text-decoration: none; font-size: 13px;">
+		                      다음
+		                  </a>
+		                  <span th:if="${noticePage.last}" class="page-link disabled"
+		                    style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; color: #6c757d; text-decoration: none; font-size: 13px; cursor: not-allowed;">
+		                      다음
+		                  </span>
+		               </li>
+		         </ul>
+		        </nav>
+		    </div>
+		  </section>
 
           <section class="card">
             <div class="card__header">
@@ -1040,7 +1206,7 @@
 			  </div>
 			  
 			  <!-- KPI+파이 완벽 fit -->
-			  <div style="height: 600px; overflow: hidden; background: #fafbfc; border-radius: 8px; padding: 8px;">
+			  <div style="height: 615px; overflow: hidden; background: #fafbfc; border-radius: 8px; padding: 8px;">
 			    <iframe
 			        th:src="@{|http://localhost:8503/5core?dealerId=${dealerId}|}"
 			        style="width: 100%; height: 100%; border: none;"
