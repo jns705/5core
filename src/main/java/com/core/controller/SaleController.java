@@ -2,9 +2,12 @@ package com.core.controller;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.core.entity.Counseling;
 import com.core.entity.Customer;
 import com.core.entity.Dealer;
-import com.core.entity.Member;
 import com.core.entity.Sale;
 import com.core.entity.Vehicle;
 import com.core.service.CounselingService;
@@ -43,10 +45,17 @@ public class SaleController {
 
     // 구매 리스트 페이지
     @GetMapping("/list")
-    public String saleList(Model model, Principal principal) {
-    	Member m = memberService.findByMemberId(principal.getName());
-        List<Sale> saleList = saleService.findByMemberId(m.getMemberId());
-        model.addAttribute("saleList", saleList);
+    public String saleList(Model model, Principal principal,
+    						@PageableDefault(size = 10,
+    										 sort = "id",
+    										 direction = Sort.Direction.DESC)
+    						Pageable pageable) {
+    	String memberId = principal.getName();
+    	
+        Page<Sale> page = saleService.findByMemberId(pageable, memberId);
+        
+        model.addAttribute("saleList", page.getContent());
+        model.addAttribute("salePage", page);
         return "member/saleList";
     }
     

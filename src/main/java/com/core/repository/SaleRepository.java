@@ -23,7 +23,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 		       FROM Sale s
 		       JOIN s.customer c
 		       JOIN c.member m
-		       WHERE m.member_id = :memberId
+		       WHERE m.memberId = :memberId
 		       """)
 	Page<Sale> findByMemberId(Pageable pageable, @Param("memberId") String memberId);
 	
