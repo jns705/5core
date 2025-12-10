@@ -10,6 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StreamlitRunner implements ApplicationRunner {
+	
+	// 가상환경에서 설치해야 함 
+	// pip install google-genai reportlab openpyxl
+	// pip install streamlit google-genai python-dotenv실행
+	// pip install openpyxl 
+
 
 	// 5core를 구동하면서 streamlit을 함께 구동하도록 설정
 	// - 5core와 ai-server 두 폴더가 같은 상위 폴더에 위치해야 함
@@ -79,7 +85,6 @@ public class StreamlitRunner implements ApplicationRunner {
 		);		
 		
 		// modelSaleDashboard: 차량별 판매량 대시보드 (8505)
-		// pip install openpyxl -가상환경에서 설치해야 함 
 		ProcessBuilder modelSaleDashboard = new ProcessBuilder(
 		    pythonPath.toString(), "-m", "streamlit", "run",
 		    "model_sales_dashboard.py",
@@ -115,7 +120,6 @@ public class StreamlitRunner implements ApplicationRunner {
 		);
 		
 		// chatbotAdmin: 관리자용 쳇봇 (8510)
-		// pip install streamlit google-genai python-dotenv실행
 		ProcessBuilder chatbotAdmin = new ProcessBuilder(
 		    pythonPath.toString(), "-m", "streamlit", "run",
 		    "chatbot_admin_streamlit.py",
