@@ -603,9 +603,12 @@ else:
 
 if st.session_state.show_gemini:
 
-    # 공통: 올해 데이터 요약 (Gemini 프롬프트 + 로컬 분석 둘 다 사용)
+    # 공통 요약 데이터
     top_domestic_model = domestic.nlargest(1, "Total")["Model"].iloc[0]
     top_export_model = export.nlargest(1, "Total")["Model"].iloc[0]
+
+    monthly_domestic = domestic[months].sum()
+    monthly_export = export[months].sum()
 
     summary_data = f"""
 현대차 {selected_year}년 글로벌 판매 데이터 요약
@@ -628,7 +631,7 @@ if st.session_state.show_gemini:
 - 성장률: {((monthly_domestic.iloc[-1] - monthly_domestic.iloc[0]) / max(monthly_domestic.iloc[0],1) * 100):+.1f}%
 """
 
-    # 1) Gemini 호출 시도 구간
+    # 1) Gemini 호출 시도
     if st.session_state.gemini_running:
         st.markdown(f"""
         <div class="gemini-card">
@@ -646,8 +649,7 @@ if st.session_state.show_gemini:
             if GEMINI_API_KEY and len(GEMINI_API_KEY) > 30:
                 genai.configure(api_key=GEMINI_API_KEY)
 
-                # 이 프로젝트에서 실제로 열려 있던 모델은 gemini-2.0-flash-exp 뿐이라, 그걸 먼저 시도
-                model = genai.GenerativeModel("gemini-2.5-flash")
+                model = genai.GenerativeModel("gemini-2.0-flash-exp")
 
                 prompt = f"""
 {summary_data}
@@ -660,8 +662,6 @@ if st.session_state.show_gemini:
 3. 주력 모델(상위 3개)의 내년도 예상 역할 및 리스크
 4. 주요 리스크 요인(수요 둔화, 경쟁, 공급망 등)과 대응 전략
 5. 경영진이 참고할 핵심 인사이트 3가지를 불릿 형태로 요약
-
-현실적인 수치와 이유를 포함해서, 전문 애널리스트 리포트 스타일로 작성해 주세요.
 """
 
                 response = model.generate_content(prompt)
@@ -679,18 +679,17 @@ if st.session_state.show_gemini:
                 st.rerun()
 
         except Exception as e:
-            # 429 (quota), 404(모델), 기타 에러 모두 여기로
             st.session_state.gemini_running = False
             st.session_state.gemini_error = str(e)
             st.session_state.gemini_summary = summary_data
             st.rerun()
 
-    # 2) Gemini 결과 또는 에러 표시 구간
+    # 2) Gemini 결과 또는 Fallback
     else:
         err = st.session_state.get("gemini_error")
         ai_text = st.session_state.get("gemini_analysis")
 
-        # (A) Gemini 성공한 경우
+        # (A) Gemini 성공
         if ai_text:
             st.markdown(f"""
             <div class="gemini-card">
@@ -708,7 +707,7 @@ if st.session_state.show_gemini:
             with st.expander("Gemini 2.5 전체 분석 보기", expanded=True):
                 st.markdown(ai_text)
 
-        # (B) Gemini 실패한 경우 → 내부 로직으로 예측 (Fallback)
+        # (B) Gemini 실패 → 내부 예측 + PDF/Excel
         else:
             st.markdown(f"""
             <div class="gemini-card">
@@ -727,7 +726,7 @@ if st.session_state.show_gemini:
                 else:
                     st.text_area("Gemini 에러 상세", err, height=100)
 
-            # 간단한 내부 예측: 올해 대비 8% 성장 가정 + 계절성 유지
+            # 1) 내부 예측
             growth_rate = 0.08
             current_domestic = float(domestic_total)
             current_export = float(export_total)
@@ -738,6 +737,16 @@ if st.session_state.show_gemini:
             forecast_total = forecast_domestic + forecast_export
             total_growth_pct = (forecast_total - current_total) / max(current_total, 1) * 100
 
+            forecast_dict = {
+                'current_domestic': current_domestic,
+                'current_export': current_export,
+                'current_total': current_total,
+                'forecast_domestic': forecast_domestic,
+                'forecast_export': forecast_export,
+                'forecast_total': forecast_total,
+                'total_growth_pct': total_growth_pct
+            }
+
             col_f1, col_f2, col_f3 = st.columns(3)
             with col_f1:
                 st.metric("국내 공장 내년도 예상", f"{forecast_domestic:,}대", f"+{forecast_domestic-current_domestic:,.0f}대")
@@ -746,8 +755,8 @@ if st.session_state.show_gemini:
             with col_f3:
                 st.metric("총 내년도 예상", f"{forecast_total:,}대", f"{total_growth_pct:+.1f}%")
 
+            # 2) 월별 예측 그래프
             st.markdown("#### 월별 수요 예측 (내부 계산)")
-            # 계절성 비율로 월별 분해
             dom_ratio = monthly_domestic.values / max(current_domestic, 1)
             exp_ratio = monthly_export.values / max(current_export, 1)
 
@@ -792,272 +801,254 @@ if st.session_state.show_gemini:
                 legend=dict(x=0.01, y=0.99, bgcolor="rgba(255,255,255,0.9)")
             )
             st.plotly_chart(fig_fc, use_container_width=True)
-        
-                # PDF 다운로드 버튼 추가
-        st.markdown("---")
-        st.markdown("#### 📥 분석 결과 다운로드")
-        
-        col_dl1, col_dl2 = st.columns(2, gap="medium")
-        
-        with col_dl1:
-            # PDF 생성 및 다운로드
-            try:
-                from reportlab.lib.pagesizes import A4
-                from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-                from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
-                from reportlab.lib.units import inch
-                from reportlab.lib import colors
-                from reportlab.pdfgen import canvas
-                from io import BytesIO
-                from datetime import datetime
-                import locale
-                
-                # PDF 생성 함수
-                def create_forecast_pdf(forecast_data, summary_data, ai_analysis=None):
-                    buffer = BytesIO()
-                    doc = SimpleDocTemplate(
-                        buffer,
-                        pagesize=A4,
-                        rightMargin=0.75*inch,
-                        leftMargin=0.75*inch,
-                        topMargin=0.75*inch,
-                        bottomMargin=0.75*inch
-                    )
-                    
-                    styles = getSampleStyleSheet()
-                    title_style = ParagraphStyle(
-                        'CustomTitle',
-                        parent=styles['Heading1'],
-                        fontSize=18,
-                        textColor=colors.HexColor('#111827'),
-                        spaceAfter=12,
-                        fontName='Helvetica-Bold'
-                    )
-                    heading_style = ParagraphStyle(
-                        'CustomHeading',
-                        parent=styles['Heading2'],
-                        fontSize=13,
-                        textColor=colors.HexColor('#1e40af'),
-                        spaceAfter=8,
-                        spaceBefore=8,
-                        fontName='Helvetica-Bold'
-                    )
-                    body_style = ParagraphStyle(
-                        'CustomBody',
-                        parent=styles['BodyText'],
-                        fontSize=10,
-                        spaceAfter=6
-                    )
-                    
-                    elements = []
-                    
-                    # 제목
-                    elements.append(Paragraph(
-                        f"현대차 {selected_year+1}년 수요 예측 분석 보고서",
-                        title_style
-                    ))
-                    elements.append(Paragraph(
-                        f"작성일: {datetime.now().strftime('%Y년 %m월 %d일')}",
-                        body_style
-                    ))
-                    elements.append(Spacer(1, 0.3*inch))
-                    
-                    # 기준 데이터
-                    elements.append(Paragraph("📊 분석 기준 데이터", heading_style))
-                    summary_lines = summary_data.strip().split('\n')
-                    for line in summary_lines:
-                        if line.strip():
-                            elements.append(Paragraph(line, body_style))
-                    elements.append(Spacer(1, 0.2*inch))
-                    
-                    # 예측 결과
-                    elements.append(Paragraph("🎯 내년도 수요 예측 결과", heading_style))
-                    
-                    forecast_table_data = [
-                        ['구분', '올해 실적', '내년도 예상', '증감', '성장률'],
-                        ['국내 공장', f"{int(forecast_data['current_domestic']):,}대", 
-                         f"{forecast_data['forecast_domestic']:,}대",
-                         f"+{forecast_data['forecast_domestic'] - int(forecast_data['current_domestic']):,}대",
-                         f"{(forecast_data['forecast_domestic'] - int(forecast_data['current_domestic'])) / max(int(forecast_data['current_domestic']), 1) * 100:+.1f}%"],
-                        ['해외 공장', f"{int(forecast_data['current_export']):,}대",
-                         f"{forecast_data['forecast_export']:,}대",
-                         f"+{forecast_data['forecast_export'] - int(forecast_data['current_export']):,}대",
-                         f"{(forecast_data['forecast_export'] - int(forecast_data['current_export'])) / max(int(forecast_data['current_export']), 1) * 100:+.1f}%"],
-                        ['합계', f"{int(forecast_data['current_total']):,}대",
-                         f"{forecast_data['forecast_total']:,}대",
-                         f"+{forecast_data['forecast_total'] - int(forecast_data['current_total']):,}대",
-                         f"{forecast_data['total_growth_pct']:+.1f}%"]
-                    ]
-                    
-                    forecast_table = Table(forecast_table_data, colWidths=[1.2*inch, 1.2*inch, 1.2*inch, 1*inch, 0.8*inch])
-                    forecast_table.setStyle(TableStyle([
-                        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1e40af')),
-                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                        ('FONTSIZE', (0, 0), (-1, 0), 10),
-                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                        ('BACKGROUND', (0, -1), (-1, -1), colors.HexColor('#e0f2fe')),
-                        ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
-                        ('GRID', (0, 0), (-1, -1), 1, colors.black)
-                    ]))
-                    elements.append(forecast_table)
-                    elements.append(Spacer(1, 0.3*inch))
-                    
-                    # AI 분석 (있으면)
-                    if ai_analysis:
-                        elements.append(PageBreak())
-                        elements.append(Paragraph("🤖 Gemini 2.5 상세 분석", heading_style))
-                        analysis_lines = ai_analysis.split('\n')
-                        for line in analysis_lines[:50]:  # 처음 50줄
+
+            # 3) PDF / Excel 다운로드 (여기까지 전부 else 블록 안!)
+            st.markdown("---")
+            st.markdown("#### 📥 분석 결과 다운로드")
+
+            col_dl1, col_dl2 = st.columns(2, gap="medium")
+
+            with col_dl1:
+                try:
+                    from reportlab.lib.pagesizes import A4
+                    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+                    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+                    from reportlab.lib.units import inch
+                    from reportlab.lib import colors
+                    from io import BytesIO
+                    from datetime import datetime
+
+                    def create_forecast_pdf(forecast_data, summary_data, ai_analysis=None):
+                        buffer = BytesIO()
+                        doc = SimpleDocTemplate(
+                            buffer,
+                            pagesize=A4,
+                            rightMargin=0.75*inch,
+                            leftMargin=0.75*inch,
+                            topMargin=0.75*inch,
+                            bottomMargin=0.75*inch
+                        )
+
+                        styles = getSampleStyleSheet()
+                        title_style = ParagraphStyle(
+                            'CustomTitle',
+                            parent=styles['Heading1'],
+                            fontSize=18,
+                            textColor=colors.HexColor('#111827'),
+                            spaceAfter=12,
+                            fontName='Helvetica-Bold'
+                        )
+                        heading_style = ParagraphStyle(
+                            'CustomHeading',
+                            parent=styles['Heading2'],
+                            fontSize=13,
+                            textColor=colors.HexColor('#1e40af'),
+                            spaceAfter=8,
+                            spaceBefore=8,
+                            fontName='Helvetica-Bold'
+                        )
+                        body_style = ParagraphStyle(
+                            'CustomBody',
+                            parent=styles['BodyText'],
+                            fontSize=10,
+                            spaceAfter=6
+                        )
+
+                        elements = []
+                        elements.append(Paragraph(
+                            f"현대차 {selected_year+1}년 수요 예측 분석 보고서",
+                            title_style
+                        ))
+                        elements.append(Paragraph(
+                            f"작성일: {datetime.now().strftime('%Y년 %m월 %d일')}",
+                            body_style
+                        ))
+                        elements.append(Spacer(1, 0.3*inch))
+
+                        elements.append(Paragraph("📊 분석 기준 데이터", heading_style))
+                        summary_lines = summary_data.strip().split('\n')
+                        for line in summary_lines:
                             if line.strip():
                                 elements.append(Paragraph(line, body_style))
-                    
-                    # 바닥글
-                    elements.append(Spacer(1, 0.5*inch))
-                    elements.append(Paragraph(
-                        "---<br/>본 보고서는 현재 판매 데이터를 기반으로 작성된 예측 분석입니다.",
-                        body_style
-                    ))
-                    
-                    doc.build(elements)
-                    buffer.seek(0)
-                    return buffer
-                
-                # PDF 생성
-                forecast_dict = {
-                    'current_domestic': current_domestic,
-                    'current_export': current_export,
-                    'current_total': current_total,
-                    'forecast_domestic': forecast_domestic,
-                    'forecast_export': forecast_export,
-                    'forecast_total': forecast_total,
-                    'total_growth_pct': total_growth_pct
-                }
-                
-                pdf_buffer = create_forecast_pdf(
-                    forecast_dict,
-                    st.session_state.gemini_summary,
-                    ai_text if ai_text else None
-                )
-                
-                st.download_button(
-                    label="📄 PDF 다운로드 (분석 보고서)",
-                    data=pdf_buffer,
-                    file_name=f"현대차_{selected_year+1}년_수요예측_{datetime.now().strftime('%Y%m%d')}.pdf",
-                    mime="application/pdf",
-                    use_container_width=True
-                )
-                
-            except ImportError:
-                st.warning("⚠️ PDF 생성을 위해 `reportlab` 패키지가 필요합니다. 아래 명령어로 설치해주세요:")
-                st.code("pip install reportlab")
-        
-        with col_dl2:
-            # Excel 다운로드 (예측 데이터)
-            try:
-                from openpyxl import Workbook
-                from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-                from openpyxl.utils import get_column_letter
-                
-                def create_forecast_excel(forecast_data, monthly_data):
-                    wb = Workbook()
-                    ws = wb.active
-                    ws.title = "수요예측"
-                    
-                    # 헤더
-                    headers = ['구분', '올해 실적', '내년도 예상', '증감', '성장률']
-                    ws.append(headers)
-                    
-                    # 스타일
-                    header_fill = PatternFill(start_color="1e40af", end_color="1e40af", fill_type="solid")
-                    header_font = Font(bold=True, color="FFFFFF")
-                    
-                    for col_num, header in enumerate(headers, 1):
-                        cell = ws.cell(row=1, column=col_num)
-                        cell.fill = header_fill
-                        cell.font = header_font
-                        cell.alignment = Alignment(horizontal='center', vertical='center')
-                    
-                    # 데이터 행
-                    data_rows = [
-                        ['국내 공장', f"{int(forecast_data['current_domestic']):,}", 
-                         f"{forecast_data['forecast_domestic']:,}",
-                         f"+{forecast_data['forecast_domestic'] - int(forecast_data['current_domestic']):,}",
-                         f"{(forecast_data['forecast_domestic'] - int(forecast_data['current_domestic'])) / max(int(forecast_data['current_domestic']), 1) * 100:+.1f}%"],
-                        ['해외 공장', f"{int(forecast_data['current_export']):,}",
-                         f"{forecast_data['forecast_export']:,}",
-                         f"+{forecast_data['forecast_export'] - int(forecast_data['current_export']):,}",
-                         f"{(forecast_data['forecast_export'] - int(forecast_data['current_export'])) / max(int(forecast_data['current_export']), 1) * 100:+.1f}%"],
-                        ['합계', f"{int(forecast_data['current_total']):,}",
-                         f"{forecast_data['forecast_total']:,}",
-                         f"+{forecast_data['forecast_total'] - int(forecast_data['current_total']):,}",
-                         f"{forecast_data['total_growth_pct']:+.1f}%"]
-                    ]
-                    
-                    for row_data in data_rows:
-                        ws.append(row_data)
-                    
-                    # 컬럼 너비
-                    ws.column_dimensions['A'].width = 15
-                    for col in ['B', 'C', 'D', 'E']:
-                        ws.column_dimensions[col].width = 18
-                    
-                    # 월별 예측 시트
-                    ws2 = wb.create_sheet("월별예측")
-                    ws2.append(['월', f'{selected_year}년 국내', f'{selected_year+1}년 국내',
-                                f'{selected_year}년 해외', f'{selected_year+1}년 해외', '합계'])
-                    
-                    for idx, month in enumerate(months_ko):
-                        dom_current = int(monthly_data['dom_current'][idx])
-                        dom_forecast = int(monthly_data['dom_forecast'][idx])
-                        exp_current = int(monthly_data['exp_current'][idx])
-                        exp_forecast = int(monthly_data['exp_forecast'][idx])
-                        
-                        ws2.append([
-                            month, dom_current, dom_forecast,
-                            exp_current, exp_forecast,
-                            dom_forecast + exp_forecast
-                        ])
-                    
-                    # 스타일 적용
-                    for row in ws2.iter_rows(min_row=1, max_row=13, min_col=1, max_col=6):
-                        for cell in row:
-                            cell.alignment = Alignment(horizontal='center')
-                            if cell.row == 1:
-                                cell.fill = header_fill
-                                cell.font = header_font
-                    
-                    ws2.column_dimensions['A'].width = 12
-                    for col in ['B', 'C', 'D', 'E', 'F']:
-                        ws2.column_dimensions[col].width = 16
-                    
-                    return wb
-                
-                monthly_dict = {
-                    'dom_current': monthly_domestic.values,
-                    'dom_forecast': dom_month_forecast,
-                    'exp_current': monthly_export.values,
-                    'exp_forecast': exp_month_forecast
-                }
-                
-                excel_wb = create_forecast_excel(forecast_dict, monthly_dict)
-                
-                excel_buffer = BytesIO()
-                excel_wb.save(excel_buffer)
-                excel_buffer.seek(0)
-                
-                st.download_button(
-                    label="📊 Excel 다운로드 (예측 데이터)",
-                    data=excel_buffer,
-                    file_name=f"현대차_{selected_year+1}년_수요예측_{datetime.now().strftime('%Y%m%d')}.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    use_container_width=True
-                )
-                
-            except ImportError:
-                st.warning("⚠️ Excel 생성을 위해 `openpyxl` 패키지가 필요합니다:")
-                st.code("pip install openpyxl")
+                        elements.append(Spacer(1, 0.2*inch))
+
+                        fd = forecast_data
+                        forecast_table_data = [
+                            ['구분', '올해 실적', '내년도 예상', '증감', '성장률'],
+                            ['국내 공장',
+                             f"{int(fd['current_domestic']):,}대",
+                             f"{fd['forecast_domestic']:,}대",
+                             f"+{fd['forecast_domestic'] - int(fd['current_domestic']):,}대",
+                             f"{(fd['forecast_domestic'] - int(fd['current_domestic'])) / max(int(fd['current_domestic']), 1) * 100:+.1f}%"],
+                            ['해외 공장',
+                             f"{int(fd['current_export']):,}대",
+                             f"{fd['forecast_export']:,}대",
+                             f"+{fd['forecast_export'] - int(fd['current_export']):,}대",
+                             f"{(fd['forecast_export'] - int(fd['current_export'])) / max(int(fd['current_export']), 1) * 100:+.1f}%"],
+                            ['합계',
+                             f"{int(fd['current_total']):,}대",
+                             f"{fd['forecast_total']:,}대",
+                             f"+{fd['forecast_total'] - int(fd['current_total']):,}대",
+                             f"{fd['total_growth_pct']:+.1f}%"]
+                        ]
+
+                        forecast_table = Table(
+                            forecast_table_data,
+                            colWidths=[1.2*inch, 1.2*inch, 1.2*inch, 1*inch, 0.8*inch]
+                        )
+                        forecast_table.setStyle(TableStyle([
+                            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1e40af')),
+                            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                            ('FONTSIZE', (0, 0), (-1, 0), 10),
+                            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                            ('BACKGROUND', (0, -1), (-1, -1), colors.HexColor('#e0f2fe')),
+                            ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
+                            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+                        ]))
+                        elements.append(forecast_table)
+                        elements.append(Spacer(1, 0.3*inch))
+
+                        if ai_analysis:
+                            elements.append(PageBreak())
+                            elements.append(Paragraph("🤖 Gemini 2.5 상세 분석", heading_style))
+                            analysis_lines = ai_analysis.split('\n')
+                            for line in analysis_lines[:50]:
+                                if line.strip():
+                                    elements.append(Paragraph(line, body_style))
+
+                        elements.append(Spacer(1, 0.5*inch))
+                        elements.append(Paragraph(
+                            "---<br/>본 보고서는 현재 판매 데이터를 기반으로 작성된 예측 분석입니다.",
+                            body_style
+                        ))
+
+                        doc.build(elements)
+                        buffer.seek(0)
+                        return buffer
+
+                    pdf_buffer = create_forecast_pdf(
+                        forecast_dict,
+                        st.session_state.get("gemini_summary", summary_data),
+                        ai_text if ai_text else None
+                    )
+
+                    st.download_button(
+                        label="📄 PDF 다운로드 (분석 보고서)",
+                        data=pdf_buffer,
+                        file_name=f"현대차_{selected_year+1}년_수요예측_{datetime.now().strftime('%Y%m%d')}.pdf",
+                        mime="application/pdf",
+                        use_container_width=True
+                    )
+
+                except ImportError:
+                    st.warning("⚠️ PDF 생성을 위해 `reportlab` 패키지가 필요합니다. 아래 명령어로 설치해주세요:")
+                    st.code("pip install reportlab")
+
+            with col_dl2:
+                try:
+                    from openpyxl import Workbook
+                    from openpyxl.styles import Font, PatternFill, Alignment
+                    from io import BytesIO
+                    from datetime import datetime as _dt3
+
+                    def create_forecast_excel(forecast_data, monthly_data):
+                        wb = Workbook()
+                        ws = wb.active
+                        ws.title = "수요예측"
+
+                        headers = ['구분', '올해 실적', '내년도 예상', '증감', '성장률']
+                        ws.append(headers)
+
+                        header_fill = PatternFill(start_color="1e40af", end_color="1e40af", fill_type="solid")
+                        header_font = Font(bold=True, color="FFFFFF")
+
+                        for col_num, header in enumerate(headers, 1):
+                            cell = ws.cell(row=1, column=col_num)
+                            cell.fill = header_fill
+                            cell.font = header_font
+                            cell.alignment = Alignment(horizontal='center', vertical='center')
+
+                        fd = forecast_data
+                        data_rows = [
+                            ['국내 공장',
+                             f"{int(fd['current_domestic']):,}",
+                             f"{fd['forecast_domestic']:,}",
+                             f"+{fd['forecast_domestic'] - int(fd['current_domestic']):,}",
+                             f"{(fd['forecast_domestic'] - int(fd['current_domestic'])) / max(int(fd['current_domestic']), 1) * 100:+.1f}%"],
+                            ['해외 공장',
+                             f"{int(fd['current_export']):,}",
+                             f"{fd['forecast_export']:,}",
+                             f"+{fd['forecast_export'] - int(fd['current_export']):,}",
+                             f"{(fd['forecast_export'] - int(fd['current_export'])) / max(int(fd['current_export']), 1) * 100:+.1f}%"],
+                            ['합계',
+                             f"{int(fd['current_total']):,}",
+                             f"{fd['forecast_total']:,}",
+                             f"+{fd['forecast_total'] - int(fd['current_total']):,}",
+                             f"{fd['total_growth_pct']:+.1f}%"]
+                        ]
+
+                        for row_data in data_rows:
+                            ws.append(row_data)
+
+                        ws.column_dimensions['A'].width = 15
+                        for col in ['B', 'C', 'D', 'E']:
+                            ws.column_dimensions[col].width = 18
+
+                        ws2 = wb.create_sheet("월별예측")
+                        ws2.append(['월', f'{selected_year}년 국내', f'{selected_year+1}년 국내',
+                                    f'{selected_year}년 해외', f'{selected_year+1}년 해외', '합계'])
+
+                        for idx, month in enumerate(months_ko):
+                            dom_current = int(monthly_data['dom_current'][idx])
+                            dom_forecast = int(monthly_data['dom_forecast'][idx])
+                            exp_current = int(monthly_data['exp_current'][idx])
+                            exp_forecast = int(monthly_data['exp_forecast'][idx])
+
+                            ws2.append([
+                                month, dom_current, dom_forecast,
+                                exp_current, exp_forecast,
+                                dom_forecast + exp_forecast
+                            ])
+
+                        for row in ws2.iter_rows(min_row=1, max_row=13, min_col=1, max_col=6):
+                            for cell in row:
+                                cell.alignment = Alignment(horizontal='center')
+                                if cell.row == 1:
+                                    cell.fill = header_fill
+                                    cell.font = header_font
+
+                        ws2.column_dimensions['A'].width = 12
+                        for col in ['B', 'C', 'D', 'E', 'F']:
+                            ws2.column_dimensions[col].width = 16
+
+                        return wb
+
+                    monthly_dict = {
+                        'dom_current': monthly_domestic.values,
+                        'dom_forecast': dom_month_forecast,
+                        'exp_current': monthly_export.values,
+                        'exp_forecast': exp_month_forecast
+                    }
+
+                    excel_wb = create_forecast_excel(forecast_dict, monthly_dict)
+
+                    excel_buffer = BytesIO()
+                    excel_wb.save(excel_buffer)
+                    excel_buffer.seek(0)
+
+                    st.download_button(
+                        label="📊 Excel 다운로드 (예측 데이터)",
+                        data=excel_buffer,
+                        file_name=f"현대차_{selected_year+1}년_수요예측_{_dt3.now().strftime('%Y%m%d')}.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        use_container_width=True
+                    )
+
+                except ImportError:
+                    st.warning("⚠️ Excel 생성을 위해 `openpyxl` 패키지가 필요합니다:")
+                    st.code("pip install openpyxl")
 
         # 공통: 닫기 버튼
         if st.button("❌ 예측 분석 닫기", type="secondary", use_container_width=True):
