@@ -14,11 +14,6 @@ load_dotenv()  # .env 파일 로드
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 FIVECORE_BASE_URL = os.environ.get("FIVECORE_BASE_URL", "http://localhost:8090/5core")
 
-# 디버그 출력 (한 번만)
-if st.button("🔍 환경변수 테스트", key="debug"):
-    st.write(f"GEMINI_API_KEY 길이: {len(GEMINI_API_KEY) if GEMINI_API_KEY else 0}")
-    st.write(f"FIVECORE_BASE_URL: {FIVECORE_BASE_URL}")
-
 # ==================== 페이지 설정 ====================
 st.set_page_config(
     page_title="글로벌 판매 분석",
@@ -649,7 +644,7 @@ if st.session_state.show_gemini:
             if GEMINI_API_KEY and len(GEMINI_API_KEY) > 30:
                 genai.configure(api_key=GEMINI_API_KEY)
 
-                model = genai.GenerativeModel("gemini-2.0-flash-exp")
+                model = genai.GenerativeModel("gemini-2.5-flash")
 
                 prompt = f"""
 {summary_data}
