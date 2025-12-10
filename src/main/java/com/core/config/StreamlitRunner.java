@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class StreamlitRunner implements ApplicationRunner {
 	
-	// 가상환경에서 설치해야 함 
+	// 가상환경에서 설치해야 함
 	// pip install google-genai reportlab openpyxl
-	// pip install streamlit google-genai python-dotenv실행
+	// pip install streamlit google-genai python-dotenv
 	// pip install openpyxl 
 
 
