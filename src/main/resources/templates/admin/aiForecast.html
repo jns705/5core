@@ -747,28 +747,25 @@
 		     <span class="menu-item__bullet"></span>
 		     <span>멤버 관리</span>
 		   </a>
-		 </li>
 		 <li>
-		   <a th:href="@{/admin/globalSales}" class="menu-item  menu-item--active">
+		   <a th:href="@{/admin/globalSales}" class="menu-item">
 		     <span class="menu-item__bullet"></span>
 		     <span>글로벌 판매 실적</span>
 		   </a>
 		 </li>
 		 <li>
-		   <a th:href="@{/admin/aiForecast}" class="menu-item">
+		   <a th:href="@{/admin/aiForecast}" class="menu-item menu-item--active">
 		     <span class="menu-item__bullet"></span>
 		     <span>AI수요예측</span>
 		   </a>
-		 </li>		 
+		 </li>			 
 		 <li>
 		   <a th:href="@{/admin/modelSales}" class="menu-item">
 		     <span class="menu-item__bullet"></span>
 		     <span>차량별 판매 실적</span>
 		   </a>
-		 </li>		 
+		 </li>
 	  </ul>
-	  
-	  
 	  <div class="sidebar__bottom">
 	       HYUNDAI CRM · Admin Console
 	 </div>
@@ -786,19 +783,20 @@
         <span class="logout"><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="nav-link">로그아웃</a></span>
       </div>
     </div>
-
     <div class="content">
       <div class="content__row">
 		<div class="frame-wrapper">
 		  <iframe
-		    src="http://localhost:8507/5core"
-		    title="현대차 글로벌 판매 대시보드"
+		    src="http://localhost:8512/5core"
+		    title="수요예측"
 		    loading="lazy"
 		    allowfullscreen>
 		  </iframe>
-	  	</div>
+		</div>		
     </div>
   </div>
+  
+  
 
 </body>
 </html>

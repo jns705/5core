@@ -122,7 +122,25 @@ public class StreamlitRunner implements ApplicationRunner {
 		    "--server.baseUrlPath=5core",
 		    "--server.port=8510",
 		    "--server.headless=true"
-		);		
+		);	
+		
+		// copyGlobal: 수요예측 (8511)
+		ProcessBuilder copyGlobal = new ProcessBuilder(
+			    pythonPath.toString(), "-m", "streamlit", "run",
+			    "copyGlobal.py",
+			    "--server.baseUrlPath=5core",
+			    "--server.port=8511",
+			    "--server.headless=true"
+			);	
+		
+		// aiForecast: 수요예측 (8512)
+		ProcessBuilder aiForecast = new ProcessBuilder(
+			    pythonPath.toString(), "-m", "streamlit", "run",
+			    "aiForecast.py",
+			    "--server.baseUrlPath=5core",
+			    "--server.port=8512",
+			    "--server.headless=true"
+			);			
 		
 		// 실행 디렉토리
 		builder.directory(aiServerDir.toFile());
@@ -134,6 +152,8 @@ public class StreamlitRunner implements ApplicationRunner {
 		globalSales.directory(aiServerDir.toFile()); 
 		modelSales.directory(aiServerDir.toFile()); 
 		chatbotAdmin.directory(aiServerDir.toFile()); 
+		copyGlobal.directory(aiServerDir.toFile()); 
+		aiForecast.directory(aiServerDir.toFile());
 		
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸
@@ -146,6 +166,8 @@ public class StreamlitRunner implements ApplicationRunner {
 		globalSales.start();
 		modelSales.start();
 		chatbotAdmin.start();
+		copyGlobal.start();
+		aiForecast.start();
 		System.out.println("Streamlit이 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");

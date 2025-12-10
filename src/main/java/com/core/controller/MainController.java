@@ -361,6 +361,12 @@ public class MainController {
 		return "admin/globalSales";
 	}
 	
+	// 관리자 AI수요예측	
+	@GetMapping("/admin/aiForecast")
+	public String requestAiForecast() {
+		return "admin/aiForecast";
+	}
+	
 	// 관리자 차량별 판매 실적	
 	@GetMapping("/admin/modelSales")
 	public String requestModelSales() {
