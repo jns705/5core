@@ -30,10 +30,21 @@ public class StreamlitRunner implements ApplicationRunner {
 		Path aiServerDir = projectDir.getParent().resolve("ai-server");
 		
 		// venv 폴더의 python.exe 경로 (윈도우 기준)
-		Path pythonPath = aiServerDir
-				.resolve(".venv")
-				.resolve("Scripts")
-				.resolve("python.exe");
+//		Path pythonPath = aiServerDir
+//				.resolve(".venv")
+//				.resolve("Scripts")
+//				.resolve("python.exe");
+		String os = System.getProperty("os.name").toLowerCase();
+		Path venvDir = aiServerDir.resolve(".venv");
+		Path pythonPath;
+
+		if (os.contains("win")) {
+		    pythonPath = venvDir.resolve("Scripts").resolve("python.exe");
+		} else {
+		    // Linux / macOS
+		    pythonPath = venvDir.resolve("bin").resolve("python");
+		}
+		
 		
 		if(!Files.exists(pythonPath)) {
 			System.err.println("python.exe가 존재하지 않음");
