@@ -27,42 +27,14 @@ public class StreamlitRunner implements ApplicationRunner {
 		
 		// ai-server 폴더 위치
 		// - 상위 폴더가 같으므로 getParent()를 통해서 찾을 수 있음
-		Path fiveCoreRoot = Paths.get("/home/ubuntu/5core").toAbsolutePath();
-		Path aiServerDir = fiveCoreRoot.getParent().resolve("ai-server");
+		Path aiServerDir = projectDir.getParent().resolve("ai-server");
 		
 		// venv 폴더의 python.exe 경로 (윈도우 기준)
-//		Path pythonPath = aiServerDir
-//				.resolve(".venv")
-//				.resolve("Scripts")
-//				.resolve("python.exe");
-		// venv 폴더의 python 경로 (윈도우 / 리눅스 분기)
-		String os = System.getProperty("os.name").toLowerCase();
-		Path venvDir = aiServerDir.resolve(".venv");
-		Path pythonPath;
-
-		if (os.contains("win")) {
-		    // Windows: .venv\Scripts\python.exe
-		    pythonPath = venvDir.resolve("Scripts").resolve("python.exe");
-		} else {
-		    // Linux / macOS: .venv/bin/python
-		    pythonPath = venvDir.resolve("bin").resolve("python");
-		}
-
-		// 디버그 로그 (한 번만 확인용)
-		System.out.println("[StreamlitRunner] OS = " + os);
-		System.out.println("[StreamlitRunner] aiServerDir = " + aiServerDir.toAbsolutePath());
-		System.out.println("[StreamlitRunner] pythonPath = " + pythonPath.toAbsolutePath());
-
-		if (!Files.exists(pythonPath)) {
-		    System.err.println("python 실행 파일이 존재하지 않음: " + pythonPath.toAbsolutePath());
-		    return;
-		}
+		Path pythonPath = aiServerDir
+				.resolve(".venv")
+				.resolve("Scripts")
+				.resolve("python.exe");
 		
-		
-		
-		
-		
-		////////////////////////////////////////////////////////////////
 		if(!Files.exists(pythonPath)) {
 			System.err.println("python.exe가 존재하지 않음");
 			return;
