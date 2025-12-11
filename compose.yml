@@ -1,0 +1,22 @@
+services:
+  instagram-server:
+    image: 360760094043.dkr.ecr.ap-northeast-2.amazonaws.com/5core:latest
+
+    ports:
+      - "80:8090"
+    depends_on:
+      my-db:
+        condition: service_healthy
+  my-db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: 5core
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports:
+      - 3307:3306
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping" ]
+      interval: 5s
+      retries: 10
