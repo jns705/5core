@@ -34,19 +34,23 @@ public class StreamlitRunner implements ApplicationRunner {
 //				.resolve(".venv")
 //				.resolve("Scripts")
 //				.resolve("python.exe");
+		// venv 폴더의 python 경로 (윈도우 / 리눅스 분기)
 		String os = System.getProperty("os.name").toLowerCase();
-		System.out.println("OS name = " + os);
 		Path venvDir = aiServerDir.resolve(".venv");
 		Path pythonPath;
 
 		if (os.contains("win")) {
+		    // Windows: .venv\Scripts\python.exe
 		    pythonPath = venvDir.resolve("Scripts").resolve("python.exe");
 		} else {
+		    // Linux / macOS: .venv/bin/python
 		    pythonPath = venvDir.resolve("bin").resolve("python");
 		}
 
-		System.out.println("aiServerDir = " + aiServerDir.toAbsolutePath());
-		System.out.println("pythonPath = " + pythonPath.toAbsolutePath());
+		// 디버그 로그 (한 번만 확인용)
+		System.out.println("[StreamlitRunner] OS = " + os);
+		System.out.println("[StreamlitRunner] aiServerDir = " + aiServerDir.toAbsolutePath());
+		System.out.println("[StreamlitRunner] pythonPath = " + pythonPath.toAbsolutePath());
 
 		if (!Files.exists(pythonPath)) {
 		    System.err.println("python 실행 파일이 존재하지 않음: " + pythonPath.toAbsolutePath());
@@ -54,6 +58,10 @@ public class StreamlitRunner implements ApplicationRunner {
 		}
 		
 		
+		
+		
+		
+		////////////////////////////////////////////////////////////////
 		if(!Files.exists(pythonPath)) {
 			System.err.println("python.exe가 존재하지 않음");
 			return;
