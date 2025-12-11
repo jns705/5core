@@ -678,7 +678,56 @@
 	  border: none;
 	  background: #111827;
 	}
+	
+	/* AI 수요예측 탭 버튼 */
+	.ai-toggle {
+	  display: flex;
+	  gap: 8px;
+	  margin-bottom: 16px;
+	}
 
+	.ai-toggle__btn {
+	  padding: 6px 12px;       
+	  border-radius: 999px;   
+	  border: 1px solid var(--border-subtle);
+	  background: #f9fafb;
+	  color: #374151;
+	  font-size: 13px;       
+	  font-weight: 500;
+	  cursor: pointer;
+	  display: inline-flex;    
+	  align-items: center;
+	  gap: 6px;
+	  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+	}
+
+	.ai-toggle__btn::before {
+	  content: "";
+	  width: 8px;
+	  height: 8px;
+	  border-radius: 999px;
+	  background: #d1d5db;
+	  flex-shrink: 0;
+	}
+
+	.ai-toggle__btn:hover {
+	  background: #eef2ff;
+	  border-color: var(--primary);
+	  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
+	}
+
+	.ai-toggle__btn--active {
+	  background: var(--primary-soft);
+	  border-color: var(--primary);
+	  color: #0f172a;
+	}
+
+	.ai-toggle__btn--active::before {
+	  background: var(--primary);
+	}
+	
+	.ai2 {display:none;}
+	
     @media (max-width: 960px) {
       body {
         flex-direction: column;
@@ -783,29 +832,67 @@
         <span class="logout"><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="nav-link">로그아웃</a></span>
       </div>
     </div>
-    <div class="content">
-      <div class="content__row">
-		<div class="frame-wrapper">
-		  <iframe
-		    src="http://localhost:8512/5core"
-		    title="국내수요예측"
-		    loading="lazy"
-		    allowfullscreen>
-		  </iframe>
-		</div>		
-      </div>
-	  <div class="content__row">
-	  <div class="frame-wrapper">
-	    <iframe
-	      src="http://localhost:8513/5core"
-	      title="북미수요예측"
-	      loading="lazy"
-	      allowfullscreen>
-	    </iframe>
-	  </div>		
+	
+	<div class="content">
+
+	  <!-- 목록형 탭 버튼 영역 -->
+	  <div class="ai-toggle">
+	    <button type="button" id="btn-domestic" class="ai-toggle__btn ai-toggle__btn--active">국내 수요 예측</button>
+	    <button type="button" id="btn-na" class="ai-toggle__btn">북미 수요 예측</button>
 	  </div>
-  </div>
-  
+
+	  <div class="content__row ai1">
+	    <div class="frame-wrapper">
+	      <iframe
+	        src="http://localhost:8512/5core"
+	        title="국내수요예측"
+	        loading="lazy"
+	        allowfullscreen>
+	      </iframe>
+	    </div>
+	  </div>
+	  
+	  <div class="content__row ai2">
+	    <div class="frame-wrapper">
+	      <iframe
+	        src="http://localhost:8513/5core"
+	        title="북미수요예측"
+	        loading="lazy"
+	        allowfullscreen>
+	      </iframe>
+	    </div>
+	  </div>
+	</div>
+
+	<script>
+	  document.addEventListener("DOMContentLoaded", function () {
+	    var btnDomestic = document.getElementById("btn-domestic");
+	    var btnNa = document.getElementById("btn-na");
+	    var sectionDomestic = document.querySelector(".ai1");
+	    var sectionNa = document.querySelector(".ai2");
+
+	    function showDomestic() {
+	      btnDomestic.classList.add("ai-toggle__btn--active");
+	      btnNa.classList.remove("ai-toggle__btn--active");
+	      sectionDomestic.style.display = "block";
+	      sectionNa.style.display = "none";
+	    }
+
+	    function showNa() {
+	      btnNa.classList.add("ai-toggle__btn--active");
+	      btnDomestic.classList.remove("ai-toggle__btn--active");
+	      sectionDomestic.style.display = "none";
+	      sectionNa.style.display = "block";
+	    }
+
+	    // 초기 상태: 국내만 보이게
+	    showDomestic();
+
+	    btnDomestic.addEventListener("click", showDomestic);
+	    btnNa.addEventListener("click", showNa);
+	  });
+	</script>
+
   
 
 </body>
