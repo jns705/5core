@@ -27,7 +27,8 @@ public class StreamlitRunner implements ApplicationRunner {
 		
 		// ai-server 폴더 위치
 		// - 상위 폴더가 같으므로 getParent()를 통해서 찾을 수 있음
-		Path aiServerDir = projectDir.getParent().resolve("ai-server");
+		Path fiveCoreRoot = Paths.get("/home/ubuntu/5core").toAbsolutePath();
+		Path aiServerDir = fiveCoreRoot.getParent().resolve("ai-server");
 		
 		// venv 폴더의 python.exe 경로 (윈도우 기준)
 //		Path pythonPath = aiServerDir
