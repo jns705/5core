@@ -35,14 +35,22 @@ public class StreamlitRunner implements ApplicationRunner {
 //				.resolve("Scripts")
 //				.resolve("python.exe");
 		String os = System.getProperty("os.name").toLowerCase();
+		System.out.println("OS name = " + os);
 		Path venvDir = aiServerDir.resolve(".venv");
 		Path pythonPath;
 
 		if (os.contains("win")) {
 		    pythonPath = venvDir.resolve("Scripts").resolve("python.exe");
 		} else {
-		    // Linux / macOS
 		    pythonPath = venvDir.resolve("bin").resolve("python");
+		}
+
+		System.out.println("aiServerDir = " + aiServerDir.toAbsolutePath());
+		System.out.println("pythonPath = " + pythonPath.toAbsolutePath());
+
+		if (!Files.exists(pythonPath)) {
+		    System.err.println("python 실행 파일이 존재하지 않음: " + pythonPath.toAbsolutePath());
+		    return;
 		}
 		
 		
