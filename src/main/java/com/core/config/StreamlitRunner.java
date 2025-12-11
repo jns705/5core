@@ -137,12 +137,23 @@ public class StreamlitRunner implements ApplicationRunner {
 			    "--server.headless=true"
 			);	
 		
-		// aiForecast: 수요예측 (8512)
-		ProcessBuilder aiForecast = new ProcessBuilder(
+		// AI수요예측
+		// aiDomForecast: 국내수요예측 (8512)
+		ProcessBuilder aiDomForecast = new ProcessBuilder(
 			    pythonPath.toString(), "-m", "streamlit", "run",
-			    "aiForecast.py",
+			    "aiDomForecast.py",
 			    "--server.baseUrlPath=5core",
 			    "--server.port=8512",
+			    "--server.headless=true"
+			);
+		
+		// AI수요예측
+		// aiNaForecast: 북미수요예측 (8513)
+		ProcessBuilder aiNaForecast = new ProcessBuilder(
+			    pythonPath.toString(), "-m", "streamlit", "run",
+			    "aiNaForecast.py",
+			    "--server.baseUrlPath=5core",
+			    "--server.port=8513",
 			    "--server.headless=true"
 			);			
 		
@@ -157,7 +168,8 @@ public class StreamlitRunner implements ApplicationRunner {
 		modelSales.directory(aiServerDir.toFile()); 
 		chatbotAdmin.directory(aiServerDir.toFile()); 
 		copyGlobal.directory(aiServerDir.toFile()); 
-		aiForecast.directory(aiServerDir.toFile());
+		aiDomForecast.directory(aiServerDir.toFile());
+		aiNaForecast.directory(aiServerDir.toFile());
 		
 		// 프로세스 실행
 		// - 실행되었다면 console에 streamlit이 실행되었다고 뜸
@@ -171,12 +183,15 @@ public class StreamlitRunner implements ApplicationRunner {
 		modelSales.start();
 		chatbotAdmin.start();
 		copyGlobal.start();
-		aiForecast.start();
+		aiDomForecast.start();
+		aiNaForecast.start();
 		System.out.println("Streamlit이 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");
 		System.out.println("판매 실적 그래프(딜러) 실행됨");
 		System.out.println("차량별 판매량 대시보드 실행됨");
 		System.out.println("딜러 월별 판매 그래프 실행됨");
+		System.out.println("고객용 쳇봇 실행됨");
+		System.out.println("AI수요예측 실행됨");
 		
 	}
 	
