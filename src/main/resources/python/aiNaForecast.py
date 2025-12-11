@@ -125,7 +125,7 @@ def perform_forecasting(df: pd.DataFrame) -> pd.DataFrame:
     총 월별 판매량을 기반으로 2026년 수요를 예측합니다.
     (선형 회귀 모델 사용)
     """
-    st.subheader("⚙️ 2026년 수요 예측 실행 중...")
+    st.subheader("2026년 수요 예측 실행 중...")
     
     # 1. 월별 총 판매량 집계
     df_monthly = df.groupby('Date')['Sales_Volume'].sum().reset_index()
@@ -185,7 +185,7 @@ def perform_forecasting(df: pd.DataFrame) -> pd.DataFrame:
     df_final = pd.concat([df_historical, df_forecast], ignore_index=True)
     df_final['Sales_Volume'] = df_final['Sales_Volume'].clip(lower=0) # 판매량이 음수가 되지 않도록 조정
     
-    st.success("✅ 2026년 수요 예측 완료.")
+    st.success("2026년 수요 예측 완료.")
     return df_final.sort_values('Date').reset_index(drop=True)
 
 # --- Gemini API 분석 함수 ---
@@ -194,7 +194,7 @@ def generate_gemini_analysis(df_forecast: pd.DataFrame) -> str:
     """
     Gemini API를 호출하여 예측 결과에 대한 전문적인 분석을 요청합니다.
     """
-    st.subheader("🧠 Gemini AI 분석 요청 중...")
+    st.subheader("Gemini AI 분석 요청 중...")
     
     # 주요 예측 데이터 준비 (최근 과거 데이터 포함)
     analysis_data = df_forecast.copy()
@@ -245,7 +245,7 @@ def generate_gemini_analysis(df_forecast: pd.DataFrame) -> str:
             text = candidate.get('content', {}).get('parts', [{}])[0].get('text', '')
             
             if text:
-                st.success("✅ Gemini AI 분석 완료.")
+                st.success("Gemini AI 분석 완료.")
                 return text
             else:
                 st.error("Gemini 분석 결과가 비어 있습니다.")
@@ -286,7 +286,8 @@ def main():
     st.set_page_config(layout="wide", page_title=ST_PAGE_TITLE)
     
     # Streamlit 스타일 및 헤더
-    st.markdown(f"""
+    st.markdown(
+        f"""
         <style>
         .download-button {{
             display: inline-flex;
@@ -294,20 +295,38 @@ def main():
             justify-content: center;
             padding: 0.75rem 1.25rem;
             border-radius: 0.5rem;
-            color: #ffffff;
-            background-color: #1e40af; /* Blue */
+            color: #ffffff !important;
+            background-color: #1e40af;
             text-decoration: none;
             font-weight: 600;
             border: none;
             transition: background-color 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }}
-        .download-button:hover {{ background-color: #1d4ed8; }}
-        .header-text {{ font-size: 28px; font-weight: bold; color: #1f2937; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }}
-        .analysis-box {{ border: 1px solid #3b82f6; border-radius: 0.5rem; padding: 15px; background-color: #eff6ff; }}
+        .download-button:hover {{
+            background-color: #1d4ed8;
+            color: #ffffff !important;
+        }}
+        .header-text {{
+            font-size: 28px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }}
+        .analysis-box {{
+            border: 1px solid #3b82f6;
+            border-radius: 0.5rem;
+            padding: 15px;
+            background-color: #eff6ff;
+        }}
         </style>
-        <div class="header-text">📈 {ST_PAGE_TITLE}</div>
-        """, unsafe_allow_html=True)
+        <div class="header-text">{ST_PAGE_TITLE}</div>
+        """,
+        unsafe_allow_html=True,
+    )
+    
     
     # 1. 데이터 로드 및 통합
     df_combined = combine_all_data()
@@ -325,7 +344,7 @@ def main():
         download_link = create_download_link(
             df_combined, 
             excel_filename, 
-            f"⬇️ 통합된 월별 Long 포맷 데이터 ({excel_filename}) 다운로드"
+            f"통합된 월별 Long 포맷 데이터 ({excel_filename}) 다운로드"
         )
         st.markdown(download_link, unsafe_allow_html=True)
         st.info(f"총 {len(df_combined):,}개의 월별 모델 판매 기록이 통합되었습니다.")
@@ -339,7 +358,7 @@ def main():
     try:
         import plotly.express as px
         
-        st.subheader("📊 북미 자동차 총 수요 예측 트렌드 (2023-2026)")
+        st.subheader("북미 자동차 총 수요 예측 트렌드 (2023-2026)")
         
         # Plotly 차트 생성
         fig = px.line(
@@ -371,7 +390,7 @@ def main():
     st.markdown("---")
     gemini_analysis_text = generate_gemini_analysis(df_forecast_result)
     
-    st.subheader("✨ Gemini AI 2026년 수요 분석 보고서")
+    st.subheader("Gemini AI 2026년 수요 분석 보고서")
     st.markdown(f'<div class="analysis-box">{gemini_analysis_text}</div>', unsafe_allow_html=True)
     
 if __name__ == "__main__":
