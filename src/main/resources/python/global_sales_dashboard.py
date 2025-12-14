@@ -736,7 +736,8 @@ if st.session_state.show_gemini:
             """, unsafe_allow_html=True)
 
             st.markdown("#### 분석 기준 데이터 (요약)")
-            st.markdown(f"> {st.session_state.gemini_summary.replace('\\n', '\\n> ')}")
+            summary_text = st.session_state.gemini_summary.replace("\n", "\n> ")
+            st.markdown(f"> {summary_text}")
 
             st.markdown("#### Gemini 2.5의 내년도 수요 예측")
             with st.expander("Gemini 2.5 전체 분석 보기", expanded=True):
