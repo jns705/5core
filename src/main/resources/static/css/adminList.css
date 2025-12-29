@@ -1,0 +1,165 @@
+body { background-color: #f3f5f9; }
+.container { max-width: 1600px; }
+.content { padding: 30px;}
+.search-btns { margin-right: 40px;}
+#searchBtn { width: 80px; height: 30px; font-weight: bold;}
+.table thead th { background-color: #e9ecef; font-size: 0.95rem; text-align: center; }
+.table tbody td { font-size: 0.88rem; vertical-align: middle; }
+.member-role { width: 200px; padding-left: 10px; margin-left: 20px; cursor: pointer;}
+.btn-update { width: 60px; height: 30px; font-weight: bold; background-color: seagreen; color: #fff; border: 1px solid #777;}
+.btn-update:hover { color: seagreen; background-color: #fff; border: 1px solid #777;}
+.form-select-sm, .form-control-sm { height: calc(1.8rem + 2px); }
+/* 페이지 버튼 */
+.page-link { font-weight: bold; background-color: #f0f0f0; border-color: #777; color: #333;}
+/* 활성화된 페이지 링크의 배경색 변경 */
+.pagination .page-item.active .page-link { background-color: navy; border-color: navy; color: white;}
+/* 마우스 오버 시 배경색 변경 */
+.pagination .page-item .page-link:hover { background-color: lightsteelblue; border-color: #111;}
+
+/* ===== HYUNDAI CRM 스타일 사이드바 추가 ===== */
+:root {
+    --primary: #0d47a1;
+    --primary-soft: #e3eefc;
+    --bg-elevated: #ffffff;
+    --border-subtle: #e2e8f0;
+    --text-muted: #6b7280;
+}
+
+/* 레이아웃 */
+    .sidebar {
+      width: 248px;
+      background: linear-gradient(180deg, #0d47a1 0%, #093272 100%);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+    }
+
+    .sidebar__logo {
+      padding: 0 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 16px;
+    }
+
+    .sidebar__logo-title {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .sidebar__section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      opacity: 0.75;
+      padding: 0 24px;
+      margin-bottom: 6px;
+    }
+
+    .menu-list {
+      list-style: none;
+      padding: 0 8px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      margin: 2px 8px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.18s ease, transform 0.12s ease;
+      color: #eef3ff;
+      opacity: 0.9;
+	  text-decoration: none;
+    }
+
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+      opacity: 1;
+    }
+
+    .menu-item--active {
+      background: #ffffff;
+      color: #0d47a1;
+      opacity: 1;
+      font-weight: 600;
+    }
+
+    .menu-item__bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .menu-item--active .menu-item__bullet {
+      background: #0d47a1;
+    }
+
+    .sidebar__bottom {
+      margin-top: auto;
+      padding: 12px 24px 8px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.header {
+  height: 64px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0d47a1;
+}
+
+.header__chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #e3eefc;
+  font-size: 11px;
+  color: #1f3e7a;
+}
+
+.user-info {
+  font-size: 14px;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-info__role {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.user-info span.logout {
+  color: #0d47a1;
+  cursor: pointer;
+  font-weight: 600;
+}

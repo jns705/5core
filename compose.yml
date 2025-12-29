@@ -1,22 +1,12 @@
-services:
-  instagram-server:
-    image: 360760094043.dkr.ecr.ap-northeast-2.amazonaws.com/5core:latest
+version: '3.8'
 
+services:
+  5core-server:
+    image: 360760094043.dkr.ecr.ap-northeast-2.amazonaws.com/5core:latest
     ports:
-      - "80:8090"
-    depends_on:
-      my-db:
-        condition: service_healthy
-  my-db:
-    image: mysql
+      - "80:8090"   # 호스트 80 포트 → 컨테이너 8090
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: 5core
-    volumes:
-      - ./mysql_data:/var/lib/mysql
-    ports:
-      - 3307:3306
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping" ]
-      interval: 5s
-      retries: 10
+      # 필요하면 AWS RDS 연결 정보 환경 변수로 설정 가능
+      SPRING_DATASOURCE_URL: jdbc:mysql://<AWS-RDS-ENDPOINT>:3306/5core
+      SPRING_DATASOURCE_USERNAME: dbmasteruser
+      SPRING_DATASOURCE_PASSWORD: Acw8&vV#7)q8W1dr.|;dlUMh=Dy*2rA`
