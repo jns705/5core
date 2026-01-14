@@ -46,6 +46,13 @@ public class SecurityConfig {
 				.failureUrl("/loginfailed")
 				.usernameParameter("username")
 				.passwordParameter("password"))
+			
+			// 소셜 로그인
+			.oauth2Login(oauth2 -> oauth2
+			    .loginPage("/login")
+			    .defaultSuccessUrl("/main", true)  // alwaysUse=true 추가 (중요!)
+			    .failureUrl("/login?error=social"))
+            
 			// 로그아웃 처리
 			.logout(logout -> logout
 				.logoutUrl("/logout")

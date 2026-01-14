@@ -61,6 +61,10 @@ dependencies {
 
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.0'
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2'
+	
+	// 소셜로그인 oauth2 설정
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 tasks.named('test') {
