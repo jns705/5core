@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.core.entity.Admin;
 import com.core.entity.Customer;
@@ -144,6 +146,23 @@ public class MemberController {
 		
 		return "redirect:/logout";
 	}
+	
+	// 회원 아이디 찾기
+	@PostMapping("/find-id")
+	@ResponseBody
+	public String findId(@RequestParam("name") String name, @RequestParam("phone") String phone) {
+		return memberService.findId(name, phone);
+	}
+	
+	// 회원 비밀번호 찾기
+    @PostMapping("/find-password")
+    @ResponseBody
+    public String findPassword(@RequestParam("memberId") String memberId,
+                               @RequestParam("name") String name,
+                               @RequestParam("phone") String phone) {
+        return memberService.findPassword(memberId, name, phone);
+    }
+	
 	
 	
 }

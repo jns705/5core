@@ -91,6 +91,12 @@ public class Member {
 		return member;
 	}
 	
+	// 비밀번호 찾기 - 임시 비밀번호 인코딩 메서드
+	public static Member passwordEncode(Member member, PasswordEncoder passwordEncoder) {
+		member.setPassword(passwordEncoder.encode(member.password));
+		return member;
+	}
+	
 	@Column(columnDefinition = "varchar(20) default 'ACTIVE'")
 	private String status = "ACTIVE";
 }

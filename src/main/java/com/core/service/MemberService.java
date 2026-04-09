@@ -2,6 +2,7 @@ package com.core.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberService implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
@@ -90,4 +93,40 @@ public class MemberService implements UserDetailsService {
 			throw new IllegalArgumentException("해당 ID의 멤버를 찾을 수 없거나 업데이트에 실패했습니다: " + id);
 		}
 	}
+	
+	// 회원 아이디 찾기
+	public String findId(String name, String phone) {
+		Member member = memberRepository.findByNameAndPhone(name, phone)
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 회원이 없습니다."));
+        return member.getMemberId();
+	}
+	
+	// 회원 비밀번호 찾기
+    public String findPassword(String memberId, String name, String phone) {
+        Member member = memberRepository.findByMemberIdAndNameAndPhone(memberId, name, phone)
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 회원이 없습니다."));
+
+        String tempPassword = generateTempPassword(10);
+        
+        member.setPassword(tempPassword);
+        member.setPassword2(tempPassword);
+        member = Member.passwordEncode(member, passwordEncoder);
+        memberRepository.save(member);
+
+        return tempPassword;
+    }
+
+    private String generateTempPassword(int length) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
+	
+	
+	
 }

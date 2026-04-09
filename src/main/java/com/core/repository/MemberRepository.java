@@ -62,4 +62,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	@Query(value = UPDATE_MEMBER_STATUS, nativeQuery = true)
     int queryUpdateStatus(@Param("id") Long id, @Param("status") String status);
 	
+	
+	Optional<Member> findByNameAndPhone(String name, String phone);
+	Optional<Member> findByMemberIdAndNameAndPhone(String memberId, String name, String phone);
+	
 }
