@@ -4,7 +4,7 @@
 현대자동차의 자동차 판매 관리 및 AI지능형 CRM 플랫폼입니다.
 
 ## 데모 영상
-[![데모 영상](https://img.youtube.com/vi/_6k37G50p34/0.jpg)](https://youtu.be/_6k37G50p34)
+[![데모 영상](https://img.youtube.com/vi/_6k37G50p3Q/0.jpg)](https://youtu.be/_6k37G50p3Q)
 
 ## 개발기간
 2025.11.19 ~ 2025.12.9
@@ -22,14 +22,6 @@
   - 전기차 충전소 실시간 API
   - 표준 행정구역 API (고객 상담 시 지역 선택)
 - Infra: Docker, AWS
-
-## 핵심 기능
-- 관리자: 딜러·차량·실적·AI 예측 통합 관리  
-- 딜러: 차량·고객·상담 진행상황 관리  
-- 고객: 차량 조회, 문의, 상담 신청  
-- 지도/충전소 조회: Google Maps Platform + 전기차 충전소 API + 행정구역 API 연동  
-- AI 챗봇: Gemini API 기반 자동 상담 지원, 차량 추천
-- AI 수요예측: Python + Streamlit/Plotly/Matplotlib로 수요·판매량 분석 및 시각화
 
 ## 핵심 기능
 - 관리자: 딜러·차량·실적·AI 예측 통합 관리  
